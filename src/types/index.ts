@@ -12,6 +12,10 @@ export type NextPageWithLayout<P = {}> = NextPage<P> & {
   layout?: ComponentType;
 };
 
+export interface LayoutProp extends ComponentProps {}
+
+export type LayoutContextProp = {};
+
 export interface ComponentProps extends PropsWithChildren {
   className?: string;
 }

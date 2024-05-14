@@ -1,13 +1,15 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Image from "next/image";
-import { Layout, View, Button } from "@app/components/ui";
+import { View, Button, Head, Header } from "@app/components";
 import { RigthArrowIcon } from "@app/components/icons";
 
 import cloud from "../../public/cloud.svg";
 
 const Page = () => {
   return (
-    <Layout>
+    <Fragment>
+      <Head title="Not Found" />
+      <Header />
       <View>
         <section>
           <div>
@@ -15,12 +17,9 @@ const Page = () => {
             <p>An unknown error occurred. Please reload or check back later.</p>
             <Button label="Back to home page" icon={<RigthArrowIcon />} />
           </div>
-          <div>
-            <Image src={cloud} alt="Cloud" />
-          </div>
         </section>
       </View>
-    </Layout>
+    </Fragment>
   );
 };
 

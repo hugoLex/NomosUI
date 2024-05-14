@@ -1,14 +1,11 @@
-import React, { FC, Fragment, PropsWithChildren, useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
+import React, { FC, useState } from "react";
 import { useRouter } from "next/router";
 
 import { ComponentProps } from "@app/types";
-import { Button, Footer, Header, Sidebar } from "../ui";
-
+import { Footer, Header } from "../ui";
 import { LayoutContext } from ".";
 
-const BaseLayout: FC<PropsWithChildren> = ({ children }) => {
+const BaseLayout: FC<ComponentProps> = ({ children }) => {
   const router = useRouter();
   const [show, setShow] = useState<boolean>(false);
 

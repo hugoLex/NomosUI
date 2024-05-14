@@ -1,13 +1,15 @@
 import React from "react";
-import { Head, Header, Layout, View } from "@app/components/ui";
+import { Head, Header, Layout, View } from "@app/components";
 import getMarkdownData from "@app/utils/getMarkdown";
 import { DataProp, NextPageWithLayout } from "@app/types";
 import { Markdown } from "@app/components";
 
+const { BaseLayout } = Layout;
+
 const Page = ({ data }: { data: DataProp }) => {
   const { slug, content } = data;
   return (
-    <Layout>
+    <BaseLayout>
       <Head title="Terms of use" />
       <Header variants="default" />
       <View>
@@ -18,7 +20,7 @@ const Page = ({ data }: { data: DataProp }) => {
           </div>
         </section>
       </View>
-    </Layout>
+    </BaseLayout>
   );
 };
 
