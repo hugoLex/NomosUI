@@ -34,6 +34,7 @@ const config = {
         f: "calc(100% - 6rem)",
       },
       fontFamily: {
+        rubik: ["var(--font-rubik)", ...fontFamily.sans],
         "dm-sans": ["var(--font-dm-sans)", ...fontFamily.sans],
         inter: ["var(--font-inter)", ...fontFamily.sans],
         paytone: ["var(--font-paytone)", ...fontFamily.sans],

@@ -34,8 +34,8 @@ export default async function middleware(req: NextRequest) {
   const currentHost =
     process.env.NODE_ENV === "production" && process.env.VERCEL === "1"
       ? hostname
-          .replace(`.vercel.pub`, "")
-          .replace(`.platformize.vercel.app`, "")
+          // .replace(`.vercel.pub`, "")
+          .replace(`.beta-lexanalytics.vercel.app`, "")
       : hostname.replace(`.localhost:9000`, "");
 
   // rewrites for app pages

@@ -7,5 +7,17 @@ import Input from "./Input";
 import Modal from "./Modal";
 import Sidebar from "./Sidebar";
 import View from "./View";
+import Switch from "./Switch";
 
-export { Button, Footer, Head, Header, Heading, Input, Modal, Sidebar, View };
+export {
+  Button,
+  Footer,
+  Head,
+  Header,
+  Heading,
+  Input,
+  Modal,
+  Sidebar,
+  Switch,
+  View,
+};

@@ -4,7 +4,7 @@ import type { AppProps } from "next/app";
 
 import type { NextPageWithLayout } from "@app/types";
 
-import { dmSans, inter, paytone } from "@app/assets/fonts";
+import { inter, poppins, rubik } from "@app/assets/fonts";
 import { NoSSR } from "@app/components/";
 
 type AppPropsWithLayout = AppProps & {
@@ -21,9 +21,10 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
       <style>
         {`
           :root {
-            --font-dm-sans: ${dmSans.style.fontFamily};
+            --font-rubik: ${rubik.style.fontFamily};
             --font-inter: ${inter.style.fontFamily};
-            --font-paytone: ${paytone.style.fontFamily};
+            --font-poppins:${poppins.style.fontFamily};
+          
           }
         `}
       </style>

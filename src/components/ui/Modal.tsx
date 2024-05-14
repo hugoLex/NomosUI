@@ -11,7 +11,7 @@ const Modal = ({
   toogleModal: Function;
 }) => {
   return (
-    <ReactPortal wrapperId={"qr-modal"}>
+    <ReactPortal wrapperId={"app-modal"}>
       <div
         role="dialog"
         className={`relative  ${show ? "visible z-[1000]" : "invisible z-0"}`}

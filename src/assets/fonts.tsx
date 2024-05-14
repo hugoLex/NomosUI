@@ -1,5 +1,5 @@
 import localFont from "next/font/local";
-import { Inter, Paytone_One, DM_Sans } from "next/font/google";
+import { Inter, Poppins, Rubik } from "next/font/google";
 
 export const inter = Inter({
   variable: "--font-inter",
@@ -8,14 +8,7 @@ export const inter = Inter({
   preload: true,
 });
 
-export const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
-  subsets: ["latin"],
-  display: "swap",
-  preload: true,
-});
-
-export const paytone = Paytone_One({
+export const poppins = Poppins({
   variable: "--font-paytone",
   subsets: ["latin"],
   weight: "400",
@@ -23,8 +16,15 @@ export const paytone = Paytone_One({
   preload: true,
 });
 
+export const rubik = Rubik({
+  variable: "--font-rubik",
+  subsets: ["latin"],
+  display: "swap",
+  preload: true,
+});
+
 export const fontMapper = {
-  "font-dm-sans": dmSans.variable,
+  "font-rubik": rubik.variable,
   "font-inter": inter.variable,
-  "font-paytone": paytone.variable,
+  "font-paytone": poppins.variable,
 };

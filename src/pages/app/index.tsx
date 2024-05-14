@@ -13,10 +13,11 @@ const Page: NextPageWithLayout = () => {
   const ref1 = useRef<HTMLDivElement>(null);
   return (
     <Layout.AppLayout>
+      <Head title={"Search"} />
       <section className="flex flex-col justify-center px-8 pt-20 pb-4 max-w-full w-[768px] max-md:px-5">
-        <div className="self-center mt-44 text-2xl text-center text-cyan-950 max-md:mt-10">
+        <h2 className="self-center font-normal mt-44 text-2xl text-center text-cyan-950 max-md:mt-10">
           Search like never before
-        </div>
+        </h2>
         <SearchBox />
         <div className="flex gap-2 mt-4 max-md:flex-wrap">
           <div className="flex flex-1 flex-auto gap-2 py-1.5 rounded-lg border border-solid border-stone-300 border-opacity-50">
