@@ -30,6 +30,7 @@
   "packageManager": "yarn@1.22.5",
   "engines": {
     "npm": "please-use-yarn",
-    "yarn": ">= 1.22.5"
+    "yarn": ">= 1.22.5",
+    "node": ">=16.10.0"
   }
 }
