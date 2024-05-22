@@ -1,12 +1,11 @@
 import React from "react";
 
 import { DataProp } from "@app/types";
-import { Head, Header, Layout, View } from "@app/components";
+import { Head, View, Header } from "@app/components/ui";
+import { BaseLayout } from "@app/components/layout";
 import {} from "@app/utils/constants";
 import getMarkdownData from "@app/utils/getMarkdown";
 import { Markdown } from "@app/components";
-
-const { BaseLayout } = Layout;
 
 const Page = ({ data }: { data: DataProp }) => {
   const { slug, content } = data;

@@ -17,11 +17,16 @@ const Modal = ({
         className={`relative  ${show ? "visible z-[1000]" : "invisible z-0"}`}
       >
         <div
-          className={`fixed inset-0 bg-gray-500 ${
+          className={`fixed inset-0  ${
             show
               ? "visible ease-out duration-300  opacity-100 delay-100"
               : "invisible ease-in duration-200 opacity-0"
           } bg-opacity-75 transition-opacity`}
+          style={{
+            backgroundColor: "rgba(#ccdcf9, 0.5)",
+            backdropFilter:
+              "blur(2px) brightness(100%) saturate(50%) contrast(100%)",
+          }}
         ></div>
 
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto">

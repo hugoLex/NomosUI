@@ -6,8 +6,9 @@ import Heading from "./Heading";
 import Input from "./Input";
 import Modal from "./Modal";
 import Sidebar from "./Sidebar";
-import View from "./View";
 import Switch from "./Switch";
+import Tabs from "./Tabs";
+import View from "./View";
 
 export {
   Button,
@@ -20,4 +21,5 @@ export {
   Sidebar,
   Switch,
   View,
+  Tabs,
 };

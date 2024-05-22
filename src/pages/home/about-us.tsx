@@ -3,9 +3,8 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { NextPageWithLayout } from "@app/types";
-import { Head, Layout, View, Heading } from "@app/components";
-
-const { BaseLayout } = Layout;
+import { Head, View, Heading } from "@app/components/ui";
+import { BaseLayout } from "@app/components/layout";
 
 import {} from "@app/assets";
 

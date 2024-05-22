@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import Image from "next/image";
-import { Layout, View, Button, Head, Header } from "@app/components/";
+import { View, Button, Head, Header } from "@app/components/ui";
 import { RigthArrowIcon } from "@app/components/icons";
 
 import { useRouter } from "next/router";

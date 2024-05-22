@@ -1,22 +1,27 @@
-import React, { FC, useState } from "react";
+import React, { FC, createContext, useState } from "react";
 import { useRouter } from "next/router";
 
-import { ComponentProps } from "@app/types";
+import { ComponentProps, LayoutContextProp } from "@app/types";
 import { Footer, Header } from "../ui";
-import { LayoutContext } from ".";
 
-const BaseLayout: FC<ComponentProps> = ({ children }) => {
+export const BaseLayoutContext = createContext<LayoutContextProp>({
+  isSearchModal: false,
+  setIsSearchModal: () => {},
+});
+
+export const BaseLayout: FC<ComponentProps> = ({ children }) => {
   const router = useRouter();
   const [show, setShow] = useState<boolean>(false);
+  const [isSearchModal, setIsSearchModal] = useState<boolean>(false);
 
-  const values = {};
+  const props = { isSearchModal, setIsSearchModal };
 
   return (
-    <LayoutContext.Provider value={values}>
+    <BaseLayoutContext.Provider value={props}>
       <Header variants="default"></Header>
       {children}
       <Footer />
-    </LayoutContext.Provider>
+    </BaseLayoutContext.Provider>
   );
 };
 export default BaseLayout;

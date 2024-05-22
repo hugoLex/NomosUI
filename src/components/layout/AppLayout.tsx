@@ -1,28 +1,33 @@
-import React, { FC, useState } from "react";
+import React, { FC, createContext, useState } from "react";
 import { useRouter } from "next/router";
 
-import { ComponentProps } from "@app/types";
+import { ComponentProps, LayoutContextProp } from "@app/types";
 import { Sidebar, View } from "../ui";
-import { LayoutContext } from ".";
+import { SearchModal } from "../app";
 
-const AppLayout: FC<ComponentProps> = ({ children }) => {
+export const AppLayoutContext = createContext<LayoutContextProp>({
+  isSearchModal: false,
+  setIsSearchModal: () => {},
+});
+
+export const AppLayout: FC<ComponentProps> = ({ children }) => {
   const router = useRouter();
   const [show, setShow] = useState<boolean>(false);
+  const [isSearchModal, setIsSearchModal] = useState<boolean>(false);
 
-  const values = {};
+  const props = { isSearchModal, setIsSearchModal };
 
   return (
-    <LayoutContext.Provider value={values}>
+    <AppLayoutContext.Provider value={props}>
       <div className="flex h-full min-h-[100vh] bg-[linear-gradient(0deg,#F3F3EE_0%,#F3F3EE_100%,#FFF)]">
         <Sidebar />
         <View className="grow lg:pr-2 lg:py-2">
-          <div className="flex justify-center items-center self-stretch px-16  w-full rounded-lg shadow-sm bg-stone-50 max-md:px-5 max-md:max-w-full">
+          <div className="h-full w-full rounded-lg shadow-sm bg-stone-50 max-md:max-w-full">
             {children}
           </div>
         </View>
+        <SearchModal />
       </div>
-    </LayoutContext.Provider>
+    </AppLayoutContext.Provider>
   );
 };
-
-export default AppLayout;
