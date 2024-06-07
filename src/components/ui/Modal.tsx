@@ -20,9 +20,9 @@ const Modal = ({
             show
               ? 'visible ease-out duration-300  opacity-100 delay-100'
               : 'invisible ease-in duration-200 opacity-0'
-          } transition-opacity`}
+          } transition-opacity bg-[#ccdcf9]/50`}
           style={{
-            backgroundColor: 'rgba(#ccdcf9, 0.5)',
+            // backgroundColor: 'rgba(#ccdcf9, 0.5)',
             backdropFilter:
               'blur(2px) brightness(100%) saturate(50%) contrast(100%)',
           }}></div>
