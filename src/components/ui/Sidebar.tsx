@@ -15,7 +15,8 @@ import {
 
 import { Modal } from '.';
 import Image from 'next/image';
-import { logoIcon } from '@app/assets';
+import { logo, logoIcon } from '@app/assets';
+import { useRouter } from 'next/router';
 
 type Variant = 'default' | 'empty';
 
@@ -25,8 +26,11 @@ interface SidebarProps extends ComponentProps {
 }
 
 const Sidebar: FC<SidebarProps> = ({ links, variants = 'empty', children }) => {
+  const router = useRouter();
   const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
   const [isAuthModal, setIsAuthModal] = useState<boolean>(false);
+
+  const showLogo = router.asPath !== '/';
 
   return (
     <>
@@ -39,23 +43,31 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = 'empty', children }) => {
           <div
             className={`flex items-center transition-all ${
               !isCollapsed
-                ? 'md:px-16 md:justify-end md:gap-8'
+                ? 'md:px-5 md:justify-center md:gap-4'
                 : 'md:justify-center'
             }`}>
-            <Link href={'/'} className='mt-2'>
-              <Image
-                src={logoIcon}
-                alt='Logo'
-                className={`${isCollapsed ? 'size-8' : 'size-10'}`}
-              />
-            </Link>
-            <span
+            {showLogo && (
+              <Link href={'/'} className=''>
+                {isCollapsed ? (
+                  <Image src={logoIcon} alt='Logo' className='size-9' />
+                ) : (
+                  <Image
+                    src={logo}
+                    alt='Logo'
+                    className='shrink-0 max-w-full aspect-[4.35]'
+                  />
+                )}
+              </Link>
+            )}
+            <button
               title='Collapse'
               role='button'
               onClick={() => setIsCollapsed(true)}
-              className={isCollapsed ? 'hidden' : 'inline-block'}>
-              <CollapseIcon />
-            </span>
+              className={` bg-white/70 rounded-full p-2 ${
+                isCollapsed ? 'hidden' : 'inline-block'
+              }`}>
+              <ExpandIcon className='rotate-180 size-[18px]' />
+            </button>
           </div>
           <div className='grow flex-1'>
             <div className='w-full px-4'>

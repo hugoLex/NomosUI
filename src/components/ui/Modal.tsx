@@ -20,7 +20,12 @@ const Modal = ({
             show
               ? 'visible ease-out duration-300  opacity-100 delay-100'
               : 'invisible ease-in duration-200 opacity-0'
-          } bg-white/40 transition-opacity backdrop-blur-sm`}></div>
+          } transition-opacity`}
+          style={{
+            backgroundColor: 'rgba(#ccdcf9, 0.5)',
+            backdropFilter:
+              'blur(2px) brightness(100%) saturate(50%) contrast(100%)',
+          }}></div>
 
         <div className='fixed inset-0 z-10 w-screen overflow-y-auto'>
           <div

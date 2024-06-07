@@ -63,7 +63,7 @@ const Page: NextPageWithLayout = () => {
 
           <button
             className={
-              'w-full md:w-fit md:mx-auto px-16 py-2.5 mt-10 font-medium  text-white bg-cyan-700 rounded-full hover:opacity-80 font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out  select-none  relative group/button cursor-pointer active:scale-95 origin-center whitespace-nowrap'
+              'w-full md:w-fit md:mx-auto px-16 py-2.5 mt-10 font-medium  text-white bg-primary rounded-full hover:opacity-80 font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out  select-none  relative group/button cursor-pointer active:scale-95 origin-center whitespace-nowrap'
             }>
             Sign In
           </button>
