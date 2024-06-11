@@ -2,7 +2,6 @@ import React, { Fragment, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-
 import { Head, Header, Heading, View } from '@app/components/ui';
 import { AppLayout as Layout } from '@app/components/layout';
 import { logo, logoIcon } from '@app/assets';
@@ -19,7 +18,7 @@ const Page: NextPageWithLayout = () => {
       <Layout>
         <section
           className='flex flex-col justify-center max-w-full m-auto
-        md:w-[700px] self-stretch'>
+        md:w-[700px] self-stretch p-5'>
           <Link href={'/'} className='mx-auto'>
             <Image
               src={logo}
