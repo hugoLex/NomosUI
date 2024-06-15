@@ -13,7 +13,7 @@ const Page = () => {
 
   const slug = String(router.query.slug);
   const title = slug.replace(/-/g, " ");
-  const tabId = String(router.query.tab);
+  const tabId: string = router.query.tab ? String(router.query.tab) : "case";
 
   const data = new Array(15).fill(<DummyContentDetails />);
 

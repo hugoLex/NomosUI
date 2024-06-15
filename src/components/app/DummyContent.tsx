@@ -1,42 +1,45 @@
 import React from "react";
+import Image from "next/image";
+import {
+  placeholder1,
+  placeholder2,
+  placeholder3,
+  placeholder4,
+  placeholder5,
+} from "@app/assets";
 
 export const DummyContentSidebar = () => (
   <div className="flex flex-col self-stretch ">
-    <div className="flex flex-col justify-center w-full rounded-md shadow-md bg-stone-100">
-      <img loading="lazy" srcSet="..." className="w-full aspect-[1.96]" />
+    <div className="w-full">
+      <Image src={placeholder1} alt="placholder" className="w-full" />
     </div>
-    <img loading="lazy" srcSet="..." className="mt-2 w-full aspect-[1.67]" />
-    <div className="flex flex-col justify-center px-4 py-2.5 mt-2 w-full text-sm font-medium leading-5 rounded-md border border-dashed border-stone-300 border-opacity-50 text-cyan-950">
-      <div className="flex gap-5 justify-between py-0.5">
-        <div className="flex gap-2">
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/c8412eb1f26a412742db199a7615d8233045eaaa8b627062f46527bdcbfac1a8?"
-            className="shrink-0 my-auto aspect-[1.28] w-[18px]"
-          />
-          <div>Search Videos</div>
-        </div>
-        <img
-          loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/e02270f9a27858299accae141db289c8dbaada782e950f5e4f2263a2880db5ac?"
-          className="shrink-0 self-start w-5 aspect-[1.25]"
+    <div className="w-full grid grid-cols-2">
+      <div>
+        <Image
+          src={placeholder2}
+          alt="placholder"
+          className="w-full object-cover aspect-auto"
         />
       </div>
-    </div>
-    <div className="flex flex-col justify-center px-4 py-2.5 mt-2 w-full text-sm font-medium leading-5 rounded-md border border-dashed border-stone-300 border-opacity-50 text-cyan-950">
-      <div className="flex gap-5 justify-between py-0.5">
-        <div className="flex gap-2">
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/6193bce175ab01e5a2bc21c1620d88c86ae724116a95b2470d72953d98683db4?"
-            className="shrink-0 my-auto aspect-[1.28] w-[18px]"
-          />
-          <div>Generate Image</div>
-        </div>
-        <img
-          loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/e02270f9a27858299accae141db289c8dbaada782e950f5e4f2263a2880db5ac?"
-          className="shrink-0 self-start w-5 aspect-[1.25]"
+      <div>
+        <Image
+          src={placeholder3}
+          alt="placholder"
+          className="w-full h-full object-cover aspect-auto"
+        />
+      </div>
+      <div>
+        <Image
+          src={placeholder4}
+          alt="placholder"
+          className="w-full object-cover aspect-auto"
+        />
+      </div>
+      <div>
+        <Image
+          src={placeholder5}
+          alt="placholder"
+          className="w-full object-cover aspect-auto"
         />
       </div>
     </div>
