@@ -1,21 +1,27 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import {
-  reducerPath,
-  reducer as apiReducer,
-  middleware,
-} from "./services/apiSlice";
+  reducerPath as searchPath,
+  reducer as searchReducer,
+  middleware as searchMiddleware,
+} from "./services/endpointSearch";
+import {
+  reducerPath as aiPath,
+  reducer as aiReducer,
+  middleware as aiMiddleware,
+} from "./services/endpointAI";
 import appReducer from "./slices/appSlice";
 import generalMessageReducer from "./slices/messagesSlice";
 
 export const store = configureStore({
   reducer: {
-    [reducerPath]: apiReducer,
     app: appReducer,
     generalMessage: generalMessageReducer,
+    [aiPath]: aiReducer,
+    [searchPath]: searchReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(middleware),
+    getDefaultMiddleware().concat(searchMiddleware).concat(aiMiddleware),
 });
 
 setupListeners(store.dispatch);

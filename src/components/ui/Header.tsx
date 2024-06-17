@@ -18,7 +18,7 @@ const Header: FC<HeaderProps> = ({ links, variants = "empty", children }) => {
   const router = useRouter();
 
   return (
-    <header className="sticky top-0 w-full z-[999] bg-white shadow-sm">
+    <header className="sticky -top-[0.65rem] w-full z-[999] bg-white shadow-sm">
       {children}
     </header>
   );
