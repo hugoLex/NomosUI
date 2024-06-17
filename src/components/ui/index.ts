@@ -5,6 +5,7 @@ import Header from "./Header";
 import Heading from "./Heading";
 import Input from "./Input";
 import Modal from "./Modal";
+
 import Sidebar from "./Sidebar";
 import Switch from "./Switch";
 import Tabs from "./Tabs";
@@ -23,3 +24,5 @@ export {
   View,
   Tabs,
 };
+
+export * from "./Loader";

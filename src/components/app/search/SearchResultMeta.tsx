@@ -4,7 +4,7 @@ import Link from "next/link";
 type SearchResultMetaProp = {
   idx: string;
   caseTitle: string;
-  date: string;
+  date: string | number;
   court: string;
 };
 

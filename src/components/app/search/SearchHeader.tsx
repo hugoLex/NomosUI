@@ -15,15 +15,15 @@ const SearchHeader = () => {
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/f67444ce54a1576e591d0a869ae9147a19fc6c0017d54e5d449ededa2f225dd0?"
               className="shrink-0 my-auto aspect-[1.22] w-[17px]"
             />
-            <div className="flex flex-col justify-center px-2 py-2.5 bg-cyan-700 rounded">
-              <div className="flex gap-1 justify-center">
+            <div className="flex flex-col justify-center px-2 py-2.5 bg-primary rounded">
+              <button className="flex gap-1 justify-center">
                 <img
                   loading="lazy"
                   src="https://cdn.builder.io/api/v1/image/assets/TEMP/41aebb8e2c1ce20cd2ca80b55fdc112e2d23c6639a27a30a0502faa90a0db159?"
                   className="shrink-0 aspect-[1.22] w-[17px]"
                 />
-                <div>Share</div>
-              </div>
+                <span>Share</span>
+              </button>
             </div>
           </div>
         </div>

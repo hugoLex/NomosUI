@@ -23,6 +23,14 @@ export interface ComponentProps extends PropsWithChildren {
   className?: string;
 }
 
+export interface ListResponse<T> {
+  page: number;
+  per_page: number;
+  total: number;
+  total_pages: number;
+  data: T[];
+}
+
 export type LinkProps = { path: string; label: string };
 
 export type DataProp = {
@@ -35,3 +43,29 @@ export type PlatformOS = "Android" | "iOS" | "Linux" | "MacOS" | "Windows";
 export type SiteMode = "isLive" | "isComingSoon" | "isMaintenance";
 
 export type TabItem = { active: boolean; id: string; label: string };
+
+export type SearchResultMeta = {
+  area_law: string[];
+  case_title: string;
+  court: string;
+  source_id: string;
+  year: string | number;
+};
+
+export type SearchResult = {
+  id: string;
+  content: string;
+  metadata: SearchResultMeta;
+  score: string;
+};
+
+export type AIResultMeta = {
+  case_title: string;
+  court: string;
+  year: string | number;
+};
+
+export type AIResult = {
+  replies: string[];
+  meta: AIResultMeta;
+};
