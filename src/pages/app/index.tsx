@@ -59,7 +59,7 @@ const Page: NextPageWithLayout = () => {
                 />
               </div>
               <div className="my-auto text-sm font-medium leading-5 text-cyan-950">
-                Latest men's fashion trends summer 2024
+                Latest men&apos;s fashion trends summer 2024
               </div>
             </button>
           </div>
