@@ -1,4 +1,10 @@
-import React, { FormEvent, useContext, useEffect, useState } from "react";
+import React, {
+  FormEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useRouter } from "next/router";
 import {
   ClipPaperIcon,
@@ -28,6 +34,7 @@ const SearchBox = () => {
   const router = useRouter();
   const { isSearchModal, setIsSearchModal } = useContext(LayoutContext);
   const [inputText, setInputText] = useState<string>("");
+  const innerRef = useRef<HTMLTextAreaElement | null>(null);
 
   const onSearchSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -46,6 +53,10 @@ const SearchBox = () => {
       },
     });
   };
+
+  useEffect(() => {
+    if (innerRef.current !== null) innerRef?.current.focus();
+  });
 
   return (
     <form
@@ -67,6 +78,8 @@ const SearchBox = () => {
         onChange={(e) => setInputText(e.target.value)}
         className="p-2 text-base placeholder:text-[17px] leading-6 bg-stone-50 text-zinc-600
          outline-none scrollbar-hide resize-none max-h-[40vh]"
+        autoFocus
+        ref={innerRef}
       />
       <div className="flex gap-5 w-full items-center justify-between text-sm font-medium text-zinc-600">
         <div className="flex items-center">
