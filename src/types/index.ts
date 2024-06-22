@@ -44,7 +44,7 @@ export type SiteMode = "isLive" | "isComingSoon" | "isMaintenance";
 
 export type TabItem = { active: boolean; id: string; label: string };
 
-export type SearchResultMeta = {
+export type SearchResultDocMeta = {
   area_law: string[];
   case_title: string;
   court: string;
@@ -52,11 +52,16 @@ export type SearchResultMeta = {
   year: string | number;
 };
 
-export type SearchResult = {
+export type SearchResultDoc = {
   id: string;
   content: string;
-  metadata: SearchResultMeta;
+  metadata: SearchResultDocMeta;
   score: string;
+};
+
+export type SearchResult = {
+  id: string;
+  documents: SearchResultDoc[];
 };
 
 export type AIResultMeta = {

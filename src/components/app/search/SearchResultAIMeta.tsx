@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, Fragment } from "react";
 import { AIResult } from "@app/types";
 
 const SearchAIMetaResult: FC<AIResult> = ({ replies, meta }) => {
@@ -8,30 +8,36 @@ const SearchAIMetaResult: FC<AIResult> = ({ replies, meta }) => {
         <div className="self-stretch pb-4 justify-start items-end inline-flex">
           <div className="grow shrink  border-b border-stone-300/opacity-50 justify-between items-start flex">
             <div className="grow shrink basis-0 self-stretch justify-start items-center gap-4 flex">
-              <div className="flex-col justify-start items-start inline-flex">
+              {/* <div className="flex-col justify-start items-start inline-flex">
                 <div className="self-stretch  bg-stone-100 rounded-md flex-col justify-start items-start flex">
                   <img
                     className="w-[45px]  relative"
                     src="https://via.placeholder.com/45x45"
+                 
                   />
                 </div>
-              </div>
+              </div> */}
               <div className="flex-col justify-start items-start inline-flex">
-                <div className="self-stretch  flex-col justify-start items-start flex">
+                {/* <div className="self-stretch  flex-col justify-start items-start flex">
                   <div className="text-cyan-950 text-lg font-medium  leading-7">
                     Law
                   </div>
-                </div>
+                </div> */}
                 <div className="self-stretch  flex-col justify-start items-start flex">
                   <div className="text-zinc-600 text-sm font-normal  leading-tight">
                     {replies.map((itx, idx) => (
-                      <p key={`id-${idx}`}>{itx}</p>
+                      <Fragment key={`id-${idx}`}>
+                        <p
+                          className="text-justify whitespace-pre-wrap"
+                          dangerouslySetInnerHTML={{ __html: itx }}
+                        />
+                      </Fragment>
                     ))}
                   </div>
                 </div>
               </div>
             </div>
-            <div className=" self-stretch justify-end items-start flex">
+            {/* <div className=" self-stretch justify-end items-start flex">
               <div className=" px-2 py-1.5 bg-stone-200 rounded-full justify-center items-center flex">
                 <div className="justify-center items-center gap-1 flex">
                   <div className="w-[15px] h-3 px-[2.25px] pt-[3.75px] pb-[2.25px] justify-center items-center flex" />
@@ -42,10 +48,10 @@ const SearchAIMetaResult: FC<AIResult> = ({ replies, meta }) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
-        <div className="relative">
+        {/* <div className="relative">
           <div className="flex  justify-start items-start ">
             <div className="self-stretch flex-col justify-start items-start inline-flex">
               <div className="text-cyan-950 text-sm font-medium  leading-tight">
@@ -150,7 +156,7 @@ const SearchAIMetaResult: FC<AIResult> = ({ replies, meta }) => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

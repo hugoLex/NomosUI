@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import Link from "next/link";
-import { SearchResult } from "@app/types";
+import { SearchResultDoc } from "@app/types";
 
 const SummaryView = ({ content }: { content: string }) => {
   const [show, setShow] = useState<boolean>(false);
@@ -27,7 +27,7 @@ const SummaryView = ({ content }: { content: string }) => {
 
 const SearchResultMeta = (prop: {
   index: string | number;
-  data: SearchResult;
+  data: SearchResultDoc;
 }) => {
   const { index, data } = prop;
   const { id, content, metadata } = data;

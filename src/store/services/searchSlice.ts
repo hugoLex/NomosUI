@@ -8,7 +8,7 @@ interface SearchQuery {
 
 export const searchQueryAPI = injectEndpoints({
   endpoints: (builder) => ({
-    searchCases: builder.query<{ documents: SearchResult[] }, SearchQuery>({
+    searchCases: builder.query<SearchResult, SearchQuery>({
       query: ({ query, pageNumber }) => {
         return {
           url: `/search?query=${query}${

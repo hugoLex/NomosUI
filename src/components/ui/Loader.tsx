@@ -1,3 +1,5 @@
+import { LoadingIcon } from "../icons";
+
 export const Shimmer = () => {
   return (
     <div className="space-y-2 w-full bg-[#eaf0f2]  rounded-lg p-3 mb-4">
@@ -16,3 +18,9 @@ export const Shimmer = () => {
     </div>
   );
 };
+
+export const Loader = () => (
+  <span className="animate-spin-right h-5 w-5 text-center">
+    <LoadingIcon />
+  </span>
+);
