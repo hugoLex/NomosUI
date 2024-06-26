@@ -16,9 +16,9 @@ const SummaryView = ({ content }: { content: string }) => {
               __html: content,
             }}
           />
-          {content.length > 24 && (
+          {/* {content.length > 24 && (
             <span onClick={toogleShow}>{show ? "collapse" : "See more"}</span>
-          )}
+          )} */}
         </div>
       </div>
     </Fragment>
