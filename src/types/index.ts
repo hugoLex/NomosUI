@@ -52,15 +52,23 @@ export type SearchResultDocMeta = {
   year: string | number;
 };
 
+export type SearchResultFilter = {
+  court: string[];
+  area_of_law: string[];
+  year: string[];
+};
+
 export type SearchResultDoc = {
   id: string;
   content: string;
+  context: string | string[];
   metadata: SearchResultDocMeta;
-  score: string;
+  score: string | number;
 };
 
 export type SearchResult = {
-  id: string;
+  source_id: string;
+  filter_elements: SearchResultFilter;
   documents: SearchResultDoc[];
 };
 

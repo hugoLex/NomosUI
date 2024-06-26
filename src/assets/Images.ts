@@ -1,6 +1,7 @@
 // SVG's
 import logo from "../../public/logo.svg";
 import logoIcon from "../../public/logo-icon.svg";
+import logo2 from "../../public/Lexanalytics_Logo.webp";
 
 import placeholder1 from "../../public/placeholder1.png";
 import placeholder2 from "../../public/placeholder2.png";
@@ -10,6 +11,7 @@ import placeholder5 from "../../public/placeholder5.png";
 
 export {
   logo,
+  logo2,
   logoIcon,
   placeholder1,
   placeholder2,

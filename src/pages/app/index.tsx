@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Head, Header, Heading, View } from "@app/components/ui";
 import { AppLayout as Layout } from "@app/components/layout";
-import { logo, logoIcon } from "@app/assets";
+import { logo, logo2, logoIcon } from "@app/assets";
 import { NextPageWithLayout } from "@app/types";
 import {} from "@app/assets";
 import { useIsVisible } from "@app/hooks";
@@ -22,9 +22,9 @@ const Page: NextPageWithLayout = () => {
         >
           <Link href={"/"} className="mx-auto">
             <Image
-              src={logo}
+              src={logo2}
               alt="Logo"
-              className="shrink-0 max-w-full aspect-[4.35]"
+              className="shrink-0 max-w-full w-72 aspect-[4.35]"
             />
           </Link>
           <SearchBox />
