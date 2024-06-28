@@ -1,5 +1,5 @@
-import { AIResult, ListResponse } from "@app/types";
-import { injectEndpoints } from "./endpointAI";
+import { AIResult, ListResponse } from '@app/types';
+import { injectEndpoints } from './endpointAI';
 
 export const searchQueryAPI = injectEndpoints({
   endpoints: (builder) => ({
@@ -7,14 +7,14 @@ export const searchQueryAPI = injectEndpoints({
       query: (query) => {
         return {
           url: `/ask?question=${query}`,
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
           },
         };
       },
-      providesTags: ["CASES"],
+      providesTags: ['CASES'],
     }),
   }),
   overrideExisting: true,
