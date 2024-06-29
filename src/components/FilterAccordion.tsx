@@ -4,18 +4,18 @@ import { PlusIcon } from './icons';
 export default ({
   data,
   onOptionClick,
-  filter,
+  filters,
 }: {
   data: { header: string; list: string[] }[];
   onOptionClick: (header: string, option: string) => void;
-  filter: { header: string; options: string[] }[];
+  filters: { header: string; options: string[] }[];
 }) => (
   <Accordion.Root type='multiple' className='flex flex-col gap-2'>
     {data.map(({ header, list = [] }) => (
       <Accordion.Item value={header}>
         <Accordion.Header>
           <Accordion.Trigger
-            className='text-base font-normal w-full 
+            className='text-base font-normal w-full min-w-[250px]
            flex justify-between border hover:bg-neutral-200/30 py-2 px-5 rounded-[10px]'>
             <p>{header}</p>
             <PlusIcon />
@@ -26,12 +26,12 @@ export default ({
             {list.map((option) => (
               <button
                 className=' text-black/80 
-              text-start text-sm py-1 px-3 rounded-md gap-2 flex items-center'
+              text-start text-sm py-1 px-3 rounded-md gap-2 flex items-center text-[#2C699B]'
                 onClick={() => onOptionClick(header, option)}>
                 <input
                   type='checkbox'
                   className='size-4'
-                  checked={filter.some(
+                  checked={filters.some(
                     (x) => x.header === header && x.options.includes(option)
                   )}
                   onChange={(e) => onOptionClick(header, option)}

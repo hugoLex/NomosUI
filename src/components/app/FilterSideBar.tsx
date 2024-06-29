@@ -1,37 +1,35 @@
-import React, { useState } from 'react';
-import Image from 'next/image';
-
-import { SearchResult } from '@app/types';
+import React from 'react';
+import { SearchData } from '@app/types';
 import { Filter2Icon } from '../icons';
 import FilterAccordion from '../FilterAccordion';
 
 export const FilterSideBar = ({
-  data: { searchResult },
-  filter,
-  setFilter,
+  data,
+  filters,
+  setFilters,
 }: {
-  data: { searchResult: SearchResult; llmResult: any };
-  filter: { header: string; options: string[] }[];
-  setFilter: (state: { header: string; options: string[] }[]) => void;
+  data?: SearchData;
+  filters: { header: string; options: string[] }[];
+  setFilters: (state: { header: string; options: string[] }[]) => void;
 }) => {
-  const filters = searchResult?.filter_elements;
+  const filter_elements = data?.searchResult?.filter_elements;
 
   return (
     <div className='flex flex-col self-stretch rounded py-3 px-5'>
-      <div className='w-full flex gap-4 items-center mb-2'>
+      <div className='w-full flex gap-4 items-center mb-3'>
         <Filter2Icon />
 
-        <h3 className='text-base font-medium'>Filter</h3>
+        <h3 className='text-base font-normal'>Filter</h3>
       </div>
       <FilterAccordion
-        filter={filter}
+        filters={filters}
         onOptionClick={(header, b) => {
           const previousOptions =
-            filter.find((x) => x.header === header)?.options || [];
+            filters.find((x) => x.header === header)?.options || [];
           const hasOption = previousOptions?.includes(b);
 
-          setFilter([
-            ...filter.filter((x) => x.header !== header),
+          setFilters([
+            ...filters.filter((x) => x.header !== header),
             {
               header,
               options: hasOption
@@ -41,9 +39,9 @@ export const FilterSideBar = ({
           ]);
         }}
         data={[
-          { header: 'Court', list: filters?.court },
-          { header: 'Year', list: filters?.year },
-          { header: 'Area of Law', list: filters?.area_of_law },
+          { header: 'Court', list: filter_elements?.court || [] },
+          { header: 'Year', list: filter_elements?.year || [] },
+          { header: 'Area of Law', list: filter_elements?.area_of_law || [] },
         ]}
       />
     </div>

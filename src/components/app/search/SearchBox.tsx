@@ -16,13 +16,13 @@ import {
 import { AppLayoutContext as LayoutContext } from '@app/components/layout';
 import ReactTextareaAutosize from 'react-textarea-autosize';
 
-export const SearchButtonBox = () => {
+export const SearchButtonBox = ({ className }: { className?: string }) => {
   const { setIsSearchModal } = useContext(LayoutContext);
   return (
     <div
       onClick={() => setIsSearchModal(true)}
-      className='ml-[4rem] md:w-[20%] flex gap-2.5 px-4 py-2 border border-solid
-       bg-stone-50 border-stone-300 rounded-[32px]  cursor-text'>
+      className={`ml-[4rem] md:w-[20%] flex gap-2.5 px-4 py-2 border border-solid
+       bg-stone-50 border-stone-300 rounded-[32px]  cursor-text ${className}`}>
       <SearchIcon />
       <span className='my-auto text-sm text-zinc-600'>Search...</span>
     </div>

@@ -3,8 +3,8 @@ import React, {
   PropsWithChildren,
   ReactElement,
   ReactNode,
-} from "react";
-import { NextPage } from "next";
+} from 'react';
+import { NextPage } from 'next';
 
 export type NextPageWithLayout<P = {}> = NextPage<P> & {
   // You can disable whichever you don't need
@@ -38,9 +38,9 @@ export type DataProp = {
   slug: string;
 };
 
-export type PlatformOS = "Android" | "iOS" | "Linux" | "MacOS" | "Windows";
+export type PlatformOS = 'Android' | 'iOS' | 'Linux' | 'MacOS' | 'Windows';
 
-export type SiteMode = "isLive" | "isComingSoon" | "isMaintenance";
+export type SiteMode = 'isLive' | 'isComingSoon' | 'isMaintenance';
 
 export type TabItem = { active: boolean; id: string; label: string };
 
@@ -56,6 +56,11 @@ export type SearchResultFilter = {
   court: string[];
   area_of_law: string[];
   year: string[];
+};
+
+export type SearchData = {
+  llmResult: AIResult | null;
+  searchResult: SearchResult | null;
 };
 
 export type SearchResultDoc = {

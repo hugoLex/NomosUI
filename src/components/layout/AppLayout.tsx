@@ -17,7 +17,9 @@ export const AppLayout: FC<ComponentProps> = ({ children }) => {
 
   return (
     <AppLayoutContext.Provider value={props}>
-      <div className='flex min-h-screen md:h-screen bg-[linear-gradient(0deg,#eaf0f2_0%,#eaf0f2_100%,#FFF)]'>
+      <div
+        className='flex min-h-screen md:h-screen
+       bg-[linear-gradient(0deg,#eaf0f2_0%,#eaf0f2_100%,#FFF)]'>
         <Sidebar />
         <View className='grow lg:pr-2 lg:py-2 overflow-y-auto md:h-full'>
           <div
