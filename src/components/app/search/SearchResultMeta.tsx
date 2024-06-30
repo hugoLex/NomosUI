@@ -62,22 +62,23 @@ const SearchResultMeta = (prop: {
 
   const link = "what is law";
   return (
-    <div className="mb-4">
-      <h3 className="text-base font-medium mb-2">
+    <div className="mb-4 space-y-3">
+      <h3 className="text-base font-medium">
         <Link href={`/cases/${id ? id : link.replace(/\s/g, "-")}`}>
           <span>{index}. </span> {metadata.case_title}
         </Link>
       </h3>
+
       <p className="flex gap-x-4">
-        <span className="h-8 px-2 py-[9px] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+        <span className="px-2 py-[9px] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
           {metadata.year}
         </span>
-        <span className="h-8 px-2 py-[9px] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+        <span className="px-2 py-[9px] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
           {metadata.court}
         </span>
       </p>
 
-      <p dangerouslySetInnerHTML={{ __html: fmtTxt }} />
+      <p dangerouslySetInnerHTML={{ __html: fmtTxt }} className="text" />
     </div>
   );
 };

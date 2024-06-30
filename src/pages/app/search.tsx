@@ -1,4 +1,10 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useRouter } from "next/router";
 import { Head, Loader, Shimmer } from "@app/components/ui";
 import {
@@ -16,7 +22,8 @@ import { useSearchCasesQuery } from "@app/store/services/searchSlice";
 import { useGetAIQuery } from "@app/store/services/aiSlice";
 import { flattenFilters } from "@app/utils/helpers";
 import { Filter2Icon } from "@app/components/icons";
-import { dummySearchResult } from "@app/utils/constants";
+import { dummySearchResult as searchResult } from "@app/utils/constants";
+import { useIsVisible } from "@app/hooks";
 
 const useSearch = (query: string | undefined, pageNumber: string | number) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -99,18 +106,24 @@ const Page = () => {
 
   const { q, page } = router.query;
 
-  const query = q ? String(q) : undefined;
+  const query = q ? String(q) : "";
   const pageNumber = page ? String(page) : "1";
+
+  // For test
+  // const isSuccess = true,
+  //   isError = false,
+  //   isLoading = false;
+
+  // const llmResult = null;
+
+  // For production
 
   const { data, isError, isLoading, isSuccess } = useSearch(query, pageNumber);
 
   const { llmResult, searchResult } = data;
 
-  // const results = new Array(15).fill({
-  //   caseTitle: 'John Doe vs Mike Doe',
-  //   date: '1991-1-1',
-  //   court: 'High Court',
-  // });
+  const h1Ref = useRef<HTMLHeadingElement | null>(null);
+  const isHeaderVisible = useIsVisible(h1Ref);
 
   const [filters, setFilters] = useState<
     { header: string; options: string[] }[]
@@ -135,7 +148,7 @@ const Page = () => {
     <Fragment>
       <Head title={`Search Result - ${q}`} />
       <Layout>
-        <SearchHeader />
+        <SearchHeader query={query} isHeaderVisible={!isHeaderVisible} />
         {isLoading && (
           <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-full">
             <Loader />
@@ -148,20 +161,29 @@ const Page = () => {
               <div className="md:grid grid-cols-12 gap-8">
                 <div className="col-span-8">
                   <div className="flex flex-col">
-                    <h1 className="text-xx font-normal mb-6 text-center">
+                    <h1
+                      id="searchQuery"
+                      ref={h1Ref}
+                      className="text-xx font-normal mb-6"
+                    >
                       Search result for: <span>{q}</span>
                     </h1>
 
                     {allFilters.length > 0 && (
                       <div className="flex gap-3 flex-wrap">
-                        <p
-                          className="py-0.5 px-3 rounded-xl flex gap-1 text-white 
+                        <Fragment>
+                          {/* <p
+                            className="py-0.5 px-3 rounded-xl flex gap-1 text-white 
                       items-center text-sm bg-primary"
-                        >
-                          <Filter2Icon className="fill-white size-3" />
-                          <span className="ml-2">Filter</span>
-                          <span className="text-sm">({allFilters.length})</span>
-                        </p>
+                          >
+                            <Filter2Icon className="fill-white size-3" />
+                            <span className="ml-2">Filter</span>
+                            <span className="text-sm">
+                              ({allFilters.length})
+                            </span>
+                          </p> */}
+                          <p className="">Applied Filters</p>
+                        </Fragment>
                         {filters
                           .filter((elem) => elem.options.length > 0)
                           .map((filter) => (
@@ -170,20 +192,22 @@ const Page = () => {
                               className=" flex flex-wrap gap-2"
                             >
                               {filter.options.map((option, idx) => (
-                                <div
-                                  key={idx}
-                                  className="text-sm font-normal py-0.5 px-3 rounded-xl flex gap-2 bg-black/5"
-                                >
-                                  <span>{option}</span>
-                                  <button
-                                    className="text-red-600"
-                                    onClick={() =>
-                                      removeFilter(filter.header, option)
-                                    }
-                                  >
-                                    x
-                                  </button>
-                                </div>
+                                <Fragment key={idx}>
+                                  {/* <div className="text-sm font-normal py-0.5 px-3 rounded-xl flex gap-2 bg-black/5">
+                                    <span>{option}</span>
+                                    <button
+                                      className="text-red-600"
+                                      onClick={() =>
+                                        removeFilter(filter.header, option)
+                                      }
+                                    >
+                                      x
+                                    </button>
+                                  </div> */}
+                                  <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-[0.8rem] text-center text-teal-900 text-sm font-normal">
+                                    {option}
+                                  </span>
+                                </Fragment>
                               ))}
                             </div>
                           ))}

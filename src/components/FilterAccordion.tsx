@@ -10,7 +10,10 @@ const FilterAccordion = ({
   onOptionClick: (header: string, option: string) => void;
   filters: { header: string; options: string[] }[];
 }) => (
-  <Accordion.Root type="multiple" className="flex flex-col gap-2">
+  <Accordion.Root
+    type="multiple"
+    className="flex flex-col gap-2 max-h-screen overflow-y-auto scrollbar "
+  >
     {data.map(({ header, list = [] }, idx) => (
       <Accordion.Item key={idx} value={header}>
         <Accordion.Header>

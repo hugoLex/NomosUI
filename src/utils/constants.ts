@@ -378,3 +378,9 @@ export const dummySearchResult: SearchResult = {
     },
   ],
 };
+
+export const dummyResults = new Array(15).fill({
+  caseTitle: "John Doe vs Mike Doe",
+  date: "1991-1-1",
+  court: "High Court",
+});
