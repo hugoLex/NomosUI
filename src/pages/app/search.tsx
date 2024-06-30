@@ -148,14 +148,24 @@ const Page = () => {
     <Fragment>
       <Head title={`Search Result - ${q}`} />
       <Layout>
-        <SearchHeader query={query} isHeaderVisible={!isHeaderVisible} />
+        <SearchHeader
+          query={query}
+          isHeaderVisible={
+            isLoading || isError
+              ? true
+              : isSuccess && !isHeaderVisible
+              ? true
+              : false
+          }
+        />
+
         {isLoading && (
           <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-full">
             <Loader />
           </div>
         )}
 
-        {isSuccess && (
+        {!isLoading && isSuccess && (
           <section className="flex justify-center items-center self-stretch py-6 ">
             <div className="px-16 max-md:px-5  mx-auto max-w-[1100px]">
               <div className="md:grid grid-cols-12 gap-8">
@@ -255,7 +265,7 @@ const Page = () => {
           </section>
         )}
 
-        {isError && (
+        {!isLoading && isError && (
           <div className="flex-1 flex justify-center items-center self-stretch">
             <div className="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
               <div className="sm:flex sm:items-start">
