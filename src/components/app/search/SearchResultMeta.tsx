@@ -75,7 +75,7 @@ const SearchResultMeta = (prop: {
         </span>
       </p>
 
-      <p>{fmtTextCont}</p>
+      <p dangerouslySetInnerHTML={{ __html: fmtTextCont }} />
     </div>
   );
 };
