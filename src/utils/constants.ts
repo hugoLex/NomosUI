@@ -1,4 +1,4 @@
-import { LinkProps, SearchResult } from "@app/types";
+import { LinkProps, SearchResult, AIResult } from "@app/types";
 
 export const searchURL = "https://lexasearch.lexanalytics.ai";
 
@@ -377,6 +377,15 @@ export const dummySearchResult: SearchResult = {
       ],
     },
   ],
+};
+
+export const dummyLLMResult: AIResult = {
+  replies: ["What"],
+  meta: {
+    case_title: "john v doe",
+    court: "high court",
+    year: "1993",
+  },
 };
 
 export const dummyResults = new Array(15).fill({

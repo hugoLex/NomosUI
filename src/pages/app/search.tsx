@@ -22,7 +22,10 @@ import { useSearchCasesQuery } from "@app/store/services/searchSlice";
 import { useGetAIQuery } from "@app/store/services/aiSlice";
 import { flattenFilters } from "@app/utils/helpers";
 import { Filter2Icon } from "@app/components/icons";
-import { dummySearchResult as searchResult } from "@app/utils/constants";
+import {
+  dummySearchResult as searchResult,
+  dummyLLMResult as llmResult,
+} from "@app/utils/constants";
 import { useIsVisible } from "@app/hooks";
 
 const useSearch = (query: string | undefined, pageNumber: string | number) => {
@@ -85,7 +88,6 @@ const useSearch = (query: string | undefined, pageNumber: string | number) => {
 
     return () => {};
   }, [
-    query,
     fetchingLLM,
     fetchingSearch,
     loadingLLM,
@@ -113,8 +115,6 @@ const Page = () => {
   // const isSuccess = true,
   //   isError = false,
   //   isLoading = false;
-
-  // const llmResult = null;
 
   // For production
 
@@ -151,9 +151,9 @@ const Page = () => {
         <SearchHeader
           query={query}
           isHeaderVisible={
-            isLoading || isError
+            isSuccess && !isHeaderVisible
               ? true
-              : isSuccess && !isHeaderVisible
+              : isLoading || isError
               ? true
               : false
           }

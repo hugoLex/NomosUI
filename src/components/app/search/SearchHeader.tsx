@@ -18,11 +18,11 @@ const SearchHeader = ({ query, isHeaderVisible }: SearchHeaderProps) => {
           <SearchButtonBox className="" />
 
           <div
-            className={`transition-all duration-300 ${
+            className={`flex-1 transition-all duration-300 ${
               isHeaderVisible ? "opacity-1 visible" : "opacity-0 invisible"
             }`}
           >
-            <p className="font-medium">{query}</p>
+            <p className="font-medium text-center">{query}</p>
           </div>
 
           <div className="inline-flex gap-4 justify-between items-center self-stretch pl-2 my-auto text-sm font-medium leading-4 text-center text-white whitespace-nowrap">
