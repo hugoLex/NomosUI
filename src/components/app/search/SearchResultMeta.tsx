@@ -51,12 +51,14 @@ const SearchResultMeta = (prop: {
   const { index, data } = prop;
   const { id, content, context, metadata } = data;
 
-  const escCxt = RegExp(escapeRegExp(`${context}`), "gi");
+  let fmtTxt: string = content;
 
-  const fmtTextCont = content.replace(
-    escCxt,
-    `<span class=\"bg-[#FFE89E]\">${Text}</span>`
-  );
+  context.forEach((txt, idx) => {
+    fmtTxt = fmtTxt.replace(
+      RegExp(escapeRegExp(`${txt}`), "gi"),
+      `<span class=\"bg-[#FFE89E]\">${txt}</span>`
+    );
+  });
 
   const link = "what is law";
   return (
@@ -75,7 +77,7 @@ const SearchResultMeta = (prop: {
         </span>
       </p>
 
-      <p dangerouslySetInnerHTML={{ __html: fmtTextCont }} />
+      <p dangerouslySetInnerHTML={{ __html: fmtTxt }} />
     </div>
   );
 };

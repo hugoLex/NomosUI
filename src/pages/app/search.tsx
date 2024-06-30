@@ -16,6 +16,7 @@ import { useSearchCasesQuery } from "@app/store/services/searchSlice";
 import { useGetAIQuery } from "@app/store/services/aiSlice";
 import { flattenFilters } from "@app/utils/helpers";
 import { Filter2Icon } from "@app/components/icons";
+import { dummySearchResult } from "@app/utils/constants";
 
 const useSearch = (query: string | undefined, pageNumber: string | number) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -49,7 +50,7 @@ const useSearch = (query: string | undefined, pageNumber: string | number) => {
     const isLoadingLLM = loadingLLM || fetchingLLM ? true : false;
     const isLoadingSearch = loadingSearch || fetchingSearch ? true : false;
 
-    if (query || isLoadingLLM || isLoadingSearch) {
+    if (isLoadingLLM || isLoadingSearch) {
       setIsError(false);
       setIsSuccess(false);
       setIsLoading(true);
@@ -102,6 +103,8 @@ const Page = () => {
   const pageNumber = page ? String(page) : "1";
 
   const { data, isError, isLoading, isSuccess } = useSearch(query, pageNumber);
+
+  const { llmResult, searchResult } = data;
 
   // const results = new Array(15).fill({
   //   caseTitle: 'John Doe vs Mike Doe',
@@ -187,20 +190,20 @@ const Page = () => {
                       </div>
                     )}
 
-                    {data.llmResult !== null && (
+                    {llmResult !== null && (
                       <SearchAIMetaResult
-                        replies={data.llmResult?.replies}
-                        meta={data.llmResult?.meta}
+                        replies={llmResult?.replies}
+                        meta={llmResult?.meta}
                       />
                     )}
                   </div>
 
                   <div className="my-6">
-                    {data.searchResult !== null &&
-                      data.searchResult.documents.length > 0 && (
+                    {searchResult !== null &&
+                      searchResult.documents.length > 0 && (
                         <Fragment>
                           <div>
-                            {data.searchResult.documents?.map((data, idx) => (
+                            {searchResult.documents?.map((data, idx) => (
                               <SearchResultMeta
                                 key={data.id}
                                 index={String(idx + 1)}
@@ -212,11 +215,11 @@ const Page = () => {
                       )}
                   </div>
                 </div>
-                {data.searchResult && (
+                {searchResult && (
                   <div className="col-span-4">
                     <div className="sticky md:top-[68px]">
                       <FilterSideBar
-                        data={data}
+                        data={searchResult.filter_elements}
                         filters={filters}
                         setFilters={setFilters}
                       />
