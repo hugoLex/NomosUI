@@ -1,7 +1,7 @@
-import * as Accordion from '@radix-ui/react-accordion';
-import { PlusIcon } from './icons';
+import * as Accordion from "@radix-ui/react-accordion";
+import { PlusIcon } from "./icons";
 
-export default ({
+const FilterAccordion = ({
   data,
   onOptionClick,
   filters,
@@ -10,27 +10,30 @@ export default ({
   onOptionClick: (header: string, option: string) => void;
   filters: { header: string; options: string[] }[];
 }) => (
-  <Accordion.Root type='multiple' className='flex flex-col gap-2'>
-    {data.map(({ header, list = [] }) => (
-      <Accordion.Item value={header}>
+  <Accordion.Root type="multiple" className="flex flex-col gap-2">
+    {data.map(({ header, list = [] }, idx) => (
+      <Accordion.Item key={idx} value={header}>
         <Accordion.Header>
           <Accordion.Trigger
-            className='text-base font-normal w-full min-w-[250px]
-           flex justify-between border hover:bg-neutral-200/30 py-2 px-5 rounded-[10px]'>
+            className="text-base font-normal w-full min-w-[250px]
+           flex justify-between border hover:bg-neutral-200/30 py-2 px-5 rounded-[10px]"
+          >
             <p>{header}</p>
             <PlusIcon />
           </Accordion.Trigger>
         </Accordion.Header>
         <Accordion.Content>
-          <div className='flex flex-wrap gap-2 w-full text-start mt-2'>
-            {list.map((option) => (
+          <div className="flex flex-col flex-wrap gap-2 w-full text-start mt-2">
+            {list.map((option, _idx) => (
               <button
-                className=' text-black/80 
-              text-start text-sm py-1 px-3 rounded-md gap-2 flex items-center text-[#2C699B]'
-                onClick={() => onOptionClick(header, option)}>
+                key={_idx}
+                className=" text-black/80 
+              text-start text-sm py-1 px-3 rounded-md gap-2 flex items-center text-[#2C699B]"
+                onClick={() => onOptionClick(header, option)}
+              >
                 <input
-                  type='checkbox'
-                  className='size-4'
+                  type="checkbox"
+                  className="size-4"
                   checked={filters.some(
                     (x) => x.header === header && x.options.includes(option)
                   )}
@@ -45,3 +48,5 @@ export default ({
     ))}
   </Accordion.Root>
 );
+
+export default FilterAccordion;

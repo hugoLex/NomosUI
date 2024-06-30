@@ -24,3 +24,6 @@ export const getPlatformOS = (): PlatformOS | null => {
 
   return null;
 };
+
+export const escapeRegExp = (text: string) =>
+  text.replace(/[.*+-/?^${}()|[\]\\]/g, "\\$&");

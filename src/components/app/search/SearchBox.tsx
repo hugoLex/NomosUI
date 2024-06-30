@@ -21,7 +21,7 @@ export const SearchButtonBox = ({ className }: { className?: string }) => {
   return (
     <div
       onClick={() => setIsSearchModal(true)}
-      className={`min-w-[20%] flex gap-2.5 px-4 py-2 border border-solid
+      className={`w-[20%] flex gap-2.5 px-4 py-2 border border-solid
        bg-stone-50 border-stone-300 rounded-[32px]  cursor-text ${className}`}
     >
       <SearchIcon />

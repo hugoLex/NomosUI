@@ -49,7 +49,7 @@ const useSearch = (query: string | undefined, pageNumber: string | number) => {
     const isLoadingLLM = loadingLLM || fetchingLLM ? true : false;
     const isLoadingSearch = loadingSearch || fetchingSearch ? true : false;
 
-    if (isLoadingLLM || isLoadingSearch) {
+    if (query || isLoadingLLM || isLoadingSearch) {
       setIsError(false);
       setIsSuccess(false);
       setIsLoading(true);
@@ -77,6 +77,7 @@ const useSearch = (query: string | undefined, pageNumber: string | number) => {
 
     return () => {};
   }, [
+    query,
     fetchingLLM,
     fetchingSearch,
     loadingLLM,
