@@ -66,7 +66,7 @@ export type SearchData = {
 export type SearchResultDoc = {
   id: string;
   content: string;
-  context: string[];
+  context: string | string[];
   metadata: SearchResultDocMeta;
   score: string | number;
 };

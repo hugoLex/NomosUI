@@ -1,6 +1,6 @@
 import { LinkProps, SearchResult, AIResult } from "@app/types";
 
-export const searchURL = "https://lexasearch.lexanalytics.ai";
+export const searchURL = "https://lexasearch.lexanalytics.ai/api";
 
 export const aiURL = "https://llmsearch.lexanalytics.ai";
 
