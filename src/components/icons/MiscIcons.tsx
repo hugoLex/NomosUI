@@ -27,7 +27,7 @@ export const LoaderIcon = ({ animate = false }) => {
       viewBox="0 0 24 24"
       className={`${
         animate ? "animate-spin-right" : ""
-      } -ml-1 mr-3 h-5 w-5 text-white"`}
+      } -ml-1 mr-3 h-5 w-5 textWhite"`}
       style={{ "--duration": ".6s" }}
     >
       <circle
@@ -329,8 +329,8 @@ export const ChevronDownIcon = () => {
       <path
         d="M17 9.5L12 14.5L7 9.5"
         stroke="#000000"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
@@ -385,6 +385,66 @@ export const Share1Icon = () => (
     <path
       d="M14.2383 5.1875L8.98828 10H8.11328V7.375H5.92578C4.2332 7.375 2.86328 8.74492 2.86328 10.4375C2.86328 11.75 3.73828 12.625 3.73828 12.625C3.73828 12.625 0.238281 11.3125 0.238281 7.8125C0.238281 5.15469 2.39297 3 5.05078 3H8.11328V0.375H8.98828L14.2383 5.1875Z"
       fill="white"
+    />
+  </svg>
+);
+
+export const ArrowLeftIcon = ({
+  stroke = "white",
+  width = "24",
+  height = "24",
+}: SVGProps<SVGSVGElement>) => (
+  <svg
+    width={width}
+    height={height}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      opacity="0.4"
+      d="M4.25 12.2744L19.25 12.2744"
+      stroke={stroke}
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M10.2998 18.2988L4.2498 12.2748L10.2998 6.24976"
+      stroke={stroke}
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+export const ArrowRightIcon = ({
+  stroke = "white",
+  width = "24",
+  height = "24",
+}: SVGProps<SVGSVGElement>) => (
+  <svg
+    width={width}
+    height={height}
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      opacity="0.4"
+      d="M19.75 11.7256L4.75 11.7256"
+      stroke={stroke}
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M13.7002 5.70124L19.7502 11.7252L13.7002 17.7502"
+      stroke={stroke}
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

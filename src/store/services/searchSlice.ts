@@ -23,8 +23,25 @@ export const searchQueryAPI = injectEndpoints({
       },
       providesTags: ["CASES"],
     }),
+    filterCases: builder.query<any, any>({
+      query: ({ id, court, year, area_of_law }) => {
+        const applyCourt = court ? `&court=${court}` : "";
+        const applyYear = year ? `&${year}` : "";
+        const appyAreaOfLaw = area_of_law ? `&${area_of_law}` : "";
+        const filters = `${applyCourt}${applyYear}${appyAreaOfLaw}`;
+        return {
+          url: `/filter?search_id=${id}${filters}`,
+          method: "GET",
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        };
+      },
+    }),
   }),
   overrideExisting: true,
 });
 
-export const { useSearchCasesQuery, usePrefetch } = searchQueryAPI;
+export const { useFilterCasesQuery, useSearchCasesQuery, usePrefetch } =
+  searchQueryAPI;

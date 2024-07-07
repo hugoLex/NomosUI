@@ -3,15 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Head, Header, Heading, View } from "@app/components/ui";
+import { SearchBox } from "@app/components/app";
 import { AppLayout as Layout } from "@app/components/layout";
 import { logo, logo2, logoIcon } from "@app/assets";
 import { NextPageWithLayout } from "@app/types";
-import {} from "@app/assets";
-import { useIsVisible } from "@app/hooks";
-import { SearchBox } from "@app/components/app";
 
 const Page: NextPageWithLayout = () => {
-  const ref1 = useRef<HTMLDivElement>(null);
   return (
     <Fragment>
       <Head title={"Search"} />
@@ -28,7 +25,7 @@ const Page: NextPageWithLayout = () => {
             />
           </Link>
           <SearchBox />
-          <div className="flex gap-2 mt-4 max-md:flex-wrap">
+          <div className=" hidden  gap-2 mt-4 max-md:flex-wrap">
             <button
               className="flex gap-2 p-1.5 w-full rounded-lg hover:bg-neutral-100
              border border-solid border-stone-300/50"
@@ -37,9 +34,11 @@ const Page: NextPageWithLayout = () => {
                 className="flex justify-center items-center p-1
                w-8 h-8 rounded-md bg-stone-100"
               >
-                <img
+                <Image
                   loading="lazy"
+                  alt=""
                   src="https://cdn.builder.io/api/v1/image/assets/TEMP/386c05f7f3554f970c33f757629b7de7efcd1134c291d8289497d059dc1610f7?"
+                  fill
                   className="w-5 aspect-square"
                 />
               </div>
@@ -52,8 +51,10 @@ const Page: NextPageWithLayout = () => {
              border border-solid border-stone-300/50"
             >
               <div className="flex justify-center items-center px-1.5 py-1 w-8 h-8 rounded-md bg-stone-100">
-                <img
+                <Image
                   loading="lazy"
+                  alt=""
+                  fill
                   src="https://cdn.builder.io/api/v1/image/assets/TEMP/386c05f7f3554f970c33f757629b7de7efcd1134c291d8289497d059dc1610f7?"
                   className="w-5 aspect-square"
                 />

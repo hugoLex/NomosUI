@@ -87,3 +87,5 @@ export type AIResult = {
   replies: string[];
   meta: AIResultMeta;
 };
+
+export type GenericObject = { [key: string]: any };

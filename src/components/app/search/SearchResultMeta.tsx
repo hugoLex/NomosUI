@@ -85,7 +85,10 @@ const SearchResultMeta = (prop: {
         </span>
       </p>
 
-      <p dangerouslySetInnerHTML={{ __html: fmtTxt }} className="text" />
+      <p
+        dangerouslySetInnerHTML={{ __html: fmtTxt }}
+        className="text-[0.875rem]"
+      />
     </div>
   );
 };

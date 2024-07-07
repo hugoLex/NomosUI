@@ -1,4 +1,4 @@
-import useMediaQUery from "./useIsVisible";
-import useIsVisible from "./useIsVisible";
+import useMediaQUery from "./useMediaQuery";
+import useVisibility from "./useVisibility";
 
-export { useIsVisible, useMediaQUery };
+export { useVisibility, useMediaQUery };

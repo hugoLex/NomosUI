@@ -165,6 +165,7 @@ h5 {
   }
 
   .scrollbar::-webkit-scrollbar {
+    scroll-margin-inline-start: 2rem;
     width: 5px;
   }
 

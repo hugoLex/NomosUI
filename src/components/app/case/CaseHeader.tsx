@@ -32,20 +32,10 @@ const CaseHeader = () => {
   const router = useRouter();
 
   const [tabs, setTabs] = useState(tabItems);
-  const [selectedTab, setSelectedTab] = useState(tabs[0]);
+  // const [selectedTab, setSelectedTab] = useState(tabs[0]);
 
   const slug = String(router.query.slug);
   const title = slug.replace(/-/g, " ");
-
-  useEffect(() => {
-    router.push({
-      pathname: `/cases/${slug}`,
-      query: {
-        tab: selectedTab.id,
-      },
-    });
-    return () => {};
-  }, [selectedTab]);
 
   const onTabsSelect = (_id: string) => {
     const newTabs = tabs.map(({ active, id, label }, k) => {
@@ -54,18 +44,20 @@ const CaseHeader = () => {
     });
 
     setTabs(newTabs);
-    setSelectedTab(tabs.filter((itx) => itx.id === _id)[0]);
+    // setSelectedTab(tabs.filter((itx) => itx.id === _id)[0]);
+    router.push({
+      pathname: `/cases/${slug}`,
+      query: {
+        tab: tabs.filter((itx) => itx.id === _id)[0].id,
+      },
+    });
   };
 
   return (
     <Header>
-      <div className="flex  self-stretch border-b border-solid bg-stone-50 border-stone-300 border-opacity-50 pt-4 ">
-        <div className="px-16 max-md:px-5 max-w-full mx-auto max-w:[1100px]">
-          <div className="md:grid grid-cols-12 gap-8">
-            <div className="col-span-full">
-              <Tabs tabs={tabs} onClick={onTabsSelect} />
-            </div>
-          </div>
+      <div className="border-b border-solid bg-stone-50 border-stone-300 border-opacity-50 pt-4  mx-auto max-w-[1100px]">
+        <div className="px-16 max-md:px-5 max-w-full">
+          <Tabs tabs={tabs} onClick={onTabsSelect} />
         </div>
       </div>
     </Header>

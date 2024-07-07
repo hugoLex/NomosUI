@@ -2,6 +2,7 @@ import React, {
   Fragment,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -17,90 +18,65 @@ import {
   SearchHeader,
   SearchResultMeta,
 } from "@app/components/app";
-import { SearchData } from "@app/types";
-import { useSearchCasesQuery } from "@app/store/services/searchSlice";
+import { GenericObject, SearchData, SearchResult } from "@app/types";
+import {
+  useFilterCasesQuery,
+  useSearchCasesQuery,
+} from "@app/store/services/searchSlice";
 import { useGetAIQuery } from "@app/store/services/aiSlice";
 import { flattenFilters } from "@app/utils/helpers";
-import { Filter2Icon } from "@app/components/icons";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  Filter2Icon,
+} from "@app/components/icons";
 import {
   dummySearchResult as searchResult,
   dummyLLMResult as llmResult,
+  searchURL,
 } from "@app/utils/constants";
-import { useIsVisible } from "@app/hooks";
 
-const useSearch = (query: string | undefined, pageNumber: string | number) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+const useSearch = (query: string, pageNumber: string | number) => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isError, setIsError] = useState<boolean>(false);
   const [data, setData] = useState<SearchData>({
     llmResult: null,
     searchResult: null,
   });
 
-  const {
-    data: llmResult,
-    isError: llmError,
-    isFetching: fetchingLLM,
-    isLoading: loadingLLM,
-    isSuccess: llmSuccess,
-  } = useGetAIQuery(String(query));
+  const { data: llmResult, isError: llmError } = useGetAIQuery(query);
 
-  const {
-    data: searchResult,
-    isError: searchError,
-    isFetching: fetchingSearch,
-    isLoading: loadingSearch,
-    isSuccess: searchSuccess,
-  } = useSearchCasesQuery({
+  const { data: searchResult, isError: searchError } = useSearchCasesQuery({
     query: String(query),
     pageNumber: String(pageNumber),
   });
 
+  const res = useMemo(() => {
+    if (llmResult || searchResult) return { llmResult, searchResult };
+
+    return null;
+  }, [llmResult, searchResult]);
+
   useEffect(() => {
-    const isLoadingLLM = loadingLLM || fetchingLLM ? true : false;
-    const isLoadingSearch = loadingSearch || fetchingSearch ? true : false;
-
-    if (isLoadingLLM || isLoadingSearch) {
-      setIsError(false);
-      setIsSuccess(false);
-      setIsLoading(true);
-    }
-
-    if (llmSuccess && llmResult) {
+    if (llmResult) {
       setData((prev) => ({ ...prev, llmResult }));
-      setIsSuccess(true);
-      setIsError(false);
       setIsLoading(false);
     }
 
-    if (searchSuccess && searchResult) {
+    if (searchResult) {
       setData((prev) => ({ ...prev, searchResult }));
-      setIsSuccess(true);
-      setIsError(false);
       setIsLoading(false);
     }
 
     if (llmError && searchError) {
-      setIsSuccess(false);
-      setIsLoading(false);
       setIsError(true);
+      setIsLoading(false);
     }
 
     return () => {};
-  }, [
-    fetchingLLM,
-    fetchingSearch,
-    loadingLLM,
-    loadingSearch,
-    llmResult,
-    searchResult,
-    llmSuccess,
-    searchSuccess,
-    llmError,
-    searchError,
-  ]);
+  }, [llmResult, searchResult, llmError, searchError]);
 
-  return { data, isError, isLoading, isSuccess };
+  return { data, isError, isLoading };
 };
 
 const Page = () => {
@@ -108,26 +84,63 @@ const Page = () => {
 
   const { q, page } = router.query;
 
-  const query = q ? String(q) : "";
+  const query = String(q);
   const pageNumber = page ? String(page) : "1";
-
-  // For test
-  // const isSuccess = false,
-  //   isError = false,
-  //   isLoading = true;
-
-  // For production
-
-  const { data, isError, isLoading, isSuccess } = useSearch(query, pageNumber);
-
-  const { llmResult, searchResult } = data;
+  const isPrev = pageNumber && Number(pageNumber) !== 1 ? false : true;
 
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
-  const isHeaderVisible = useIsVisible(h1Ref);
-
+  const searchRef = useRef<HTMLTextAreaElement | null>(null);
   const [filters, setFilters] = useState<
     { header: string; options: string[] }[]
   >([]);
+
+  const [filterData, setFilterData] = useState<SearchResult | null>(null);
+
+  // For test
+  // const isSuccess = true,
+  //   isError = false,
+  //   isLoading = false;
+
+  // For production
+  const { data, isError, isLoading } = useSearch(query, pageNumber);
+
+  const { llmResult, searchResult } = data;
+
+  useEffect(() => {
+    const fetchFilter = async () => {
+      const { area_of_law, court, year } = filters.reduce((acc, curr) => {
+        const { header, options } = curr;
+        const key = header.split(" ").join("_").toLowerCase();
+        return { ...acc, [key]: options };
+      }, {} as GenericObject);
+
+      const applyCourt =
+        court && court.length > 0 ? `&court=${court.join(" ")}` : "";
+      const applyYear =
+        year && year.length > 0 ? `&year=${year.join(" ")}` : "";
+      const appyAreaOfLaw =
+        area_of_law && area_of_law.length > 0
+          ? `&area_of_law=${area_of_law.join(" ")}`
+          : "";
+      const applyFilters = `${applyCourt}${applyYear}${appyAreaOfLaw}`;
+
+      try {
+        const res = await fetch(
+          `${searchURL}/filter?search_id=${searchResult?.search_id}${applyFilters}`
+        );
+        const data = (await res.json()) as SearchResult;
+        setFilterData(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (filters.length !== 0) {
+      fetchFilter();
+    }
+
+    return () => {};
+  }, [searchResult, filters]);
 
   const allFilters = flattenFilters(filters);
 
@@ -144,20 +157,34 @@ const Page = () => {
     ]);
   };
 
+  const prevPage = () => {
+    const url = {
+      pathname: `/search`,
+      query: { ...router.query, page: Number(pageNumber) - 1 },
+    };
+    router.push(url, undefined, {
+      shallow: true,
+    });
+  };
+
+  const nextPage = () => {
+    let next: number;
+
+    pageNumber ? (next = Number(pageNumber) + 1) : (next = 2);
+
+    const url = {
+      pathname: router.pathname,
+      query: { ...router.query, page: next },
+    };
+
+    router.push(url, undefined, { shallow: true });
+  };
+
   return (
     <Fragment>
       <Head title={`Search Result - ${q}`} />
       <Layout>
-        <SearchHeader
-          query={query}
-          isHeaderVisible={
-            isSuccess && !isHeaderVisible
-              ? true
-              : isLoading || isError
-              ? true
-              : false
-          }
-        />
+        <SearchHeader query={query} h1Ref={h1Ref} searchBtnRef={searchRef} />
 
         {isLoading && (
           <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-full">
@@ -165,24 +192,26 @@ const Page = () => {
           </div>
         )}
 
-        {!isLoading && isSuccess && (
-          <section className="flex justify-center items-center self-stretch py-6 ">
-            <div className="px-16 max-md:px-5  mx-auto max-w-[1100px]">
-              <div className="md:grid grid-cols-12 gap-8">
-                <div className="col-span-8">
-                  <div className="flex flex-col">
-                    <h1
-                      id="searchQuery"
-                      ref={h1Ref}
-                      className="text-xx font-normal mb-6"
-                    >
-                      Search result for: <span>{q}</span>
-                    </h1>
+        {!isLoading && !isError && (
+          <Fragment>
+            <section className="flex justify-center items-center self-stretch py-6 ">
+              <div className="px-16 max-md:px-5  mx-auto max-w-[1100px]">
+                <div className="md:grid grid-cols-12 gap-8">
+                  <div className="col-span-8">
+                    <div className="flex flex-col">
+                      <h1
+                        id="searchQuery"
+                        ref={h1Ref}
+                        className="text-xx font-normal mb-6"
+                      >
+                        Legal findings:{" "}
+                        <span className="text-[#245b91]">{q}</span>
+                      </h1>
 
-                    {allFilters.length > 0 && (
-                      <div className="flex gap-3 flex-wrap">
-                        <Fragment>
-                          {/* <p
+                      {allFilters.length > 0 && (
+                        <div className="flex gap-3 flex-wrap">
+                          <Fragment>
+                            {/* <p
                             className="py-0.5 px-3 rounded-xl flex gap-1 text-white 
                       items-center text-sm bg-primary"
                           >
@@ -192,18 +221,18 @@ const Page = () => {
                               ({allFilters.length})
                             </span>
                           </p> */}
-                          <p className="">Applied Filters</p>
-                        </Fragment>
-                        {filters
-                          .filter((elem) => elem.options.length > 0)
-                          .map((filter) => (
-                            <div
-                              key={filter.header}
-                              className=" flex flex-wrap gap-2"
-                            >
-                              {filter.options.map((option, idx) => (
-                                <Fragment key={idx}>
-                                  {/* <div className="text-sm font-normal py-0.5 px-3 rounded-xl flex gap-2 bg-black/5">
+                            <p className="">Applied Filters</p>
+                          </Fragment>
+                          {filters
+                            .filter((elem) => elem.options.length > 0)
+                            .map((filter) => (
+                              <div
+                                key={filter.header}
+                                className=" flex flex-wrap gap-2"
+                              >
+                                {filter.options.map((option, idx) => (
+                                  <Fragment key={idx}>
+                                    {/* <div className="text-sm font-normal py-0.5 px-3 rounded-xl flex gap-2 bg-black/5">
                                     <span>{option}</span>
                                     <button
                                       className="text-red-600"
@@ -214,55 +243,99 @@ const Page = () => {
                                       x
                                     </button>
                                   </div> */}
-                                  <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-[0.8rem] text-center text-teal-900 text-sm font-normal">
-                                    {option}
-                                  </span>
-                                </Fragment>
+                                    <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-[0.8rem] text-center text-teal-900 text-sm font-normal">
+                                      {option}
+                                    </span>
+                                  </Fragment>
+                                ))}
+                              </div>
+                            ))}
+                        </div>
+                      )}
+
+                      {llmResult !== null && (
+                        <SearchAIMetaResult
+                          replies={llmResult?.replies}
+                          meta={llmResult?.meta}
+                        />
+                      )}
+                    </div>
+
+                    <div className="my-6">
+                      {allFilters.length === 0 &&
+                        searchResult &&
+                        searchResult.documents.length > 0 && (
+                          <Fragment>
+                            <div>
+                              {searchResult.documents?.map((data, idx) => (
+                                <SearchResultMeta
+                                  key={data.id}
+                                  index={String(idx + 1)}
+                                  data={data}
+                                />
                               ))}
                             </div>
-                          ))}
-                      </div>
-                    )}
+                          </Fragment>
+                        )}
 
-                    {llmResult !== null && (
-                      <SearchAIMetaResult
-                        replies={llmResult?.replies}
-                        meta={llmResult?.meta}
-                      />
-                    )}
-                  </div>
-
-                  <div className="my-6">
-                    {searchResult !== null &&
-                      searchResult.documents.length > 0 && (
-                        <Fragment>
-                          <div>
-                            {searchResult.documents?.map((data, idx) => (
-                              <SearchResultMeta
-                                key={data.id}
-                                index={String(idx + 1)}
-                                data={data}
-                              />
-                            ))}
-                          </div>
-                        </Fragment>
-                      )}
-                  </div>
-                </div>
-                {searchResult && (
-                  <div className="col-span-4">
-                    <div className="sticky md:top-[68px]">
-                      <FilterSideBar
-                        data={searchResult.filter_elements}
-                        filters={filters}
-                        setFilters={setFilters}
-                      />
+                      {allFilters.length > 0 &&
+                        filterData &&
+                        filterData.documents.length > 0 && (
+                          <Fragment>
+                            <div>
+                              {filterData.documents?.map((data, idx) => (
+                                <SearchResultMeta
+                                  key={data.id}
+                                  index={String(idx + 1)}
+                                  data={data}
+                                />
+                              ))}
+                            </div>
+                          </Fragment>
+                        )}
                     </div>
                   </div>
-                )}
+                  {searchResult && (
+                    <div className="col-span-4">
+                      <div className="sticky md:top-[68px]">
+                        <FilterSideBar
+                          data={searchResult.filter_elements}
+                          filters={filters}
+                          setFilters={setFilters}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+            <section className="flex flex-col justify-center gap-2">
+              <div className="inline-flex justify-content-center gap-8 mx-auto">
+                <button
+                  id="prev"
+                  className={`inline-flex gap-3 ${isPrev ? "opacity-50" : ""}`}
+                  disabled={isPrev}
+                  onClick={prevPage}
+                >
+                  <ArrowLeftIcon stroke="black" />
+                  Previous
+                </button>
+                <button
+                  id="next"
+                  className={`inline-flex gap-3`}
+                  // disabled={
+                  //   data.search.length < 9 ? true : false //why setting isDisabled again
+                  // }
+                  onClick={nextPage}
+                >
+                  Next <ArrowRightIcon stroke="black" />
+                </button>
+              </div>
+              <div className="text-center my-3">
+                <span>Page No: {pageNumber ?? "1"}</span>
+              </div>
+            </section>
+          </Fragment>
         )}
 
         {!isLoading && isError && (

@@ -12,7 +12,7 @@ const FilterAccordion = ({
 }) => (
   <Accordion.Root
     type="multiple"
-    className="flex flex-col gap-2 max-h-screen overflow-y-auto scrollbar "
+    className="flex flex-col gap-2 max-h-[80vh] overflow-y-auto scrollbar pr-4"
   >
     {data.map(({ header, list = [] }, idx) => (
       <Accordion.Item key={idx} value={header}>
