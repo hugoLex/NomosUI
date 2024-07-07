@@ -1,8 +1,7 @@
 import React, {
   Fragment,
-  useContext,
+  useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
@@ -25,11 +24,7 @@ import {
 } from "@app/store/services/searchSlice";
 import { useGetAIQuery } from "@app/store/services/aiSlice";
 import { flattenFilters } from "@app/utils/helpers";
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  Filter2Icon,
-} from "@app/components/icons";
+import { ArrowLeftIcon, ArrowRightIcon } from "@app/components/icons";
 import {
   dummySearchResult as searchResult,
   dummyLLMResult as llmResult,
@@ -37,15 +32,17 @@ import {
 } from "@app/utils/constants";
 
 const useSearch = (query: string, pageNumber: string | number) => {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [data, setData] = useState<SearchData>({
     llmResult: null,
     searchResult: null,
   });
+  useEffect(() => {
+    setIsLoading(true);
+  }, [query]);
 
   const { data: llmResult, isError: llmError } = useGetAIQuery(query);
-
   const { data: searchResult, isError: searchError } = useSearchCasesQuery({
     query: String(query),
     pageNumber: String(pageNumber),

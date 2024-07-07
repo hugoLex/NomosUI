@@ -1,4 +1,12 @@
-import React, { MutableRefObject, Ref, RefObject } from "react";
+import React, {
+  MutableRefObject,
+  Ref,
+  RefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import Image from "next/image";
 
 import { Header } from "@app/components/ui";
@@ -23,9 +31,7 @@ const SearchHeader = ({ query, h1Ref, searchBtnRef }: SearchHeaderProps) => {
 
           <div
             className={`flex-1 transition-all duration-300 ${
-              h1Ref.current && !isH1Visible
-                ? "opacity-1 visible"
-                : "opacity-0 invisible"
+              isH1Visible ? "opacity-1 visible" : "opacity-0 invisible"
             }`}
           >
             <p
