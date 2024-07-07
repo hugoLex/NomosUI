@@ -9,7 +9,6 @@ import Modal from "./Modal";
 import Sidebar from "./Sidebar";
 import Switch from "./Switch";
 import Tabs from "./Tabs";
-import View from "./View";
 
 export {
   Button,
@@ -21,7 +20,6 @@ export {
   Modal,
   Sidebar,
   Switch,
-  View,
   Tabs,
 };
 

@@ -16,13 +16,15 @@ import { useVisibility } from "@app/hooks";
 
 type SearchHeaderProps = {
   query: string;
-  h1Ref: MutableRefObject<any>;
+  isH1Visible: boolean;
   searchBtnRef: RefObject<HTMLTextAreaElement>;
 };
 
-const SearchHeader = ({ query, h1Ref, searchBtnRef }: SearchHeaderProps) => {
-  const isH1Visible = useVisibility({ ref: h1Ref, options: null });
-
+const SearchHeader = ({
+  query,
+  isH1Visible,
+  searchBtnRef,
+}: SearchHeaderProps) => {
   return (
     <Header>
       <div className="border-b border-solid bg-stone-50 border-stone-300 border-opacity-50 rounded-t-lg">
@@ -31,7 +33,7 @@ const SearchHeader = ({ query, h1Ref, searchBtnRef }: SearchHeaderProps) => {
 
           <div
             className={`flex-1 transition-all duration-300 ${
-              isH1Visible ? "opacity-1 visible" : "opacity-0 invisible"
+              !isH1Visible ? "opacity-1 visible" : "opacity-0 invisible"
             }`}
           >
             <p

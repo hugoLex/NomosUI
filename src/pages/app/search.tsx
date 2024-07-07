@@ -30,6 +30,7 @@ import {
   dummyLLMResult as llmResult,
   searchURL,
 } from "@app/utils/constants";
+import { useVisibility } from "@app/hooks";
 
 const useSearch = (query: string, pageNumber: string | number) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -38,6 +39,7 @@ const useSearch = (query: string, pageNumber: string | number) => {
     llmResult: null,
     searchResult: null,
   });
+
   useEffect(() => {
     setIsLoading(true);
   }, [query]);
@@ -80,6 +82,13 @@ const Page = () => {
   const isPrev = pageNumber && Number(pageNumber) !== 1 ? false : true;
 
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
+  const isH1Visible = useVisibility({
+    ref: h1Ref,
+    options: {
+      root: null,
+      threshold: 0.8,
+    },
+  });
   const searchRef = useRef<HTMLTextAreaElement | null>(null);
 
   const [filters, setFilters] = useState<
@@ -176,7 +185,11 @@ const Page = () => {
     <Fragment>
       <Head title={`Search Result - ${q}`} />
       <Layout>
-        <SearchHeader query={query} h1Ref={h1Ref} searchBtnRef={searchRef} />
+        <SearchHeader
+          query={query}
+          isH1Visible={isH1Visible}
+          searchBtnRef={searchRef}
+        />
 
         {isLoading && (
           <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-full">

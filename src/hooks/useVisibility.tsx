@@ -34,9 +34,7 @@ const useVisibility = ({ ref, options }: UseVisibiltyProps) => {
     if (ref.current) {
       observer.observe(ref.current);
     }
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, [isMobile, isPC, isTablet, options, ref]);
 
   return isIntersecting;
