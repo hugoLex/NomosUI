@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import Image from "next/image";
-import { View, Button, Head, Header } from "@app/components/ui";
+import { Button, Head, Header } from "@app/components/ui";
 import { RigthArrowIcon } from "@app/components/icons";
 
 import cloud from "../../public/cloud.svg";
@@ -10,7 +10,7 @@ const Page = () => {
     <Fragment>
       <Head title="Not Found" />
       <Header />
-      <View>
+      <main>
         <section>
           <div>
             <h2>Opps!</h2>
@@ -18,7 +18,7 @@ const Page = () => {
             <Button label="Back to home page" icon={<RigthArrowIcon />} />
           </div>
         </section>
-      </View>
+      </main>
     </Fragment>
   );
 };

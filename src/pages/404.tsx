@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import Image from "next/image";
-import { View, Button, Head, Header } from "@app/components/ui";
+import { Button, Head, Header } from "@app/components/ui";
 import { RigthArrowIcon } from "@app/components/icons";
 
 import { useRouter } from "next/router";
@@ -11,11 +11,11 @@ const Page = () => {
     <Fragment>
       <Head title="Not Found" />
       <Header />
-      <View>
+      <main>
         <section>
           <h1>404</h1>
         </section>
-      </View>
+      </main>
     </Fragment>
   );
 };

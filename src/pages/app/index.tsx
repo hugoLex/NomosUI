@@ -2,7 +2,7 @@ import React, { Fragment, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Head, Header, Heading, View } from "@app/components/ui";
+import { Head, Header, Heading } from "@app/components/ui";
 import { SearchBox } from "@app/components/app";
 import { AppLayout as Layout } from "@app/components/layout";
 import { logo, logo2, logoIcon } from "@app/assets";
