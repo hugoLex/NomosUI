@@ -59,7 +59,7 @@ export type SearchResultFilter = {
 };
 
 export type SearchData = {
-  llmResult: AIResult | null;
+  llmResult: Record<string, AIResult> | null;
   searchResult: SearchResult | null;
 };
 

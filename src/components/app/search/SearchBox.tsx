@@ -77,8 +77,9 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
 
       const { currentTarget } = evt;
 
+      currentTarget.reset();
+
       if (isSearchModal) {
-        currentTarget.reset();
         setIsSearchModal(false);
       }
 
@@ -106,7 +107,7 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
         <ReactTextareaAutosize
           maxRows={10}
           placeholder="Search legal documents..."
-          value={inputText}
+          // value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           className="p-2 text-base placeholder:text-[17px] leading-6 bg-stone-50 text-zinc-600
          outline-none scrollbar-hide resize-none max-h-[40vh]"

@@ -2,7 +2,7 @@ import { LinkProps, SearchResult, AIResult } from "@app/types";
 
 export const searchURL = "https://lexasearch.lexanalytics.ai/api";
 
-export const aiURL = "https://llmsearch.lexanalytics.ai";
+export const aiURL = "https://llmsearch.lexanalytics.ai/api";
 
 export const dummySearchResult: SearchResult = {
   search_id: "9d182815-5515-437c-bc85-66de4619fcc7",

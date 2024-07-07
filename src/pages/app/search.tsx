@@ -51,12 +51,6 @@ const useSearch = (query: string, pageNumber: string | number) => {
     pageNumber: String(pageNumber),
   });
 
-  const res = useMemo(() => {
-    if (llmResult || searchResult) return { llmResult, searchResult };
-
-    return null;
-  }, [llmResult, searchResult]);
-
   useEffect(() => {
     if (llmResult) {
       setData((prev) => ({ ...prev, llmResult }));
@@ -90,6 +84,7 @@ const Page = () => {
 
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
   const searchRef = useRef<HTMLTextAreaElement | null>(null);
+
   const [filters, setFilters] = useState<
     { header: string; options: string[] }[]
   >([]);
@@ -204,8 +199,8 @@ const Page = () => {
                         ref={h1Ref}
                         className="text-xx font-normal mb-6"
                       >
-                        Legal findings:{" "}
-                        <span className="text-[#245b91]">{q}</span>
+                        Legal findings:
+                        <span className="text-[#245b91]"> {q}</span>
                       </h1>
 
                       {allFilters.length > 0 && (
@@ -255,8 +250,8 @@ const Page = () => {
 
                       {llmResult !== null && (
                         <SearchAIMetaResult
-                          replies={llmResult?.replies}
-                          meta={llmResult?.meta}
+                          replies={llmResult.llm?.replies}
+                          meta={llmResult.llm?.meta}
                         />
                       )}
                     </div>
