@@ -3,7 +3,7 @@ import { injectEndpoints } from "./endpointSearch";
 
 interface SearchQuery {
   query: string;
-  pageNumber: string;
+  pageNumber: number | null;
 }
 
 export const searchQueryAPI = injectEndpoints({
@@ -12,7 +12,7 @@ export const searchQueryAPI = injectEndpoints({
       query: ({ query, pageNumber }) => {
         return {
           url: `/search?query=${query}${
-            pageNumber ? `&page=${pageNumber}` : ""
+            pageNumber ? `&page=${pageNumber}&size=5` : ""
           }`,
           method: "GET",
           headers: {

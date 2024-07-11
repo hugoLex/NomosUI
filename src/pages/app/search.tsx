@@ -32,7 +32,7 @@ import {
 } from "@app/utils/constants";
 import { useVisibility } from "@app/hooks";
 
-const useSearch = (query: string, pageNumber: string | number) => {
+const useSearch = (query: string, pageNumber: number | null) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [data, setData] = useState<SearchData>({
@@ -47,7 +47,7 @@ const useSearch = (query: string, pageNumber: string | number) => {
   const { data: llmResult, isError: llmError } = useGetAIQuery(query);
   const { data: searchResult, isError: searchError } = useSearchCasesQuery({
     query: String(query),
-    pageNumber: String(pageNumber),
+    pageNumber,
   });
 
   useEffect(() => {
@@ -78,8 +78,8 @@ const Page = () => {
   const { q, page } = router.query;
 
   const query = String(q);
-  const pageNumber = page ? String(page) : "1";
-  const isPrev = pageNumber && Number(pageNumber) !== 1 ? false : true;
+  const pageNumber = page ? Number(page) : null;
+  const isPrev = pageNumber && pageNumber !== 1 ? false : true;
 
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
   const isH1Visible = useVisibility({
