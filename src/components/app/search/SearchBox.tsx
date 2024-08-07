@@ -118,7 +118,7 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
           <div className="flex items-center">
             <button
               type="button"
-              className="flex gap-1 justify-cforwardRef(() => {})enter items-center
+              className="flex gap-1 justify-center items-center
            hover:bg-neutral-200/50 transition-all px-3 py-1.5 rounded-xl"
             >
               <span className="size-[18px]">

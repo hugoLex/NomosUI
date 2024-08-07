@@ -2,6 +2,7 @@ import React, {
   Fragment,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -12,19 +13,22 @@ import {
   AppLayoutContext as LayoutContext,
 } from "@app/components/layout";
 import {
-  FilterSideBar,
   SearchAIMetaResult,
+  SearchFilterDrawer,
+  SearchFilterSidebar,
   SearchHeader,
   SearchResultMeta,
 } from "@app/components/app";
-import { GenericObject, SearchData, SearchResult } from "@app/types";
+import { ArrowLeftIcon, ArrowRightIcon } from "@app/components/icons";
 import {
-  useFilterCasesQuery,
-  useSearchCasesQuery,
-} from "@app/store/services/searchSlice";
+  FilterOption,
+  GenericObject,
+  SearchData,
+  SearchResult,
+} from "@app/types";
+import { useSearchCasesQuery } from "@app/store/services/searchSlice";
 import { useGetAIQuery } from "@app/store/services/aiSlice";
 import { flattenFilters } from "@app/utils/helpers";
-import { ArrowLeftIcon, ArrowRightIcon } from "@app/components/icons";
 import {
   dummySearchResult as searchResult,
   dummyLLMResult as llmResult,
@@ -82,6 +86,7 @@ const Page = () => {
   const isPrev = pageNumber && pageNumber !== 1 ? false : true;
 
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
+  const searchRef = useRef<HTMLTextAreaElement | null>(null);
   const isH1Visible = useVisibility({
     ref: h1Ref,
     options: {
@@ -89,13 +94,6 @@ const Page = () => {
       threshold: 0.8,
     },
   });
-  const searchRef = useRef<HTMLTextAreaElement | null>(null);
-
-  const [filters, setFilters] = useState<
-    { header: string; options: string[] }[]
-  >([]);
-
-  const [filterData, setFilterData] = useState<SearchResult | null>(null);
 
   // For test
   // const isSuccess = true,
@@ -104,16 +102,49 @@ const Page = () => {
 
   // For production
   const { data, isError, isLoading } = useSearch(query, pageNumber);
+  const [filterData, setFilterData] = useState<SearchResult | null>(null);
+  const [selectedDataOptions, setSelectedDataOptions] =
+    useState<FilterOption | null>(null);
+  const [selectedOptions, setSelectedOptions] = useState<FilterOption[]>([]);
+  const [isFilterDrawer, setIsFilterDrawer] = useState<boolean>(false);
 
   const { llmResult, searchResult } = data;
 
+  const searchOptions = useMemo((): FilterOption[] => {
+    if (searchResult !== null) {
+      const { filter_elements } = searchResult;
+
+      return [
+        {
+          id: "cases",
+          label: "Cases",
+          options: [
+            { id: "court", label: "Court", options: filter_elements.court },
+            {
+              id: "area_of_law",
+              label: "Area of Law",
+              options: filter_elements.area_of_law,
+            },
+            { id: "year", label: "Year", options: filter_elements.year },
+          ],
+        },
+        { id: "legislature", label: "Legislature", options: [] },
+        { id: "articles", label: "Articles", options: [] },
+      ];
+    }
+    return [];
+  }, [searchResult]);
+
   useEffect(() => {
     const fetchFilter = async () => {
-      const { area_of_law, court, year } = filters.reduce((acc, curr) => {
-        const { header, options } = curr;
-        const key = header.split(" ").join("_").toLowerCase();
-        return { ...acc, [key]: options };
-      }, {} as GenericObject);
+      const { area_of_law, court, year } = selectedOptions.reduce(
+        (acc, curr) => {
+          const { id, options } = curr;
+          // const key = id.split(" ").join("_").toLowerCase();
+          return { ...acc, [id]: options };
+        },
+        {} as GenericObject
+      );
 
       const applyCourt =
         court && court.length > 0 ? `&court=${court.join(" ")}` : "";
@@ -136,27 +167,27 @@ const Page = () => {
       }
     };
 
-    if (filters.length !== 0) {
+    if (selectedOptions.length !== 0) {
       fetchFilter();
     }
 
     return () => {};
-  }, [searchResult, filters]);
+  }, [searchResult, selectedOptions]);
 
-  const allFilters = flattenFilters(filters);
+  const allFilters = flattenFilters(selectedOptions);
 
-  const removeFilter = (header: string, option: string) => {
-    setFilters((prev) => [
-      ...prev.filter((x) => x.header !== header),
-      {
-        header,
-        options:
-          prev
-            .find((x) => x.header === header)
-            ?.options.filter((y) => y !== option) || [],
-      },
-    ]);
-  };
+  // const removeFilter = (header: string, option: string) => {
+  //   setSelectedOptions((prev) => [
+  //     ...prev.filter((x) => x.header !== header),
+  //     {
+  //       header,
+  //       options:
+  //         prev
+  //           .find((x) => x.header === header)
+  //           ?.options.filter((y) => y !== option) || [],
+  //     },
+  //   ]);
+  // };
 
   const prevPage = () => {
     const url = {
@@ -180,6 +211,37 @@ const Page = () => {
 
     router.push(url, undefined, { shallow: true });
   };
+
+  const handleSelection = (_id: string, _idx: string) => {
+    const filteredSelection = searchOptions.filter(({ id }) => id === _id)[0];
+    const filteredDataOption = filteredSelection.options.filter(
+      ({ id }) => id === _idx
+    )[0];
+
+    setSelectedDataOptions(filteredDataOption);
+
+    if (isFilterDrawer) return;
+    else setIsFilterDrawer(true);
+  };
+
+  const handleSelectedOption = (_id: string, option: any) => {
+    const previousOptions =
+      selectedOptions.find(({ id }) => id === _id)?.options || [];
+
+    const hasOption = previousOptions?.includes(option);
+
+    setSelectedOptions((prev) => [
+      ...prev.filter(({ id }) => id !== _id),
+      {
+        id: _id,
+        options: hasOption
+          ? previousOptions.filter((x) => x !== option)
+          : [...previousOptions, option],
+      },
+    ]);
+  };
+
+  const toggleFilterDrawer = (): void => {};
 
   return (
     <Fragment>
@@ -214,7 +276,7 @@ const Page = () => {
                       </h1>
 
                       {allFilters.length > 0 && (
-                        <div className="flex gap-3 flex-wrap">
+                        <div className="flex gap-3 flex-wrap mb-4">
                           <Fragment>
                             {/* <p
                             className="py-0.5 px-3 rounded-xl flex gap-1 text-white 
@@ -228,11 +290,11 @@ const Page = () => {
                           </p> */}
                             <p className="">Applied Filters</p>
                           </Fragment>
-                          {filters
+                          {selectedOptions
                             .filter((elem) => elem.options.length > 0)
                             .map((filter) => (
                               <div
-                                key={filter.header}
+                                key={filter.id}
                                 className=" flex flex-wrap gap-2"
                               >
                                 {filter.options.map((option, idx) => (
@@ -303,10 +365,9 @@ const Page = () => {
                   {searchResult && (
                     <div className="col-span-4">
                       <div className="sticky md:top-[68px]">
-                        <FilterSideBar
-                          data={searchResult.filter_elements}
-                          filters={filters}
-                          setFilters={setFilters}
+                        <SearchFilterSidebar
+                          data={searchOptions}
+                          handleSelection={handleSelection}
                         />
                       </div>
                     </div>
@@ -394,6 +455,14 @@ const Page = () => {
             </div>
           </div>
         )}
+
+        <SearchFilterDrawer
+          isShow={isFilterDrawer}
+          data={selectedDataOptions}
+          selectedOptions={selectedOptions}
+          closeDrawer={() => setIsFilterDrawer(false)}
+          onSelectedOption={handleSelectedOption}
+        />
       </Layout>
     </Fragment>
   );

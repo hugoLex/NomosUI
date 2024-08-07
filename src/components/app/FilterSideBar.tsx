@@ -18,7 +18,6 @@ export const FilterSideBar = ({
     <div className="flex flex-col self-stretch rounded py-3 px-5 ">
       <div className="w-full flex gap-4 items-center mb-3">
         <Filter2Icon />
-
         <h3 className="text-base font-normal">Refine search</h3>
       </div>
       <FilterAccordion

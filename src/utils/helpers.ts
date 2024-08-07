@@ -1,6 +1,6 @@
-export const flattenFilters = (
-  filters: { header: string; options: string[] }[]
-) => {
+import { FilterOption } from "@app/types";
+
+export const flattenFilters = (filters: FilterOption[]) => {
   let store: string[] = [];
 
   for (const group of filters) {

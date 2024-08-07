@@ -49,6 +49,7 @@ const config = {
         "slate-gray": "#6D6D6D",
         "pale-blue": "#F5F6FF",
         "white-400": "rgba(255, 255, 255, 0.80)",
+        "lex-blue": "rgba(36, 91, 145, 0.72)",
       },
       boxShadow: {
         "3xl": "0 10px 40px rgba(0, 0, 0, 0.1)",
@@ -58,15 +59,10 @@ const config = {
         wide: "1440px",
       },
       backgroundImage: {
-        "about-bg1": "url('/about-bg1.svg')",
-        "about-bg2": "url('/about-bg2.svg')",
-        "border-t": "url('/bg-border.svg')",
-        "mockup-fg": "url('/mockup-fg.svg')",
-        "mockup-bg": "url('/mockup-bg.svg')",
-        "cta-gradient":
-          "url('/Oval.svg'), linear-gradient(108.92deg,#4f0072 2.67%,rgba(98, 33, 126, 0.722379) 109.65%,rgba(118, 68, 138, 0.428386) 118.38%,rgba(118, 68, 138, 0) 135.3%) ",
-        "cta-gradient2":
-          "url('/Oval2.svg'), linear-gradient(108.92deg,#4f0072 2.67%,rgba(98, 33, 126, 0.722379) 109.65%,rgba(118, 68, 138, 0.428386) 118.38%,rgba(118, 68, 138, 0) 135.3%) ",
+        accountType1: "url('/images/account1.webp')",
+        accountType2: "url('/images/account2.webp')",
+        accountType3: "url('/images/account3.webp')",
+        logo1: "url('/images/logo.svg')",
       },
       backgroundPosition: {
         "right-top-lg": "right  top 230px",

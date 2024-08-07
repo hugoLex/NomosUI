@@ -125,7 +125,10 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                     className={`w-full flex  items-center gap-1 mt-7 text-center whitespace-nowrap ${
                       isCollapsed ? "justify-center" : ""
                     }`}
-                    onClick={() => setIsAuthModal(true)}
+                    onClick={() => {
+                      // setIsAuthModal(true)
+                      router.push("/signin");
+                    }}
                   >
                     <span className="inline-block shrink-0 w-5 aspect-[1.25]">
                       <LoginIcon />

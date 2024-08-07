@@ -23,7 +23,7 @@ export const AppLayout: FC<ComponentProps> = ({ children }) => {
           id="mainWrapper"
           className="relative grow lg:pr-2 lg:py-2 overflow-y-auto md:h-full "
         >
-          <div className="flex flex-col w-full rounded-lg shadow-sm bg-stone-50 min-h-full">
+          <div className="relative flex flex-col w-full rounded-lg shadow-sm bg-stone-50 min-h-full">
             {children}
           </div>
         </main>

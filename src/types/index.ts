@@ -89,3 +89,5 @@ export type AIResult = {
 };
 
 export type GenericObject = { [key: string]: any };
+
+export type FilterOption = { id: string; label?: string; options: any[] };

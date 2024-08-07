@@ -78,10 +78,10 @@ const SearchResultMeta = (prop: {
 
       <p className="flex gap-x-4">
         <span className="px-2 py-[9px] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
-          {metadata.year}
+          {metadata.court}
         </span>
         <span className="px-2 py-[9px] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
-          {metadata.court}
+          {metadata.year}
         </span>
       </p>
 
