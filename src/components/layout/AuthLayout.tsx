@@ -18,12 +18,12 @@ export const AuthLayout: FC<ComponentProps> = ({ children }) => {
   return (
     <AuthLayoutContext.Provider value={props}>
       <main
-        className="min-h-screen md:h-screen
+        className="flex min-h-screen
        bg-[linear-gradient(0deg,#eaf0f2_0%,#eaf0f2_100%,#FFF)]"
       >
         <div
           id="mainWrapper"
-          className="relative grow lg:px-2 lg:py-2 overflow-y-auto md:h-full "
+          className="relative grow lg:px-2 lg:py-2 overflow-y-auto min-h-full "
         >
           <div className="flex flex-col w-full rounded-lg shadow-sm bg-stone-50 min-h-full">
             {children}

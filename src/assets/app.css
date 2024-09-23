@@ -68,7 +68,7 @@ h5 {
 
 @layer components {
   .btn {
-    @apply flex justify-center items-center gap-1 text-white bg-primary p-3  rounded-[.3rem] transition-all hover:bg-primary/75;
+    @apply flex justify-center items-center gap-1 text-white bg-primary p-2  rounded-[.3rem] transition-all hover:bg-primary/75;
   }
 
   .max-container {
@@ -78,17 +78,15 @@ h5 {
 
   .input {
     @apply sm:flex-1 max-sm:w-full text-base 
-    leading-normal text-slate-gray pl-5 max-sm:p-5 
+    leading-normal text-slate-gray  
     outline-none sm:border-none border max-sm:border-slate-gray 
     max-sm:rounded-full;
-  }
 
-  .input-2 {
-    @apply block w-full rounded-md border-0 py-1.5 
-    text-gray-900 shadow-sm ring-1 ring-inset 
-    ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-    focus:ring-inset focus:ring-primary
-    sm:text-sm sm:leading-6;
+    @apply block w-full rounded-md border-0 p-2
+      text-gray-900 shadow-sm ring-1 ring-inset 
+      ring-gray-300 placeholder:text-gray-400 focus:ring-2 
+      focus:ring-inset focus:ring-primary
+      sm:text-sm sm:leading-6;
   }
 
   .show {
@@ -100,6 +98,7 @@ h5 {
   .hide {
     @apply invisible opacity-0 h-0;
   }
+
   .switch[type="checkbox"] {
     @apply w-11 h-0 cursor-pointer inline-block;
     @apply focus:outline-0 dark:focus:outline-0;
@@ -127,6 +126,10 @@ h5 {
 
     @apply disabled:after:bg-opacity-75 disabled:cursor-not-allowed;
     @apply disabled:checked:before:bg-opacity-40;
+  }
+
+  .overlay {
+    @apply block bg-overlay h-full w-full;
   }
 }
 

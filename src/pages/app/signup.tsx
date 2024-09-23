@@ -59,8 +59,8 @@ const Page: NextPageWithLayout = () => {
     <Fragment>
       <Head title={"Signin"} />
       <Layout>
-        <div className="flex-1 relative min-h-full">
-          <div className="flex flex-col justify-center items-center px-6 py-12 lg:px-8 z-50">
+        <section className="flex-1 flex relative min-h-full">
+          <div className="grow relative min-h-full md:w-[50%] overflow-hidden justify-center items-center px-6 py-12 lg:px-8 z-50">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
               <Link href={"/"}>
                 <Image
@@ -322,12 +322,13 @@ const Page: NextPageWithLayout = () => {
             </div>
           </div>
 
-          <div
-            className={`hidden md:block h-full absolute z-10 
-              w-[10%] top-0 right-0 rounded-e-lg bg-left 
-              bg-cover bg-no-repeat after:block after:w-full 
-              after:h-full after:bg-lex-blue
-              after:rounded-e-lg
+          <div className="grow relative min-h-full hidden md:block md:w-[50%] overflow-hidden">
+            <div
+              className={`relative overflow-hidden flex flex-col justify-center
+            rounded-e-lg p-8 z-10 min-h-full w-full  
+            before:absolute before:top-0 before:left-0 before:block before:w-full 
+            before:min-h-full before:bg-no-repeat before:bg-cover
+            before:bg-overlay before:z-0
               ${
                 formAccountType === "Enterprise"
                   ? "bg-accountType1"
@@ -335,8 +336,22 @@ const Page: NextPageWithLayout = () => {
                   ? "bg-accountType3"
                   : "bg-accountType2"
               }`}
-          ></div>
-        </div>
+            >
+              <div className="z-10">
+                <h1 className="text-white text-2xl mb-3">
+                  Easily create an account
+                  <br /> to get started!
+                </h1>
+                <p className="text-white">
+                  Need help?{" "}
+                  <Link href="/">
+                    <span className="decot">Contact Support</span>
+                  </Link>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
       </Layout>
     </Fragment>
   );
