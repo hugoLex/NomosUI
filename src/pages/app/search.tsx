@@ -181,15 +181,15 @@ const Page = () => {
 
   const allFilters = flattenFilters(selectedOptions);
 
-  const removeFilter = (header: string, option: string) => {
+  const removeFilter = (_id: string, _option: string) => {
     setSelectedOptions((prev) => [
-      ...prev.filter((x) => x.header !== header),
+      ...prev.filter(({ id }) => id !== _id),
       {
-        header,
+        id: _id,
         options:
           prev
-            .find((x) => x.header === header)
-            ?.options.filter((y) => y !== option) || [],
+            .find(({ id }) => id === _id)
+            ?.options.filter((y) => y !== _option) || [],
       },
     ]);
   };
@@ -313,7 +313,7 @@ const Page = () => {
                                       role="button"
                                       stroke="#000"
                                       onClick={() =>
-                                        removeFilter(filter.header, option)
+                                        removeFilter(filter.id, option)
                                       }
                                     />
                                   </span>
