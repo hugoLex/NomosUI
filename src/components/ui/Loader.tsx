@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { LoadingIcon } from "../icons";
 
 export const Shimmer = () => {
@@ -19,11 +20,25 @@ export const Shimmer = () => {
   );
 };
 
-export const Loader = () => (
-  <span
-    className="animate-spin-right h-14 w-14 text-center"
-    style={{ "--duration": "0.75s", "--delay": "0" }}
-  >
-    <LoadingIcon />
-  </span>
+export const Loader = ({
+  variant = "default",
+  size = 24,
+  color = "#245B91",
+}) => (
+  <Fragment>
+    {variant === "default" && (
+      <span
+        className="animate-spin-right h-14 w-14 text-center"
+        style={{ "--duration": "0.75s", "--delay": "0" }}
+      >
+        <LoadingIcon />
+      </span>
+    )}
+    {variant === "classic" && (
+      <div
+        className="loader"
+        style={{ height: size, width: size, background: color }}
+      />
+    )}
+  </Fragment>
 );

@@ -20,7 +20,7 @@ const Header: FC<HeaderProps> = ({ links, variants = "default", children }) => {
   return (
     <Fragment>
       {variants === "default" && (
-        <header className="sticky -top-[0.65rem] w-full z-[999] bg-white shadow-sm rounded-t-lg">
+        <header className="sticky top-0 w-full z-[999] bg-white shadow-sm rounded-t-lg">
           {children}
         </header>
       )}

@@ -5,7 +5,6 @@ import { ComponentProps, LinkProps } from "@app/types";
 
 import {
   CloseIcon,
-  CollapseIcon,
   CompassIcon,
   ExpandIcon,
   LibraryIcon,
@@ -34,12 +33,13 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
 
   return (
     <Fragment>
-      <aside className="hidden md:block bg-transparent">
+      <aside
+        className={`sticky top-0 hidden md:block bg-transparent h-screen overflow-y-auto transition-all duration-300 ease-in-out ${
+          isCollapsed ? "w-[4rem]" : "w-[15rem]"
+        }`}
+      >
         <div
-          className={`relative overflow-hidden h-full
-          transition-all duration-300 ease-in-out flex flex-col pt-3 pb-7 ${
-            isCollapsed ? "w-[4rem]" : "w-[15rem]"
-          }`}
+          className={`min-h-full w-full flex flex-col pt-3 pb-7 grow transition-all duration-300 ease-in-out`}
         >
           <div
             className={`flex items-center transition-all ${
@@ -141,7 +141,6 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
               </ul>
             </div>
           </div>
-
           <div className="flex flex-col items-center justify-center">
             {isCollapsed ? (
               <span

@@ -19,7 +19,11 @@ import {
   SearchHeader,
   SearchResultMeta,
 } from "@app/components/app";
-import { ArrowLeftIcon, ArrowRightIcon } from "@app/components/icons";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CloseIcon,
+} from "@app/components/icons";
 import {
   FilterOption,
   GenericObject,
@@ -46,6 +50,7 @@ const useSearch = (query: string, pageNumber: number | null) => {
 
   useEffect(() => {
     setIsLoading(true);
+    setData({ llmResult: null, searchResult: null });
   }, [query]);
 
   const { data: llmResult, isError: llmError } = useGetAIQuery(query);
@@ -176,18 +181,18 @@ const Page = () => {
 
   const allFilters = flattenFilters(selectedOptions);
 
-  // const removeFilter = (header: string, option: string) => {
-  //   setSelectedOptions((prev) => [
-  //     ...prev.filter((x) => x.header !== header),
-  //     {
-  //       header,
-  //       options:
-  //         prev
-  //           .find((x) => x.header === header)
-  //           ?.options.filter((y) => y !== option) || [],
-  //     },
-  //   ]);
-  // };
+  const removeFilter = (header: string, option: string) => {
+    setSelectedOptions((prev) => [
+      ...prev.filter((x) => x.header !== header),
+      {
+        header,
+        options:
+          prev
+            .find((x) => x.header === header)
+            ?.options.filter((y) => y !== option) || [],
+      },
+    ]);
+  };
 
   const prevPage = () => {
     const url = {
@@ -241,12 +246,10 @@ const Page = () => {
     ]);
   };
 
-  const toggleFilterDrawer = (): void => {};
-
   return (
     <Fragment>
       <Head title={`Search Result - ${q}`} />
-      <Layout>
+      <Layout className="h-screen">
         <SearchHeader
           query={query}
           isH1Visible={isH1Visible}
@@ -254,31 +257,34 @@ const Page = () => {
         />
 
         {isLoading && (
-          <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-full">
-            <Loader />
+          <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
+            <Loader variant="classic" size={80} />
           </div>
         )}
 
         {!isLoading && !isError && (
           <Fragment>
-            <section className="flex justify-center items-center self-stretch py-6 ">
-              <div className="px-16 max-md:px-5  mx-auto max-w-[1100px]">
+            <section className="flex self-stretch ">
+              <div
+                className={`py-6 px-16 max-md:px-5  mx-auto max-w-[1100px] ${
+                  isFilterDrawer ? "w-[80%] flex-1" : ""
+                }`}
+              >
                 <div className="md:grid grid-cols-12 gap-8">
                   <div className="col-span-8">
-                    <div className="flex flex-col">
-                      <h1
-                        id="searchQuery"
-                        ref={h1Ref}
-                        className="text-xx font-normal mb-6"
-                      >
-                        Legal findings:
-                        <span className="text-[#245b91]"> {q}</span>
-                      </h1>
+                    <h1
+                      id="searchQuery"
+                      ref={h1Ref}
+                      className="text-xx font-normal mb-6"
+                    >
+                      Legal findings:
+                      <span className="text-[#245b91]"> {q}</span>
+                    </h1>
 
-                      {allFilters.length > 0 && (
-                        <div className="flex gap-3 flex-wrap mb-4">
-                          <Fragment>
-                            {/* <p
+                    {allFilters.length > 0 && (
+                      <div className="flex gap-3 flex-wrap mb-4">
+                        <Fragment>
+                          {/* <p
                             className="py-0.5 px-3 rounded-xl flex gap-1 text-white 
                       items-center text-sm bg-primary"
                           >
@@ -288,38 +294,38 @@ const Page = () => {
                               ({allFilters.length})
                             </span>
                           </p> */}
-                            <p className="">Applied Filters</p>
-                          </Fragment>
-                          {selectedOptions
-                            .filter((elem) => elem.options.length > 0)
-                            .map((filter) => (
-                              <div
-                                key={filter.id}
-                                className=" flex flex-wrap gap-2"
-                              >
-                                {filter.options.map((option, idx) => (
-                                  <Fragment key={idx}>
-                                    {/* <div className="text-sm font-normal py-0.5 px-3 rounded-xl flex gap-2 bg-black/5">
-                                    <span>{option}</span>
-                                    <button
-                                      className="text-red-600"
+                          <p className="">Applied Filters</p>
+                        </Fragment>
+                        {selectedOptions
+                          .filter((elem) => elem.options.length > 0)
+                          .map((filter) => (
+                            <div
+                              key={filter.id}
+                              className=" flex flex-wrap gap-2"
+                            >
+                              {filter.options.map((option, idx) => (
+                                <Fragment key={idx}>
+                                  <span className="flex gap-2 items-center px-2 py-[0.125rem] bg-stone-100 rounded text-[0.8rem] text-center text-teal-900 text-sm font-normal">
+                                    {option}
+                                    <CloseIcon
+                                      width={18}
+                                      height={18}
+                                      role="button"
+                                      stroke="#000"
                                       onClick={() =>
                                         removeFilter(filter.header, option)
                                       }
-                                    >
-                                      x
-                                    </button>
-                                  </div> */}
-                                    <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-[0.8rem] text-center text-teal-900 text-sm font-normal">
-                                      {option}
-                                    </span>
-                                  </Fragment>
-                                ))}
-                              </div>
-                            ))}
-                        </div>
-                      )}
+                                    />
+                                  </span>
+                                </Fragment>
+                              ))}
+                            </div>
+                          ))}
+                      </div>
+                    )}
 
+                    <div className="p-4 bg-[#eaf0f2]/30 rounded-lg flex flex-col justify-start items-start min-h-[10rem]">
+                      {llmResult === null && <Loader variant="classic" />}
                       {llmResult !== null && (
                         <SearchAIMetaResult
                           replies={llmResult.llm?.replies}
@@ -333,15 +339,13 @@ const Page = () => {
                         searchResult &&
                         searchResult.documents.length > 0 && (
                           <Fragment>
-                            <div>
-                              {searchResult.documents?.map((data, idx) => (
-                                <SearchResultMeta
-                                  key={data.id}
-                                  index={String(idx + 1)}
-                                  data={data}
-                                />
-                              ))}
-                            </div>
+                            {searchResult.documents?.map((data, idx) => (
+                              <SearchResultMeta
+                                key={data.id}
+                                index={String(idx + 1)}
+                                data={data}
+                              />
+                            ))}
                           </Fragment>
                         )}
 
@@ -362,6 +366,7 @@ const Page = () => {
                         )}
                     </div>
                   </div>
+
                   {searchResult && (
                     <div className="col-span-4">
                       <div className="sticky md:top-[68px]">
@@ -373,33 +378,48 @@ const Page = () => {
                     </div>
                   )}
                 </div>
+
+                <div className="flex flex-col justify-center gap-2">
+                  <div className="inline-flex justify-content-center gap-8 mx-auto">
+                    <button
+                      id="prev"
+                      className={`gap-3 hover:opacity-40 ${
+                        isPrev ? "hidden" : "inline-flex"
+                      }`}
+                      disabled={isPrev}
+                      onClick={prevPage}
+                    >
+                      <ArrowLeftIcon stroke="black" />
+                      Previous
+                    </button>
+                    <button
+                      id="next"
+                      className={`inline-flex gap-3 hover:opacity-40`}
+                      // disabled={
+                      //   data.search.length < 9 ? true : false //why setting isDisabled again
+                      // }
+                      onClick={nextPage}
+                    >
+                      Next <ArrowRightIcon stroke="black" />
+                    </button>
+                  </div>
+                  <div
+                    className={`text-center my-3 ${
+                      !isPrev ? "block" : "hidden"
+                    }`}
+                  >
+                    <span>Page No: {pageNumber ?? "1"}</span>
+                  </div>
+                </div>
               </div>
-            </section>
-            <section className="flex flex-col justify-center gap-2">
-              <div className="inline-flex justify-content-center gap-8 mx-auto">
-                <button
-                  id="prev"
-                  className={`inline-flex gap-3 ${isPrev ? "opacity-50" : ""}`}
-                  disabled={isPrev}
-                  onClick={prevPage}
-                >
-                  <ArrowLeftIcon stroke="black" />
-                  Previous
-                </button>
-                <button
-                  id="next"
-                  className={`inline-flex gap-3`}
-                  // disabled={
-                  //   data.search.length < 9 ? true : false //why setting isDisabled again
-                  // }
-                  onClick={nextPage}
-                >
-                  Next <ArrowRightIcon stroke="black" />
-                </button>
-              </div>
-              <div className="text-center my-3">
-                <span>Page No: {pageNumber ?? "1"}</span>
-              </div>
+
+              <SearchFilterDrawer
+                isShow={isFilterDrawer}
+                data={selectedDataOptions}
+                selectedOptions={selectedOptions}
+                closeDrawer={() => setIsFilterDrawer(false)}
+                onSelectedOption={handleSelectedOption}
+              />
             </section>
           </Fragment>
         )}
@@ -455,14 +475,6 @@ const Page = () => {
             </div>
           </div>
         )}
-
-        <SearchFilterDrawer
-          isShow={isFilterDrawer}
-          data={selectedDataOptions}
-          selectedOptions={selectedOptions}
-          closeDrawer={() => setIsFilterDrawer(false)}
-          onSelectedOption={handleSelectedOption}
-        />
       </Layout>
     </Fragment>
   );
