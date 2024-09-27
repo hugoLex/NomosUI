@@ -70,7 +70,7 @@ export const SearchFilterDrawer = ({
   return (
     <div
       className={`min-h-full py-6 border-l px-4 transition-all duration-500  ${
-        isShow ? "w-[20%]" : "w-0 invisible opacity-0 "
+        isShow ? "w-[25%]" : "w-0 invisible opacity-0 "
       }`}
     >
       <div className="sticky md:top-[68px] overflow-hidden">

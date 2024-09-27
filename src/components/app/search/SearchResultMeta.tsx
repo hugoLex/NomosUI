@@ -69,7 +69,7 @@ const SearchResultMeta = (prop: {
 
   const link = "what is law";
   return (
-    <div className="mb-4 space-y-3">
+    <div className="mb-8 space-y-3">
       <h3 className="text-base font-medium">
         <Link href={`/cases/${id ? id : link.replace(/\s/g, "-")}`}>
           <span>{index}. </span> {metadata.case_title}

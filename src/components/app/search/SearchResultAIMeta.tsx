@@ -1,5 +1,6 @@
 import React, { FC, Fragment, useState } from "react";
 import { AIResult } from "@app/types";
+import { CaretDown, CaretUp } from "@app/components/icons";
 
 const SearchAIMetaResult: FC<AIResult> = ({ replies, meta }) => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
@@ -25,8 +26,9 @@ const SearchAIMetaResult: FC<AIResult> = ({ replies, meta }) => {
                   stroke="#245b91"
                 />
               </svg>
-              <span className="uppercase text-sm">verdict view</span>
+              <span className="uppercase text-sm">Law Lens</span>
             </div>
+            <div className="my-1 border w-full border-gray-200" />
             <div className={`summary preview relative overflow-y-hidden`}>
               <p
                 className={`text overflow-hidden transition-all duration-500 ${
@@ -51,20 +53,29 @@ const SearchAIMetaResult: FC<AIResult> = ({ replies, meta }) => {
                 <div
                   className={`text-end my-3 ${
                     isCollapsed
-                      ? "inline-flex items-end justify-end absolute top-[60%] blurred h-[65px] w-full"
+                      ? "inline-flex items-end justify-center absolute  transition duration-75 top-[60%] blurred h-[65px] w-full"
                       : ""
                   }`}
                 >
                   <span
                     role="button"
                     onClick={() => setIsCollapsed(!isCollapsed)}
-                    className={`text-sm  transition-all px-3 py-1.5 rounded-xl ${
+                    className={`inline-flex gap-2 items-center text-sm transition-all px-3 py-1.5 rounded-xl ${
                       isCollapsed
-                        ? "hover:bg-neutral-200"
+                        ? "bg-neutral-200/80 hover:bg-neutral-200"
                         : "bg-neutral-200 hover:bg-neutral-200/50"
                     }`}
                   >
-                    {isCollapsed ? "expand" : "collapse"}
+                    {isCollapsed && (
+                      <Fragment>
+                        expand <CaretDown />
+                      </Fragment>
+                    )}
+                    {!isCollapsed && (
+                      <Fragment>
+                        collapse <CaretUp />
+                      </Fragment>
+                    )}
                   </span>
                 </div>
               )}

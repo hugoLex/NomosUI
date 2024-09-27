@@ -335,6 +335,8 @@ const Page = () => {
                     </div>
 
                     <div className="my-6">
+                      {!searchResult ||
+                        (!filterData && <Loader variant="classic" />)}
                       {allFilters.length === 0 &&
                         searchResult &&
                         searchResult.documents.length > 0 && (
