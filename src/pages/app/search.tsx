@@ -1,11 +1,4 @@
-import React, {
-  Fragment,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { Head, Loader, Shimmer } from "@app/components/ui";
 import {
@@ -30,8 +23,10 @@ import {
   SearchData,
   SearchResult,
 } from "@app/types";
-import { useSearchCasesQuery } from "@app/store/services/searchSlice";
-import { useGetAIQuery } from "@app/store/services/aiSlice";
+import {
+  useSearchCasesQuery,
+  useGetAIQuery,
+} from "@app/store/services/searchSlice";
 import { flattenFilters } from "@app/utils/helpers";
 import {
   dummySearchResult as searchResult,
@@ -264,11 +259,11 @@ const Page = () => {
 
         {!isLoading && !isError && (
           <Fragment>
-            <section className="flex self-stretch ">
+            <section className="relative flex self-stretch min-h-screen">
               <div
-                className={`py-6 px-16 max-md:px-5  mx-auto max-w-[1100px] ${
-                  isFilterDrawer ? "w-[80%] flex-1" : ""
-                }`}
+                className={`py-6 px-16 max-md:px-5  mx-auto max-w-[1100px]
+                  `}
+                // ${ isFilterDrawer ? "w-[80%] flex-1" : ""  }
               >
                 <div className="md:grid grid-cols-12 gap-8">
                   <div className="col-span-8">
@@ -327,10 +322,12 @@ const Page = () => {
                     <div className="p-4 bg-[#eaf0f2]/30 rounded-lg flex flex-col justify-start items-start min-h-[10rem]">
                       {llmResult === null && <Loader variant="classic" />}
                       {llmResult !== null && (
-                        <SearchAIMetaResult
+                        <Fragment>
+                          {/* <SearchAIMetaResult
                           replies={llmResult.llm?.replies}
                           meta={llmResult.llm?.meta}
-                        />
+                          /> */}
+                        </Fragment>
                       )}
                     </div>
 

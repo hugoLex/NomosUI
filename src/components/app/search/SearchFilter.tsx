@@ -68,42 +68,55 @@ export const SearchFilterDrawer = ({
   closeDrawer: () => void;
 }) => {
   return (
-    <div
-      className={`min-h-full py-6 border-l px-4 transition-all duration-500  ${
-        isShow ? "w-[25%]" : "w-0 invisible opacity-0 "
-      }`}
-    >
-      <div className="sticky md:top-[68px] overflow-hidden">
-        <button
-          onClick={() => closeDrawer()}
-          className="inline-flex gap-2 items-center justify-end w-full"
-        >
-          <CloseIcon width={18} height={18} role="button" stroke="#000" />
-        </button>
-
-        {data &&
-          data.options.map((option, idx) => (
+    <Fragment>
+      <div
+        className={`absolute min-h-full min-w-full bg-gray-400/40 transition-all duration-300 ${
+          isShow ? "opacity-100 visible" : "opacity-0 invisible"
+        }`}
+        onClick={() => closeDrawer()}
+      ></div>
+      <div
+        className={`absolute bg-white right-0 min-h-full py-6 border-l transition-all duration-500  
+          ${isShow ? "w-[30%] visible" : "w-0 invisible opacity-0 "}
+        `}
+      >
+        <div className="sticky md:top-[68px] overflow-hidden">
+          <div className="inline-flex justify-between w-full px-4 mb-2">
+            <h5>Filter</h5>
             <button
-              key={idx}
-              className=" text-black/80 
-          text-start text-sm py-1  rounded-md gap-2 flex items-center text-[#2C699B]"
-              onClick={() => onSelectedOption(data.id, option)}
+              onClick={() => closeDrawer()}
+              className="inline-flex gap-2 items-center justify-end w-full"
             >
-              <input
-                type="checkbox"
-                className="size-4"
-                checked={
-                  selectedOptions !== null &&
-                  selectedOptions.some(
-                    (x) => x.id === data.id && x.options.includes(option)
-                  )
-                }
-                onChange={(e) => onSelectedOption(data.id, option)}
-              />
-              <span>{option}</span>
+              <CloseIcon width={18} height={18} role="button" stroke="#000" />
             </button>
-          ))}
+          </div>
+          <hr />
+          <div className="px-4 py-4">
+            {data &&
+              data.options.map((option, idx) => (
+                <button
+                  key={idx}
+                  className=" text-black/80 
+          text-start text-sm py-1  rounded-md gap-2 flex items-center text-[#2C699B]"
+                  onClick={() => onSelectedOption(data.id, option)}
+                >
+                  <input
+                    type="checkbox"
+                    className="size-4"
+                    checked={
+                      selectedOptions !== null &&
+                      selectedOptions.some(
+                        (x) => x.id === data.id && x.options.includes(option)
+                      )
+                    }
+                    onChange={(e) => onSelectedOption(data.id, option)}
+                  />
+                  <span>{option}</span>
+                </button>
+              ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </Fragment>
   );
 };

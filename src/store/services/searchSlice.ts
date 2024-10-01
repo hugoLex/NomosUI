@@ -1,5 +1,5 @@
-import { ListResponse, SearchResult } from "@app/types";
-import { injectEndpoints } from "./endpointSearch";
+import { AIResult, ListResponse, SearchResult } from "@app/types";
+import { injectEndpoints } from "./endpoints";
 
 interface SearchQuery {
   query: string;
@@ -11,7 +11,7 @@ export const searchQueryAPI = injectEndpoints({
     searchCases: builder.query<SearchResult, SearchQuery>({
       query: ({ query, pageNumber }) => {
         return {
-          url: `/search?query=${query}${
+          url: `semanticsearch/api/semantic/search?query=${query}${
             pageNumber ? `&page=${pageNumber}&size=5` : ""
           }`,
           method: "GET",
@@ -30,7 +30,7 @@ export const searchQueryAPI = injectEndpoints({
         const appyAreaOfLaw = area_of_law ? `&${area_of_law}` : "";
         const filters = `${applyCourt}${applyYear}${appyAreaOfLaw}`;
         return {
-          url: `/filter?search_id=${id}${filters}`,
+          url: `semanticsearch/api/semantic/filter?search_id=${id}${filters}`,
           method: "GET",
           headers: {
             "Access-Control-Allow-Origin": "*",
@@ -39,9 +39,26 @@ export const searchQueryAPI = injectEndpoints({
         };
       },
     }),
+    getAI: builder.query<Record<string, AIResult>, string>({
+      query: (query) => {
+        return {
+          url: `llmsearch/api/ask?question=${query}`,
+          method: "GET",
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        };
+      },
+      providesTags: ["CASES"],
+    }),
   }),
   overrideExisting: true,
 });
 
-export const { useFilterCasesQuery, useSearchCasesQuery, usePrefetch } =
-  searchQueryAPI;
+export const {
+  useGetAIQuery,
+  useFilterCasesQuery,
+  useSearchCasesQuery,
+  usePrefetch,
+} = searchQueryAPI;
