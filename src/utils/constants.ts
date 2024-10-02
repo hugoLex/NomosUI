@@ -46,6 +46,7 @@ export const dummySearchResult: SearchResult = {
         " A person who unlawfully kills another in the prosecution of an unlawful purpose which act is of such a nature as to be likely to endanger life, or to cause grievous harm to some person for the purpose of facilitating either the commission of a crime or the flight of an offender who has committed or attempted to commit any such offence, is guilty of murder. (See S.316(3) and (4) Criminal Code.) In the instant case, the dividing line between armed robber and murder is very thin, if there is a dividing line at all. The P.",
       score: 0.006911509204655886,
       metadata: {
+        suit_number: "CA/09/1223",
         case_title: "Okosi And Anor. v. The State",
         court: "Supreme Court",
         year: "1989",
@@ -64,6 +65,7 @@ export const dummySearchResult: SearchResult = {
         " See for instance Section 316 of the Criminal Code applicable to the Southern part of the country. In neither the case of attempted murder nor murder did the elements constituting the offence include the weapon used in the commission of the offence. In the same way, that the fact of a murder is provable by circumstantial evidence without the body of the deceased or trace thereof and in absence of a confessional statement by the accused, see R v. Sala (1938) 4 NACA 10; P v. Onufrejo 2yk (1955) 1 QB 388: the facts of attempted murder and murder can be proved without the weapon used in the commission of either offence.",
       score: 0.0006571555859409273,
       metadata: {
+        suit_number: "CA/09/1223",
         case_title: "Rev. King v. The State",
         court: "Supreme Court",
         year: "2016",
@@ -96,6 +98,7 @@ export const dummySearchResult: SearchResult = {
         '5 on the facts stated supra was not discredited. He was not even cross-examined on the material facts of identity, common design or shooting. It is sufficient if the murder was committed in the cause of prosecuting an unlawful purpose and which needs not necessarily be a felony, but must be of such a nature as likely to endanger human life. The 1st appellant in my view, was caught by the provision of Section 316(3) and (4) of the Criminal Code, which section provides:\n"316. Except as hereinafter set forth, a person who unlawfully kills another under any of the following circumstances, that is to say:\n(1) XXX XXX XXX XXX XXX XX\n(2) xxxxxxxxxxxxxxxxxxxx\n(3) if death is caused by means of an act done in the prosecution of an unlawful purpose, which act is of such nature as to be likely to enhuman life;\n(4) if the offender intends to do grievous harm to some person for the purpose of facilitating the commission of an offence which is such that the offender may be arrested without warrant, or for the purpose of facilitating the flight of an offender who has committed or attempted to commit any such offence; is guilty of murder.',
       score: 0.00037084854557178915,
       metadata: {
+        suit_number: "CA/09/1223",
         case_title: "Okosi And Anor. v. The State",
         court: "Supreme Court",
         year: "1989",
@@ -114,6 +117,7 @@ export const dummySearchResult: SearchResult = {
         " Clearly, it is that section of the Criminal Code, which defines the specific intention to be established to prove a charge of murder. In Festus Amayo v. State (2001) 18 NWLR (Pt. 745) 251, this court considered section 316 of the Criminal Code, which states thus: “316. Except as hereinafter set forth, a person who unlawfully kills another under any of the following circumstances, that is to say -\n“(1) if the offender intends to cause the death of the person killed, or that of some other;\n(2) if the offender intends to do to the person killed or to some other person grievous harm.",
       score: 0.000295858655590564,
       metadata: {
+        suit_number: "CA/09/1223",
         case_title: "John Agbo v. The State",
         court: "Supreme Court",
         year: "2006",
@@ -140,6 +144,7 @@ export const dummySearchResult: SearchResult = {
         " is guilty of murder’.\nThe circumstances under which the accused killed the deceased came within the provisions of this sub-section. I am confirmed in this finding because as a woman experienced in the hazards of pregnancy if one takes her first throw of the deceased, a woman she knew to be pregnant, on the ground as a result of temper, there is no doubt that her second attack of the deceased after they had been separated and the deceased later went to take her head tie and her then throwing the deceased on the ground and kicking her on her pregnant belly was, to say the least, calculated and intended to kill the child in the womb and endanger the life of the deceased. I find the accused guilty of murder and convict her accordingly’. (italic is supplied)\nWe are satisfied, even after making allowance for the position and standing in life of the appellant, that there was not, in law, such provocation from the deceased as would justify the violent attack on the deceased and so reduce the offence to manslaughter.",
       score: 0.00029119261307641864,
       metadata: {
+        suit_number: "CA/09/1223",
         case_title: "Aga v. The State",
         court: "Supreme Court",
         year: "1976",
@@ -164,6 +169,7 @@ export const dummySearchResult: SearchResult = {
         " Those decisions turn on the particular nature of the offence of murder. It was submitted that since, on a charge of murder, the court undoubtedly has power, under section 169 of the Criminal Procedure Act, to convict of attempted murder, it follows that an offence of which section 179 (1) of the Act does not enable the court to convict on a charge of murder cannot be one of which the subsection enables the court to convict on a charge of attempted murder, but there is a fallacy in this, in that the power to convict of an attempt is derived not from section 179 but from section 169, and that the words of section 179 are not apt to cover every case of an attempt to commit a substantive offence, as defined in section 4 of the Criminal Code.\nOur attention was drawn to R. v. Kanu (1949)12 W.",
       score: 0.0001911845029098913,
       metadata: {
+        suit_number: "CA/09/1223",
         case_title: "Agumadu v. The Queen",
         court: "High Court",
         year: "1963",
@@ -185,6 +191,7 @@ export const dummySearchResult: SearchResult = {
         " In the circumstances, I doubt and because I doubt the Appellant has to be given the benefit of that doubt. The available evidence is not of a quality that irresistibly compels to make an inference as to the guilt of the Appellant on the charge of conspiracy. Concomitantly, the conviction of the Appellant for the offence of conspiracy to commit murder is hereby set aside.\nWith regard to the conviction for the substantive counts of murder, the learned counsel on both sides of the divide have referred to the essential ingredients to establish in a charge of murder, namely:\n1. That the deceased is dead\n2.",
       score: 0.00012032173981424421,
       metadata: {
+        suit_number: "CA/09/1223",
         case_title: "Omoruyi v. The State",
         court: "Court Of Appeal",
         year: "2016",
@@ -207,6 +214,7 @@ export const dummySearchResult: SearchResult = {
         '." Even in the case of ADEKUNLE v. STATE (SUPRA) which was cited by learned Counsel for the Respondent, my Lord, Mahmud Mohammed, JSC, set out the 3rd ingredients of the offence of murder as follows:-\n"(c) That the act or omission of the accused which caused the death of the deceased was intentional with knowledge that death or grievous bodily harm was its probable consequence."\nThe case which was also reported in (2006) 26 NSCQLR 1367 at PAGE 1379 - 1380, Mahmud Mohammed, JSC, said:-\n"The law is trite that where a person discharges a firearm unintentionally and without attendant criminal malice or negligence, he will be exempted from criminal responsibility both for the firing and for its consequences. See: IROMANTU v.',
       score: 0.00010598679364193231,
       metadata: {
+        suit_number: "CA/09/1223",
         case_title: "Ameh Richard v. The State",
         court: "Court Of Appeal",
         year: "2013",
@@ -230,6 +238,7 @@ export const dummySearchResult: SearchResult = {
         "\nLearned Counsel for the Respondent also reiterated the ingredients of the offence of murder by referring to the cases of Nwachukwu V The State (2002) 12 NWLR (pt.782) 543 at 568 - 569; Adava v. The State (2006) 9 NWLR (Pt.984) 152 at 167.\nThe Respondent submitted that there is no controversy as to the death of the deceased.",
       score: 0.00010046365059679374,
       metadata: {
+        suit_number: "CA/09/1223",
         case_title: "Oche Mattew v. The State",
         court: "Court Of Appeal",
         year: "2015",
@@ -247,6 +256,7 @@ export const dummySearchResult: SearchResult = {
         '\nNow turning to the instant appeal, has the prosecution proved its case beyond reasonable doubt as to warrant a verdict of guilt against the Appellant? The Appellant was charged with an offence of murder under Section 316 of the Criminal Code Act, Cap.C38, Laws of the Federation of Nigeria, 2004 and punishable under Section 319 of the same code. Section 316 of the Criminal Code Act, provides as follows:-\n"Except as hereinafter set forth, a person who unlawfully kills another under any of the following circumstances, that is to say:-\n1. If the offender intends to cause the death of the person killed, or that of some other person;\n2. If the offender intends to do to the person killed or to some other person some grievous harm.',
       score: 6.861561996629462e-5,
       metadata: {
+        suit_number: "CA/09/1223",
         case_title: "Ameh Richard v. The State",
         court: "Court Of Appeal",
         year: "2013",
@@ -270,6 +280,7 @@ export const dummySearchResult: SearchResult = {
         "\nMr. Familoni, learned Counsel for the Respondent submitted that it is not the law that motive and mens rea are essential ingredients of the offence of murder. According to the learned Counsel, all that the prosecution has to prove is any of the circumstances set out in Section 316 of the Criminal Code. In aid, learned Counsel cited NWALI v. THE STATE (1991) 3 NWLR (Pt.",
       score: 6.111022958066314e-5,
       metadata: {
+        suit_number: "CA/09/1223",
         case_title: "Ameh Richard v. The State",
         court: "Court Of Appeal",
         year: "2013",
@@ -293,6 +304,7 @@ export const dummySearchResult: SearchResult = {
         "\nLearned counsel for the appellant argued that a sane person would not behave the way he did. He said there was no apparent reason why he should have killed his wife and in that manner. It is the law that motive is not a necessity for establishing a crime but when it is available it helps in its detection and proof. In fact part of the appellant’s statement to the police is that his wife was not co-operating with him, whatever that implied. However, the total absence of motive in the case of murder may be taken together with other circumstances which may tend to strengthen evidence of mental abnormality in order to establish insanity as required by law: see R.",
       score: 5.9880905610043555e-5,
       metadata: {
+        suit_number: "CA/09/1223",
         case_title: "Madjemu v. State",
         court: "Supreme Court",
         year: "2001",
@@ -314,6 +326,7 @@ export const dummySearchResult: SearchResult = {
         " Whether the trial court was right in convicting the Appellants for the offence of murder when it was apparent from the facts of the case and the totality of evidence adduced at the trial that the Appellant was on official assignment to the scene of conflict where the offence of murder was eventually committed.\n2. Whether the death of the victims in the afore-charge proffered against the Appellant cannot be described as collateral damages and excusable homicide instead of felonious homicide.\n3. Whether the lower court was right when it proceeded to convict and sentence the Appellant to death for the offence of murder without forensic certification and confirmation on the particular bullets that killed the victims and the guns they emanated from.",
       score: 5.142014560988173e-5,
       metadata: {
+        suit_number: "CA/09/1223",
         case_title: "Ameh Richard v. The State",
         court: "Court Of Appeal",
         year: "2013",
@@ -338,6 +351,7 @@ export const dummySearchResult: SearchResult = {
         '\nIt is curious that the alleged "participes criminis" in this matter resiled from their potentially devastating evidence in the face of the Court. This is the view held by the Respondent and I must say that I share same view.\nThe Prosecution has been unable to provide direct, or circumstantial evidence pinning the Appellant to the commission of the crime of conspiracy to murder the deceased, Alhaja Kudirat Abiola. If there is anything to go by, it was PW2 who should have been charged with conspiracy to murder.\nAt page 14 paragraph 4.',
       score: 4.4586879084818065e-5,
       metadata: {
+        suit_number: "CA/09/1223",
         case_title: "Major Hamza Al-mustapha v. The State",
         court: "Court Of Appeal",
         year: "2013",
@@ -361,6 +375,7 @@ export const dummySearchResult: SearchResult = {
         ".”\nThe learned trial Judge then found the appellant guilty of murder but he did so after the following observations to which our attention has been specifically drawn, and these are:-\n“I have no doubt in my mind that when the accused threw the deceased on the ground and kicked her on the belly she did so with intent to prosecute an un-lawful purpose of causing the abortion of her pregnancy an act which she knew endangered life. Section 316(c) of the Criminal Code provides:\n‘Except as here-in after set forth a person who unlawfully kills another under any of the following circumstances that is to say...",
       score: 4.236889799358323e-5,
       metadata: {
+        suit_number: "CA/09/1223",
         case_title: "Aga v. The State",
         court: "Supreme Court",
         year: "1976",
