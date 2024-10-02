@@ -83,9 +83,11 @@ const SearchResultMeta = (prop: {
         <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
           {metadata.year}
         </span>
-        <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
-          CA/JS/2034MJ23
-        </span>
+        {metadata.suit_number && (
+          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+            {metadata.suit_number}
+          </span>
+        )}
       </p>
 
       <p

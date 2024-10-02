@@ -128,7 +128,7 @@ const Page = () => {
             { id: "year", label: "Year", options: filter_elements.year },
           ],
         },
-        { id: "legislature", label: "Legislature", options: [] },
+        { id: "legislation", label: "Legislation", options: [] },
         { id: "articles", label: "Articles", options: [] },
       ];
     }
@@ -323,10 +323,10 @@ const Page = () => {
                       {llmResult === null && <Loader variant="classic" />}
                       {llmResult !== null && (
                         <Fragment>
-                          {/* <SearchAIMetaResult
-                          replies={llmResult.llm?.replies}
-                          meta={llmResult.llm?.meta}
-                          /> */}
+                          <SearchAIMetaResult
+                            replies={llmResult.llm?.replies}
+                            meta={llmResult.llm?.meta}
+                          />
                         </Fragment>
                       )}
                     </div>
@@ -378,38 +378,40 @@ const Page = () => {
                   )}
                 </div>
 
-                <div className="flex flex-col justify-center gap-2">
-                  <div className="inline-flex justify-content-center gap-8 mx-auto">
-                    <button
-                      id="prev"
-                      className={`gap-3 hover:opacity-40 ${
-                        isPrev ? "hidden" : "inline-flex"
+                {searchResult && (
+                  <div className="flex flex-col justify-center gap-2">
+                    <div className="inline-flex justify-content-center gap-8 mx-auto">
+                      <button
+                        id="prev"
+                        className={`gap-3 hover:opacity-40 ${
+                          isPrev ? "hidden" : "inline-flex"
+                        }`}
+                        disabled={isPrev}
+                        onClick={prevPage}
+                      >
+                        <ArrowLeftIcon stroke="black" />
+                        Previous
+                      </button>
+                      <button
+                        id="next"
+                        className={`inline-flex gap-3 hover:opacity-40`}
+                        // disabled={
+                        //   data.search.length < 9 ? true : false //why setting isDisabled again
+                        // }
+                        onClick={nextPage}
+                      >
+                        Next <ArrowRightIcon stroke="black" />
+                      </button>
+                    </div>
+                    <div
+                      className={`text-center my-3 ${
+                        !isPrev ? "block" : "hidden"
                       }`}
-                      disabled={isPrev}
-                      onClick={prevPage}
                     >
-                      <ArrowLeftIcon stroke="black" />
-                      Previous
-                    </button>
-                    <button
-                      id="next"
-                      className={`inline-flex gap-3 hover:opacity-40`}
-                      // disabled={
-                      //   data.search.length < 9 ? true : false //why setting isDisabled again
-                      // }
-                      onClick={nextPage}
-                    >
-                      Next <ArrowRightIcon stroke="black" />
-                    </button>
+                      <span>Page No: {pageNumber ?? "1"}</span>
+                    </div>
                   </div>
-                  <div
-                    className={`text-center my-3 ${
-                      !isPrev ? "block" : "hidden"
-                    }`}
-                  >
-                    <span>Page No: {pageNumber ?? "1"}</span>
-                  </div>
-                </div>
+                )}
               </div>
 
               <SearchFilterDrawer

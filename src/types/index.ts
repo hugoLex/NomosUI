@@ -50,6 +50,7 @@ export type SearchResultDocMeta = {
   court: string;
   source_id: string;
   year: string | number;
+  suit_number: string;
 };
 
 export type SearchResultFilter = {
