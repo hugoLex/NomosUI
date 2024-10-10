@@ -4,9 +4,15 @@ import { baseURL as baseUrl } from "@app/utils";
 const baseAPI = createApi({
   reducerPath: "searchAPI",
   baseQuery: fetchBaseQuery({ baseUrl }),
-  tagTypes: ["CASES"],
+  tagTypes: ["ARTICLES", "CASES", "LEGISLATIONS"],
   endpoints: () => ({}),
 });
 
-export const { endpoints, reducerPath, injectEndpoints, reducer, middleware } =
-  baseAPI;
+export const {
+  endpoints,
+  reducerPath,
+  injectEndpoints,
+  reducer,
+  middleware,
+  usePrefetch,
+} = baseAPI;

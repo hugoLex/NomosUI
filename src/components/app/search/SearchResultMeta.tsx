@@ -1,6 +1,14 @@
 import React, { Fragment, useState } from "react";
 import Link from "next/link";
-import { SearchResultDoc } from "@app/types";
+import {
+  ArticleDocuments,
+  ArticleMetadata,
+  CaseMetadata,
+  CaseDocuments,
+  LegislationDocuments,
+  LegislationMetadata,
+  SearchType,
+} from "@app/types";
 import { escapeRegExp } from "@app/utils";
 
 const SummaryView = ({
@@ -46,12 +54,15 @@ const SummaryView = ({
 
 const SearchResultMeta = (prop: {
   index: string | number;
-  data: SearchResultDoc;
+  data: ArticleDocuments | CaseDocuments | LegislationDocuments;
+  type: SearchType;
 }) => {
-  const { index, data } = prop;
+  const { index, data, type } = prop;
   const { id, content, context, metadata } = data;
 
+  let _link: string = "what is law";
   let fmtTxt: string = content;
+  let _metadata: any;
 
   if (typeof context === "string") {
     fmtTxt = fmtTxt.replace(
@@ -67,28 +78,57 @@ const SearchResultMeta = (prop: {
     });
   }
 
-  const link = "what is law";
   return (
     <div className="mb-8 space-y-3">
       <h3 className="text-base font-medium">
-        <Link href={`/cases/${id ? id : link.replace(/\s/g, "-")}`}>
-          <span>{index}. </span> {metadata.case_title}
+        <Link
+          href={`/cases/${id ? id : _link.replace(/\s/g, "-")}`}
+          className="text-[#245b91]"
+        >
+          <span className="text-gray-500">{index}. </span>
+          {type === "articles" && (metadata as ArticleMetadata).article_title}
+          {type === "cases" && (metadata as CaseMetadata).case_title}
+          {type === "legislations" &&
+            (metadata as LegislationMetadata).document_title}
         </Link>
       </h3>
 
-      <p className="flex gap-x-4">
-        <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
-          {metadata.court}
-        </span>
-        <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
-          {metadata.year}
-        </span>
-        {metadata.suit_number && (
+      {type === "articles" && (
+        <p className="flex gap-x-4">
           <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
-            {metadata.suit_number}
+            {(metadata as ArticleMetadata).author}
           </span>
-        )}
-      </p>
+          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+            {(metadata as ArticleMetadata).year}
+          </span>
+        </p>
+      )}
+
+      {type === "cases" && (
+        <p className="flex gap-x-4">
+          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+            {(metadata as CaseMetadata).court}
+          </span>
+          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+            {(metadata as CaseMetadata).year}
+          </span>
+
+          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+            {(metadata as CaseMetadata).suit_number}
+          </span>
+        </p>
+      )}
+
+      {type === "legislations" && (
+        <p className="flex gap-x-4">
+          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+            {(metadata as LegislationMetadata).section_number}
+          </span>
+          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+            {(metadata as LegislationMetadata).year}
+          </span>
+        </p>
+      )}
 
       <p
         dangerouslySetInnerHTML={{ __html: fmtTxt }}

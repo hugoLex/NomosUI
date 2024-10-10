@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { Head, Loader, Shimmer } from "@app/components/ui";
+import { Head, Loader } from "@app/components/ui";
 import {
   AppLayout as Layout,
   AppLayoutContext as LayoutContext,
@@ -18,75 +18,148 @@ import {
   CloseIcon,
 } from "@app/components/icons";
 import {
+  ArticleResults,
+  CaseResults,
+  LegislationResults,
   FilterOption,
   GenericObject,
   SearchData,
-  SearchResult,
+  SearchType,
+  CaseDocuments,
+  LegislationDocuments,
+  ArticleDocuments,
 } from "@app/types";
 import {
-  useSearchCasesQuery,
-  useGetAIQuery,
+  useArticlesSearchQuery,
+  useCasesSearchQuery,
+  useLLMSearchQuery,
+  useLegislationsSearchQuery,
 } from "@app/store/services/searchSlice";
 import { flattenFilters } from "@app/utils/helpers";
 import {
-  dummySearchResult as searchResult,
-  dummyLLMResult as llmResult,
+  dummyCasesResult,
+  dummyArticleResult,
+  dummyLegislationResult,
+  dummyLLMResult,
   searchURL,
+  searchOptions as defaultSearchOptions,
 } from "@app/utils/constants";
 import { useVisibility } from "@app/hooks";
 
-const useSearch = (query: string, pageNumber: number | null) => {
+type SearchDataResults = ArticleResults | CaseResults | LegislationResults;
+type SearchDocuments =
+  | CaseDocuments[]
+  | LegislationDocuments[]
+  | ArticleDocuments[];
+
+const useSearch = (
+  query: string,
+  pageNumber: number | null,
+  skip: boolean
+): { data: SearchData; isError: boolean; isLoading: boolean } => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [data, setData] = useState<SearchData>({
-    llmResult: null,
-    searchResult: null,
+    articlesData: null,
+    casesData: null,
+    llmData: null,
+    legislationsData: null,
   });
 
   useEffect(() => {
     setIsLoading(true);
-    setData({ llmResult: null, searchResult: null });
+    setData({
+      articlesData: null,
+      casesData: null,
+      llmData: null,
+      legislationsData: null,
+    });
   }, [query]);
 
-  const { data: llmResult, isError: llmError } = useGetAIQuery(query);
-  const { data: searchResult, isError: searchError } = useSearchCasesQuery({
-    query: String(query),
+  const { data: llmData, isError: llmError } = useLLMSearchQuery(query);
+
+  const { data: casesData, isError: casesError } = useCasesSearchQuery({
+    query,
     pageNumber,
   });
 
+  const { data: articlesData, isError: articlesError } = useArticlesSearchQuery(
+    {
+      query,
+      pageNumber,
+    },
+    { skip }
+  );
+
+  const { data: legislationsData, isError: legislationsError } =
+    useLegislationsSearchQuery(
+      {
+        query,
+        pageNumber,
+      },
+      { skip }
+    );
+
   useEffect(() => {
-    if (llmResult) {
-      setData((prev) => ({ ...prev, llmResult }));
+    if (llmData) {
+      setData((prev) => ({ ...prev, llmData }));
       setIsLoading(false);
     }
 
-    if (searchResult) {
-      setData((prev) => ({ ...prev, searchResult }));
+    if (casesData) {
+      setData((prev) => ({ ...prev, casesData }));
       setIsLoading(false);
     }
 
-    if (llmError && searchError) {
+    if ((llmError && casesError) || articlesError || legislationsError) {
       setIsError(true);
       setIsLoading(false);
     }
 
     return () => {};
-  }, [llmResult, searchResult, llmError, searchError]);
+  }, [
+    articlesData,
+    casesData,
+    llmData,
+    legislationsData,
+    articlesError,
+    casesError,
+    legislationsError,
+    llmError,
+  ]);
 
-  return { data, isError, isLoading };
+  return {
+    data: {
+      articlesData: dummyArticleResult,
+      legislationsData: dummyLegislationResult,
+      llmData: dummyLLMResult,
+      casesData: dummyCasesResult,
+    },
+    isError: false,
+    isLoading: false,
+  };
 };
 
 const Page = () => {
   const router = useRouter();
-
   const { q, page } = router.query;
-
   const query = String(q);
   const pageNumber = page ? Number(page) : null;
   const isPrev = pageNumber && pageNumber !== 1 ? false : true;
 
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
   const searchRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const [prefetch, setPrefetch] = useState<boolean>(true);
+  const [isFilterDrawer, setIsFilterDrawer] = useState<boolean>(false);
+  const [searchType, setSearchType] = useState<SearchType>("cases");
+  const [filterData, setFilterData] = useState<SearchDataResults | null>(null);
+  const [selectedDataOptions, setSelectedDataOptions] =
+    useState<FilterOption | null>(null);
+  const [selectedOptions, setSelectedOptions] = useState<FilterOption[]>([]);
+  const [searchOptions, setSearchOptions] =
+    useState<FilterOption[]>(defaultSearchOptions);
+
   const isH1Visible = useVisibility({
     ref: h1Ref,
     options: {
@@ -95,45 +168,85 @@ const Page = () => {
     },
   });
 
-  // For test
-  // const isSuccess = true,
-  //   isError = false,
-  //   isLoading = false;
+  const { data, isError, isLoading } = useSearch(query, pageNumber, prefetch);
+  const { articlesData, casesData, llmData, legislationsData } = data;
 
-  // For production
-  const { data, isError, isLoading } = useSearch(query, pageNumber);
-  const [filterData, setFilterData] = useState<SearchResult | null>(null);
-  const [selectedDataOptions, setSelectedDataOptions] =
-    useState<FilterOption | null>(null);
-  const [selectedOptions, setSelectedOptions] = useState<FilterOption[]>([]);
-  const [isFilterDrawer, setIsFilterDrawer] = useState<boolean>(false);
-
-  const { llmResult, searchResult } = data;
-
-  const searchOptions = useMemo((): FilterOption[] => {
-    if (searchResult !== null) {
-      const { filter_elements } = searchResult;
-
-      return [
-        {
-          id: "cases",
-          label: "Cases",
-          options: [
-            { id: "court", label: "Court", options: filter_elements.court },
-            {
-              id: "area_of_law",
-              label: "Area of Law",
-              options: filter_elements.area_of_law,
-            },
-            { id: "year", label: "Year", options: filter_elements.year },
-          ],
-        },
-        { id: "legislation", label: "Legislation", options: [] },
-        { id: "articles", label: "Articles", options: [] },
-      ];
+  const SearchDocuments = useMemo((): {
+    documents: SearchDocuments;
+    total: number;
+  } | null => {
+    if (searchType === "cases" && casesData) {
+      const { documents, total_cases } = casesData;
+      return { documents, total: total_cases };
     }
-    return [];
-  }, [searchResult]);
+    if (searchType === "articles" && articlesData) {
+      const { documents, total_articles } = articlesData;
+      return { documents, total: total_articles };
+    }
+    if (searchType === "legislations" && legislationsData) {
+      const { documents, total_legislation } = legislationsData;
+      return { documents, total: total_legislation };
+    }
+    return null;
+  }, [searchType, casesData, articlesData, legislationsData]);
+
+  useEffect(() => {
+    if (casesData !== null) {
+      const { filter_elements, documents } = casesData;
+      const { area_of_law, court, year } = filter_elements;
+      const options = [
+        { id: "court", label: "Court", options: court },
+        { id: "area_of_law", label: "Area of Law", options: area_of_law },
+        { id: "year", label: "Year", options: year },
+      ];
+
+      setSearchOptions((prev) =>
+        prev.map((itx) => {
+          return itx.id === "cases" ? { ...itx, options } : itx;
+        })
+      );
+      setPrefetch(true);
+    }
+
+    if (articlesData !== null) {
+      const { filter_elements } = articlesData;
+      const { article_title, author, area_of_law } = filter_elements;
+      const options = [
+        { id: "article_tile", label: "Article Title", options: article_title },
+        { id: "author", label: "Author", options: author },
+        { id: "area_of_law", label: "Area of Law", options: area_of_law },
+      ];
+      setSearchOptions((prev) =>
+        prev.map((itx) => {
+          return itx.id === "articles" ? { ...itx, options } : itx;
+        })
+      );
+    }
+
+    if (legislationsData !== null) {
+      const { filter_elements } = legislationsData;
+      const { document_title, section_number } = filter_elements;
+      const options = [
+        {
+          id: "document_title",
+          label: "Document Title",
+          options: document_title,
+        },
+        {
+          id: "section_number",
+          label: "Section Number",
+          options: section_number,
+        },
+      ];
+      setSearchOptions((prev) =>
+        prev.map((itx) => {
+          return itx.id === "legislations" ? { ...itx, options } : itx;
+        })
+      );
+    }
+
+    return () => {};
+  }, [prefetch, casesData, articlesData, legislationsData]);
 
   useEffect(() => {
     const fetchFilter = async () => {
@@ -158,9 +271,9 @@ const Page = () => {
 
       try {
         const res = await fetch(
-          `${searchURL}/filter?search_id=${searchResult?.search_id}${applyFilters}`
+          `${searchURL}/filter?search_id=${casesData?.search_id}${applyFilters}`
         );
-        const data = (await res.json()) as SearchResult;
+        const data = (await res.json()) as SearchDataResults;
         setFilterData(data);
       } catch (error) {
         console.log(error);
@@ -172,7 +285,7 @@ const Page = () => {
     }
 
     return () => {};
-  }, [searchResult, selectedOptions]);
+  }, [casesData, selectedOptions]);
 
   const allFilters = flattenFilters(selectedOptions);
 
@@ -220,8 +333,9 @@ const Page = () => {
 
     setSelectedDataOptions(filteredDataOption);
 
-    if (isFilterDrawer) return;
-    else setIsFilterDrawer(true);
+    if (!isFilterDrawer) {
+      setIsFilterDrawer(true);
+    }
   };
 
   const handleSelectedOption = (_id: string, option: any) => {
@@ -240,6 +354,8 @@ const Page = () => {
       },
     ]);
   };
+
+  const handleSelectedSearchType = (_id: any) => setSearchType(_id);
 
   return (
     <Fragment>
@@ -277,20 +393,8 @@ const Page = () => {
                     </h1>
 
                     {allFilters.length > 0 && (
-                      <div className="flex gap-3 flex-wrap mb-4">
-                        <Fragment>
-                          {/* <p
-                            className="py-0.5 px-3 rounded-xl flex gap-1 text-white 
-                      items-center text-sm bg-primary"
-                          >
-                            <Filter2Icon className="fill-white size-3" />
-                            <span className="ml-2">Filter</span>
-                            <span className="text-sm">
-                              ({allFilters.length})
-                            </span>
-                          </p> */}
-                          <p className="">Applied Filters</p>
-                        </Fragment>
+                      <div className="flex gap-3 flex-wrap mb-4 items-center">
+                        <p>Applied Filters</p>
                         {selectedOptions
                           .filter((elem) => elem.options.length > 0)
                           .map((filter) => (
@@ -319,34 +423,29 @@ const Page = () => {
                       </div>
                     )}
 
-                    <div className="p-4 bg-[#eaf0f2]/30 rounded-lg flex flex-col justify-start items-start min-h-[10rem]">
-                      {llmResult === null && <Loader variant="classic" />}
-                      {llmResult !== null && (
-                        <Fragment>
-                          <SearchAIMetaResult
-                            replies={llmResult.llm?.replies}
-                            meta={llmResult.llm?.meta}
-                          />
-                        </Fragment>
+                    <Fragment>
+                      {llmData === null && <Loader variant="classic" />}
+                      {llmData !== null && (
+                        <SearchAIMetaResult
+                          llm={llmData.llm}
+                          retriever={llmData.retriever}
+                        />
                       )}
-                    </div>
+                    </Fragment>
 
                     <div className="my-6">
-                      {/* {!searchResult ||
-                        (!filterData && <Loader variant="classic" />)} */}
-                      {allFilters.length === 0 &&
-                        searchResult &&
-                        searchResult.documents.length > 0 && (
-                          <Fragment>
-                            {searchResult.documents?.map((data, idx) => (
-                              <SearchResultMeta
-                                key={data.id}
-                                index={String(idx + 1)}
-                                data={data}
-                              />
-                            ))}
-                          </Fragment>
-                        )}
+                      {allFilters.length === 0 && SearchDocuments && (
+                        <Fragment>
+                          {SearchDocuments.documents?.map((data, idx) => (
+                            <SearchResultMeta
+                              key={data.id}
+                              index={String(idx + 1)}
+                              data={data}
+                              type={searchType}
+                            />
+                          ))}
+                        </Fragment>
+                      )}
 
                       {allFilters.length > 0 &&
                         filterData &&
@@ -358,6 +457,7 @@ const Page = () => {
                                   key={data.id}
                                   index={String(idx + 1)}
                                   data={data}
+                                  type={searchType}
                                 />
                               ))}
                             </div>
@@ -366,19 +466,20 @@ const Page = () => {
                     </div>
                   </div>
 
-                  {searchResult && (
+                  {SearchDocuments && (
                     <div className="col-span-4">
                       <div className="sticky md:top-[68px]">
                         <SearchFilterSidebar
                           data={searchOptions}
                           handleSelection={handleSelection}
+                          handleSelectedSearchType={handleSelectedSearchType}
                         />
                       </div>
                     </div>
                   )}
                 </div>
 
-                {searchResult && (
+                {SearchDocuments && (
                   <div className="flex flex-col justify-center gap-2">
                     <div className="inline-flex justify-content-center gap-8 mx-auto">
                       <button
@@ -416,6 +517,7 @@ const Page = () => {
 
               <SearchFilterDrawer
                 isShow={isFilterDrawer}
+                label={searchType.toString()}
                 data={selectedDataOptions}
                 selectedOptions={selectedOptions}
                 closeDrawer={() => setIsFilterDrawer(false)}

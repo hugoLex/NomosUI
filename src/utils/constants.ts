@@ -1,4 +1,12 @@
-import { LinkProps, SearchResult, AIResult } from "@app/types";
+import {
+  LinkProps,
+  SearchResults,
+  AIResult,
+  CaseResults,
+  LegislationResults,
+  ArticleResults,
+  FilterOption,
+} from "@app/types";
 
 export const searchURL = "https://lexasearch.lexanalytics.ai/api";
 
@@ -6,7 +14,7 @@ export const aiURL = "https://llmsearch.lexanalytics.ai/api";
 
 export const baseURL = "https://lexgateway.lexanalytics.ai/";
 
-export const dummySearchResult: SearchResult = {
+export const dummyCasesResult: CaseResults = {
   search_id: "9d182815-5515-437c-bc85-66de4619fcc7",
   filter_elements: {
     court: ["Court Of Appeal", "Supreme Court", "High Court"],
@@ -394,14 +402,229 @@ export const dummySearchResult: SearchResult = {
       ],
     },
   ],
+  total_cases: 15,
+};
+
+export const dummyLegislationResult: LegislationResults = {
+  search_id: "009506cf-fe7b-4097-a0d3-ecd0d1c76a4d",
+  documents: [
+    {
+      id: "64e603f87f9261027ab86adc9c85f50a5e55d968576c8f3cd9c81662937e655e",
+      content:
+        "When a person who unlawfully kills another in circumstances which, but for the provisions of this section, would constitute murder does the act which causes death in the heat of passion caused by grave and sudden provocation, and before there is time for his passion to cool, he is guilty of manslaughter only.",
+      score: 0.8877896,
+      context: [
+        "caused",
+        "causes",
+        "circumstances",
+        "his",
+        "kills",
+        "only",
+        "person",
+        "provisions",
+        "this",
+        "unlawfully",
+        "when",
+      ],
+      metadata: {
+        document_title: "Criminal Code Act",
+        part_title:
+          "Offences against the person and Relating to Marriage and Parental Rights and Duties, and against the Reputation of Individuals",
+        part: "5",
+        section_number: "318",
+      },
+    },
+  ],
+  filter_elements: {
+    document_title: ["Criminal Code Act"],
+    section_number: ["318"],
+  },
+  total_legislation: 1,
+};
+
+export const dummyArticleResult: ArticleResults = {
+  search_id: "009dd5f5-f820-4165-a879-e61b1b3a24f8",
+  documents: [
+    {
+      id: "65fa19554cb3f4f7529a12f2804d06637cb45bc64f87dc75cc1303fc03fa9a15",
+      content:
+        " Insanity prevents the exercise of ones will and therefore a general defence in criminal law. Every person is presumed to be sane, until the contrary is proved. A person is exempted from criminal responsibility if it is proved that his insanity is such that: He did not understand what he was doing.\nHe did not know that he ought not to do the act or make the omission.\nHe was incapable of controlling his action. In this context insanity means either a state of mental disease or a state of natural mental infirmity.\nDefence of immaturity\nIt is an irrebuttable presumption of law that a child under seven years in age has no mens rea.",
+      score: 0.99408895,
+      context: [
+        "criminal",
+        "exempted",
+        "exercise",
+        "general",
+        "his",
+        "incapable",
+        "insanity",
+        "ones",
+        "presumed",
+        "prevents",
+        "proved",
+      ],
+      metadata: {
+        article_title: "Defences to Criminal Responsibility",
+        year: 2018,
+        author: "Learn Nigerian Law",
+        area_of_law: [
+          "Criminal Law, Evidence Law, Constitutional Law, Tort Law, Law of Intent ",
+        ],
+      },
+    },
+    {
+      id: "b0f91fbe83d779fb8849062ea71fb94fa3ea5d90e803d8810540bbae7d852508",
+      content:
+        " Insanity prevents the exercise of ones will and therefore a general defence in criminal law. Every person is presumed to be sane, until the contrary is proved. A person is exempted from criminal responsibility if it is proved that his insanity is such that: He did not understand what he was doing.\nHe did not know that he ought not to do the act or make the omission.\nHe was incapable of controlling his action.",
+      score: 0.99271095,
+      context: [
+        "criminal",
+        "exempted",
+        "exercise",
+        "general",
+        "his",
+        "incapable",
+        "insanity",
+        "ones",
+        "presumed",
+        "prevents",
+        "proved",
+      ],
+      metadata: {
+        article_title: "Defences to Criminal Responsibility",
+        year: 2018,
+        author: "Learn Nigerian Law",
+        area_of_law: [
+          "Constitutional Law",
+          "Criminal Law",
+          "Evidence Law",
+          "Law of Intent",
+          "Tort Law",
+        ],
+      },
+    },
+    {
+      id: "d77fc429bf294867f727377e638fc24c2a536430d7c65603c7765a8b4c998bba",
+      content:
+        " A person is exempted from criminal responsibility if it is proved that his insanity is such that: He did not understand what he was doing.\nHe did not know that he ought not to do the act or make the omission.\nHe was incapable of controlling his action. In this context insanity means either a state of mental disease or a state of natural mental infirmity.\nDefence of immaturity\nIt is an irrebuttable presumption of law that a child under seven years in age has no mens rea. He/she is exempted from criminal responsibility.",
+      score: 0.98866826,
+      context: [
+        "controlling",
+        "criminal",
+        "doing",
+        "exempted",
+        "his",
+        "incapable",
+        "mental",
+        "natural",
+        "person",
+        "proved",
+        "responsibility",
+        "this",
+      ],
+      metadata: {
+        article_title: "Defences to Criminal Responsibility",
+        year: 2018,
+        author: "Learn Nigerian Law",
+        area_of_law: [
+          "Constitutional Law",
+          "Criminal Law",
+          "Evidence Law",
+          "Law of Intent",
+          "Tort Law",
+        ],
+      },
+    },
+    {
+      id: "28529032841a458da0f7f0930bff633c393dd6f4a16ed1ef4592f4dd35750450",
+      content:
+        "Defences to Criminal Responsibility\nThe following defences are open to any person charged with an offence; Intention, motive\nMistake\nBona fide claim of right\nIntoxication\nInsanity\nDefence of immaturity\nProvocation\nIntention/Motive\nA person is not criminally responsible for an act or omission, which occurs independently of the exercise of his will or for an event which occurs by accident. An event occurs by accident if: It is too remote and indirect a consequence of the accused’s unlawful act or omission. A reasonable man in the shoes of the accused, would not have foreseen it as likely or probable. The accused person could not reasonably have foreseen as likely or probably. Illustration through cases: DTimbu Kohan (1968) H and W quarrelled violently. H became tired of the verbal exchanges, went outside the house and sat down. W followed H outside, berating him. It was dark. He picked up a light stick, aimed a moderate blow in the direction of W’s voice. The blow struck the little baby W was carrying in her arms on the head and killed it. Held the event is an accident in that the accused could not reasonably have foreseen it and did not in fact foresee it. State v Appoli (1970) A and B were pushing each other near a river, T warned them that they were playing a dangerous game. B pushed A further. A slipped, fell into the river and drowned. Rejecting a defence of accident, the court held that a reasonable person would have appreciated the danger of pushing another near a river in the particular circumstance. An act or omission which occurs independently out of the exercise of one’s will is an accident and this terms is in two senses. Of consequences due to some external agency over which the accused has no control e.g. a person riding a horse bolting against the will of the rider and without any fault on his part, knocks another person down.\nOf unintended consequence of a lawful or voluntary act, (e.g. where a man working with an axe and its head flies up and kills a bystander or where in a lawful game, e.g one of the parties in the boxing tournament kills his opponent.\nMistake\nMistakes as a defence to crime, are of two kinds: Mistake of law.\nMistake of facts.\nMistake of law\nIgnorance of the law does not afford any excuse for any act or omission which would otherwise constitute an offence, unless knowledge of the law by the offender is expressly declared to be an element of the offence Mistake of Law, also called ignorance of law, is an invalid defence. Except where knowledge of the law is an element of the offence charged. Thus a mistake of Law would be a valid defence in the following cases; action from a bona fide claim of right, action from execution of an erroneous sentence, process or warrant, action from Sentence or Process or warrant without jurisdiction, action from Irregular process or warrant. To avail a defence in such cases, the accused must act in good faith and in the belief that the sentence, process or warrant was issued with authority. Ogbu v R (1959) O was alleged to have given a bribe to D in order to induce him (D) to appoint O a village head and therefore a tax collector. O and D were both charged. O pleaded a mistake of law, contending that he did not know it was an offence to so bribe D and was acquitted. On appeal by the other accused (D). The Federal supreme Court expressed its opinion that it was not satisfied that the trial court was right in law in acquitting the first accused on those findings. Ignorance of law is a good defence where knowledge of the law by the offender is expressly declared to be an element of the offence. Example are: receiving stolen property, not knowing them to be stolen and ttering Counterfeit coins, not knowing them to be counterfeits. Mistake of facts\nA person who does or omits to do an act under an honest and reasonable but mistaken belief in the existence of any state of things is nor criminally responsible for the act or omission to any greater extent than if the real state of things had been such as he believed to exist, section 25, Criminal Code. Where there is a reasonable and honest mistake of fact the offence is treated as if the fact had been true. B reasonably mistakes D’s bicycle for his and takes it. The mistake must be such that any reasonable man would be likely to make the same mistake. It is a defence when the accused believes in a state of affairs, which if true, would justify the act done. In other words, an actor is not responsible for the consequence, which ultimately follow his/her act which results from a mistake on his/her part. Where Amuda shoots and kills at an object which he thinks is a dog or a ghost which turns out to be a man, he would not be treated as though he killed a dog or a ghost as the case may be. Note the limitation of the defence: the operation of this rule may be excluded by the express or implied provisions of the law relating to the subject. Bona fide claim of right\nA person is not criminally responsible as for offence relating to property, for an act done or omitted to be done by him with respect to any property in the exercise of an of right and without intention to defraud. Example: if a father takes away his illegitimate child from its mother who is reluctant to part with the child, he merely exercises his bona fide claim of right. He has a defence to child stealing. Cc. 23 & 371. Intoxication\nIf KJ allows himself to be intoxicated of his own free will, he is responsible for his acts and its consequences. Voluntary Intoxication is never an excuse in a crime. But if it is as to prevent a person from knowing what he was doing or that what he was doing was wrong; offender will be treated in the same way as a man, who is insane or under delusion as the case may be. Intoxication includes a state produced by drinking, drugs, narcotics etc. The cases where intoxication is raised as a defence are dealt with in the same way as insane. To avail a defence, therefore, the accused must show that he was so drunk at the time of the criminal act as to be incapable of forming the special intent in the crime. Intoxication is a defence if: Intoxication is caused by the negligent act of another.\nThe person charged was by reasons if intoxication insane temporarily or otherwise at the time of such act or omission.\nIn Ahmed v State 1999, Ogundare, JSC said: Intoxication per se is not a defence. To be a defence, it must be shown by the accused that the intoxication is not self-induced or that the extent of it rendered him at the time of the act or omission insane temporarily or otherwise, that is that he did not know2 what he was doing.\nIn Imo v State (1991), per Nnaemeka, JSC observed: For the defence of intoxication to be available to the accused person, as a defence, he must prove on a preponderance of evidence, that at the time of the act or omission, that is called in question, he was in such a state that he did not know that such an act or omission was wrong or did not know what he was doing. Furthermore, he has to prove either that the state of intoxication was not self induced or was caused without his consent by the malicious or neglected act of another person (s. 29 (2) (a) or that the extent of intoxication was so high that he was insane, temporarily or otherwise at the time of the act or omission (S, 29(2) (b))). There are two principles of law relating to this defence: The presumption of law that a person intends the natural consequences of his act.\nThe presumption of law that every person is sane.\nBoth presumptions are rebuttable. Evidence of drunkenness falling short of a proved incapacity in the accused to form the intent necessary to constitute the crime and merely establishing that his mind was affected by drink so that he more readily gave way to some violent passion does not rebut the presumption that a man intends the natural consequence of his act: See R v Owarey and Egbe Nkanu v State (1980). The burden of proving intoxication is on the accused person. The standard of proof is preponderance of evidence. Insanity\nYou have learned that sections 24 and 25 of the Criminal Code provide general defences to criminal responsibility. Thus no person can be held liable for acts or omissions which occur independently of the exercise of his will or by accident. Insanity prevents the exercise of ones will and therefore a general defence in criminal law. Every person is presumed to be sane, until the contrary is proved. A person is exempted from criminal responsibility if it is proved that his insanity is such that: He did not understand what he was doing.\nHe did not know that he ought not to do the act or make the omission.\nHe was incapable of controlling his action. In this context insanity means either a state of mental disease or a state of natural mental infirmity.\nDefence of immaturity\nIt is an irrebuttable presumption of law that a child under seven years in age has no mens rea. He/she is exempted from criminal responsibility. A child of 7 years and under 12 years of age is presumed to be incapable of crime unless a mischievous discretion is clearly proved. A male child under 12 years is presumed to be incapable of any offence involving sexual intercourse by him. Provocation\nThe term “provocation” used with reference to an offence of which an assault is an element, includes, except as hereinafter stated, any wrongful act, or insult of such a nature as to be likely when done to an ordinary person or in the presence of an ordinary person to another person who is under the immediate care, or to whom he stands in a conjugal, parental, filial, or fraternal, relation, or in the relation of master or servant, to deprive him of the power of self-control, and to induce him to assault the person by whom the act or insult is done or offered, (section 283 CC). A person is not criminally responsible for an assault committed upon a person who gives him provocation for the assault if he is in fact deprived by the provocation of the power of self-control, and acts upon it on the sudden and before there is time for the passion to cool; provided that the force used is not disproportionate to the provocation and is not intended and is not such as is likely to cause death or grievous harm, (section 284, CC).",
+      score: 0.9459013,
+      context: [
+        "charged",
+        "criminal",
+        "criminally",
+        "defences",
+        "following",
+        "his",
+        "motive",
+        "occurs",
+        "open",
+        "responsibility",
+      ],
+      metadata: {
+        article_title: "Defences to Criminal Responsibility",
+        year: 2018,
+        author: "Learn Nigerian Law",
+        area_of_law: [
+          "Criminal Law, Evidence Law, Constitutional Law, Tort Law, Law of Intent ",
+        ],
+      },
+    },
+    {
+      id: "bea0f3b7e421701cb735b224ef3d1fe6659b8a5ddde94a5549b3382a72d42220",
+      content:
+        " In this context insanity means either a state of mental disease or a state of natural mental infirmity.\nDefence of immaturity\nIt is an irrebuttable presumption of law that a child under seven years in age has no mens rea. He/she is exempted from criminal responsibility. A child of 7 years and under 12 years of age is presumed to be incapable of crime unless a mischievous discretion is clearly proved. A male child under 12 years is presumed to be incapable of any offence involving sexual intercourse by him.",
+      score: 0.9341553,
+      context: [
+        "context",
+        "exempted",
+        "insanity",
+        "irrebuttable",
+        "means",
+        "mens",
+        "mental",
+        "natural",
+        "this",
+        "years",
+      ],
+      metadata: {
+        article_title: "Defences to Criminal Responsibility",
+        year: 2018,
+        author: "Learn Nigerian Law",
+        area_of_law: [
+          "Constitutional Law",
+          "Criminal Law",
+          "Evidence Law",
+          "Law of Intent",
+          "Tort Law",
+        ],
+      },
+    },
+  ],
+  filter_elements: {
+    article_title: ["Defences to Criminal Responsibility"],
+    year: [2018],
+    author: ["Learn Nigerian Law"],
+    area_of_law: [
+      "Constitutional Law",
+      "Criminal Law",
+      "Criminal Law, Evidence Law, Constitutional Law, Tort Law, Law of Intent ",
+      "Evidence Law",
+      "Law of Intent",
+      "Tort Law",
+    ],
+  },
+  total_articles: 9,
 };
 
 export const dummyLLMResult: AIResult = {
-  replies: ["What"],
-  meta: {
-    case_title: "john v doe",
-    court: "high court",
-    year: "1993",
+  llm: {
+    replies: [
+      "\n According to the provided context, the time limit for filing an election petition is 21 days after the declaration of election results, as stated in section 134(1) of the Electoral Act, 2010, as amended. Any cross-petition must also be filed within this time limit, as the Tribunal has already found that the result of the election being challenged was declared on March 28, 2015. An application for joinder submitted more than 100 days after the results were declared, as in the case of the appellants, is completely time-barred and cannot be entertained by the Tribunal. This principle of strict time limits applies to all election matters, as stated in the case of Okechukwu v. I. (Nigeria) 2016 LPELR-40385(SC). Additionally, the presentation of an election petition must be made to the secretary, as defined in paragraph 1 interpretation of the First schedule of the Electoral Act 2006, within 30 days, as stated in section 141 of the Electoral Act, 2006. Failure to do so without a valid reason may result in the petition being dismissed.",
+    ],
+  },
+  retriever: {
+    documents: [
+      {
+        id: "fb1489631784d2ecb1e45a7126fcd3c59efd720fddec7d669daaef3d5f77cec5",
+        meta: {
+          case_title: "Adetunji Akande v. I.N.E.c Ors",
+          court: "Court of Appeal",
+          year: "2011",
+        },
+      },
+    ],
   },
 };
 
@@ -410,3 +633,9 @@ export const dummyResults = new Array(15).fill({
   date: "1991-1-1",
   court: "High Court",
 });
+
+export const searchOptions: FilterOption[] = [
+  { id: "cases", label: "Cases", options: [] },
+  { id: "legislations", label: "Legislation", options: [] },
+  { id: "articles", label: "Articles", options: [] },
+];

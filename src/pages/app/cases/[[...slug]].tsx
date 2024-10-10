@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { useRouter } from "next/router";
 import { Head } from "@app/components/ui";
-import { CaseHeader, FilterSideBar } from "@app/components/app";
+import { CaseHeader } from "@app/components/app";
 import { AppLayout as Layout } from "@app/components/layout";
 
 const Page = () => {
@@ -10,10 +10,6 @@ const Page = () => {
   const slug = String(router.query.slug);
   const title = slug.replace(/-/g, " ");
   const tabId: string = router.query.tab ? String(router.query.tab) : "case";
-
-  const [filters, setFilters] = useState<
-    { header: string; options: string[] }[]
-  >([]);
 
   return (
     <Fragment>
@@ -31,7 +27,7 @@ const Page = () => {
               </div>
               <div className="col-span-4 self-baselane">
                 <div className="sticky top-[68px]">
-                  <FilterSideBar filters={filters} setFilters={setFilters} />
+                  <Fragment />
                 </div>
               </div>
             </div>

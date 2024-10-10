@@ -8,14 +8,14 @@ type TabsProps = {
 
 const Tabs: FC<TabsProps> = ({ tabs, onClick }) => {
   return (
-    <div className=" flex gap-x-4 ">
+    <div className="relative flex gap-x-4 items-center ">
       {tabs.map(({ active, id, label }, idx) => (
         <span
           key={`tabitem-${idx}`}
           role="button"
-          className={`pb-2 ${
+          className={`relative ${
             active
-              ? "border-b-4 border-black/80 text-black/80"
+              ? "after:absolute after:w-full after:-bottom-3 after:left-0 after:border-b-4 after:border-[#245b91] text-black/80"
               : "text-black/50"
           }`}
           onClick={() => onClick(id)}

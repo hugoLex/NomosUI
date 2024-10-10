@@ -29,7 +29,9 @@ const SearchHeader = ({
     <Header>
       <div className="border-b border-solid bg-stone-50 border-stone-300 border-opacity-50 rounded-t-lg">
         <div className="flex gap-5 justify-between  items-center px-4 py-2.5 w-full relative">
-          <SearchBoxButton searchTextRef={searchBtnRef} />
+          <div className="w-[20%]">
+            <SearchBoxButton searchTextRef={searchBtnRef} />
+          </div>
 
           <div
             className={`flex-1 transition-all duration-300 ${

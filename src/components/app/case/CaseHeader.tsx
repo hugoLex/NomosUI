@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 
 import { Header, Tabs } from "@app/components/ui";
 import { TabItem } from "@app/types";
+import { SearchBoxButton } from "../search";
+import { CollapseIcon } from "@app/components/icons";
 
 const tabItems: TabItem[] = [
   {
@@ -31,6 +33,7 @@ const tabItems: TabItem[] = [
 const CaseHeader = () => {
   const router = useRouter();
 
+  const searchRef = useRef<HTMLTextAreaElement | null>(null);
   const [tabs, setTabs] = useState(tabItems);
   // const [selectedTab, setSelectedTab] = useState(tabs[0]);
 
@@ -55,8 +58,16 @@ const CaseHeader = () => {
 
   return (
     <Header>
-      <div className="border-b border-solid bg-stone-50 border-stone-300 border-opacity-50 pt-4  mx-auto max-w-[1100px]">
-        <div className="px-16 max-md:px-5 max-w-full">
+      <div className="flex border-b border-solid bg-stone-50 border-stone-300 border-opacity-50 rounded-t-lg pt-4 justify-between px-8">
+        <div className="flex items-center w-[20%] pb-2 gap-2">
+          <CollapseIcon
+            width={36}
+            height={38}
+            className="inline-block items-center align-middle"
+          />
+          <SearchBoxButton searchTextRef={searchRef} />
+        </div>
+        <div className="flex-1 flex justify-end">
           <Tabs tabs={tabs} onClick={onTabsSelect} />
         </div>
       </div>

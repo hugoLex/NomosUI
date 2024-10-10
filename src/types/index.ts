@@ -5,6 +5,9 @@ import React, {
   ReactNode,
 } from "react";
 import { NextPage } from "next";
+import { SearchResultMeta } from "@app/components/app";
+
+export type GenericObject = { [key: string]: any };
 
 export type NextPageWithLayout<P = {}> = NextPage<P> & {
   // You can disable whichever you don't need
@@ -31,6 +34,8 @@ export interface ListResponse<T> {
   data: T[];
 }
 
+export type FilterOption = { id: string; label?: string; options: any[] };
+
 export type LinkProps = { path: string; label: string };
 
 export type DataProp = {
@@ -44,38 +49,103 @@ export type SiteMode = "isLive" | "isComingSoon" | "isMaintenance";
 
 export type TabItem = { active: boolean; id: string; label: string };
 
-export type SearchResultDocMeta = {
-  area_of_law: string[];
-  case_title: string;
-  court: string;
-  source_id: string;
-  year: string | number;
-  suit_number: string;
-};
+export type Case = {};
 
-export type SearchResultFilter = {
-  court: string[];
-  area_of_law: string[];
-  year: string[];
-};
+export type Legislation = {};
 
-export type SearchData = {
-  llmResult: Record<string, AIResult> | null;
-  searchResult: SearchResult | null;
-};
+export type Article = {};
 
-export type SearchResultDoc = {
-  id: string;
-  content: string;
-  context: string | string[];
-  metadata: SearchResultDocMeta;
-  score: string | number;
+export type SearchResultMeta = {
+  area_of_law?: string[];
+  year?: string | number | string[] | number[];
 };
 
 export type SearchResult = {
+  id: string;
+  content: string;
+  context: string | string[];
+  metadata: SearchResultMeta;
+};
+
+export type SearchResults = {
   search_id: string;
-  filter_elements: SearchResultFilter;
-  documents: SearchResultDoc[];
+  filter_elements: any[];
+  documents: SearchResult[];
+};
+
+export type ArticleFilter = SearchResultMeta & {
+  article_title: string[];
+  author: string[];
+};
+
+export type ArticleMetadata = SearchResultMeta & {
+  article_title: string;
+  author: string;
+};
+
+export type ArticleDocuments = Omit<SearchResult, "metadata"> & {
+  metadata: ArticleMetadata;
+  score: number;
+};
+
+export type ArticleResults = Omit<
+  SearchResults,
+  "documents" | "filter_elements"
+> & {
+  documents: ArticleDocuments[];
+  filter_elements: ArticleFilter;
+  total_articles: number;
+};
+
+export type CasesFilter = SearchResultMeta & {
+  court: string[];
+};
+
+export type CaseMetadata = SearchResultMeta & {
+  case_title: string;
+  court: string;
+  source_id: string;
+  suit_number: string;
+};
+
+export type CaseDocuments = Omit<SearchResult, "metadata"> & {
+  metadata: CaseMetadata;
+  score: number;
+};
+
+export type CaseResults = Omit<
+  SearchResults,
+  "documents" | "filter_elements"
+> & {
+  documents: CaseDocuments[];
+  filter_elements: CasesFilter;
+  total_cases: number;
+};
+
+export type LegislationFilter = SearchResultMeta & {
+  document_title: string[];
+  section_number: string[];
+};
+
+export type LegislationMetadata = SearchResultMeta & {
+  document_title: string;
+  part_title: string;
+  part: string;
+  section_number: string;
+};
+
+export type LegislationDocuments = Omit<SearchResult, "metadata"> & {
+  metadata: LegislationMetadata;
+  score: number;
+};
+
+export type LegislationResults = Omit<
+  SearchResults,
+  "documents" | "filter_elements"
+> & {
+  documents: LegislationDocuments[];
+  filter_elements: LegislationFilter;
+  total_legislation: number;
 };
 
 export type AIResultMeta = {
@@ -85,10 +155,15 @@ export type AIResultMeta = {
 };
 
 export type AIResult = {
-  replies: string[];
-  meta: AIResultMeta;
+  llm: { replies: string[] };
+  retriever: { documents: { id: string; meta: AIResultMeta }[] };
 };
 
-export type GenericObject = { [key: string]: any };
+export type SearchData = {
+  articlesData: ArticleResults | null;
+  legislationsData: LegislationResults | null;
+  llmData: AIResult | null;
+  casesData: CaseResults | null;
+};
 
-export type FilterOption = { id: string; label?: string; options: any[] };
+export type SearchType = "articles" | "cases" | "legislations";
