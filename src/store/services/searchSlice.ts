@@ -11,14 +11,10 @@ export const searchQueryAPI = injectEndpoints({
     articlesSearch: builder.query<SearchResult, SearchQuery>({
       query: ({ query, pageNumber }) => {
         return {
-          url: `semanticsearch/api/semantic/search?query=${query}${
+          url: `/api/articles/search?query=${query}${
             pageNumber ? `&page=${pageNumber}&size=5` : ""
           }`,
           method: "GET",
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
         };
       },
       providesTags: ["ARTICLES"],
@@ -26,14 +22,10 @@ export const searchQueryAPI = injectEndpoints({
     casesSearch: builder.query<CaseResults, SearchQuery>({
       query: ({ query, pageNumber }) => {
         return {
-          url: `semanticsearch/api/semantic/search?query=${query}${
+          url: `/api/semantic/search?query=${query}${
             pageNumber ? `&page=${pageNumber}&size=5` : ""
           }`,
           method: "GET",
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
         };
       },
       providesTags: ["CASES"],
@@ -45,41 +37,23 @@ export const searchQueryAPI = injectEndpoints({
         const appyAreaOfLaw = area_of_law ? `&${area_of_law}` : "";
         const filters = `${applyCourt}${applyYear}${appyAreaOfLaw}`;
         return {
-          url: `semanticsearch/api/semantic/filter?search_id=${id}${filters}`,
+          url: `/api/semantic/filter?search_id=${id}${filters}`,
           method: "GET",
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
         };
       },
     }),
     legislationsSearch: builder.query<SearchResult, SearchQuery>({
-      query: ({ query, pageNumber }) => {
-        return {
-          url: `semanticsearch/api/semantic/search?query=${query}${
-            pageNumber ? `&page=${pageNumber}&size=5` : ""
-          }`,
-          method: "GET",
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
-        };
-      },
+      query: ({ query, pageNumber }) => ({
+        url: `/api/legislation/search?query=${query}${
+          pageNumber ? `&page=${pageNumber}&size=5` : ""
+        }`,
+      }),
       providesTags: ["LEGISLATIONS"],
     }),
     LLMSearch: builder.query<AIResult, string>({
-      query: (query) => {
-        return {
-          url: `llmsearch/api/ask?question=${query}`,
-          method: "GET",
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json",
-          },
-        };
-      },
+      query: (query) => ({
+        url: `/api/ask?question=${query}`,
+      }),
       providesTags: ["CASES"],
     }),
   }),

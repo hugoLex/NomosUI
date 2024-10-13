@@ -129,14 +129,9 @@ const useSearch = (
   ]);
 
   return {
-    data: {
-      articlesData: dummyArticleResult,
-      legislationsData: dummyLegislationResult,
-      llmData: dummyLLMResult,
-      casesData: dummyCasesResult,
-    },
-    isError: false,
-    isLoading: false,
+    data,
+    isError,
+    isLoading,
   };
 };
 

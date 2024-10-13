@@ -3,7 +3,14 @@ import { baseURL as baseUrl } from "@app/utils";
 
 const baseAPI = createApi({
   reducerPath: "searchAPI",
-  baseQuery: fetchBaseQuery({ baseUrl }),
+  baseQuery: fetchBaseQuery({
+    baseUrl,
+    prepareHeaders: (headers, { getState }) => {
+      headers.set("Access-Control-Allow-Origin", "*");
+      headers.set("Content-Type", "application/json");
+      return headers;
+    },
+  }),
   tagTypes: ["ARTICLES", "CASES", "LEGISLATIONS"],
   endpoints: () => ({}),
 });

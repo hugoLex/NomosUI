@@ -72,7 +72,6 @@ export const SearchFilterDrawer = ({
   onSelectedOption: (id: string, option: any) => void;
   closeDrawer: () => void;
 }) => {
-  console.log(selectedOptions, data);
   return (
     <Fragment>
       <div
