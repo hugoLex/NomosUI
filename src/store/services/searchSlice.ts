@@ -11,7 +11,7 @@ export const searchQueryAPI = injectEndpoints({
     articlesSearch: builder.query<SearchResult, SearchQuery>({
       query: ({ query, pageNumber }) => {
         return {
-          url: `/api/articles/search?query=${query}${
+          url: `/articles/search?query=${query}${
             pageNumber ? `&page=${pageNumber}&size=5` : ""
           }`,
           method: "GET",
@@ -22,7 +22,7 @@ export const searchQueryAPI = injectEndpoints({
     casesSearch: builder.query<CaseResults, SearchQuery>({
       query: ({ query, pageNumber }) => {
         return {
-          url: `/api/semantic/search?query=${query}${
+          url: `/semantic/search?query=${query}${
             pageNumber ? `&page=${pageNumber}&size=5` : ""
           }`,
           method: "GET",
@@ -37,14 +37,14 @@ export const searchQueryAPI = injectEndpoints({
         const appyAreaOfLaw = area_of_law ? `&${area_of_law}` : "";
         const filters = `${applyCourt}${applyYear}${appyAreaOfLaw}`;
         return {
-          url: `/api/semantic/filter?search_id=${id}${filters}`,
+          url: `/semantic/filter?search_id=${id}${filters}`,
           method: "GET",
         };
       },
     }),
     legislationsSearch: builder.query<SearchResult, SearchQuery>({
       query: ({ query, pageNumber }) => ({
-        url: `/api/legislation/search?query=${query}${
+        url: `/legislation/search?query=${query}${
           pageNumber ? `&page=${pageNumber}&size=5` : ""
         }`,
       }),
@@ -52,7 +52,7 @@ export const searchQueryAPI = injectEndpoints({
     }),
     LLMSearch: builder.query<AIResult, string>({
       query: (query) => ({
-        url: `/api/ask?question=${query}`,
+        url: `/ask?question=${query}`,
       }),
       providesTags: ["CASES"],
     }),

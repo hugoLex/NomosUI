@@ -111,10 +111,10 @@ const useSearch = (
       setIsLoading(false);
     }
 
-    if ((llmError && casesError) || articlesError || legislationsError) {
-      setIsError(true);
-      setIsLoading(false);
-    }
+    // if ((casesError || articlesError || legislationsError) && llmError) {
+    //   setIsError(true);
+    //   setIsLoading(false);
+    // }
 
     return () => {};
   }, [
@@ -187,7 +187,7 @@ const Page = () => {
 
   useEffect(() => {
     if (casesData !== null) {
-      const { filter_elements, documents } = casesData;
+      const { filter_elements } = casesData;
       const { area_of_law, court, year } = filter_elements;
       const options = [
         { id: "court", label: "Court", options: court },
@@ -200,7 +200,7 @@ const Page = () => {
           return itx.id === "cases" ? { ...itx, options } : itx;
         })
       );
-      setPrefetch(true);
+      setPrefetch(false);
     }
 
     if (articlesData !== null) {
@@ -350,7 +350,10 @@ const Page = () => {
     ]);
   };
 
-  const handleSelectedSearchType = (_id: any) => setSearchType(_id);
+  const handleSelectedSearchType = (_id: any) => {
+    setSearchType(_id);
+    router.push(`${router.asPath}&filter=${_id}`, undefined, { shallow: true });
+  };
 
   return (
     <Fragment>

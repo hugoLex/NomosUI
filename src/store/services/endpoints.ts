@@ -6,7 +6,7 @@ const baseAPI = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl,
     prepareHeaders: (headers, { getState }) => {
-      headers.set("Access-Control-Allow-Origin", "*");
+      // headers.set("Access-Control-Allow-Origin", "*");
       headers.set("Content-Type", "application/json");
       return headers;
     },
