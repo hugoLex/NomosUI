@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import * as Accordion from "@radix-ui/react-accordion";
 
 import { CloseIcon, Filter2Icon, PlusIcon } from "@app/components/icons";
-import { FilterOption } from "@app/types";
+import { FilterOption, SearchType } from "@app/types";
 
 export const SearchFilterSidebar = ({
   data,
@@ -11,7 +11,7 @@ export const SearchFilterSidebar = ({
 }: {
   data: FilterOption[];
   handleSelection: (id: string, idx: string) => void;
-  handleSelectedSearchType: (id: string) => void;
+  handleSelectedSearchType: (id: SearchType) => void;
 }) => {
   return (
     <div className="flex flex-col self-stretch rounded py-3">
@@ -27,7 +27,9 @@ export const SearchFilterSidebar = ({
         >
           {data.map(({ id, label, options }, idx) => (
             <Accordion.Item value={id ?? idx} key={id}>
-              <Accordion.Header onClick={() => handleSelectedSearchType(id)}>
+              <Accordion.Header
+                onClick={() => handleSelectedSearchType(id as SearchType)}
+              >
                 <Accordion.Trigger
                   className="text-base font-normal w-full 
            flex justify-between border hover:bg-neutral-200/30 py-2 px-5 rounded-[10px]"

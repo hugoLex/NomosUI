@@ -111,6 +111,14 @@ const useSearch = (
       setIsLoading(false);
     }
 
+    if (articlesData) {
+      setData((prev) => ({ ...prev, articlesData }));
+    }
+
+    if (legislationsData) {
+      setData((prev) => ({ ...prev, legislationsData }));
+    }
+
     // if ((casesError || articlesError || legislationsError) && llmError) {
     //   setIsError(true);
     //   setIsLoading(false);
@@ -154,6 +162,10 @@ const Page = () => {
   const [selectedOptions, setSelectedOptions] = useState<FilterOption[]>([]);
   const [searchOptions, setSearchOptions] =
     useState<FilterOption[]>(defaultSearchOptions);
+  const [searchDocuments, setSearchDocuments] = useState<{
+    documents: SearchDocuments;
+    total: number;
+  } | null>(null);
 
   const isH1Visible = useVisibility({
     ref: h1Ref,
@@ -166,28 +178,19 @@ const Page = () => {
   const { data, isError, isLoading } = useSearch(query, pageNumber, prefetch);
   const { articlesData, casesData, llmData, legislationsData } = data;
 
-  const SearchDocuments = useMemo((): {
-    documents: SearchDocuments;
-    total: number;
-  } | null => {
-    if (searchType === "cases" && casesData) {
-      const { documents, total_cases } = casesData;
-      return { documents, total: total_cases };
-    }
-    if (searchType === "articles" && articlesData) {
-      const { documents, total_articles } = articlesData;
-      return { documents, total: total_articles };
-    }
-    if (searchType === "legislations" && legislationsData) {
-      const { documents, total_legislation } = legislationsData;
-      return { documents, total: total_legislation };
-    }
-    return null;
-  }, [searchType, casesData, articlesData, legislationsData]);
-
   useEffect(() => {
-    if (casesData !== null) {
-      const { filter_elements } = casesData;
+    const isPrefetch = !articlesData && !legislationsData ? true : false;
+
+    if (casesData && isPrefetch) {
+      setPrefetch(false);
+    }
+
+    if (!isPrefetch) {
+      setPrefetch(true);
+    }
+
+    if (searchType === "cases" && casesData) {
+      const { documents, filter_elements, total_cases } = casesData;
       const { area_of_law, court, year } = filter_elements;
       const options = [
         { id: "court", label: "Court", options: court },
@@ -195,22 +198,23 @@ const Page = () => {
         { id: "year", label: "Year", options: year },
       ];
 
+      setSearchDocuments({ documents, total: total_cases });
       setSearchOptions((prev) =>
         prev.map((itx) => {
           return itx.id === "cases" ? { ...itx, options } : itx;
         })
       );
-      setPrefetch(false);
     }
 
-    if (articlesData !== null) {
-      const { filter_elements } = articlesData;
+    if (searchType === "articles" && articlesData) {
+      const { documents, filter_elements, total_articles } = articlesData;
       const { article_title, author, area_of_law } = filter_elements;
       const options = [
         { id: "article_tile", label: "Article Title", options: article_title },
         { id: "author", label: "Author", options: author },
         { id: "area_of_law", label: "Area of Law", options: area_of_law },
       ];
+      setSearchDocuments({ documents, total: total_articles });
       setSearchOptions((prev) =>
         prev.map((itx) => {
           return itx.id === "articles" ? { ...itx, options } : itx;
@@ -218,8 +222,9 @@ const Page = () => {
       );
     }
 
-    if (legislationsData !== null) {
-      const { filter_elements } = legislationsData;
+    if (searchType === "legislations" && legislationsData) {
+      const { documents, filter_elements, total_legislation } =
+        legislationsData;
       const { document_title, section_number } = filter_elements;
       const options = [
         {
@@ -233,6 +238,7 @@ const Page = () => {
           options: section_number,
         },
       ];
+      setSearchDocuments({ documents, total: total_legislation });
       setSearchOptions((prev) =>
         prev.map((itx) => {
           return itx.id === "legislations" ? { ...itx, options } : itx;
@@ -241,7 +247,7 @@ const Page = () => {
     }
 
     return () => {};
-  }, [prefetch, casesData, articlesData, legislationsData]);
+  }, [searchType, casesData, articlesData, legislationsData]);
 
   useEffect(() => {
     const fetchFilter = async () => {
@@ -350,9 +356,20 @@ const Page = () => {
     ]);
   };
 
-  const handleSelectedSearchType = (_id: any) => {
+  const handleSelectedSearchType = (_id: SearchType) => {
     setSearchType(_id);
-    router.push(`${router.asPath}&filter=${_id}`, undefined, { shallow: true });
+
+    router.push(
+      {
+        pathname: "/search",
+        query: {
+          ...router.query,
+          filter: _id,
+        },
+      },
+      undefined,
+      { shallow: true }
+    );
   };
 
   return (
@@ -432,9 +449,9 @@ const Page = () => {
                     </Fragment>
 
                     <div className="my-6">
-                      {allFilters.length === 0 && SearchDocuments && (
+                      {allFilters.length === 0 && searchDocuments && (
                         <Fragment>
-                          {SearchDocuments.documents?.map((data, idx) => (
+                          {searchDocuments.documents?.map((data, idx) => (
                             <SearchResultMeta
                               key={data.id}
                               index={String(idx + 1)}
@@ -464,7 +481,7 @@ const Page = () => {
                     </div>
                   </div>
 
-                  {SearchDocuments && (
+                  {searchDocuments && (
                     <div className="col-span-4">
                       <div className="sticky md:top-[68px]">
                         <SearchFilterSidebar
@@ -477,7 +494,7 @@ const Page = () => {
                   )}
                 </div>
 
-                {SearchDocuments && (
+                {searchDocuments && (
                   <div className="flex flex-col justify-center gap-2">
                     <div className="inline-flex justify-content-center gap-8 mx-auto">
                       <button

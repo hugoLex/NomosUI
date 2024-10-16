@@ -1,4 +1,11 @@
-import { AIResult, CaseResults, ListResponse, SearchResult } from "@app/types";
+import {
+  AIResult,
+  ArticleResults,
+  CaseResults,
+  LegislationResults,
+  ListResponse,
+  SearchResult,
+} from "@app/types";
 import { injectEndpoints } from "./endpoints";
 
 interface SearchQuery {
@@ -8,7 +15,7 @@ interface SearchQuery {
 
 export const searchQueryAPI = injectEndpoints({
   endpoints: (builder) => ({
-    articlesSearch: builder.query<SearchResult, SearchQuery>({
+    articlesSearch: builder.query<ArticleResults, SearchQuery>({
       query: ({ query, pageNumber }) => {
         return {
           url: `/articles/search?query=${query}${
@@ -42,7 +49,7 @@ export const searchQueryAPI = injectEndpoints({
         };
       },
     }),
-    legislationsSearch: builder.query<SearchResult, SearchQuery>({
+    legislationsSearch: builder.query<LegislationResults, SearchQuery>({
       query: ({ query, pageNumber }) => ({
         url: `/legislation/search?query=${query}${
           pageNumber ? `&page=${pageNumber}&size=5` : ""
