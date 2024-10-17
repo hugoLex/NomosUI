@@ -156,7 +156,8 @@ export type AIResultMeta = {
 
 export type AIResult = {
   llm: { replies: string[] };
-  retriever: { documents: { id: string; meta: AIResultMeta }[] };
+  retriever?: { documents: { id: string; meta: AIResultMeta }[] };
+  message?: string;
 };
 
 export type SearchData = {

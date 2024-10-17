@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { Head, Loader } from "@app/components/ui";
 import {
@@ -119,10 +119,10 @@ const useSearch = (
       setData((prev) => ({ ...prev, legislationsData }));
     }
 
-    // if ((casesError || articlesError || legislationsError) && llmError) {
-    //   setIsError(true);
-    //   setIsLoading(false);
-    // }
+    if ((casesError || articlesError || legislationsError) && llmError) {
+      setIsError(true);
+      setIsLoading(false);
+    }
 
     return () => {};
   }, [
@@ -371,6 +371,8 @@ const Page = () => {
       { shallow: true }
     );
   };
+
+  console.log(searchType, searchDocuments);
 
   return (
     <Fragment>

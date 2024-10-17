@@ -2,11 +2,14 @@ import React, { FC, Fragment, useState } from "react";
 import { AIResult } from "@app/types";
 import { CaretDown, CaretUp } from "@app/components/icons";
 
-const SearchAIMetaResult: FC<AIResult> = ({ llm, retriever }) => {
+const SearchAIMetaResult: FC<AIResult> = ({ llm, retriever, message }) => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
   const { replies } = llm;
-  const { documents } = retriever;
-  const isShow = replies[0].length > 100 && true;
+  const isShow = replies.length > 0 && replies[0].length > 100 ? true : false;
+
+  if (message) {
+    return <Fragment />;
+  }
 
   return (
     <Fragment>
@@ -101,20 +104,21 @@ const SearchAIMetaResult: FC<AIResult> = ({ llm, retriever }) => {
           })}
         </div>
       </div>
-
-      <div className="flex ">
-        <h5 className="p-4">References</h5>
-        {documents.map(({ id, meta }, idx) => (
-          <div
-            key={idx}
-            className="flex flex-col justify-start items-start p-4 bg-[#eaf0f2]/30 rounded-lg"
-          >
-            <span className="text-xs">{meta.case_title}</span>
-            <span className="text-xs">{meta.court}</span>
-            <span className="text-xs">{meta.year}</span>
-          </div>
-        ))}
-      </div>
+      {retriever && (
+        <div className="flex ">
+          <h5 className="p-4">References</h5>
+          {retriever.documents.map(({ id, meta }, idx) => (
+            <div
+              key={idx}
+              className="flex flex-col justify-start items-start p-4 bg-[#eaf0f2]/30 rounded-lg"
+            >
+              <span className="text-xs">{meta.case_title}</span>
+              <span className="text-xs">{meta.court}</span>
+              <span className="text-xs">{meta.year}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </Fragment>
   );
 };
