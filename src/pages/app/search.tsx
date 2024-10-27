@@ -41,7 +41,7 @@ const Page = () => {
   const router = useRouter();
   const { q, page } = router.query;
   const query = String(q);
-  const pageNumber = page ? Number(page) : null;
+  const pageNumber = page ? Number(page) : undefined;
   const isPrev = pageNumber && pageNumber !== 1 ? false : true;
 
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
@@ -77,9 +77,12 @@ const Page = () => {
     },
   });
 
-  const { isError, isLoading, isFetching, data } = useBaseSearchQuery(query, {
-    refetchOnMountOrArgChange: true,
-  });
+  const { isError, isLoading, isFetching, data } = useBaseSearchQuery(
+    { query, pageNumber, searchType },
+    {
+      // refetchOnMountOrArgChange: true,
+    }
+  );
 
   useEffect(() => {
     if (data) {
@@ -396,7 +399,7 @@ const Page = () => {
           </div>
         )}
 
-        {!isFetching && (
+        {!isFetching && !isError && (
           <section className="relative flex self-stretch min-h-screen">
             <div
               className={`py-6 px-16 max-md:px-5  mx-auto max-w-[1100px]
@@ -446,11 +449,12 @@ const Page = () => {
                   )}
 
                   <Fragment>
-                    {llmData === null && <Loader variant="classic" />}
-                    {llmData !== null && (
+                    {!llmData && <Loader variant="classic" />}
+                    {llmData && (
                       <SearchAIMetaResult
                         llm={llmData.llm}
                         retriever={llmData.retriever}
+                        message={llmData.message}
                       />
                     )}
                   </Fragment>
@@ -516,16 +520,18 @@ const Page = () => {
                       <ArrowLeftIcon stroke="black" />
                       Previous
                     </button>
-                    <button
-                      id="next"
-                      className={`inline-flex gap-3 hover:opacity-40`}
-                      // disabled={
-                      //   data.search.length < 9 ? true : false //why setting isDisabled again
-                      // }
-                      onClick={nextPage}
-                    >
-                      Next <ArrowRightIcon stroke="black" />
-                    </button>
+                    {searchDocuments.total > 5 && (
+                      <button
+                        id="next"
+                        className={`inline-flex gap-3 hover:opacity-40`}
+                        // disabled={
+                        //   data.search.length < 9 ? true : false //why setting isDisabled again
+                        // }
+                        onClick={nextPage}
+                      >
+                        Next <ArrowRightIcon stroke="black" />
+                      </button>
+                    )}
                   </div>
                   <div
                     className={`text-center my-3 ${

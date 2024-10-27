@@ -1,6 +1,21 @@
-import { GenericObject, ListResponse, SearchData } from "@app/types";
+import {
+  GenericObject,
+  ListResponse,
+  SearchData,
+  SearchType,
+} from "@app/types";
 import { injectEndpoints } from "./endpoints";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import {
+  FetchBaseQueryError,
+  FetchBaseQueryMeta,
+} from "@reduxjs/toolkit/query";
+import { QueryReturnValue } from "@reduxjs/toolkit/dist/query/baseQueryTypes";
+
+type SearchQuery = {
+  query: string;
+  pageNumber?: number | string;
+  searchType?: SearchType;
+};
 
 const handlePromiseResults = (results: GenericObject[]) => {
   const errors = results
@@ -24,14 +39,57 @@ const handlePromiseResults = (results: GenericObject[]) => {
 
 export const searchQueryAPI = injectEndpoints({
   endpoints: (builder) => ({
-    baseSearch: builder.query<SearchData, string>({
+    baseSearch: builder.query<SearchData, SearchQuery>({
       queryFn: async (_arg, _api, _extraOptions, _baseQuery) => {
-        const results = await Promise.all([
-          _baseQuery(`/ask?question=${_arg}`),
-          _baseQuery(`/semantic/search?query=${_arg}`),
-          _baseQuery(`/articles/search?query=${_arg}`),
-          _baseQuery(`/legislation/search?query=${_arg}`),
+        let results: QueryReturnValue<
+          unknown,
+          FetchBaseQueryError,
+          FetchBaseQueryMeta
+        >[] = [];
+        const { query, pageNumber, searchType } = _arg;
+        // if (pageNumber) {
+        //   const llm = await _baseQuery(`/ask?question=${query}`);
+        //   results.push(llm);
+
+        //   if (searchType === "cases") {
+        //     const result = await _baseQuery(
+        //       `/semantic/search?query=${query}${
+        //         pageNumber ? `&page=${pageNumber}&size=5` : ""
+        //       }`
+        //     );
+
+        //     results.push(result);
+        //   }
+
+        //   if (searchType === "articles") {
+        //     const result = await _baseQuery(
+        //       `/articles/search?query=${query}${
+        //         pageNumber ? `&page=${pageNumber}&size=5` : ""
+        //       }`
+        //     );
+
+        //     results.push(result);
+        //   }
+
+        //   if (searchType === "legislations") {
+        //     const result = await _baseQuery(
+        //       `/legislation/search?query=${query}}${
+        //         pageNumber ? `&page=${pageNumber}&size=5` : ""
+        //       }`
+        //     );
+
+        //     results.push(result);
+        //   }
+        // } else {
+        const defaultResults = await Promise.all([
+          _baseQuery(`/ask?question=${query}`),
+          _baseQuery(`/semantic/search?query=${query}`),
+          _baseQuery(`/articles/search?query=${query}`),
+          _baseQuery(`/legislation/search?query=${query}`),
         ]);
+
+        results.push(...defaultResults);
+        // }
 
         try {
           const arrOfResults = handlePromiseResults(results);
