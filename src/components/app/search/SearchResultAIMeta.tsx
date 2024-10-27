@@ -105,18 +105,20 @@ const SearchAIMetaResult: FC<AIResult> = ({ llm, retriever, message }) => {
         </div>
       </div>
       {retriever && (
-        <div className="flex ">
-          <h5 className="p-4">References</h5>
-          {retriever.documents.map(({ id, meta }, idx) => (
-            <div
-              key={idx}
-              className="flex flex-col justify-start items-start p-4 bg-[#eaf0f2]/30 rounded-lg"
-            >
-              <span className="text-xs">{meta.case_title}</span>
-              <span className="text-xs">{meta.court}</span>
-              <span className="text-xs">{meta.year}</span>
-            </div>
-          ))}
+        <div className="space-y-4">
+          <h5 className="px-4">References</h5>
+          <div className="flex">
+            {retriever.documents.map(({ id, meta }, idx) => (
+              <div
+                key={idx}
+                className="flex flex-col justify-start items-start p-4 bg-[#eaf0f2]/30 rounded-lg"
+              >
+                <span className="text-xs font-bold">{meta.case_title}</span>
+                <span className="text-xs">{meta.court}</span>
+                <span className="text-xs">{meta.year}</span>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </Fragment>

@@ -6,10 +6,12 @@ import { FilterOption, SearchType } from "@app/types";
 
 export const SearchFilterSidebar = ({
   data,
+  defaultValue,
   handleSelection,
   handleSelectedSearchType,
 }: {
   data: FilterOption[];
+  defaultValue: SearchType;
   handleSelection: (id: string, idx: string) => void;
   handleSelectedSearchType: (id: SearchType) => void;
 }) => {
@@ -22,7 +24,7 @@ export const SearchFilterSidebar = ({
       <Fragment>
         <Accordion.Root
           type="single"
-          defaultValue={"cases"}
+          defaultValue={defaultValue}
           className="flex flex-col gap-2 max-h-[80vh] overflow-y-auto scrollbar"
         >
           {data.map(({ id, label, options }, idx) => (

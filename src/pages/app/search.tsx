@@ -18,23 +18,14 @@ import {
   CloseIcon,
 } from "@app/components/icons";
 import {
-  ArticleResults,
-  CaseResults,
-  LegislationResults,
   FilterOption,
   GenericObject,
   SearchData,
   SearchType,
-  CaseDocuments,
-  LegislationDocuments,
-  ArticleDocuments,
+  SearchDataResults,
+  SearchDocuments,
 } from "@app/types";
-import {
-  useArticlesSearchQuery,
-  useCasesSearchQuery,
-  useLLMSearchQuery,
-  useLegislationsSearchQuery,
-} from "@app/store/services/searchSlice";
+import { useBaseSearchQuery } from "@app/store/services/searchSlice";
 import { flattenFilters } from "@app/utils/helpers";
 import {
   dummyCasesResult,
@@ -46,103 +37,6 @@ import {
 } from "@app/utils/constants";
 import { useVisibility } from "@app/hooks";
 
-type SearchDataResults = ArticleResults | CaseResults | LegislationResults;
-type SearchDocuments =
-  | CaseDocuments[]
-  | LegislationDocuments[]
-  | ArticleDocuments[];
-
-const useSearch = (
-  query: string,
-  pageNumber: number | null,
-  skip: boolean
-): { data: SearchData; isError: boolean; isLoading: boolean } => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean>(false);
-  const [data, setData] = useState<SearchData>({
-    articlesData: null,
-    casesData: null,
-    llmData: null,
-    legislationsData: null,
-  });
-
-  useEffect(() => {
-    setIsLoading(true);
-    setData({
-      articlesData: null,
-      casesData: null,
-      llmData: null,
-      legislationsData: null,
-    });
-  }, [query]);
-
-  const { data: llmData, isError: llmError } = useLLMSearchQuery(query);
-
-  const { data: casesData, isError: casesError } = useCasesSearchQuery({
-    query,
-    pageNumber,
-  });
-
-  const { data: articlesData, isError: articlesError } = useArticlesSearchQuery(
-    {
-      query,
-      pageNumber,
-    },
-    { skip }
-  );
-
-  const { data: legislationsData, isError: legislationsError } =
-    useLegislationsSearchQuery(
-      {
-        query,
-        pageNumber,
-      },
-      { skip }
-    );
-
-  useEffect(() => {
-    if (llmData) {
-      setData((prev) => ({ ...prev, llmData }));
-      setIsLoading(false);
-    }
-
-    if (casesData) {
-      setData((prev) => ({ ...prev, casesData }));
-      setIsLoading(false);
-    }
-
-    if (articlesData) {
-      setData((prev) => ({ ...prev, articlesData }));
-    }
-
-    if (legislationsData) {
-      setData((prev) => ({ ...prev, legislationsData }));
-    }
-
-    if ((casesError || articlesError || legislationsError) && llmError) {
-      setIsError(true);
-      setIsLoading(false);
-    }
-
-    return () => {};
-  }, [
-    articlesData,
-    casesData,
-    llmData,
-    legislationsData,
-    articlesError,
-    casesError,
-    legislationsError,
-    llmError,
-  ]);
-
-  return {
-    data,
-    isError,
-    isLoading,
-  };
-};
-
 const Page = () => {
   const router = useRouter();
   const { q, page } = router.query;
@@ -153,7 +47,6 @@ const Page = () => {
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
   const searchRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const [prefetch, setPrefetch] = useState<boolean>(true);
   const [isFilterDrawer, setIsFilterDrawer] = useState<boolean>(false);
   const [searchType, setSearchType] = useState<SearchType>("cases");
   const [filterData, setFilterData] = useState<SearchDataResults | null>(null);
@@ -162,6 +55,15 @@ const Page = () => {
   const [selectedOptions, setSelectedOptions] = useState<FilterOption[]>([]);
   const [searchOptions, setSearchOptions] =
     useState<FilterOption[]>(defaultSearchOptions);
+  const [
+    { articlesData, casesData, legislationsData, llmData },
+    setSearchData,
+  ] = useState<SearchData>({
+    articlesData: null,
+    casesData: null,
+    legislationsData: null,
+    llmData: null,
+  });
   const [searchDocuments, setSearchDocuments] = useState<{
     documents: SearchDocuments;
     total: number;
@@ -175,75 +77,129 @@ const Page = () => {
     },
   });
 
-  const { data, isError, isLoading } = useSearch(query, pageNumber, prefetch);
-  const { articlesData, casesData, llmData, legislationsData } = data;
+  const { isError, isLoading, isFetching, data } = useBaseSearchQuery(query, {
+    refetchOnMountOrArgChange: true,
+  });
 
   useEffect(() => {
-    const isPrefetch = !articlesData && !legislationsData ? true : false;
+    if (data) {
+      const { llmData, casesData, articlesData, legislationsData } = data;
 
-    if (casesData && isPrefetch) {
-      setPrefetch(false);
+      setSearchData({
+        articlesData: articlesData,
+        casesData: casesData,
+        llmData: llmData,
+        legislationsData: legislationsData,
+      });
+
+      if (casesData) {
+        const { filter_elements, total_cases } = casesData;
+        const { area_of_law, court, year } = filter_elements;
+        const options = [
+          { id: "court", label: "Court", options: court },
+          { id: "area_of_law", label: "Area of Law", options: area_of_law },
+          { id: "year", label: "Year", options: year },
+        ];
+
+        setSearchOptions((prev) =>
+          prev.map((itx) => {
+            return itx.id === "cases"
+              ? { ...itx, label: `Cases (${total_cases})`, options }
+              : itx;
+          })
+        );
+      }
+
+      if (articlesData) {
+        const { filter_elements, total_articles } = articlesData;
+        const { article_title, author, area_of_law } = filter_elements;
+        const options = [
+          {
+            id: "article_tile",
+            label: "Article Title",
+            options: article_title,
+          },
+          { id: "author", label: "Author", options: author },
+          { id: "area_of_law", label: "Area of Law", options: area_of_law },
+        ];
+
+        if (!casesData || !legislationsData) {
+          setSearchType("articles");
+        }
+        setSearchOptions((prev) =>
+          prev.map((itx) => {
+            return itx.id === "articles"
+              ? { ...itx, label: `Articles (${total_articles})`, options }
+              : itx;
+          })
+        );
+      }
+
+      if (legislationsData) {
+        const { filter_elements, total_legislation } = legislationsData;
+        const { document_title, section_number } = filter_elements;
+        const options = [
+          {
+            id: "document_title",
+            label: "Document Title",
+            options: document_title,
+          },
+          {
+            id: "section_number",
+            label: "Section Number",
+            options: section_number,
+          },
+        ];
+
+        if (!casesData || !articlesData) {
+          setSearchType("legislations");
+        }
+
+        setSearchOptions((prev) =>
+          prev.map((itx) => {
+            return itx.id === "legislations"
+              ? {
+                  ...itx,
+                  label: `Legislations (${total_legislation})`,
+                  options,
+                }
+              : itx;
+          })
+        );
+      }
+
+      if (!casesData) {
+        setSearchOptions((prev) => prev.filter((itx) => itx.id !== "cases"));
+      }
+
+      if (!articlesData) {
+        setSearchOptions((prev) => prev.filter((itx) => itx.id !== "articles"));
+      }
+
+      if (!legislationsData) {
+        setSearchOptions((prev) =>
+          prev.filter((itx) => itx.id !== "legislations")
+        );
+      }
     }
 
-    if (!isPrefetch) {
-      setPrefetch(true);
-    }
+    return () => {};
+  }, [data]);
 
+  useEffect(() => {
     if (searchType === "cases" && casesData) {
-      const { documents, filter_elements, total_cases } = casesData;
-      const { area_of_law, court, year } = filter_elements;
-      const options = [
-        { id: "court", label: "Court", options: court },
-        { id: "area_of_law", label: "Area of Law", options: area_of_law },
-        { id: "year", label: "Year", options: year },
-      ];
-
+      const { documents, total_cases } = casesData;
       setSearchDocuments({ documents, total: total_cases });
-      setSearchOptions((prev) =>
-        prev.map((itx) => {
-          return itx.id === "cases" ? { ...itx, options } : itx;
-        })
-      );
     }
 
     if (searchType === "articles" && articlesData) {
-      const { documents, filter_elements, total_articles } = articlesData;
-      const { article_title, author, area_of_law } = filter_elements;
-      const options = [
-        { id: "article_tile", label: "Article Title", options: article_title },
-        { id: "author", label: "Author", options: author },
-        { id: "area_of_law", label: "Area of Law", options: area_of_law },
-      ];
+      const { documents, total_articles } = articlesData;
       setSearchDocuments({ documents, total: total_articles });
-      setSearchOptions((prev) =>
-        prev.map((itx) => {
-          return itx.id === "articles" ? { ...itx, options } : itx;
-        })
-      );
     }
 
     if (searchType === "legislations" && legislationsData) {
-      const { documents, filter_elements, total_legislation } =
-        legislationsData;
-      const { document_title, section_number } = filter_elements;
-      const options = [
-        {
-          id: "document_title",
-          label: "Document Title",
-          options: document_title,
-        },
-        {
-          id: "section_number",
-          label: "Section Number",
-          options: section_number,
-        },
-      ];
+      const { documents, total_legislation } = legislationsData;
       setSearchDocuments({ documents, total: total_legislation });
-      setSearchOptions((prev) =>
-        prev.map((itx) => {
-          return itx.id === "legislations" ? { ...itx, options } : itx;
-        })
-      );
     }
 
     return () => {};
@@ -372,8 +328,6 @@ const Page = () => {
     );
   };
 
-  console.log(searchType, searchDocuments);
-
   return (
     <Fragment>
       <Head title={`Search Result - ${q}`} />
@@ -384,167 +338,13 @@ const Page = () => {
           searchBtnRef={searchRef}
         />
 
-        {isLoading && (
+        {(isFetching || isLoading) && (
           <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
             <Loader variant="classic" size={80} />
           </div>
         )}
 
-        {!isLoading && !isError && (
-          <Fragment>
-            <section className="relative flex self-stretch min-h-screen">
-              <div
-                className={`py-6 px-16 max-md:px-5  mx-auto max-w-[1100px]
-                  `}
-                // ${ isFilterDrawer ? "w-[80%] flex-1" : ""  }
-              >
-                <div className="md:grid grid-cols-12 gap-8">
-                  <div className="col-span-8">
-                    <h1
-                      id="searchQuery"
-                      ref={h1Ref}
-                      className="text-xx font-normal mb-6"
-                    >
-                      Legal findings:
-                      <span className="text-[#245b91]"> {q}</span>
-                    </h1>
-
-                    {allFilters.length > 0 && (
-                      <div className="flex gap-3 flex-wrap mb-4 items-center">
-                        <p>Applied Filters</p>
-                        {selectedOptions
-                          .filter((elem) => elem.options.length > 0)
-                          .map((filter) => (
-                            <div
-                              key={filter.id}
-                              className=" flex flex-wrap gap-2"
-                            >
-                              {filter.options.map((option, idx) => (
-                                <Fragment key={idx}>
-                                  <span className="flex gap-2 items-center px-2 py-[0.125rem] bg-stone-100 rounded text-[0.8rem] text-center text-teal-900 text-sm font-normal">
-                                    {option}
-                                    <CloseIcon
-                                      width={18}
-                                      height={18}
-                                      role="button"
-                                      stroke="#000"
-                                      onClick={() =>
-                                        removeFilter(filter.id, option)
-                                      }
-                                    />
-                                  </span>
-                                </Fragment>
-                              ))}
-                            </div>
-                          ))}
-                      </div>
-                    )}
-
-                    <Fragment>
-                      {llmData === null && <Loader variant="classic" />}
-                      {llmData !== null && (
-                        <SearchAIMetaResult
-                          llm={llmData.llm}
-                          retriever={llmData.retriever}
-                        />
-                      )}
-                    </Fragment>
-
-                    <div className="my-6">
-                      {allFilters.length === 0 && searchDocuments && (
-                        <Fragment>
-                          {searchDocuments.documents?.map((data, idx) => (
-                            <SearchResultMeta
-                              key={data.id}
-                              index={String(idx + 1)}
-                              data={data}
-                              type={searchType}
-                            />
-                          ))}
-                        </Fragment>
-                      )}
-
-                      {allFilters.length > 0 &&
-                        filterData &&
-                        filterData.documents.length > 0 && (
-                          <Fragment>
-                            <div>
-                              {filterData.documents?.map((data, idx) => (
-                                <SearchResultMeta
-                                  key={data.id}
-                                  index={String(idx + 1)}
-                                  data={data}
-                                  type={searchType}
-                                />
-                              ))}
-                            </div>
-                          </Fragment>
-                        )}
-                    </div>
-                  </div>
-
-                  {searchDocuments && (
-                    <div className="col-span-4">
-                      <div className="sticky md:top-[68px]">
-                        <SearchFilterSidebar
-                          data={searchOptions}
-                          handleSelection={handleSelection}
-                          handleSelectedSearchType={handleSelectedSearchType}
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {searchDocuments && (
-                  <div className="flex flex-col justify-center gap-2">
-                    <div className="inline-flex justify-content-center gap-8 mx-auto">
-                      <button
-                        id="prev"
-                        className={`gap-3 hover:opacity-40 ${
-                          isPrev ? "hidden" : "inline-flex"
-                        }`}
-                        disabled={isPrev}
-                        onClick={prevPage}
-                      >
-                        <ArrowLeftIcon stroke="black" />
-                        Previous
-                      </button>
-                      <button
-                        id="next"
-                        className={`inline-flex gap-3 hover:opacity-40`}
-                        // disabled={
-                        //   data.search.length < 9 ? true : false //why setting isDisabled again
-                        // }
-                        onClick={nextPage}
-                      >
-                        Next <ArrowRightIcon stroke="black" />
-                      </button>
-                    </div>
-                    <div
-                      className={`text-center my-3 ${
-                        !isPrev ? "block" : "hidden"
-                      }`}
-                    >
-                      <span>Page No: {pageNumber ?? "1"}</span>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <SearchFilterDrawer
-                isShow={isFilterDrawer}
-                label={searchType.toString()}
-                data={selectedDataOptions}
-                selectedOptions={selectedOptions}
-                closeDrawer={() => setIsFilterDrawer(false)}
-                onSelectedOption={handleSelectedOption}
-              />
-            </section>
-          </Fragment>
-        )}
-
-        {!isLoading && isError && (
+        {isError && (
           <div className="flex-1 flex justify-center items-center self-stretch">
             <div className="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
               <div className="sm:flex sm:items-start">
@@ -594,6 +394,159 @@ const Page = () => {
               </div>
             </div>
           </div>
+        )}
+
+        {!isFetching && (
+          <section className="relative flex self-stretch min-h-screen">
+            <div
+              className={`py-6 px-16 max-md:px-5  mx-auto max-w-[1100px]
+                  `}
+              // ${ isFilterDrawer ? "w-[80%] flex-1" : ""  }
+            >
+              <div className="md:grid grid-cols-12 gap-8">
+                <div className="col-span-8">
+                  <h1
+                    id="searchQuery"
+                    ref={h1Ref}
+                    className="text-xx font-normal mb-6"
+                  >
+                    Legal findings:
+                    <span className="text-[#245b91]"> {q}</span>
+                  </h1>
+
+                  {allFilters.length > 0 && (
+                    <div className="flex gap-3 flex-wrap mb-4 items-center">
+                      <p>Applied Filters</p>
+                      {selectedOptions
+                        .filter((elem) => elem.options.length > 0)
+                        .map((filter) => (
+                          <div
+                            key={filter.id}
+                            className=" flex flex-wrap gap-2"
+                          >
+                            {filter.options.map((option, idx) => (
+                              <Fragment key={idx}>
+                                <span className="flex gap-2 items-center px-2 py-[0.125rem] bg-stone-100 rounded text-[0.8rem] text-center text-teal-900 text-sm font-normal">
+                                  {option}
+                                  <CloseIcon
+                                    width={18}
+                                    height={18}
+                                    role="button"
+                                    stroke="#000"
+                                    onClick={() =>
+                                      removeFilter(filter.id, option)
+                                    }
+                                  />
+                                </span>
+                              </Fragment>
+                            ))}
+                          </div>
+                        ))}
+                    </div>
+                  )}
+
+                  <Fragment>
+                    {llmData === null && <Loader variant="classic" />}
+                    {llmData !== null && (
+                      <SearchAIMetaResult
+                        llm={llmData.llm}
+                        retriever={llmData.retriever}
+                      />
+                    )}
+                  </Fragment>
+
+                  <div className="my-6">
+                    {allFilters.length === 0 && searchDocuments && (
+                      <Fragment>
+                        {searchDocuments.documents?.map((data, idx) => (
+                          <SearchResultMeta
+                            key={data.id}
+                            index={String(idx + 1)}
+                            data={data}
+                            type={searchType}
+                          />
+                        ))}
+                      </Fragment>
+                    )}
+
+                    {allFilters.length > 0 &&
+                      filterData &&
+                      filterData.documents.length > 0 && (
+                        <Fragment>
+                          <div>
+                            {filterData.documents?.map((data, idx) => (
+                              <SearchResultMeta
+                                key={data.id}
+                                index={String(idx + 1)}
+                                data={data}
+                                type={searchType}
+                              />
+                            ))}
+                          </div>
+                        </Fragment>
+                      )}
+                  </div>
+                </div>
+
+                {searchDocuments && (
+                  <div className="col-span-4">
+                    <div className="sticky md:top-[68px]">
+                      <SearchFilterSidebar
+                        data={searchOptions}
+                        handleSelection={handleSelection}
+                        handleSelectedSearchType={handleSelectedSearchType}
+                        defaultValue={searchType}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {searchDocuments && (
+                <div className="flex flex-col justify-center gap-2">
+                  <div className="inline-flex justify-content-center gap-8 mx-auto">
+                    <button
+                      id="prev"
+                      className={`gap-3 hover:opacity-40 ${
+                        isPrev ? "hidden" : "inline-flex"
+                      }`}
+                      disabled={isPrev}
+                      onClick={prevPage}
+                    >
+                      <ArrowLeftIcon stroke="black" />
+                      Previous
+                    </button>
+                    <button
+                      id="next"
+                      className={`inline-flex gap-3 hover:opacity-40`}
+                      // disabled={
+                      //   data.search.length < 9 ? true : false //why setting isDisabled again
+                      // }
+                      onClick={nextPage}
+                    >
+                      Next <ArrowRightIcon stroke="black" />
+                    </button>
+                  </div>
+                  <div
+                    className={`text-center my-3 ${
+                      !isPrev ? "block" : "hidden"
+                    }`}
+                  >
+                    <span>Page No: {pageNumber ?? "1"}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <SearchFilterDrawer
+              isShow={isFilterDrawer}
+              label={searchType.toString()}
+              data={selectedDataOptions}
+              selectedOptions={selectedOptions}
+              closeDrawer={() => setIsFilterDrawer(false)}
+              onSelectedOption={handleSelectedOption}
+            />
+          </section>
         )}
       </Layout>
     </Fragment>

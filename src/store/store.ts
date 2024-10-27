@@ -15,7 +15,7 @@ export const store = configureStore({
     [searchPath]: searchReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(searchMiddleware),
+    getDefaultMiddleware({ serializableCheck: false }).concat(searchMiddleware),
 });
 
 setupListeners(store.dispatch);

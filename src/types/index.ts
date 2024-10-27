@@ -167,4 +167,14 @@ export type SearchData = {
   casesData: CaseResults | null;
 };
 
+export type SearchDataResults =
+  | ArticleResults
+  | CaseResults
+  | LegislationResults;
+
+export type SearchDocuments =
+  | CaseDocuments[]
+  | LegislationDocuments[]
+  | ArticleDocuments[];
+
 export type SearchType = "articles" | "cases" | "legislations";

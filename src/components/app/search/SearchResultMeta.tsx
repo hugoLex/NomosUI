@@ -122,7 +122,7 @@ const SearchResultMeta = (prop: {
       {type === "legislations" && (
         <p className="flex gap-x-4">
           <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
-            {(metadata as LegislationMetadata).section_number}
+            Section {(metadata as LegislationMetadata).section_number}
           </span>
           <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
             {(metadata as LegislationMetadata).year}
