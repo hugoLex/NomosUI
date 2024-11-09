@@ -4,6 +4,7 @@ import { Button, Head, Header } from "@app/components/ui";
 import { RigthArrowIcon } from "@app/components/icons";
 
 import { useRouter } from "next/router";
+import { ErrorView404 } from "@app/components";
 
 const Page = () => {
   const router = useRouter();
@@ -12,9 +13,7 @@ const Page = () => {
       <Head title="Not Found" />
       <Header />
       <main>
-        <section>
-          <h1>404</h1>
-        </section>
+        <ErrorView404 />
       </main>
     </Fragment>
   );

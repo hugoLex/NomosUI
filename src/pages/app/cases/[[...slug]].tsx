@@ -1,8 +1,15 @@
 import React, { Fragment, useState } from "react";
 import { useRouter } from "next/router";
 import { Head } from "@app/components/ui";
-import { CaseHeader } from "@app/components/app";
+import {
+  CaseCounselView,
+  CaseDetailsView,
+  CaseHeader,
+  CaseJudgeAnalyticsView,
+  CasePrecedentAnalyticsView,
+} from "@app/components/app";
 import { AppLayout as Layout } from "@app/components/layout";
+import { dummyCaseDetails } from "@app/utils";
 
 const Page = () => {
   const router = useRouter();
@@ -10,6 +17,8 @@ const Page = () => {
   const slug = String(router.query.slug);
   const title = slug.replace(/-/g, " ");
   const tabId: string = router.query.tab ? String(router.query.tab) : "case";
+
+  const { caseData, counselData, judgeData, precedentData } = dummyCaseDetails;
 
   return (
     <Fragment>
@@ -19,17 +28,14 @@ const Page = () => {
         <section className="relative mx-auto max-w-[1100px] py-6 ">
           <div className="px-16 max-md:px-5 max-w-full">
             <div className="md:grid grid-cols-12 gap-8">
-              <div className="col-span-8">
-                {tabId === "case" && <div>Case details</div>}{" "}
-                {tabId === "judgement" && <div>Judgement</div>}{" "}
-                {tabId === "precedent" && <div>Precedent</div>}{" "}
-                {tabId === "counsel" && <div>Counsel</div>}
-              </div>
-              <div className="col-span-4 self-baselane">
-                <div className="sticky top-[68px]">
-                  <Fragment />
-                </div>
-              </div>
+              {tabId === "case" && <CaseDetailsView data={caseData} />}
+              {tabId === "judgement" && (
+                <CaseJudgeAnalyticsView data={judgeData} />
+              )}
+              {tabId === "precedent" && (
+                <CasePrecedentAnalyticsView data={precedentData} />
+              )}
+              {tabId === "counsel" && <CaseCounselView data={counselData} />}
             </div>
           </div>
         </section>

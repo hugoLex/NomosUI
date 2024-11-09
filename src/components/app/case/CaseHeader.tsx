@@ -15,18 +15,18 @@ const tabItems: TabItem[] = [
   {
     active: false,
     id: "judgement",
-    label: "Judgement Analysis",
+    label: "Judgement analysis",
   },
   {
     active: false,
     id: "precedent",
-    label: "Precedent Analytics",
+    label: "Precedent analysis",
   },
 
   {
     active: false,
     id: "counsel",
-    label: "Counsel Analysis",
+    label: "Counsel analysis",
   },
 ];
 

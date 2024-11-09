@@ -4,6 +4,7 @@ import { Button, Head, Header } from "@app/components/ui";
 import { RigthArrowIcon } from "@app/components/icons";
 
 import cloud from "../../public/cloud.svg";
+import { ErrorView500 } from "@app/components";
 
 const Page = () => {
   return (
@@ -12,11 +13,8 @@ const Page = () => {
       <Header />
       <main>
         <section>
-          <div>
-            <h2>Opps!</h2>
-            <p>An unknown error occurred. Please reload or check back later.</p>
-            <Button label="Back to home page" icon={<RigthArrowIcon />} />
-          </div>
+          <ErrorView500 />
+          <Button label="Back to home page" icon={<RigthArrowIcon />} />
         </section>
       </main>
     </Fragment>
