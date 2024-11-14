@@ -1,19 +1,47 @@
 import React, { Fragment, useState } from "react";
 import { GenericObject } from "@app/types";
 import { SummaryPreview } from "@app/components";
-
+import { LuDot } from "react-icons/lu";
+import { HiMiniListBullet } from "react-icons/hi2";
 const CaseView = ({ data }: { data: GenericObject }) => {
   const { title, summary, judgement } = data;
-  const [tab, setTab] = useState<"summary" | "ratio" | "judgement">("summary");
+  type ContentOutline = "summary" | "ratio" | "judgement" | "Decision history";
+  const [tab, setTab] = useState<ContentOutline>("summary");
+
+  const contentOutline: ContentOutline[] = [
+    "summary",
+    "ratio",
+    "judgement",
+    "Decision history",
+  ];
+
   return (
     <Fragment>
-      <div className="col-span-8 space-y-4">
+      <div className="col-span-8 space-y-2">
         <h1
           id="searchQuery"
           className="text-xx font-normal mb-6 text-[#245b91]"
         >
           {title}
         </h1>
+        <div className="flex group items-center">
+          {/* <div className="relative max-md:group-[:nth-child(5)_&]:first:h-[3.143rem] md:group-[:nth-child(5)_&]:first:w-[6.88075rem] lg:group-[:nth-child(5)_&]:first:w-[8.88075rem] w-[3.57556rem] h-[3.84813rem] md:w-[4.46975rem] lg:w-[6.24756rem] md:h-[5rem] lg:h-[6.7238rem] "> */}
+          {["Court of appeal", "20th May 2024", "CA/K/229/S/96"].map(
+            (item, index) => (
+              <h3 className="relative first:pl-[0px] font-light text-[0.875rem] text-black/80 hover:bg-neutral-200/50 mt-2 px-2.5 py-1 text-sm">
+                <LuDot
+                  className={` ${
+                    index == 2 ? "hidden" : ""
+                  } text-[#245b91] text-[25px] absolute right-[-13px] top-[1px]`}
+                />
+                {item}
+              </h3>
+            )
+          )}
+        </div>
+        <h6 className="font-light text-[0.875rem] text-black/80 hover:bg-neutral-200/50  pr-2.5 pb-1 text-sm">
+          {"LEX(1995)-CA/PH/105/94"}
+        </h6>
         <div className="p-4 bg-[#eaf0f2]/30 rounded-lg flex flex-col justify-start items-start min-h-[10rem] mb-8">
           <div className="flex flex-col self-stretch   justify-start items-start mb-6">
             <div className="flex flex-col my-3">
@@ -37,8 +65,7 @@ const CaseView = ({ data }: { data: GenericObject }) => {
                 </span>
               </p>
               <span className="text-xs">
-                This is an ai generated answer. Please always check the
-                references.
+                Essential details and core rulings at a glance
               </span>
             </div>
             <div className="my-1 border w-full border-gray-200 mb-3" />
@@ -47,21 +74,41 @@ const CaseView = ({ data }: { data: GenericObject }) => {
         </div>
 
         <div className="">
+          <h2 className="mt-[40px] text-base text-[#000000] px- 4 font-normal">
+            Judgement
+          </h2>
           <p className="text-[0.875rem]">{judgement}</p>
         </div>
       </div>
       <div className="col-span-4 self-baselane">
         <div className="sticky top-[68px] space-y-2">
-          <h5 className="font-medium">Document Tabs</h5>
+          <h5 className="relative text-base font-normal font-rubik">
+            <HiMiniListBullet className="absolute left-[-30px] top-[4px]" />
+            Content Outline
+          </h5>
           <div className="flex flex-col  gap-1">
-            <span
+            {contentOutline.map((item) => (
+              <span
+                key={item}
+                role="button"
+                // className="flex items-center "
+
+                className={` capitalize border border-gray-200 border-solid my-2 px-[20px] py-[8px] text-start text-[14px] rounded-md gap-2  text-black/80 hover:bg-neutral-200/50 ${
+                  tab === item ? "font-black text-[#245b91]" : ""
+                }`}
+                onClick={() => setTab(item)}
+              >
+                {item}
+              </span>
+            ))}
+            {/* <span
               role="button"
               className={`${
-                tab === "summary" ? "font-black text-[#245b91]" : ""
+                tab === "judgement" ? "font-black text-[#245b91]" : ""
               }`}
-              onClick={() => setTab("summary")}
+              onClick={() => setTab("judgement")}
             >
-              Summary
+              Judgement
             </span>
             <span
               role="button"
@@ -75,12 +122,12 @@ const CaseView = ({ data }: { data: GenericObject }) => {
             <span
               role="button"
               className={`${
-                tab === "judgement" ? "font-black text-[#245b91]" : ""
+                tab === "Decision history" ? "font-black text-[#245b91]" : ""
               }`}
-              onClick={() => setTab("judgement")}
+              onClick={() => setTab("Decision history")}
             >
-              Judgement
-            </span>
+              Decision history
+            </span> */}
           </div>
         </div>
       </div>

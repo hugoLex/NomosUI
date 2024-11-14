@@ -5,7 +5,8 @@ import { Header, Tabs } from "@app/components/ui";
 import { TabItem } from "@app/types";
 import { SearchBoxButton } from "../search";
 import { CollapseIcon } from "@app/components/icons";
-
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { HiArrowUturnLeft } from "react-icons/hi2";
 const tabItems: TabItem[] = [
   {
     active: true,
@@ -20,19 +21,21 @@ const tabItems: TabItem[] = [
   {
     active: false,
     id: "precedent",
-    label: "Precedent analysis",
+    label: "Precedent analytics",
   },
 
-  {
-    active: false,
-    id: "counsel",
-    label: "Counsel analysis",
-  },
+  // {
+  //   active: false,
+  //   id: "counsel",
+  //   label: "Counsel analysis",
+  // },
 ];
 
 const CaseHeader = () => {
   const router = useRouter();
-
+  const handleGoBack = () => {
+    router.back();
+  };
   const searchRef = useRef<HTMLTextAreaElement | null>(null);
   const [tabs, setTabs] = useState(tabItems);
   // const [selectedTab, setSelectedTab] = useState(tabs[0]);
@@ -60,10 +63,15 @@ const CaseHeader = () => {
     <Header>
       <div className="flex border-b border-solid bg-stone-50 border-stone-300 border-opacity-50 rounded-t-lg pt-4 justify-between px-8">
         <div className="flex items-center w-[20%] pb-2 gap-2">
-          <CollapseIcon
+          {/* <CollapseIcon
             width={36}
             height={38}
             className="inline-block items-center align-middle"
+          /> */}
+          <HiArrowUturnLeft
+            className="inline-block items-center align-middle cursor-pointer text-gray-400"
+            size={25}
+            onClick={handleGoBack}
           />
           <SearchBoxButton searchTextRef={searchRef} />
         </div>

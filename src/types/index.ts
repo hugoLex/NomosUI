@@ -178,3 +178,10 @@ export type SearchDocuments =
   | ArticleDocuments[];
 
 export type SearchType = "articles" | "cases" | "legislations";
+
+
+export type TreatmentTypes =
+| "Positive"
+| "Neutral"
+| "Negative"
+| "Cited by counsel";

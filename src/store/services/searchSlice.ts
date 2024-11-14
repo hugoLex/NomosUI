@@ -8,8 +8,10 @@ import { injectEndpoints } from "./endpoints";
 import {
   FetchBaseQueryError,
   FetchBaseQueryMeta,
+  QueryReturnValue,
 } from "@reduxjs/toolkit/query";
-import { QueryReturnValue } from "@reduxjs/toolkit/dist/query/baseQueryTypes";
+// please check, i commented this out because it was causing a bug 
+// import { QueryReturnValue } from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 
 type SearchQuery = {
   query: string;
