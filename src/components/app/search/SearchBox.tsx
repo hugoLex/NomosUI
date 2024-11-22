@@ -19,53 +19,6 @@ import {
 import { Modal } from "@app/components/ui";
 import { AppLayoutContext as LayoutContext } from "@app/components/layout";
 
-export const SearchBoxButton = ({
-  className,
-  searchTextRef,
-}: {
-  className?: string;
-  searchTextRef: RefObject<HTMLTextAreaElement>;
-}) => {
-  const { setIsSearchModal } = useContext(LayoutContext);
-
-  // if (searchBtnRef && searchBtnRef?.current) {
-  //   searchBtnRef?.current.focus();
-  // }
-
-  return (
-    <Fragment>
-      <div
-        role="button"
-        onClick={() => {
-          setIsSearchModal(true);
-          searchTextRef;
-        }}
-        className={`w-full flex gap-2.5 px-4 py-2 border border-solid
-        bg-stone-50 border-stone-300 rounded-[32px]  cursor-text ${className}`}
-      >
-        <SearchIcon />
-        <span className="my-auto text-sm text-zinc-600">New search..</span>
-      </div>
-      <SearchBoxModal innerRef={searchTextRef} />
-    </Fragment>
-  );
-};
-
-export const SearchBoxModal = ({
-  innerRef,
-}: {
-  innerRef: Ref<HTMLTextAreaElement | null>;
-}) => {
-  const { isSearchModal, setIsSearchModal } = useContext(LayoutContext);
-  return (
-    <Modal show={isSearchModal} toogleModal={() => setIsSearchModal(false)}>
-      <div className="flex flex-col justify-center max-w-full w-[700px] mx-auto ">
-        <SearchBox ref={innerRef} />
-      </div>
-    </Modal>
-  );
-};
-
 export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
   function Search(props, ref) {
     const router = useRouter();
@@ -160,3 +113,50 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
     );
   }
 );
+export const SearchBoxButton = ({
+  className,
+  searchTextRef,
+}: {
+  className?: string;
+  searchTextRef: RefObject<HTMLTextAreaElement>;
+}) => {
+  const { setIsSearchModal } = useContext(LayoutContext);
+
+  // if (searchBtnRef && searchBtnRef?.current) {
+  //   searchBtnRef?.current.focus();
+  // }
+
+  return (
+    <Fragment>
+      <div
+        role="button"
+        onClick={() => {
+          setIsSearchModal(true);
+          searchTextRef;
+        }}
+        // className={`w-full flex gap-2.5 px-4 py-2 border border-solid
+        // bg-stone-50 border-stone-300 rounded-[32px]  cursor-text ${className}`}
+        className=""
+      >
+        {/* <SearchIcon /> */}
+        {/* <span className="my-auto text-sm text-zinc-600">New search..</span> */}
+        <span className="">New Search</span>
+      </div>
+      <SearchBoxModal innerRef={searchTextRef} />
+    </Fragment>
+  );
+};
+export const SearchBoxModal = ({
+  innerRef,
+}: {
+  innerRef: Ref<HTMLTextAreaElement | null>;
+}) => {
+  const { isSearchModal, setIsSearchModal } = useContext(LayoutContext);
+  return (
+    <Modal show={isSearchModal} toogleModal={() => setIsSearchModal(false)}>
+      <div className="flex flex-col justify-center max-w-full w-[700px] mx-auto ">
+        <SearchBox ref={innerRef} />
+      </div>
+    </Modal>
+  );
+};

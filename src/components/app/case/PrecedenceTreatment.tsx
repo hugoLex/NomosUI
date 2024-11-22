@@ -26,12 +26,10 @@ function PrecedenceTreatment() {
           >
             <div
               onClick={() => setVisible(title)}
-              className={` flex whitespace-nowrap capitalize my-2 px-2.5 py-2 text-start text-base rounded-md gap-2  text-black/80 hover:bg-neutral-200/50 ${
-                // className={` flex whitespace-nowrap capitalize border border-gray-200 border-solid my-2 px-2.5 py-2 text-start text-sm rounded-md gap-2  text-black/80 hover:bg-neutral-200/50 ${
-                isVisible === title
-                  ? "font-black text-[#171F46]"
-                  : "text-[#0B69FF]"
-              }`}
+              className={`${color} flex whitespace-nowrap font-black border border-gray-200 border-solid  text-[14px]  capitalize my-2 px-2.5 py-2 text-start text -base rounded-md gap-2  hover:bg-neutral-200/50  `}
+              // isVisible === title ? "font-black text-[#171F46]" : ` `
+              // : "text-[#0B69FF]"
+              // className={` flex whitespace-nowrap capitalize border border-gray-200 border-solid my-2 px-2.5 py-2 text-start text-sm rounded-md gap-2  text-black/80 hover:bg-neutral-200/50 ${
             >
               {title}
               <button className="ml-auto cursor-pointer pointer-events-none">

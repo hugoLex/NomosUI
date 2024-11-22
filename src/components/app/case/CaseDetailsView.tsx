@@ -2,22 +2,35 @@ import React, { Fragment, useState } from "react";
 import { GenericObject } from "@app/types";
 import { SummaryPreview } from "@app/components";
 import { LuDot } from "react-icons/lu";
-import { HiMiniListBullet } from "react-icons/hi2";
+import { HiMiniListBullet, HiPlus } from "react-icons/hi2";
+import { PiGavelThin } from "react-icons/pi";
+import { IoPeople } from "react-icons/io5";
+import { LiaBalanceScaleSolid } from "react-icons/lia";
+import { UseQueryToggler } from "@app/hooks/queryHandler";
+import SmallTextBtn from "./SmallBtn";
 const CaseView = ({ data }: { data: GenericObject }) => {
+  const { createQueryString, router, pathname, urlString } = UseQueryToggler();
   const { title, summary, judgement } = data;
-  type ContentOutline = "summary" | "ratio" | "judgement" | "Decision history";
-  const [tab, setTab] = useState<ContentOutline>("summary");
+  type ContentOutline =
+    | "Judicial Panel"
+    | "ratio"
+    | "judgement"
+    | "Decision history";
+  const [tab, setTab] = useState<ContentOutline>("Judicial Panel");
 
   const contentOutline: ContentOutline[] = [
-    "summary",
-    "ratio",
-    "judgement",
+    "Judicial Panel",
     "Decision history",
+    "judgement",
+    "ratio",
   ];
 
   return (
     <Fragment>
       <div className="col-span-8 space-y-2">
+        <h3 className=" font-light text-[0.875rem] text-black/80  mt-2 pr-2.5 py-1 text-sm">
+          CASES
+        </h3>
         <h1
           id="searchQuery"
           className="text-xx font-normal mb-6 text-[#245b91]"
@@ -28,7 +41,7 @@ const CaseView = ({ data }: { data: GenericObject }) => {
           {/* <div className="relative max-md:group-[:nth-child(5)_&]:first:h-[3.143rem] md:group-[:nth-child(5)_&]:first:w-[6.88075rem] lg:group-[:nth-child(5)_&]:first:w-[8.88075rem] w-[3.57556rem] h-[3.84813rem] md:w-[4.46975rem] lg:w-[6.24756rem] md:h-[5rem] lg:h-[6.7238rem] "> */}
           {["Court of appeal", "20th May 2024", "CA/K/229/S/96"].map(
             (item, index) => (
-              <h3 className="relative first:pl-[0px] font-light text-[0.875rem] text-black/80 hover:bg-neutral-200/50 mt-2 px-2.5 py-1 text-sm">
+              <h3 className="relative first:pl-[0px] font-light text-[0.875rem] text-black/80  px-2.5 py-1 text-sm">
                 <LuDot
                   className={` ${
                     index == 2 ? "hidden" : ""
@@ -39,10 +52,13 @@ const CaseView = ({ data }: { data: GenericObject }) => {
             )
           )}
         </div>
-        <h6 className="font-light text-[0.875rem] text-black/80 hover:bg-neutral-200/50  pr-2.5 pb-1 text-sm">
-          {"LEX(1995)-CA/PH/105/94"}
-        </h6>
-        <div className="p-4 bg-[#eaf0f2]/30 rounded-lg flex flex-col justify-start items-start min-h-[10rem] mb-8">
+        <SmallTextBtn
+          smallBtnData={["LEX(1995)-CA/PH/105/94"]}
+          divStyle=""
+          btnStyle="border-white font-light  px-2 py-1 mb-[8px] bg-[rgb(159,197,248)] text-sm text-black/80"
+        />
+
+        <div className="p-4 bg-[#eaf0f2]/30 border w-full border-gray-200 rounded-lg flex flex-col justify-start items-start min-h-[10rem] mb-8">
           <div className="flex flex-col self-stretch   justify-start items-start mb-6">
             <div className="flex flex-col my-3">
               <p>
@@ -73,35 +89,86 @@ const CaseView = ({ data }: { data: GenericObject }) => {
           </div>
         </div>
 
-        <div className="">
-          <h2 className="mt-[40px] text-base text-[#000000] px- 4 font-normal">
+        <div id="judgement" className="">
+          <h2 className="mt-[40px] mb-[30px] text-base text-[#000000] flex items-center gap-2 font-normal">
+            <PiGavelThin size={20} className=" " />
             Judgement
           </h2>
-          <p className="text-[0.875rem]">{judgement}</p>
+          <SmallTextBtn
+            smallBtnData={[
+              "Constitutional law",
+              "Matrimonial causes",
+              "Election petition",
+              "Murder",
+              "Terrorism",
+              "Customary law",
+              "Appeal",
+            ]}
+            divStyle="flex items-center gap-2 flex-wrap"
+            btnStyle="text-[10px] text-white bg-[rgb(159,197,248)]"
+          />
+          <p className="text-[0.875rem] mt-[20px]">{judgement}</p>
+        </div>
+
+        <div id="ratio" className="my-[40px] ">
+          <h2 className="mt-[40px]  text-base text-[#000000] flex items-center gap-2 font-normal">
+            <LiaBalanceScaleSolid size={20} className=" " />
+            Ratio
+          </h2>
+          {/* please provide the ratio variable */}
+          <p className="mt-[30px] bg-[rgb(255,229,153,0.25)]  border-[rgb(255,229,153)] border-solid border rounded-md px-2 py-3">
+            A final decision is one that leaves nothing to be judicially
+            determined or ascertained thereafter, in order to render it
+            effective and capable of execution, and is absolute, complete, and
+            certain.
+          </p>
         </div>
       </div>
       <div className="col-span-4 self-baselane">
         <div className="sticky top-[68px] space-y-2">
-          <h5 className="relative text-base font-normal font-rubik">
-            <HiMiniListBullet className="absolute left-[-30px] top-[4px]" />
+          <h5 className="flex items-center gap-4 text-base font-normal font-rubik">
+            <HiMiniListBullet size={24} className="" />
             Content Outline
           </h5>
-          <div className="flex flex-col  gap-1">
-            {contentOutline.map((item) => (
+          {/* <div className="flex flex-col  gap-1"> */}
+          {contentOutline.map((item) => (
+            <div key={item} className="fle x flex- col  gap-1">
               <span
-                key={item}
                 role="button"
                 // className="flex items-center "
 
-                className={` capitalize border border-gray-200 border-solid my-2 px-[20px] py-[8px] text-start text-[14px] rounded-md gap-2  text-black/80 hover:bg-neutral-200/50 ${
+                className={`flex justify-between items-center capitalize border border-gray-200 border-solid my-2 px-[20px] py-[8px] text-start text-[14px] rounded-md gap-2  text-black/80 hover:bg-neutral-200/50 ${
                   tab === item ? "font-black text-[#245b91]" : ""
                 }`}
-                onClick={() => setTab(item)}
+                onClick={() => {
+                  setTab(item);
+                  router.push(
+                    `/${pathname}?${urlString}#${item}`
+                    // `/${pathname}?${createQueryString("section", item)}#${item}`
+                  );
+                }}
               >
-                {item}
+                {/* the icons on the buttons differ hence the logic  */}
+                {item} {item === "Judicial Panel" ? <IoPeople /> : <HiPlus />}
               </span>
-            ))}
-            {/* <span
+              {item == "Judicial Panel" && tab == "Judicial Panel" ? (
+                <SmallTextBtn
+                  smallBtnData={["Chibuike Ewenike", "Wendy Osuji"]}
+                  divStyle=""
+                  btnStyle="border-[rgb(249,203,156,0.5)] text-[#f9cb9c] mt-2"
+                />
+              ) : item == "Decision history" && tab == "Decision history" ? (
+                <p className="text-[10px] pl-[20px] text-[rgb(0,0,0,0.8)] leading-[14px]">
+                  Kebbi State Sharia Court of Appeal Holden in Birnin Kebbi,
+                  Upper Area Court Birnin Kebbi, Area Court, Gwandu, Birnin
+                  Kebbi
+                </p>
+              ) : (
+                ""
+              )}
+            </div>
+          ))}
+          {/* <span
               role="button"
               className={`${
                 tab === "judgement" ? "font-black text-[#245b91]" : ""
@@ -127,8 +194,7 @@ const CaseView = ({ data }: { data: GenericObject }) => {
               onClick={() => setTab("Decision history")}
             >
               Decision history
-            </span> */}
-          </div>
+            </span>  */}
         </div>
       </div>
     </Fragment>

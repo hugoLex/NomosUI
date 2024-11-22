@@ -6,7 +6,7 @@ const SummaryPreview = ({ text }: { text: string }) => {
   const isShow = text.length > 100 ? true : false;
 
   return (
-    <div className={`summary preview relative overflow-y-hidden`}>
+    <div className={`summary preview pb-5 relative overflow-y -hidden`}>
       <p
         className={`text overflow-hidden transition-all duration-500 ${
           isShow && isCollapsed ? "h-[12rem]" : "h-auto"
@@ -30,7 +30,7 @@ const SummaryPreview = ({ text }: { text: string }) => {
         <div
           className={`text-end my-3 ${
             isCollapsed
-              ? "inline-flex items-end justify-center absolute  transition duration-75 top-[60%] blurred h-[65px] w-full"
+              ? "inline-flex items-end bg-transparent justify-center absolute z-50 transition duration-75 bottom-[-20%]  h-[65px] w-full"
               : ""
           }`}
         >
@@ -45,12 +45,12 @@ const SummaryPreview = ({ text }: { text: string }) => {
           >
             {isCollapsed && (
               <Fragment>
-                expand <CaretDown />
+                Expand <CaretDown />
               </Fragment>
             )}
             {!isCollapsed && (
               <Fragment>
-                collapse <CaretUp />
+                Collapse <CaretUp />
               </Fragment>
             )}
           </span>
