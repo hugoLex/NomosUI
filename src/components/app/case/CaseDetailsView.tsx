@@ -27,13 +27,13 @@ const CaseView = ({ data }: { data: GenericObject }) => {
 
   return (
     <Fragment>
-      <div className="col-span-8 space-y-2">
-        <h3 className=" font-light text-[0.875rem] text-black/80  mt-2 pr-2.5 py-1 text-sm">
-          CASES
+      <div className="col-span-8 space- y-2">
+        <h3 className=" font-light text-[0.813rem] text-black/80  mt-2 pr-2.5 py-1 leading-[1.25rem]">
+          CASE
         </h3>
         <h1
           id="searchQuery"
-          className="text-xx font-normal mb-6 text-[#245b91]"
+          className="text-xx font-normal mb-3 text-[#245b91]"
         >
           {title}
         </h1>
@@ -55,7 +55,7 @@ const CaseView = ({ data }: { data: GenericObject }) => {
         <SmallTextBtn
           smallBtnData={["LEX(1995)-CA/PH/105/94"]}
           divStyle=""
-          btnStyle="border-white font-light  px-2 py-1 mb-[8px] bg-[rgb(159,197,248)] text-sm text-black/80"
+          btnStyle="border-white font-light  px-2 py-1 mb-[24px] bg-[rgb(159,197,248)] text-black/80"
         />
 
         <div className="p-4 bg-[#eaf0f2]/30 border w-full border-gray-200 rounded-lg flex flex-col justify-start items-start min-h-[10rem] mb-8">
@@ -90,8 +90,8 @@ const CaseView = ({ data }: { data: GenericObject }) => {
         </div>
 
         <div id="judgement" className="">
-          <h2 className="mt-[40px] mb-[30px] text-base text-[#000000] flex items-center gap-2 font-normal">
-            <PiGavelThin size={20} className=" " />
+          <h2 className="mt-[40px] mb-[30px] text-base font-normal font-rubik text-black/50 flex items-center gap-2 ">
+            <PiGavelThin size={19} className=" " />
             Judgement
           </h2>
           <SmallTextBtn
@@ -105,18 +105,18 @@ const CaseView = ({ data }: { data: GenericObject }) => {
               "Appeal",
             ]}
             divStyle="flex items-center gap-2 flex-wrap"
-            btnStyle="text-[10px] text-white bg-[rgb(159,197,248)]"
+            btnStyle=" bg-[rgb(159,197,248)] px-2 py-1 text-black/80"
           />
           <p className="text-[0.875rem] mt-[20px]">{judgement}</p>
         </div>
 
         <div id="ratio" className="my-[40px] ">
-          <h2 className="mt-[40px]  text-base text-[#000000] flex items-center gap-2 font-normal">
-            <LiaBalanceScaleSolid size={20} className=" " />
+          <h2 className="mt-[40px] text-base font-normal font-rubik text-black/50 flex items-center gap-2 ">
+            <LiaBalanceScaleSolid size={19} className=" " />
             Ratio
           </h2>
           {/* please provide the ratio variable */}
-          <p className="mt-[30px] bg-[rgb(255,229,153,0.25)]  border-[rgb(255,229,153)] border-solid border rounded-md px-2 py-3">
+          <p className="text-[.88rem] mt-[30px] bg-[rgb(255,229,153,0.25)]  border-[rgb(255,229,153)] border-solid border rounded-md px-2 py-3">
             A final decision is one that leaves nothing to be judicially
             determined or ascertained thereafter, in order to render it
             effective and capable of execution, and is absolute, complete, and
@@ -155,7 +155,7 @@ const CaseView = ({ data }: { data: GenericObject }) => {
                 <SmallTextBtn
                   smallBtnData={["Chibuike Ewenike", "Wendy Osuji"]}
                   divStyle=""
-                  btnStyle="border-[rgb(249,203,156,0.5)] text-[#f9cb9c] mt-2"
+                  btnStyle="border-[rgb(249,203,156,0.5)] text-[#f9cb9c] bg-[rgb(255,229,153,0.5)] mt-2"
                 />
               ) : item == "Decision history" && tab == "Decision history" ? (
                 <p className="text-[10px] pl-[20px] text-[rgb(0,0,0,0.8)] leading-[14px]">

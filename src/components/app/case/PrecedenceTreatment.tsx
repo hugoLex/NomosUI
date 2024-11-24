@@ -22,7 +22,8 @@ function PrecedenceTreatment() {
         {PrecedenceTreatmentdata.map(([title, details, color]) => (
           <div
             key={title}
-            className=" border-gray-200 border-solid border-b pb-2 "
+            className=""
+            // className=" border-gray-200 border-solid border-b pb-2 "
           >
             <div
               onClick={() => setVisible(title)}

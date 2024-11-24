@@ -6,9 +6,9 @@ const PrecedentView = ({ data }: { data: any[] }) => {
   return (
     <Fragment>
       <div className="col-span-8">
-        <h3 className=" font-light uppercase text-[0.875rem] text-black/80  mt-2 pr-2.5 py-1 text-sm">
+        <h1 className=" font-light uppercase text-[0.813rem] text-black/80  mt-2 pr-2.5 py-1 leading-[1.25rem]">
           Judicial insight
-        </h3>
+        </h1>
         <h1
           id="searchQuery"
           className="text-xx font-normal text-[#245b91] mb-6"
@@ -42,7 +42,7 @@ const PrecedentView = ({ data }: { data: any[] }) => {
         ))}
       </div>
       <div className="col-span-4 self-baselane">
-        <div className="sticky top-[68px]  p-[2rem]">
+        <div className="sticky top-[68px]  py-[2rem]">
           {/* <div className="sticky top-[68px] bg-gray-100 p-[2rem]"> */}
           {/* <div className="flex gap-2 items-center"> */}
 

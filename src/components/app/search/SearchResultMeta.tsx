@@ -10,7 +10,10 @@ import {
   SearchType,
 } from "@app/types";
 import { escapeRegExp } from "@app/utils";
-
+import SmallTextBtn from "../case/SmallBtn";
+import { RiCloseLine } from "react-icons/ri";
+import { HiOutlineDocumentText } from "react-icons/hi2";
+import { UseQueryToggler } from "@app/hooks/queryHandler";
 const SummaryView = ({
   content,
   context,
@@ -78,6 +81,39 @@ const SearchResultMeta = (prop: {
     });
   }
 
+  const { close, searchParams } = UseQueryToggler();
+  // const [showCaseSummary, setShowCaseSummary] = useState(index);
+  const showCaseSummary = searchParams.get("showCaseSummary");
+  function SummaryComponent() {
+    return (
+      <p className="text-[.88rem] mt-[30px] bg-[rgb(255,229,153,0.25)]  border-[rgb(255,229,153)] border-solid border rounded-md px-2 pt-3 relative">
+        <button type="button" className="">
+          Summary
+        </button>
+        <hr className="mt-2 mb-5" />A final decision is one that leaves nothing
+        to be judicially determined or ascertained thereafter, in order to
+        render it effective and capable of execution, and is absolute, complete,
+        and certain.
+        <div className="flex gap-5 items-center py-5">
+          <SmallTextBtn
+            smallBtnData={["Judgement"]}
+            divStyle=""
+            btnStyle="border-white font-light  px-2 py-1  bg-[rgb(159,197,248)] text-black/80"
+          />
+          <SmallTextBtn
+            smallBtnData={["Precedent analytics"]}
+            divStyle=""
+            btnStyle="border-white font-light  px-2 py-1  bg-[rgb(159,197,248)] text-black/80"
+          />
+          <RiCloseLine
+            onClick={() => close("showCaseSummary", undefined)}
+            className="text-pink-600 ml-auto cursor-pointer"
+            size={19}
+          />
+        </div>
+      </p>
+    );
+  }
   return (
     <div className="mb-8 space-y-3">
       <h3 className="text-base font-medium">
@@ -130,10 +166,34 @@ const SearchResultMeta = (prop: {
         </p>
       )}
 
-      <p
-        dangerouslySetInnerHTML={{ __html: fmtTxt }}
-        className="text-[0.875rem]"
-      />
+      <div>
+        <p
+          dangerouslySetInnerHTML={{ __html: fmtTxt }}
+          className="text-[0.875rem]"
+        />
+        {/* when i wrote this logic, I understood it, as you read it God help you to understand it in your attempt to change it */}
+        {index == "1" && showCaseSummary !== null && showCaseSummary !== "1" ? (
+          <HiOutlineDocumentText
+            title="Case summary"
+            onClick={() => close("showCaseSummary", index as string)}
+            className="text-gray-500 my-5 cursor-pointer  mr-auto"
+            size={19}
+          />
+        ) : index !== "1" && showCaseSummary !== index ? (
+          <HiOutlineDocumentText
+            title="Case summary"
+            onClick={() => close("showCaseSummary", index as string)}
+            className="text-gray-500 my-5 cursor-pointer  mr-auto"
+            size={19}
+          />
+        ) : null}
+      </div>
+
+      {showCaseSummary == index ? (
+        <SummaryComponent />
+      ) : index == "1" && showCaseSummary == null ? (
+        <SummaryComponent />
+      ) : null}
     </div>
   );
 };

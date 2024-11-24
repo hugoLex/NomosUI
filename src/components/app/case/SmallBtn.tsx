@@ -12,7 +12,7 @@ export default function SmallTextBtn({
       {smallBtnData.map((justice) => (
         <button
           type="button"
-          className={` ${btnStyle} text-[13px] block px-2 rounded-md border border-solid bg-[rgb(255,229,153,0.5)] text-center align-middle`}
+          className={` ${btnStyle} text-sm block px-2 rounded-md border border-solid text-center align-middle`}
           key={justice}
         >
           {justice}
