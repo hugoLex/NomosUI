@@ -46,8 +46,9 @@ function PrecedenceTreatment() {
               </button>
             </div>
             {isVisible === title &&
-              details.map((item) => (
+              details.map((item, _idx) => (
                 <p
+                  key={_idx}
                   className={`${""} pl-[8px] text-[#7E858E] pt-[8px] text-[14px] `}
                 >
                   {item}
