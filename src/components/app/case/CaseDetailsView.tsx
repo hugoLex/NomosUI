@@ -8,14 +8,16 @@ import { IoPeople } from "react-icons/io5";
 import { LiaBalanceScaleSolid } from "react-icons/lia";
 import { UseQueryToggler } from "@app/hooks/queryHandler";
 import SmallTextBtn from "./SmallBtn";
+
+type ContentOutline =
+  | "Judicial Panel"
+  | "ratio"
+  | "judgement"
+  | "Decision history";
+
 const CaseView = ({ data }: { data: GenericObject }) => {
   const { createQueryString, router, pathname, urlString } = UseQueryToggler();
   const { title, summary, judgement } = data;
-  type ContentOutline =
-    | "Judicial Panel"
-    | "ratio"
-    | "judgement"
-    | "Decision history";
   const [tab, setTab] = useState<ContentOutline>("Judicial Panel");
 
   const contentOutline: ContentOutline[] = [
@@ -41,7 +43,10 @@ const CaseView = ({ data }: { data: GenericObject }) => {
           {/* <div className="relative max-md:group-[:nth-child(5)_&]:first:h-[3.143rem] md:group-[:nth-child(5)_&]:first:w-[6.88075rem] lg:group-[:nth-child(5)_&]:first:w-[8.88075rem] w-[3.57556rem] h-[3.84813rem] md:w-[4.46975rem] lg:w-[6.24756rem] md:h-[5rem] lg:h-[6.7238rem] "> */}
           {["Court of appeal", "20th May 2024", "CA/K/229/S/96"].map(
             (item, index) => (
-              <h3 className="relative first:pl-[0px] font-light text-[0.875rem] text-black/80  px-2.5 py-1 text-sm">
+              <h3
+                key={index}
+                className="relative first:pl-[0px] font-light text-[0.875rem] text-black/80  px-2.5 py-1 text-sm"
+              >
                 <LuDot
                   className={` ${
                     index == 2 ? "hidden" : ""
