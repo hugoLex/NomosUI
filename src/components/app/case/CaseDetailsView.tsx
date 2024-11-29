@@ -7,7 +7,7 @@ import { PiGavelThin } from "react-icons/pi";
 import { IoPeople } from "react-icons/io5";
 import { LiaBalanceScaleSolid } from "react-icons/lia";
 import { UseQueryToggler } from "@app/hooks/queryHandler";
-import SmallTextBtn from "./SmallBtn";
+import SmallTextBtn from "../generalSharedComponents/SmallBtn";
 const CaseView = ({ data }: { data: GenericObject }) => {
   const { createQueryString, router, pathname, urlString } = UseQueryToggler();
   const { title, summary, judgement } = data;

@@ -17,7 +17,7 @@ export default function SmallTextBtn({
         >
           {justice}
         </button>
-      ))}{" "}
+      ))}
     </div>
   );
 }

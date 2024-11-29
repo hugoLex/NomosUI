@@ -10,7 +10,7 @@ import {
   SearchType,
 } from "@app/types";
 import { escapeRegExp } from "@app/utils";
-import SmallTextBtn from "../case/SmallBtn";
+import SmallTextBtn from "../generalSharedComponents/SmallBtn";
 import { RiCloseLine } from "react-icons/ri";
 import { HiOutlineDocumentText } from "react-icons/hi2";
 import { UseQueryToggler } from "@app/hooks/queryHandler";

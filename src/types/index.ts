@@ -133,7 +133,11 @@ export type LegislationMetadata = SearchResultMeta & {
   part: string;
   section_number: string;
 };
-
+export type BigBarForRightSideLayoutProps = {
+  title: string;
+  icon?: React.ReactElement;
+  style: { ctnStyle: string; icon: string };
+};
 export type LegislationDocuments = Omit<SearchResult, "metadata"> & {
   metadata: LegislationMetadata;
   score: number;
