@@ -11,7 +11,7 @@ const NameCourtyearSuitNo: React.FC<CaseDetailsProps> = ({
 }) => {
   return (
     <>
-      <h1 id="" className="text-xx font-normal mb-2 text-[#245b91]">
+      <h1 id="" className="text-xx font-normal mt-[30px] mb-2 text-[#245b91]">
         {caseTitle}
       </h1>
       <div className="flex group items-center pb-5">

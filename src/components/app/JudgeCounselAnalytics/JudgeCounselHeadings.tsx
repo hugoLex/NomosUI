@@ -3,10 +3,12 @@ import React from "react";
 type HeadingProps = {
   heading1: string;
   heading2: string;
+  h1HeaderRef: React.MutableRefObject<HTMLHeadingElement | null>;
   style: { ctnStyle: string; h1Style: string; h2Style: string };
 };
 
 const JudgeCounselHeadings: React.FC<HeadingProps> = ({
+  h1HeaderRef,
   heading1,
   heading2,
   style,
@@ -20,6 +22,7 @@ const JudgeCounselHeadings: React.FC<HeadingProps> = ({
       </h3>
       <h1
         id=""
+        ref={h1HeaderRef}
         className={` ${style.h2Style} text-xx font-normal mb-3 text-[#245b91]`}
       >
         {heading2}

@@ -4,7 +4,7 @@ import BigBarForRightSideLayout from "../generalSharedComponents/BigBarForRightS
 
 function JudgeCounselGraphLayout() {
   return (
-    <section className="basis-[40%]">
+    <section className="basis-[30%]">
       <div className="sticky top-[68px]  py-[2rem] w-full">
         {/* <div className="sticky top-[68px] bg-gray-100 p-[2rem]"> */}
         {/* <div className="flex gap-2 items-center"> */}

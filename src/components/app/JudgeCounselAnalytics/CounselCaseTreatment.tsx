@@ -14,7 +14,7 @@ const CounselCaseTreatment: React.FC<counselCaseTreatment> = ({
   outcome,
 }) => {
   return (
-    <section className="pb-10">
+    <section className="last:pb-10 ">
       <NameCourtyearSuitNo caseTitle={caseTitle} caseDetails={caseDetails} />
 
       <CaseTreatmentParagraph
@@ -22,6 +22,7 @@ const CounselCaseTreatment: React.FC<counselCaseTreatment> = ({
         reason={casesCited}
         treatment={"Case cited"}
       />
+      {/* <NameCourtyearSuitNo caseTitle={caseTitle} caseDetails={caseDetails} /> */}
       <CaseTreatmentParagraph
         // practitioner_type="counsel"
         reason={outcome}

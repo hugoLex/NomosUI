@@ -32,7 +32,7 @@ const SearchHeader = ({
           <div className="w-[20%] inline-flex gap-4 justify-start items-center self-stretch pl-2 my-auto text-sm font-medium leading-4 text-center text-white whitespace-nowrap">
             <span
               role="button"
-              className="flex gap-1 justify-center px-2 py-2.5 bg-primary rounded"
+              className=" px-2 py-2.5 whitespace-nowrap bg-primary rounded"
             >
               {" "}
               <SearchBoxButton searchTextRef={searchBtnRef} />

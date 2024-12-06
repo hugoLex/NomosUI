@@ -4,8 +4,8 @@ import { IoClose } from "react-icons/io5";
 const Graphmodal = () => {
   const { removeQueryParam } = UseQueryToggler();
   return (
-    <section className="fixed grid items-center justify-center h-dvh w-dvw top-0 bottom-0 right-0 left-0 bg-[rgb(0,0,0,0.8)]">
-      <div className="px-5 flex flex-col w-[90vw] h-[80vh]  bg-white/90 mx-auto ">
+    <section className="fixed grid items-center z-[999]  justify-center h-dvh w-dvw top-0 bottom-0 right-0 left-0 opacity-100 delay-100 transition-opacity bg-[#ccdcf9]/50">
+      <div className="px-5 flex flex-col w-[90vw] h-[80vh]  bg-white/90 mx-auto rounded-md">
         <div>
           <div className="flex items-center justify-between border-b border-solid border-dark-0 py-5  w-full">
             <h1 className="text-base">case timeline graph</h1>
