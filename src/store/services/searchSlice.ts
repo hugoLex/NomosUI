@@ -1,17 +1,16 @@
 import {
   GenericObject,
   ListResponse,
+  QueryReturnValue,
   SearchData,
   SearchType,
+  TSearchResultData,
 } from "@app/types";
 import { injectEndpoints } from "./endpoints";
-import {
+import type {
   FetchBaseQueryError,
   FetchBaseQueryMeta,
-  QueryReturnValue,
 } from "@reduxjs/toolkit/query";
-// please check, i commented this out because it was causing a bug 
-// import { QueryReturnValue } from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 
 type SearchQuery = {
   query: string;
@@ -20,90 +19,71 @@ type SearchQuery = {
 };
 
 const handlePromiseResults = (results: GenericObject[]) => {
-  const errors = results
-    .filter(({ error }) => error)
-    .map(({ error, meta }) => ({ error, meta }));
+  const errors = results.filter(({ error }) => error).map(({ error }) => error);
 
   if (errors.length === results.length) {
     // Aggregate all errors into one
     const err = errors.map(
       ({ error }) =>
-        new Error(
-          error.data.details ?? error.data.message ?? "Unknown occurred"
-        )
+        new Error(error.details ?? error.message ?? "Unknown occurred")
     );
 
     throw new AggregateError(err, "Error Occurred");
   }
 
-  return results.filter(({ data }) => data).map(({ data }) => data);
+  return results.map(({ data, error }) => ({ data, error }));
 };
 
 export const searchQueryAPI = injectEndpoints({
   endpoints: (builder) => ({
-    baseSearch: builder.query<SearchData, SearchQuery>({
+    search: builder.query<TSearchResultData, SearchQuery>({
       queryFn: async (_arg, _api, _extraOptions, _baseQuery) => {
         let results: QueryReturnValue<
           unknown,
           FetchBaseQueryError,
           FetchBaseQueryMeta
         >[] = [];
-        const { query, pageNumber, searchType } = _arg;
-        // if (pageNumber) {
-        //   const llm = await _baseQuery(`/ask?question=${query}`);
-        //   results.push(llm);
+        const { query, pageNumber } = _arg;
 
-        //   if (searchType === "cases") {
-        //     const result = await _baseQuery(
-        //       `/semantic/search?query=${query}${
-        //         pageNumber ? `&page=${pageNumber}&size=5` : ""
-        //       }`
-        //     );
-
-        //     results.push(result);
-        //   }
-
-        //   if (searchType === "articles") {
-        //     const result = await _baseQuery(
-        //       `/articles/search?query=${query}${
-        //         pageNumber ? `&page=${pageNumber}&size=5` : ""
-        //       }`
-        //     );
-
-        //     results.push(result);
-        //   }
-
-        //   if (searchType === "legislations") {
-        //     const result = await _baseQuery(
-        //       `/legislation/search?query=${query}}${
-        //         pageNumber ? `&page=${pageNumber}&size=5` : ""
-        //       }`
-        //     );
-
-        //     results.push(result);
-        //   }
-        // } else {
         const defaultResults = await Promise.all([
           _baseQuery(`/ask?question=${query}`),
           _baseQuery(`/semantic/search?query=${query}`),
-          _baseQuery(`/articles/search?query=${query}`),
-          _baseQuery(`/legislation/search?query=${query}`),
         ]);
 
         results.push(...defaultResults);
-        // }
 
         try {
           const arrOfResults = handlePromiseResults(results);
           const data = arrOfResults.reduce((acc, result) => {
             let key: string = "";
-            if ("llm" in result) key = "llmData";
-            if ("total_cases" in result) key = "casesData";
-            if ("total_articles" in result) key = "articlesData";
-            if ("total_legislation" in result) key = "legislationsData";
+            let data: any = {};
 
-            return { ...acc, [key]: result };
-          }, {}) as SearchData;
+            if (result.data) {
+              data = result.data;
+              if (result.data.hasOwnProperty("llm")) {
+                key = "llmResult";
+              }
+
+              if (result.data.hasOwnProperty("searchID")) {
+                key = "searchResult";
+              }
+            }
+
+            if (result.error) {
+              data = null;
+              if (!acc.hasOwnProperty("llm")) {
+                key = "llmResult";
+                return { ...acc, [key]: data };
+              }
+
+              if (!acc.hasOwnProperty("searchID")) {
+                key = "searchResult";
+                return { ...acc, [key]: data };
+              }
+            }
+
+            return { ...acc, [key]: data };
+          }, {}) as TSearchResultData;
 
           return { data };
         } catch (e: any) {
@@ -112,12 +92,13 @@ export const searchQueryAPI = injectEndpoints({
             error: e.message,
             data: e.errors,
           } as FetchBaseQueryError;
+          console.log(error);
           return { error };
         }
       },
     }),
 
-    baseFilter: builder.query<any, any>({
+    searchFilter: builder.query<any, any>({
       query: ({ id, court, year, area_of_law }) => {
         const applyCourt = court ? `&court=${court}` : "";
         const applyYear = year ? `&${year}` : "";
@@ -133,5 +114,5 @@ export const searchQueryAPI = injectEndpoints({
   overrideExisting: true,
 });
 
-export const { useBaseSearchQuery, useBaseFilterQuery, usePrefetch } =
+export const { useSearchFilterQuery, useSearchQuery, usePrefetch } =
   searchQueryAPI;

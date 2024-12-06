@@ -8,12 +8,14 @@ import {
   LegislationDocuments,
   LegislationMetadata,
   SearchType,
+  TSearchResultDocument,
 } from "@app/types";
 import { escapeRegExp } from "@app/utils";
 import SmallTextBtn from "../generalSharedComponents/SmallBtn";
 import { RiCloseLine } from "react-icons/ri";
 import { HiOutlineDocumentText } from "react-icons/hi2";
 import { UseQueryToggler } from "@app/hooks/queryHandler";
+
 const SummaryView = ({
   content,
   context,
@@ -55,17 +57,54 @@ const SummaryView = ({
   );
 };
 
+const SummaryComponent = () => {
+  const { close, searchParams } = UseQueryToggler();
+  // const [showCaseSummary, setShowCaseSummary] = useState(index);
+  return (
+    <div className="text-[.88rem] mt-[30px] bg-[rgb(255,229,153,0.25)]  border-[rgb(255,229,153)] border-solid border rounded-md px-2 pt-3 relative">
+      <button type="button" className="">
+        Summary
+      </button>
+      <hr className="mt-2 mb-5" />
+      <p>
+        A final decision is one that leaves nothing to be judicially determined
+        or ascertained thereafter, in order to render it effective and capable
+        of execution, and is absolute, complete, and certain.
+      </p>
+      <div className="flex gap-5 items-center py-5">
+        <SmallTextBtn
+          smallBtnData={["Judgement"]}
+          divStyle=""
+          btnStyle="border-white font-light  px-2 py-1  bg-[rgb(159,197,248)] text-black/80"
+        />
+        <SmallTextBtn
+          smallBtnData={["Precedent analytics"]}
+          divStyle=""
+          btnStyle="border-white font-light  px-2 py-1  bg-[rgb(159,197,248)] text-black/80"
+        />
+        <RiCloseLine
+          onClick={() => close("showCaseSummary", undefined)}
+          className="text-pink-600 ml-auto cursor-pointer"
+          size={19}
+        />
+      </div>
+    </div>
+  );
+};
+
 const SearchResultMeta = (prop: {
   index: string | number;
-  data: ArticleDocuments | CaseDocuments | LegislationDocuments;
+  data: TSearchResultDocument;
   type: SearchType;
 }) => {
   const { index, data, type } = prop;
   const { id, content, context, metadata } = data;
-
   let _link: string = "what is law";
   let fmtTxt: string = content;
   let _metadata: any;
+
+  const { close, searchParams } = UseQueryToggler();
+  const showCaseSummary = searchParams.get("showCaseSummary");
 
   if (typeof context === "string") {
     fmtTxt = fmtTxt.replace(
@@ -81,39 +120,6 @@ const SearchResultMeta = (prop: {
     });
   }
 
-  const { close, searchParams } = UseQueryToggler();
-  // const [showCaseSummary, setShowCaseSummary] = useState(index);
-  const showCaseSummary = searchParams.get("showCaseSummary");
-  function SummaryComponent() {
-    return (
-      <p className="text-[.88rem] mt-[30px] bg-[rgb(255,229,153,0.25)]  border-[rgb(255,229,153)] border-solid border rounded-md px-2 pt-3 relative">
-        <button type="button" className="">
-          Summary
-        </button>
-        <hr className="mt-2 mb-5" />A final decision is one that leaves nothing
-        to be judicially determined or ascertained thereafter, in order to
-        render it effective and capable of execution, and is absolute, complete,
-        and certain.
-        <div className="flex gap-5 items-center py-5">
-          <SmallTextBtn
-            smallBtnData={["Judgement"]}
-            divStyle=""
-            btnStyle="border-white font-light  px-2 py-1  bg-[rgb(159,197,248)] text-black/80"
-          />
-          <SmallTextBtn
-            smallBtnData={["Precedent analytics"]}
-            divStyle=""
-            btnStyle="border-white font-light  px-2 py-1  bg-[rgb(159,197,248)] text-black/80"
-          />
-          <RiCloseLine
-            onClick={() => close("showCaseSummary", undefined)}
-            className="text-pink-600 ml-auto cursor-pointer"
-            size={19}
-          />
-        </div>
-      </p>
-    );
-  }
   return (
     <div className="mb-8 space-y-3">
       <h3 className="text-base font-medium">

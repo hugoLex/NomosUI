@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { Head, Loader } from "@app/components/ui";
 import {
@@ -20,12 +20,11 @@ import {
 import {
   FilterOption,
   GenericObject,
-  SearchData,
   SearchType,
-  SearchDataResults,
-  SearchDocuments,
+  TSearchData,
+  TSearchResultDocument,
 } from "@app/types";
-import { useBaseSearchQuery } from "@app/store/services/searchSlice";
+import { useSearchQuery } from "@app/store/services/searchSlice";
 import { flattenFilters } from "@app/utils/helpers";
 import {
   dummyCasesResult,
@@ -50,23 +49,16 @@ const Page = () => {
 
   const [isFilterDrawer, setIsFilterDrawer] = useState<boolean>(false);
   const [searchType, setSearchType] = useState<SearchType>("cases");
-  const [filterData, setFilterData] = useState<SearchDataResults | null>(null);
   const [selectedDataOptions, setSelectedDataOptions] =
     useState<FilterOption | null>(null);
   const [selectedOptions, setSelectedOptions] = useState<FilterOption[]>([]);
   const [searchOptions, setSearchOptions] =
     useState<FilterOption[]>(defaultSearchOptions);
-  const [
-    { articlesData, casesData, legislationsData, llmData },
-    setSearchData,
-  ] = useState<SearchData>({
-    articlesData: null,
-    casesData: null,
-    legislationsData: null,
-    llmData: null,
-  });
+  const [filterData, setFilterData] = useState<TSearchResultDocument[] | null>(
+    null
+  );
   const [searchDocuments, setSearchDocuments] = useState<{
-    documents: SearchDocuments;
+    documents: TSearchResultDocument[];
     total: number;
   } | null>(null);
 
@@ -78,8 +70,8 @@ const Page = () => {
     },
   });
 
-  const { isError, isLoading, isFetching, data } = useBaseSearchQuery(
-    { query, pageNumber, searchType },
+  const { isError, isLoading, isFetching, data } = useSearchQuery(
+    { query, pageNumber },
     {
       // refetchOnMountOrArgChange: true,
     }
@@ -87,103 +79,158 @@ const Page = () => {
 
   useEffect(() => {
     if (data) {
-      const { llmData, casesData, articlesData, legislationsData } = data;
+      const { searchResult } = data;
 
-      setSearchData({
-        articlesData: articlesData,
-        casesData: casesData,
-        llmData: llmData,
-        legislationsData: legislationsData,
-      });
+      if (searchResult !== null) {
+        const {
+          articles: articlesData,
+          case: casesData,
+          legislation: legislationsData,
+          principle: principlesData,
+          filter_elements,
+          total,
+          results_per_document_type,
+        } = searchResult;
 
-      if (casesData) {
-        const { filter_elements, total_cases } = casesData;
-        const { area_of_law, court, year } = filter_elements;
-        const options = [
-          { id: "court", label: "Court", options: court },
-          { id: "area_of_law", label: "Area of Law", options: area_of_law },
-          { id: "year", label: "Year", options: year },
-        ];
+        const {
+          article: articlesTotal,
+          case: casesTotal,
+          legislation: legislationsTotal,
+        } = results_per_document_type;
 
-        setSearchOptions((prev) =>
-          prev.map((itx) => {
-            return itx.id === "cases"
-              ? { ...itx, label: `Cases (${total_cases})`, options }
-              : itx;
-          })
-        );
-      }
+        const {
+          article: articleFilters,
+          case: caseFilters,
+          legislation: legislationFitlers,
+        } = filter_elements;
 
-      if (articlesData) {
-        const { filter_elements, total_articles } = articlesData;
-        const { article_title, author, area_of_law } = filter_elements;
-        const options = [
-          {
-            id: "article_tile",
-            label: "Article Title",
-            options: article_title,
-          },
-          { id: "author", label: "Author", options: author },
-          { id: "area_of_law", label: "Area of Law", options: area_of_law },
-        ];
+        if (articlesData !== null && articleFilters !== null && articlesTotal) {
+          const { article_title, author, area_of_law } = articleFilters;
+          const options = [
+            {
+              id: "article_tile",
+              label: "Article Title",
+              options: article_title,
+            },
+            { id: "author", label: "Author", options: author },
+            { id: "area_of_law", label: "Area of Law", options: area_of_law },
+          ];
+
+          setSearchOptions((prev) =>
+            prev.map((itx) => {
+              return itx.id === "articles"
+                ? {
+                    ...itx,
+                    label: `Articles (${articlesTotal})`,
+                    options,
+                  }
+                : itx;
+            })
+          );
+
+          setSearchDocuments({
+            documents: articlesData,
+            total: articlesTotal,
+          });
+        }
+
+        if (casesData !== null && caseFilters !== null && casesTotal) {
+          const { court, area_of_law, year } = caseFilters;
+          const options = [
+            { id: "court", label: "Court", options: court },
+            { id: "area_of_law", label: "Area of Law", options: area_of_law },
+            { id: "year", label: "Year", options: year },
+          ];
+
+          setSearchOptions((prev) =>
+            prev.map((itx) => {
+              return itx.id === "cases"
+                ? {
+                    ...itx,
+                    label: `Cases (${casesTotal})`,
+                    options,
+                  }
+                : itx;
+            })
+          );
+
+          setSearchDocuments({
+            documents: casesData,
+            total: casesTotal,
+          });
+        }
+
+        if (
+          legislationsData !== null &&
+          legislationFitlers !== null &&
+          legislationsTotal
+        ) {
+          const { document_title, section_number } = legislationFitlers;
+          const options = [
+            {
+              id: "document_title",
+              label: "Document Title",
+              options: document_title,
+            },
+            {
+              id: "section_number",
+              label: "Section Number",
+              options: section_number,
+            },
+          ];
+
+          setSearchOptions((prev) =>
+            prev.map((itx) => {
+              return itx.id === "legislations"
+                ? {
+                    ...itx,
+                    label: `Legislations (${legislationsTotal})`,
+                    options,
+                  }
+                : itx;
+            })
+          );
+
+          setSearchDocuments({
+            documents: legislationsData,
+            total: legislationsTotal,
+          });
+        }
+
+        // if (
+        //   searchType === "principles" &&
+        //   results_per_document_type.principles &&
+        //   principlesData
+        // ) {
+        //   setSearchDocuments({
+        //     documents: principlesData,
+        //     total: results_per_document_type.principle,
+        //   });
+        // }
 
         if (!casesData || !legislationsData) {
           setSearchType("articles");
         }
-        setSearchOptions((prev) =>
-          prev.map((itx) => {
-            return itx.id === "articles"
-              ? { ...itx, label: `Articles (${total_articles})`, options }
-              : itx;
-          })
-        );
-      }
-
-      if (legislationsData) {
-        const { filter_elements, total_legislation } = legislationsData;
-        const { document_title, section_number } = filter_elements;
-        const options = [
-          {
-            id: "document_title",
-            label: "Document Title",
-            options: document_title,
-          },
-          {
-            id: "section_number",
-            label: "Section Number",
-            options: section_number,
-          },
-        ];
 
         if (!casesData || !articlesData) {
           setSearchType("legislations");
         }
 
-        setSearchOptions((prev) =>
-          prev.map((itx) => {
-            return itx.id === "legislations"
-              ? {
-                  ...itx,
-                  label: `Legislations (${total_legislation})`,
-                  options,
-                }
-              : itx;
-          })
-        );
-      }
+        if (!casesData) {
+          setSearchOptions((prev) => prev.filter((itx) => itx.id !== "cases"));
+        }
 
-      if (!casesData) {
-        setSearchOptions((prev) => prev.filter((itx) => itx.id !== "cases"));
-      }
+        if (!articlesData) {
+          setSearchOptions((prev) =>
+            prev.filter((itx) => itx.id !== "articles")
+          );
+        }
 
-      if (!articlesData) {
-        setSearchOptions((prev) => prev.filter((itx) => itx.id !== "articles"));
-      }
-
-      if (!legislationsData) {
-        setSearchOptions((prev) =>
-          prev.filter((itx) => itx.id !== "legislations")
-        );
+        if (!legislationsData) {
+          setSearchOptions((prev) =>
+            prev.filter((itx) => itx.id !== "legislations")
+          );
+        }
       }
     }
 
@@ -191,25 +238,44 @@ const Page = () => {
   }, [data]);
 
   useEffect(() => {
-    if (searchType === "cases" && casesData) {
-      const { documents, total_cases } = casesData;
-      setSearchDocuments({ documents, total: total_cases });
-    }
+    if (data && data.searchResult !== null) {
+      const { searchResult } = data;
+      const { results_per_document_type } = searchResult;
+      const {
+        case: casesTotal,
+        article: articlesTotal,
+        legislation: legislationsTotal,
+      } = results_per_document_type;
 
-    if (searchType === "articles" && articlesData) {
-      const { documents, total_articles } = articlesData;
-      setSearchDocuments({ documents, total: total_articles });
-    }
+      if (searchType === "cases" && searchResult.case !== null && casesTotal) {
+        const documents = searchResult.case;
 
-    if (searchType === "legislations" && legislationsData) {
-      const { documents, total_legislation } = legislationsData;
-      setSearchDocuments({ documents, total: total_legislation });
+        setSearchDocuments({ documents, total: casesTotal });
+      }
+
+      if (searchType === "articles" && searchResult.articles && articlesTotal) {
+        const documents = searchResult.articles;
+
+        setSearchDocuments({ documents, total: articlesTotal });
+      }
+
+      if (
+        searchType === "legislations" &&
+        searchResult.legislation &&
+        legislationsTotal
+      ) {
+        const documents = searchResult.legislation;
+
+        setSearchDocuments({ documents, total: legislationsTotal });
+      }
     }
 
     return () => {};
-  }, [searchType, casesData, articlesData, legislationsData]);
+  }, [data, searchType]);
 
   useEffect(() => {
+    const searchId: string =
+      data && data.searchResult ? data.searchResult.searchID : "";
     const fetchFilter = async () => {
       const { area_of_law, court, year } = selectedOptions.reduce(
         (acc, curr) => {
@@ -232,9 +298,9 @@ const Page = () => {
 
       try {
         const res = await fetch(
-          `${searchURL}/filter?search_id=${casesData?.search_id}${applyFilters}`
+          `${searchURL}/filter?search_id=${searchId}${applyFilters}`
         );
-        const data = (await res.json()) as SearchDataResults;
+        const data = (await res.json()) as TSearchResultDocument[];
         setFilterData(data);
       } catch (error) {
         console.log(error);
@@ -246,7 +312,7 @@ const Page = () => {
     }
 
     return () => {};
-  }, [casesData, selectedOptions]);
+  }, [data, selectedOptions]);
 
   const allFilters = flattenFilters(selectedOptions);
 
@@ -373,6 +439,7 @@ const Page = () => {
                     <span className="text-[#245b91]"> {q}</span>
                   </h1>
 
+                  {/* Filter  {resultData.llm =List */}
                   {allFilters.length > 0 && (
                     <div className="flex gap-3 flex-wrap mb-4 items-center">
                       <p>Applied Filters</p>
@@ -404,37 +471,43 @@ const Page = () => {
                     </div>
                   )}
 
+                  {/* LLM result */}
                   <Fragment>
-                    {!llmData && <Loader variant="classic" />}
-                    {llmData && (
+                    {data && data.llmResult === null && <Fragment />}
+                    {data && data.llmResult !== null && (
                       <SearchAIMetaResult
-                        llm={llmData.llm}
-                        retriever={llmData.retriever}
-                        message={llmData.message}
+                        detail={data.llmResult.detail}
+                        llm={{
+                          replies: data.llmResult.llm.replies,
+                        }}
+                        message={data.llmResult.message}
+                        retriever={data.llmResult.retriever}
                       />
                     )}
                   </Fragment>
 
+                  {/* Search result */}
                   <div className="my-6">
-                    {allFilters.length === 0 && searchDocuments && (
+                    {allFilters.length === 0 && (
                       <Fragment>
-                        {searchDocuments.documents?.map((data, idx) => (
-                          <SearchResultMeta
-                            key={data.id}
-                            index={String(idx + 1)}
-                            data={data}
-                            type={searchType}
-                          />
-                        ))}
+                        {searchDocuments &&
+                          searchDocuments.documents?.map((data, idx) => (
+                            <SearchResultMeta
+                              key={`${data.id}-${idx}`}
+                              index={String(idx + 1)}
+                              data={data}
+                              type={searchType}
+                            />
+                          ))}
                       </Fragment>
                     )}
 
                     {allFilters.length > 0 &&
                       filterData &&
-                      filterData.documents.length > 0 && (
+                      filterData.length > 0 && (
                         <Fragment>
                           <div>
-                            {filterData.documents?.map((data, idx) => (
+                            {filterData?.map((data, idx) => (
                               <SearchResultMeta
                                 key={data.id}
                                 index={String(idx + 1)}
@@ -448,20 +521,20 @@ const Page = () => {
                   </div>
                 </div>
 
-                {searchDocuments && (
-                  <div className="col-span-4">
-                    <div className="sticky md:top-[68px]">
-                      <SearchFilterSidebar
-                        data={searchOptions}
-                        handleSelection={handleSelection}
-                        handleSelectedSearchType={handleSelectedSearchType}
-                        defaultValue={searchType}
-                      />
-                    </div>
+                {/* Search sidebar */}
+                <div className="col-span-4">
+                  <div className="sticky md:top-[68px]">
+                    <SearchFilterSidebar
+                      data={searchOptions}
+                      handleSelection={handleSelection}
+                      handleSelectedSearchType={handleSelectedSearchType}
+                      defaultValue={searchType}
+                    />
                   </div>
-                )}
+                </div>
               </div>
 
+              {/* Search result pagination */}
               {searchDocuments && (
                 <div className="flex flex-col justify-center gap-2">
                   <div className="inline-flex justify-content-center gap-8 mx-auto">
@@ -500,9 +573,10 @@ const Page = () => {
               )}
             </div>
 
+            {/* Filter drawer */}
             <SearchFilterDrawer
               isShow={isFilterDrawer}
-              label={searchType.toString()}
+              label={searchType as string}
               data={selectedDataOptions}
               selectedOptions={selectedOptions}
               closeDrawer={() => setIsFilterDrawer(false)}
