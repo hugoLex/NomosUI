@@ -7,6 +7,18 @@ import React, {
 import { NextPage } from "next";
 import { SearchResultMeta } from "@app/components/app";
 
+export type QueryReturnValue<T = unknown, E = unknown, M = unknown> =
+  | {
+      error: E;
+      data?: undefined;
+      meta?: M;
+    }
+  | {
+      error?: undefined;
+      data: T;
+      meta?: M;
+    };
+
 export type GenericObject = { [key: string]: any };
 
 export type NextPageWithLayout<P = {}> = NextPage<P> & {
@@ -133,11 +145,7 @@ export type LegislationMetadata = SearchResultMeta & {
   part: string;
   section_number: string;
 };
-export type BigBarForRightSideLayoutProps = {
-  title: string;
-  icon?: React.ReactElement;
-  style: { ctnStyle: string; icon: string };
-};
+
 export type LegislationDocuments = Omit<SearchResult, "metadata"> & {
   metadata: LegislationMetadata;
   score: number;
@@ -157,6 +165,15 @@ export type AIResultMeta = {
   court: string;
   year: string | number;
 };
+
+export type LLMData = {
+  llm: { replies: string[] };
+  retriever?: { documents: { id: string; meta: AIResultMeta }[] };
+};
+
+export type LLMError = { detail: string; message?: string };
+
+export type LLMResult = LLMData & LLMError;
 
 export type AIResult = {
   llm: { replies: string[] };
@@ -183,9 +200,78 @@ export type SearchDocuments =
 
 export type SearchType = "articles" | "cases" | "legislations";
 
-
 export type TreatmentTypes =
-| "Positive"
-| "Neutral"
-| "Negative"
-| "Cited by counsel";
+  | "Positive"
+  | "Neutral"
+  | "Negative"
+  | "Cited by counsel";
+
+export type BigBarForRightSideLayoutProps = {
+  title: string;
+  icon?: React.ReactElement;
+  style: { ctnStyle: string; icon: string };
+};
+
+export type SearchResultDocumentMetaDocType =
+  | "article"
+  | "case"
+  | "legislation"
+  | "principle";
+
+export type SearchResultDocumentMeta = {
+  area_of_law?: string[];
+  article_title?: string;
+  author?: string;
+  case_title?: string;
+  court?: string;
+  document_id: string;
+  document_type: SearchResultDocumentMetaDocType;
+  document_title?: string;
+  part_title?: string;
+  part?: string;
+  section_number?: string;
+  source_id?: string;
+  suit_number?: string;
+  year?: string | number | string[] | number[];
+};
+
+export type TSearchResultDocument = {
+  id: string;
+  content: string;
+  context: string | string[];
+  metadata: SearchResultDocumentMeta;
+};
+
+export type TSearchResultDocumentType = {
+  article?: number;
+  case?: number;
+  legislation?: number;
+  principle?: number;
+};
+
+export type TSearchResultDocumentsFilter = {
+  article: ArticleFilter | null;
+  case: CasesFilter | null;
+  legislation: LegislationFilter | null;
+};
+
+export type TSearchResultDocuments = Omit<TSearchData, "llmData"> & {
+  searchID: string;
+  query: string;
+  total: number;
+  results_per_document_type: TSearchResultDocumentType;
+  filter_elements: TSearchResultDocumentsFilter;
+};
+
+export type TSearchResultData = {
+  llmResult: LLMResult | null;
+  searchResult: TSearchResultDocuments | null;
+};
+
+export type TSearchData = {
+  articles: TSearchResultDocument[] | null;
+  case: TSearchResultDocument[] | null;
+  legislation: TSearchResultDocument[] | null;
+  llm: LLMResult | null;
+  principle: TSearchResultDocument[] | null;
+};

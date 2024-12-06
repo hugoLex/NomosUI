@@ -1,12 +1,11 @@
 import React, { FC, Fragment, useState } from "react";
-import { AIResult } from "@app/types";
-import { CaretDown, CaretUp } from "@app/components/icons";
+import { AIResult, LLMResult } from "@app/types";
 import { SummaryPreview } from "@app/components";
 
-const SearchAIMetaResult: FC<AIResult> = ({ llm, retriever, message }) => {
-  const { replies } = llm;
+const SearchAIMetaResult: FC<LLMResult> = (prop) => {
+  const { detail, message, llm, retriever } = prop;
 
-  if (message) {
+  if (detail) {
     return <Fragment />;
   }
 
@@ -40,7 +39,7 @@ const SearchAIMetaResult: FC<AIResult> = ({ llm, retriever, message }) => {
             </span>
           </div>
           <div className="my-1 border w-full border-gray-200 mb-3" />
-          {replies.map((itx, idx) => {
+          {llm.replies.map((itx, idx) => {
             return (
               <Fragment key={`id-${idx}`}>
                 <SummaryPreview text={itx} />
