@@ -11,8 +11,8 @@ const baseAPI = createApi({
       // headers.set("Content-Type", "application/json");
       return headers;
     },
-  }),
-  tagTypes: ["ARTICLES", "CASES", "LEGISLATIONS"],
+  }), 
+  tagTypes: ["ARTICLES", "CASES", "LEGISLATIONS","ANALYTICS"],
   endpoints: () => ({}),
 });
 

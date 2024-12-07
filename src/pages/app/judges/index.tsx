@@ -5,16 +5,20 @@ import JudgeCounselGraphLayout from "@app/components/app/JudgeCounselAnalytics/J
 import JudgesFeaturing_CounselAppearances from "@app/components/app/JudgeCounselAnalytics/JudgesFeaturing_CounselAppearances";
 import JudgeCounselProfile from "@app/components/app/JudgeCounselAnalytics/profile";
 import { AppLayout } from "@app/components/layout";
-import React, { Fragment, useRef, useState } from "react";
+import React, { Fragment, useRef } from "react";
 import { UseQueryToggler } from "@app/hooks/queryHandler";
 import Graphmodal from "@app/components/app/generalSharedComponents/Graphmodal";
 import { Head } from "@app/components/ui";
-import { CaseHeader, SearchHeader } from "@app/components/app";
+import { SearchHeader } from "@app/components/app";
 import JudgeCaseFeaturing from "@app/components/app/JudgeCounselAnalytics/JudgeCaseFeaturing";
-import { useRouter } from "next/router";
 import { useVisibility } from "@app/hooks";
+import { useGetJudgeAnalyticsQuery } from "@app/store/services/judgeAndCounselAnalytics";
 
 function JudgeAnalytics() {
+  const { isError, isLoading, data } = useGetJudgeAnalyticsQuery({
+    judge_id: 2,
+    page: 1,
+  });
   const { searchParams } = UseQueryToggler();
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
   const isH1Visible = useVisibility({
@@ -39,6 +43,8 @@ function JudgeAnalytics() {
   );
 
   const judgecounselgraph = searchParams.get("judgecounselgraph");
+  console.log("This is from judge components", isError, isLoading, data);
+  if (isLoading) return <p>Its loading</p>;
   return (
     <Fragment>
       <Head title={`Search Result - ${"title"}`} />
@@ -79,19 +85,23 @@ function JudgeAnalytics() {
                   </JudgesFeaturing_CounselAppearances>
 
                   {/* replace with payload   */}
-                  {["Concurred", "Dissented"].map((treatment, index) => (
-                    <JudgeCaseFeaturing
-                      key={index}
-                      caseTitle={"Nkemdillim v. Madukolu"}
-                      caseDetails={[
-                        "Supreme Court",
-                        "20th January 2023",
-                        "SC/K/229/S/23",
-                      ]}
-                      treatment={treatment}
-                      reason={text}
-                    />
-                  ))}
+                  {data?.appearances.map((appearance, index) => {
+                    return (
+                      <JudgeCaseFeaturing
+                        key={index}
+                        caseTitle={
+                          appearance.case_title ?? "Nkemdillim v. Madukolu"
+                        }
+                        caseDetails={[
+                          appearance.court,
+                          appearance.date,
+                          appearance.case_id.toString() ?? "SC/K/229/S/23",
+                        ]}
+                        treatment={appearance.outcome}
+                        reason={text}
+                      />
+                    );
+                  })}
                 </div>
                 <JudgeCounselGraphLayout />
                 {judgecounselgraph && <Graphmodal />}
