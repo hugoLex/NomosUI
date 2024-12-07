@@ -136,13 +136,13 @@ export const SearchBoxButton = ({
         }}
         // className={`w-full flex gap-2.5 px-4 py-2 border border-solid
         // bg-stone-50 border-stone-300 rounded-[32px]  cursor-text ${className}`}
-        className=" w-full px-4 py-2 "
+        className=" w-fit px-4 py-2"
       >
         {/* <SearchIcon /> */}
         {/* <span className="my-auto text-sm text-zinc-600">New search..</span> */}
-        {/* <span className="md:px-2 py-2.5 whitespace-nowrap text-sm bg-primary rounded-lg border-stone-300 border border-solid "> */}
-        New Search
-        {/* </span> */}
+        <span className="md:px-2 py-2.5 text-white whitespace-nowrap text-sm bg-primary rounded-lg border-stone-300 border border-solid ">
+          New Search
+        </span>
       </div>
       <SearchBoxModal innerRef={searchTextRef} />
     </Fragment>

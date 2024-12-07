@@ -42,6 +42,6 @@ const baseQuery = fetchBaseQuery({
 export const lexGateWayApiSlice = createApi({
   baseQuery: baseQuery,
 //   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Analytics", ],
+  tagTypes: ["Analytics","Judge","Counsel" ],
   endpoints: (builder) => ({}),
 });

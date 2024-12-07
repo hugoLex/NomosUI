@@ -1,9 +1,18 @@
-import { MoreIcon } from "@app/components/icons";
 import React from "react";
 type CaseTreatment = {
-  practitioner_type?: string;
-  reason: string;
-  treatment: string;
+  practitioner_type?: "Judge" | "Counsel";
+  reason: string | string[];
+  treatment:
+    | "Concurred"
+    | "Dissented"
+    | "Followed"
+    | "Applied"
+    | "Cited"
+    | "Overruled"
+    | "Distinguished"
+    | "Set-aside"
+    // remove this before production
+    | "Cases cited";
 };
 export const CaseTreatmentParagraph: React.FC<CaseTreatment> = ({
   practitioner_type,
@@ -28,11 +37,12 @@ export const CaseTreatmentParagraph: React.FC<CaseTreatment> = ({
             color[treatment as keyof typeof color]
           } text-base capitalize`}
         >
-          {treatment}
+          {practitioner_type == "Counsel" ? "Cases cited" : treatment}
         </h5>
+
         {/* <span
           className={`text-[0.875rem] mt-[10px] block ${
-            treatment == "positive" ? "text-[#11AB45]" : "text-[#11AB45]"
+            treatment == "Followed" ? "text-[#11AB45]" : "text-[#11AB45]"
           } gray-200`}
         >
           {"Positive"}

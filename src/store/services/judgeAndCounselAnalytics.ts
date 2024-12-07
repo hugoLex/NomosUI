@@ -4,6 +4,7 @@
 //     type FetchBaseQueryMeta,
 //   } from "@reduxjs/toolkit/query";
 import { lexGateWayApiSlice } from "../baseApi/lexgatewayApi";
+import { CounselProfileResponse, GetCounselAppearancesRequest } from "./types";
   
 // type for each appearance
 type Appearance = {
@@ -24,21 +25,70 @@ type GetUserAppearancesRequest = {
     judge_id: number;  // judge_id is a number that identifies the judge
  page:number };
     
+// Type for the case appearance information
+type CaseAppearance = {
+  case_title: string;    // case_title is a string
+  suit_number: string;   // suit_number is a string
+  year: number;          // year is a number
+  court: string;         // court is a string
+  division: string | null; // division is either a string or null
+  stance: string | null; // stance is either a string or null
+  subject_matters: string[]; // subject_matters is an array of strings
+};
+
+// Type for the statistics information
+type JudgeStatistics = {
+  total_cases: number;        // total_cases is a number
+  courts_served: string[];    // courts_served is an array of strings
+  divisions_served: string[]; // divisions_served is an array of strings
+  subject_matters: string[];  // subject_matters is an array of strings
+};
+
+// Type for the judge information
+type JudgeInfo = {
+  judge_id: number;           // judge_id is a number
+  name: string;               // name is a string
+  profile: string;            // profile is a string
+  statistics: JudgeStatistics; // statistics is of type JudgeStatistics
+  case_appearances: {
+    total: number;            // total is a number
+    page: number;             // page is a number
+    cases: CaseAppearance[];  // cases is an array of CaseAppearance
+  };
+};
+
+// Type for the overall structure
+type JudgeProfileResponse = {
+  user_id: string;    // user_id is a string (e.g., 'anonymous')
+  judge_info: JudgeInfo; // judge_info is of type JudgeInfo
+};
 
   export const judgeCounselAnalyticsAPISlice = lexGateWayApiSlice.injectEndpoints({
     endpoints: (builder) => ({
- getJudgeAnalytics: builder.query<UserAppearancesResponse, GetUserAppearancesRequest>({
-        query: ({ judge_id,page  }) => `/judge_appearance/${judge_id}?page=${page}`,
+ getJudgeAnalytics: builder.query<JudgeProfileResponse, GetUserAppearancesRequest>({
+        query: ({ judge_id,page  }) => `/consolidated_judge/${judge_id??80}?page=${page}`,
+        // query: ({ judge_id,page  }) => `/judge_appearance/${judge_id}?page=${page}`,
+       
         //     {
         //   return {
         //     url: `/judge_appearance/${judge_id}?page=${page}`,
         //   };
         // },  
-        providesTags:["Analytics"],
+        providesTags:["Analytics","Judge"],
+      }),
+ getCounselAnalytics: builder.query<CounselProfileResponse,GetCounselAppearancesRequest>({
+        query: ({ counsel_id,page  }) => `/counsel_consolidated/${counsel_id}?page=${page}`,
+        // query: ({ counsel_id,page  }) => `/counsel_appearance/${counsel_id}?page=${page}`,
+        //     {https://lexgateway.lexanalytics.ai/counsel_consolidated/80
+        //   return {
+        //     url: `/counsel_appearance/${counsel_id}?page=${page}`,
+        //   };
+        // },  
+        providesTags:["Analytics","Counsel"],
       }),
     }),
   });
-  
-  export const { useGetJudgeAnalyticsQuery, usePrefetch } =
+
+  export const { useGetJudgeAnalyticsQuery, useGetCounselAnalyticsQuery } =
     judgeCounselAnalyticsAPISlice;
   

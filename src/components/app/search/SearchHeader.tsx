@@ -30,14 +30,13 @@ const SearchHeader = ({
       <div className="border-b border-solid bg-stone-50 border-stone-300 border-opacity-50 rounded-t-lg">
         <div className="flex gap-5 justify-between  items-center px-4 py-2.5 w-full relative">
           <div className="w-[20%] inline-flex gap-4 justify-start items-center self-stretch pl-2 my-auto text-sm font-medium leading-4 text-center text-white whitespace-nowrap">
-            <span
+            {/* <span
               role="button"
               className=" px-2 py-2.5 whitespace-nowrap bg-primary rounded"
-            >
-              {" "}
-              <SearchBoxButton searchTextRef={searchBtnRef} />
-              {/* <span>New Search</span> */}
-            </span>
+            > */}{" "}
+            <SearchBoxButton searchTextRef={searchBtnRef} />
+            {/* <span>New Search</span> */}
+            {/* </span> */}
           </div>
 
           <div

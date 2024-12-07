@@ -6,7 +6,7 @@ type JudgeCaseFeaturingProps = {
   caseTitle: string;
   caseDetails: [string, string, string];
   reason: string;
-  treatment: string;
+  treatment: "Concurred" | "Dissented";
 };
 
 const JudgeCaseFeaturing: React.FC<JudgeCaseFeaturingProps> = ({
@@ -19,7 +19,10 @@ const JudgeCaseFeaturing: React.FC<JudgeCaseFeaturingProps> = ({
     <>
       <NameCourtyearSuitNo caseTitle={caseTitle} caseDetails={caseDetails} />
 
-      <CaseTreatmentParagraph reason={reason} treatment={treatment} />
+      <CaseTreatmentParagraph
+        reason={reason}
+        treatment={treatment ?? "Concurred"}
+      />
       <hr />
     </>
   );

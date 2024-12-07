@@ -1,0 +1,103 @@
+{
+    "user_id": "anonymous",
+    "counsel_id": 80,
+    "counsel_name": "Izito Zuoke, Esq",
+    "success": true,
+    "data": {
+        "case_details": {
+            "success": true,
+            "total_cases": 1,
+            "cases": [
+                {
+                    "case_title": "Dr. Casmir Anyanwu v. Chief Okey Eze & Ors",
+                    "suit_number": "SC.626/2019",
+                    "year": 2019,
+                    "court": "Supreme Court",
+                    "court_division": null,
+                    "counsel_role": "respondent",
+                    "law_firm": null,
+                    "case_outcome": "The Supreme Court struck out the appeal as academic, holding that any retrial would be impossible due to the expiration of the 180-day constitutional time limit.",
+                    "subject_matters": [
+                        "Academic Exercise",
+                        "Party Primary Elections",
+                        "Pre-Election Disputes",
+                        "Time Limitation"
+                    ]
+                }
+            ],
+            "error": null
+        },
+        "expertise_analytics": {
+            "success": true,
+            "areas": [
+                {
+                    "counsel_id": 80,
+                    "counsel_name": "Izito Zuoke, Esq",
+                    "area_of_law": "Administrative Law",
+                    "total_cases": 1,
+                    "courts_appeared": [
+                        "Supreme Court"
+                    ],
+                    "precedents_cited": 0,
+                    "rank_in_area": 1,
+                    "cases": [
+                        {
+                            "document_id": "67daef3c-e6ff-40f6-ad78-a72ce9704f07",
+                            "case_title": "Dr. Casmir Anyanwu v. Chief Okey Eze & Ors",
+                            "court": "Supreme Court",
+                            "year": 2019
+                        }
+                    ]
+                },
+                {
+                    "counsel_id": 80,
+                    "counsel_name": "Izito Zuoke, Esq",
+                    "area_of_law": "Constitutional Law",
+                    "total_cases": 1,
+                    "courts_appeared": [
+                        "Supreme Court"
+                    ],
+                    "precedents_cited": 0,
+                    "rank_in_area": 1,
+                    "cases": [
+                        {
+                            "document_id": "67daef3c-e6ff-40f6-ad78-a72ce9704f07",
+                            "case_title": "Dr. Casmir Anyanwu v. Chief Okey Eze & Ors",
+                            "court": "Supreme Court",
+                            "year": 2019
+                        }
+                    ]
+                },
+                {
+                    "counsel_id": 80,
+                    "counsel_name": "Izito Zuoke, Esq",
+                    "area_of_law": "Electoral Law",
+                    "total_cases": 1,
+                    "courts_appeared": [
+                        "Supreme Court"
+                    ],
+                    "precedents_cited": 0,
+                    "rank_in_area": 1,
+                    "cases": [
+                        {
+                            "document_id": "67daef3c-e6ff-40f6-ad78-a72ce9704f07",
+                            "case_title": "Dr. Casmir Anyanwu v. Chief Okey Eze & Ors",
+                            "court": "Supreme Court",
+                            "year": 2019
+                        }
+                    ]
+                }
+            ],
+            "error": null
+        }
+    },
+    "pagination": {
+        "page": 1,
+        "per_page": 10,
+        "total_pages": 0
+    },
+    "metadata": {
+        "timestamp": "2024-12-07T21:08:03.457835",
+        "request_id": "33c9ea2d-143d-4dfc-a221-5fedb716c9cb"
+    }
+}
