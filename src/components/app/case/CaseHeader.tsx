@@ -33,15 +33,22 @@ const tabItems: TabItem[] = [
 
 const CaseHeader = () => {
   const router = useRouter();
-  const handleGoBack = () => {
-    router.back();
-  };
+
   const searchRef = useRef<HTMLTextAreaElement | null>(null);
   const [tabs, setTabs] = useState(tabItems);
   // const [selectedTab, setSelectedTab] = useState(tabs[0]);
 
   const slug = String(router.query.slug);
   const title = slug.replace(/-/g, " ");
+
+  const handleGoBack = () => {
+    const query = document.cookie
+      .split(";")
+      .filter((ctx) => ctx.includes("search_query"))[0]
+      .trim()
+      .split("=")[1];
+    router.push(`/search?q=${query}`);
+  };
 
   const onTabsSelect = (_id: string) => {
     const newTabs = tabs.map(({ active, id, label }, k) => {

@@ -12,7 +12,7 @@ export const searchURL = "https://lexasearch.lexanalytics.ai/api";
 
 export const aiURL = "https://llmsearch.lexanalytics.ai/api";
 
-export const baseURL = "https://lexgateway.lexanalytics.ai/api";
+export const baseURL = "https://lexgateway.lexanalytics.ai/";
 
 export const dummyCasesResult: CaseResults = {
   search_id: "9d182815-5515-437c-bc85-66de4619fcc7",
@@ -638,6 +638,7 @@ export const searchOptions: FilterOption[] = [
   { id: "cases", label: "Cases", options: [] },
   { id: "legislations", label: "Legislation", options: [] },
   { id: "articles", label: "Articles", options: [] },
+  { id: "principles", label: "Principles", options: [] },
 ];
 
 export const dummyCaseDetails = {

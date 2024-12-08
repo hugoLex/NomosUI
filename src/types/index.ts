@@ -146,6 +146,21 @@ export type LegislationMetadata = SearchResultMeta & {
   section_number: string;
 };
 
+export type PrinciplesFilter = {
+  case_title: string[];
+  court: string[];
+  subject_matter: string[];
+  year?: string[] | number[];
+};
+
+export type PrinciplesMetadata = SearchResultMeta & {
+  document_id: string;
+  case_title: string;
+  year: string | null | null;
+  court: string;
+  subject_matter: string[];
+};
+
 export type LegislationDocuments = Omit<SearchResult, "metadata"> & {
   metadata: LegislationMetadata;
   score: number;
@@ -198,7 +213,7 @@ export type SearchDocuments =
   | LegislationDocuments[]
   | ArticleDocuments[];
 
-export type SearchType = "articles" | "cases" | "legislations";
+export type SearchType = "articles" | "cases" | "legislations" | "principles";
 
 export type TreatmentTypes =
   | "Positive"
@@ -232,11 +247,11 @@ export type SearchResultDocumentMeta = {
   section_number?: string;
   source_id?: string;
   suit_number?: string;
+  subject_matter?: string[];
   year?: string | number | string[] | number[];
 };
 
 export type TSearchResultDocument = {
-  id: string;
   content: string;
   context: string | string[];
   metadata: SearchResultDocumentMeta;
@@ -253,9 +268,10 @@ export type TSearchResultDocumentsFilter = {
   article: ArticleFilter | null;
   case: CasesFilter | null;
   legislation: LegislationFilter | null;
+  principle: PrinciplesFilter | null;
 };
 
-export type TSearchResultDocuments = Omit<TSearchData, "llmData"> & {
+export type TSearchResultDocuments = Omit<TSearchData, "llm"> & {
   searchID: string;
   query: string;
   total: number;
@@ -270,8 +286,10 @@ export type TSearchResultData = {
 
 export type TSearchData = {
   articles: TSearchResultDocument[] | null;
-  case: TSearchResultDocument[] | null;
+  cases: TSearchResultDocument[] | null;
   legislation: TSearchResultDocument[] | null;
   llm: LLMResult | null;
-  principle: TSearchResultDocument[] | null;
+  principles: TSearchResultDocument[] | null;
 };
+
+export * from "./cases";

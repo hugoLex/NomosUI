@@ -1,12 +1,10 @@
 import React, { Fragment, useState } from "react";
 import Link from "next/link";
 import {
-  ArticleDocuments,
   ArticleMetadata,
   CaseMetadata,
-  CaseDocuments,
-  LegislationDocuments,
   LegislationMetadata,
+  PrinciplesMetadata,
   SearchType,
   TSearchResultDocument,
 } from "@app/types";
@@ -98,7 +96,7 @@ const SearchResultMeta = (prop: {
   type: SearchType;
 }) => {
   const { index, data, type } = prop;
-  const { id, content, context, metadata } = data;
+  const { content, context, metadata } = data;
   let _link: string = "what is law";
   let fmtTxt: string = content;
   let _metadata: any;
@@ -124,7 +122,11 @@ const SearchResultMeta = (prop: {
     <div className="mb-8 space-y-3">
       <h3 className="text-base font-medium">
         <Link
-          href={`/cases/${id ? id : _link.replace(/\s/g, "-")}`}
+          href={`/cases/${
+            metadata.document_id
+              ? metadata.document_id
+              : _link.replace(/\s/g, "-")
+          }?title=${metadata.case_title}&tab=case`}
           className="text-[#245b91]"
         >
           <span className="text-gray-500">{index}. </span>
@@ -132,6 +134,7 @@ const SearchResultMeta = (prop: {
           {type === "cases" && (metadata as CaseMetadata).case_title}
           {type === "legislations" &&
             (metadata as LegislationMetadata).document_title}
+          {type === "principles" && (metadata as PrinciplesMetadata).case_title}
         </Link>
       </h3>
 
@@ -169,6 +172,17 @@ const SearchResultMeta = (prop: {
           <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
             {(metadata as LegislationMetadata).year}
           </span>
+        </p>
+      )}
+
+      {type === "principles" && (
+        <p className="flex gap-x-4">
+          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+            {(metadata as PrinciplesMetadata).court}
+          </span>
+          {/* <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+            {(metadata as PrinciplesMetadata).}
+          </span> */}
         </p>
       )}
 

@@ -21,16 +21,11 @@ import {
   FilterOption,
   GenericObject,
   SearchType,
-  TSearchData,
   TSearchResultDocument,
 } from "@app/types";
 import { useSearchQuery } from "@app/store/services/searchSlice";
 import { flattenFilters } from "@app/utils/helpers";
 import {
-  dummyCasesResult,
-  dummyArticleResult,
-  dummyLegislationResult,
-  dummyLLMResult,
   searchURL,
   searchOptions as defaultSearchOptions,
 } from "@app/utils/constants";
@@ -79,14 +74,15 @@ const Page = () => {
 
   useEffect(() => {
     if (data) {
+      console.log("data loaded");
       const { searchResult } = data;
 
       if (searchResult !== null) {
         const {
           articles: articlesData,
-          case: casesData,
+          cases: casesData,
           legislation: legislationsData,
-          principle: principlesData,
+          principles: principlesData,
           filter_elements,
           total,
           results_per_document_type,
@@ -96,12 +92,14 @@ const Page = () => {
           article: articlesTotal,
           case: casesTotal,
           legislation: legislationsTotal,
+          principle: principlesTotal,
         } = results_per_document_type;
 
         const {
           article: articleFilters,
           case: caseFilters,
           legislation: legislationFitlers,
+          principle: principleFilter,
         } = filter_elements;
 
         if (articlesData !== null && articleFilters !== null && articlesTotal) {
@@ -197,23 +195,50 @@ const Page = () => {
           });
         }
 
-        // if (
-        //   searchType === "principles" &&
-        //   results_per_document_type.principles &&
-        //   principlesData
-        // ) {
-        //   setSearchDocuments({
-        //     documents: principlesData,
-        //     total: results_per_document_type.principle,
-        //   });
-        // }
+        if (
+          principlesData !== null &&
+          principleFilter !== null &&
+          principlesTotal
+        ) {
+          const { court, subject_matter, year } = principleFilter;
+          const options: FilterOption[] = [
+            { id: "court", label: "Court", options: court },
+            {
+              id: "subject_matter",
+              label: "Subject matter",
+              options: subject_matter,
+            },
+            { id: "year", label: "Year", options: year ? year : [] },
+          ];
 
-        if (!casesData || !legislationsData) {
+          setSearchOptions((prev) =>
+            prev.map((itx) => {
+              return itx.id === "principles"
+                ? {
+                    ...itx,
+                    label: `Principles (${principlesTotal})`,
+                    options,
+                  }
+                : itx;
+            })
+          );
+
+          setSearchDocuments({
+            documents: principlesData,
+            total: principlesTotal,
+          });
+        }
+
+        if (!casesData || !legislationsData || !principlesData) {
           setSearchType("articles");
         }
 
-        if (!casesData || !articlesData) {
+        if (!casesData || !articlesData || !principlesData) {
           setSearchType("legislations");
+        }
+
+        if (!casesData || !articlesData || !legislationsData) {
+          setSearchType("principles");
         }
 
         if (!casesData) {
@@ -231,6 +256,12 @@ const Page = () => {
             prev.filter((itx) => itx.id !== "legislations")
           );
         }
+
+        if (!principlesData) {
+          setSearchOptions((prev) =>
+            prev.filter((itx) => itx.id !== "principles")
+          );
+        }
       }
     }
 
@@ -240,33 +271,39 @@ const Page = () => {
   useEffect(() => {
     if (data && data.searchResult !== null) {
       const { searchResult } = data;
-      const { results_per_document_type } = searchResult;
+
+      const {
+        articles,
+        cases,
+        legislation,
+        principles,
+        results_per_document_type,
+      } = searchResult;
+
       const {
         case: casesTotal,
         article: articlesTotal,
         legislation: legislationsTotal,
+        principle: principlesTotal,
       } = results_per_document_type;
 
-      if (searchType === "cases" && searchResult.case !== null && casesTotal) {
-        const documents = searchResult.case;
-
-        setSearchDocuments({ documents, total: casesTotal });
+      if (searchType === "cases" && cases !== null && casesTotal) {
+        setSearchDocuments({ documents: cases, total: casesTotal });
       }
 
-      if (searchType === "articles" && searchResult.articles && articlesTotal) {
-        const documents = searchResult.articles;
-
-        setSearchDocuments({ documents, total: articlesTotal });
+      if (searchType === "articles" && articles && articlesTotal) {
+        setSearchDocuments({ documents: articles, total: articlesTotal });
       }
 
-      if (
-        searchType === "legislations" &&
-        searchResult.legislation &&
-        legislationsTotal
-      ) {
-        const documents = searchResult.legislation;
+      if (searchType === "legislations" && legislation && legislationsTotal) {
+        setSearchDocuments({
+          documents: legislation,
+          total: legislationsTotal,
+        });
+      }
 
-        setSearchDocuments({ documents, total: legislationsTotal });
+      if (searchType === "principles" && principles && principlesTotal) {
+        setSearchDocuments({ documents: principles, total: principlesTotal });
       }
     }
 
@@ -493,7 +530,7 @@ const Page = () => {
                         {searchDocuments &&
                           searchDocuments.documents?.map((data, idx) => (
                             <SearchResultMeta
-                              key={`${data.id}-${idx}`}
+                              key={`${data.metadata.document_id}-${idx}`}
                               index={String(idx + 1)}
                               data={data}
                               type={searchType}
@@ -509,7 +546,7 @@ const Page = () => {
                           <div>
                             {filterData?.map((data, idx) => (
                               <SearchResultMeta
-                                key={data.id}
+                                key={data.metadata.document_id}
                                 index={String(idx + 1)}
                                 data={data}
                                 type={searchType}
