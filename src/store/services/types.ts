@@ -9,10 +9,10 @@ type CaseDetail = {
     law_firm: string | null; // law_firm is a string or null
     case_outcome: string;   // case_outcome is a string
     subject_matters: string[]; // subject_matters is an array of strings
-  };
-  
-  // Type for expertise analytics
-  type ExpertiseArea = {
+};
+
+// Type for expertise analytics
+type ExpertiseArea = {
     counsel_id: number;           // counsel_id is a number
     counsel_name: string;         // counsel_name is a string
     area_of_law: string;          // area_of_law is a string
@@ -21,43 +21,43 @@ type CaseDetail = {
     precedents_cited: number;     // precedents_cited is a number
     rank_in_area: number;         // rank_in_area is a number
     cases: {
-      document_id: string;        // document_id is a string
-      case_title: string;         // case_title is a string
-      court: string;              // court is a string
-      year: number;               // year is a number
+        document_id: string;        // document_id is a string
+        case_title: string;         // case_title is a string
+        court: string;              // court is a string
+        year: number;               // year is a number
     }[];
-  };
-  
-  // Type for the main data object
-  type CounselData = {
+};
+
+// Type for the main data object
+type CounselData = {
     case_details: {
-      success: boolean;           // success is a boolean
-      total_cases: number;       // total_cases is a number
-      cases: CaseDetail[];       // cases is an array of CaseDetail objects
-      error: string | null;      // error is a string or null
+        success: boolean;           // success is a boolean
+        total_cases: number;       // total_cases is a number
+        cases: CaseDetail[];       // cases is an array of CaseDetail objects
+        error: string | null;      // error is a string or null
     };
     expertise_analytics: {
-      success: boolean;          // success is a boolean
-      areas: ExpertiseArea[];    // areas is an array of ExpertiseArea objects
-      error: string | null;      // error is a string or null
+        success: boolean;          // success is a boolean
+        areas: ExpertiseArea[];    // areas is an array of ExpertiseArea objects
+        error: string | null;      // error is a string or null
     };
-  };
-  
-  // Type for pagination
-  type Pagination = {
+};
+
+// Type for pagination
+type Pagination = {
     page: number;     // page is a number
     per_page: number; // per_page is a number
     total_pages: number; // total_pages is a number
-  };
-  
-  // Type for metadata
-  type Metadata = {
+};
+
+// Type for metadata
+type Metadata = {
     timestamp: string;   // timestamp is a string (ISO date)
     request_id: string;  // request_id is a string
-  };
-  
-  // Type for the full response
-  export type CounselProfileResponse = {
+};
+
+// Type for the full response
+export type CounselProfileResponse = {
     user_id: string;    // user_id is a string (e.g., 'anonymous')
     counsel_id: number; // counsel_id is a number
     counsel_name: string; // counsel_name is a string
@@ -65,8 +65,44 @@ type CaseDetail = {
     data: CounselData;   // data is of type CounselData
     pagination: Pagination; // pagination is of type Pagination
     metadata: Metadata;    // metadata is of type Metadata
-  };
-  export type GetCounselAppearancesRequest = {
+};
+export type GetCounselAppearancesRequest = {
     counsel_id: number;
-page: number;
+    page: number;
 }
+
+
+// Type for the judge information
+type Judge = {
+    judge_id: number;             // judge_id is a number
+    name: string;                 // name is a string
+    profile: string | null;       // profile is a string or null
+    court: string;                // court is a string
+    division: string | null;      // division is a string or null
+    jurisdiction: string;         // jurisdiction is a string
+    total_cases: number;          // total_cases is a number
+    subject_matters: string[];    // subject_matters is an array of strings
+};
+
+// Type for the full response structure
+export type JudgeInfoResponseT = {
+    user_id: string;              // user_id is a string
+    judges: Judge[];              // judges is an array of Judge objects
+};
+
+
+// Type for the counsel information
+type Counsel = {
+    counsel_id: number;                // counsel_id is a number
+    counsel_name: string;              // counsel_name is a string
+    total_cases: number;               // total_cases is a number
+    roles: string;                     // roles is a string
+    law_firms: string;                 // law_firms is a string
+    total_precedents_cited: number;    // total_precedents_cited is a number
+};
+
+// Type for the full response structure
+export type CounselResponse = {
+    user_id: string;                   // user_id is a string
+    counsels: Counsel[];               // counsels is an array of Counsel objects
+};

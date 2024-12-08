@@ -16,6 +16,7 @@ import { Modal } from ".";
 import Image from "next/image";
 import { logo, logoIcon } from "@app/assets";
 import { useRouter } from "next/router";
+import { PiFilesThin, PiGavelThin } from "react-icons/pi";
 
 type Variant = "default" | "empty";
 
@@ -102,6 +103,36 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                     </span>
                     <span className={isCollapsed ? "hidden" : "inline-block"}>
                       Cases
+                    </span>
+                  </Link>
+                </li>
+                <li className="w-full">
+                  <Link
+                    href={"/judges"}
+                    className={`flex  items-center gap-1 mt-7 text-center whitespace-nowrap ${
+                      isCollapsed ? "justify-center" : ""
+                    }`}
+                  >
+                    <span className="inline-block shrink-0 w-5 aspect-[1.25]">
+                      <PiGavelThin size={20} />
+                    </span>
+                    <span className={isCollapsed ? "hidden" : "inline-block"}>
+                      Judges
+                    </span>
+                  </Link>
+                </li>
+                <li className="w-full">
+                  <Link
+                    href={"/counsel"}
+                    className={`flex  items-center gap-1 mt-7 text-center whitespace-nowrap ${
+                      isCollapsed ? "justify-center" : ""
+                    }`}
+                  >
+                    <span className="inline-block shrink-0 w-5 aspect-[1.25]">
+                      <PiFilesThin size={20} />
+                    </span>
+                    <span className={isCollapsed ? "hidden" : "inline-block"}>
+                      Counsel
                     </span>
                   </Link>
                 </li>
