@@ -72,12 +72,19 @@ const Page = () => {
     }
   );
 
+  // Initial data load
   useEffect(() => {
+    if (isFetching) {
+      setSearchOptions(defaultSearchOptions);
+      setSearchDocuments({ documents: [], total: 0 });
+      setSearchType("cases");
+    }
+
     if (data) {
-      console.log("data loaded");
       const { searchResult } = data;
 
       if (searchResult !== null) {
+        const list = [];
         const {
           articles: articlesData,
           cases: casesData,
@@ -102,7 +109,7 @@ const Page = () => {
           principle: principleFilter,
         } = filter_elements;
 
-        if (articlesData !== null && articleFilters !== null && articlesTotal) {
+        if (articleFilters !== null && articlesTotal) {
           const { article_title, author, area_of_law } = articleFilters;
           const options = [
             {
@@ -125,14 +132,9 @@ const Page = () => {
                 : itx;
             })
           );
-
-          setSearchDocuments({
-            documents: articlesData,
-            total: articlesTotal,
-          });
         }
 
-        if (casesData !== null && caseFilters !== null && casesTotal) {
+        if (caseFilters !== null && casesTotal) {
           const { court, area_of_law, year } = caseFilters;
           const options = [
             { id: "court", label: "Court", options: court },
@@ -151,18 +153,9 @@ const Page = () => {
                 : itx;
             })
           );
-
-          setSearchDocuments({
-            documents: casesData,
-            total: casesTotal,
-          });
         }
 
-        if (
-          legislationsData !== null &&
-          legislationFitlers !== null &&
-          legislationsTotal
-        ) {
+        if (legislationFitlers !== null && legislationsTotal) {
           const { document_title, section_number } = legislationFitlers;
           const options = [
             {
@@ -188,18 +181,9 @@ const Page = () => {
                 : itx;
             })
           );
-
-          setSearchDocuments({
-            documents: legislationsData,
-            total: legislationsTotal,
-          });
         }
 
-        if (
-          principlesData !== null &&
-          principleFilter !== null &&
-          principlesTotal
-        ) {
+        if (principleFilter !== null && principlesTotal) {
           const { court, subject_matter, year } = principleFilter;
           const options: FilterOption[] = [
             { id: "court", label: "Court", options: court },
@@ -222,7 +206,46 @@ const Page = () => {
                 : itx;
             })
           );
+        }
 
+        if (!articlesData) {
+          setSearchOptions((prev) =>
+            prev.filter((itx) => itx.id !== "articles")
+          );
+        }
+
+        if (!casesData) {
+          setSearchOptions((prev) => prev.filter((itx) => itx.id !== "cases"));
+        }
+
+        if (!legislationsData) {
+          setSearchOptions((prev) =>
+            prev.filter((itx) => itx.id !== "legislations")
+          );
+        }
+
+        if (!principlesData) {
+          setSearchOptions((prev) =>
+            prev.filter((itx) => itx.id !== "principles")
+          );
+        }
+
+        if (casesData && casesData !== null && casesTotal) {
+          setSearchDocuments({ documents: casesData, total: casesTotal });
+        }
+
+        if (articlesData !== null && articlesTotal) {
+          setSearchDocuments({ documents: articlesData, total: articlesTotal });
+        }
+
+        if (legislationsData !== null && legislationsTotal) {
+          setSearchDocuments({
+            documents: legislationsData,
+            total: legislationsTotal,
+          });
+        }
+
+        if (principlesData !== null && principlesTotal) {
           setSearchDocuments({
             documents: principlesData,
             total: principlesTotal,
@@ -240,34 +263,13 @@ const Page = () => {
         if (!casesData || !articlesData || !legislationsData) {
           setSearchType("principles");
         }
-
-        if (!casesData) {
-          setSearchOptions((prev) => prev.filter((itx) => itx.id !== "cases"));
-        }
-
-        if (!articlesData) {
-          setSearchOptions((prev) =>
-            prev.filter((itx) => itx.id !== "articles")
-          );
-        }
-
-        if (!legislationsData) {
-          setSearchOptions((prev) =>
-            prev.filter((itx) => itx.id !== "legislations")
-          );
-        }
-
-        if (!principlesData) {
-          setSearchOptions((prev) =>
-            prev.filter((itx) => itx.id !== "principles")
-          );
-        }
       }
     }
 
     return () => {};
-  }, [data]);
+  }, [data, isFetching]);
 
+  // set documents
   useEffect(() => {
     if (data && data.searchResult !== null) {
       const { searchResult } = data;
@@ -291,18 +293,26 @@ const Page = () => {
         setSearchDocuments({ documents: cases, total: casesTotal });
       }
 
-      if (searchType === "articles" && articles && articlesTotal) {
+      if (searchType === "articles" && articles !== null && articlesTotal) {
         setSearchDocuments({ documents: articles, total: articlesTotal });
       }
 
-      if (searchType === "legislations" && legislation && legislationsTotal) {
+      if (
+        searchType === "legislations" &&
+        legislation !== null &&
+        legislationsTotal
+      ) {
         setSearchDocuments({
           documents: legislation,
           total: legislationsTotal,
         });
       }
 
-      if (searchType === "principles" && principles && principlesTotal) {
+      if (
+        searchType === "principles" &&
+        principles !== null &&
+        principlesTotal
+      ) {
         setSearchDocuments({ documents: principles, total: principlesTotal });
       }
     }
@@ -310,6 +320,7 @@ const Page = () => {
     return () => {};
   }, [data, searchType]);
 
+  //  selected filter search
   useEffect(() => {
     const searchId: string =
       data && data.searchResult ? data.searchResult.searchID : "";
@@ -345,7 +356,7 @@ const Page = () => {
     };
 
     if (selectedOptions.length !== 0) {
-      fetchFilter();
+      // fetchFilter();
     }
 
     return () => {};
@@ -434,6 +445,8 @@ const Page = () => {
       { shallow: true }
     );
   };
+
+  console.log(searchType);
 
   return (
     <Fragment>
