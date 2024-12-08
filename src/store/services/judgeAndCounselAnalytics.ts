@@ -4,8 +4,12 @@
 //     type FetchBaseQueryMeta,
 //   } from "@reduxjs/toolkit/query";
 import { lexGateWayApiSlice } from "../baseApi/lexgatewayApi";
-import { CounselProfileResponse, CounselResponse, GetCounselAppearancesRequest, JudgeInfoResponseT } from "./types";
-import { CounselProfileResponse, GetCounselAppearancesRequest } from "./types";
+import {
+  CounselProfileResponse,
+  CounselResponse,
+  GetCounselAppearancesRequest,
+  JudgeInfoResponseT,
+} from "./types";
 
 // type for each appearance
 type Appearance = {
@@ -23,7 +27,6 @@ type UserAppearancesResponse = {
 };
 // request parameters type
 type RequestParams = {
-type GetUserAppearancesRequest = {
   judge_id: number; // judge_id is a number that identifies the judge
   page: number;
 };
@@ -76,10 +79,7 @@ export const judgeCounselAnalyticsAPISlice = lexGateWayApiSlice.injectEndpoints(
         query: ({ page }) => `/retrieve_all_judges`,
         providesTags: ["Analytics", "Judge"],
       }),
-      getJudgeAnalytics: builder.query<
-        JudgeProfileResponse,
-        RequestParams
-      >({
+      getJudgeAnalytics: builder.query<JudgeProfileResponse, RequestParams>({
         query: ({ judge_id, page }) =>
           `/consolidated_judge/${judge_id ?? 80}?page=${page}`,
         providesTags: ["Analytics", "Judge"],
@@ -91,21 +91,7 @@ export const judgeCounselAnalyticsAPISlice = lexGateWayApiSlice.injectEndpoints(
         query: ({ page }) => `/get_all_counsels`,
         providesTags: ["Analytics", "Counsel"],
       }),
-      getJudgeAnalytics: builder.query<
-        JudgeProfileResponse,
-        GetUserAppearancesRequest
-      >({
-        query: ({ judge_id, page }) =>
-          `/consolidated_judge/${judge_id ?? 80}?page=${page}`,
-        // query: ({ judge_id,page  }) => `/judge_appearance/${judge_id}?page=${page}`,
 
-        //     {
-        //   return {
-        //     url: `/judge_appearance/${judge_id}?page=${page}`,
-        //   };
-        // },
-        providesTags: ["Analytics", "Judge"],
-      }),
       getCounselAnalytics: builder.query<
         CounselProfileResponse,
         GetCounselAppearancesRequest
@@ -130,5 +116,3 @@ export const {
   useGetAllCounselQuery,
   useGetAllJudgeQuery,
 } = judgeCounselAnalyticsAPISlice;
-export const { useGetJudgeAnalyticsQuery, useGetCounselAnalyticsQuery } =
-  judgeCounselAnalyticsAPISlice;
