@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import { useRouter } from "next/router";
 import { Head } from "@app/components/ui";
 import {
@@ -13,27 +13,28 @@ import { dummyCaseDetails } from "@app/utils";
 
 const Page = () => {
   const router = useRouter();
-
-  const slug = String(router.query.slug);
-  const title = slug.replace(/-/g, " ");
+  const query = router.query;
+  const slug = query.slug ? query.slug : "";
+  const caseId = slug as string;
   const tabId: string = router.query.tab ? String(router.query.tab) : "case";
 
-  const { caseData, counselData, judgeData, precedentData } = dummyCaseDetails;
+  const { counselData, judgeData } = dummyCaseDetails;
 
   return (
     <Fragment>
-      <Head title={`Search Result - ${title}`} />
+      <Head title={`Case - ${query.title}`} />
       <Layout>
         <CaseHeader />
+
         <section className="relative mx-auto max-w-[1100px] py-6 ">
           <div className="px-16 max-md:px-5 max-w-full">
             <div className="md:grid grid-cols-12 gap-8">
-              {tabId === "case" && <CaseDetailsView data={caseData} />}
+              {tabId === "case" && <CaseDetailsView id={caseId} />}
               {tabId === "judgement" && (
                 <CaseJudgeAnalyticsView data={judgeData} />
               )}
               {tabId === "precedent" && (
-                <CasePrecedentAnalyticsView data={precedentData} />
+                <CasePrecedentAnalyticsView id={caseId} />
               )}
               {tabId === "counsel" && <CaseCounselView data={counselData} />}
             </div>

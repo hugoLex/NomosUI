@@ -4,7 +4,12 @@
 //     type FetchBaseQueryMeta,
 //   } from "@reduxjs/toolkit/query";
 import { lexGateWayApiSlice } from "../baseApi/lexgatewayApi";
-import { CounselProfileResponse, CounselResponse, GetCounselAppearancesRequest, JudgeInfoResponseT } from "./types";
+import {
+  CounselProfileResponse,
+  CounselResponse,
+  GetCounselAppearancesRequest,
+  JudgeInfoResponseT,
+} from "./types";
 
 // type for each appearance
 type Appearance = {
@@ -74,10 +79,7 @@ export const judgeCounselAnalyticsAPISlice = lexGateWayApiSlice.injectEndpoints(
         query: ({ page }) => `/retrieve_all_judges`,
         providesTags: ["Analytics", "Judge"],
       }),
-      getJudgeAnalytics: builder.query<
-        JudgeProfileResponse,
-        RequestParams
-      >({
+      getJudgeAnalytics: builder.query<JudgeProfileResponse, RequestParams>({
         query: ({ judge_id, page }) =>
           `/consolidated_judge/${judge_id ?? 80}?page=${page}`,
         providesTags: ["Analytics", "Judge"],
@@ -89,6 +91,7 @@ export const judgeCounselAnalyticsAPISlice = lexGateWayApiSlice.injectEndpoints(
         query: ({ page }) => `/get_all_counsels`,
         providesTags: ["Analytics", "Counsel"],
       }),
+
       getCounselAnalytics: builder.query<
         CounselProfileResponse,
         GetCounselAppearancesRequest

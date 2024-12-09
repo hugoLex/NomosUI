@@ -21,16 +21,11 @@ import {
   FilterOption,
   GenericObject,
   SearchType,
-  TSearchData,
   TSearchResultDocument,
 } from "@app/types";
 import { useSearchQuery } from "@app/store/services/searchSlice";
 import { flattenFilters } from "@app/utils/helpers";
 import {
-  dummyCasesResult,
-  dummyArticleResult,
-  dummyLegislationResult,
-  dummyLLMResult,
   searchURL,
   searchOptions as defaultSearchOptions,
 } from "@app/utils/constants";
@@ -77,16 +72,24 @@ const Page = () => {
     }
   );
 
+  // Initial data load
   useEffect(() => {
+    if (isFetching) {
+      setSearchOptions(defaultSearchOptions);
+      setSearchDocuments({ documents: [], total: 0 });
+      setSearchType("cases");
+    }
+
     if (data) {
       const { searchResult } = data;
 
       if (searchResult !== null) {
+        const list = [];
         const {
           articles: articlesData,
-          case: casesData,
+          cases: casesData,
           legislation: legislationsData,
-          principle: principlesData,
+          principles: principlesData,
           filter_elements,
           total,
           results_per_document_type,
@@ -96,15 +99,17 @@ const Page = () => {
           article: articlesTotal,
           case: casesTotal,
           legislation: legislationsTotal,
+          principle: principlesTotal,
         } = results_per_document_type;
 
         const {
           article: articleFilters,
           case: caseFilters,
           legislation: legislationFitlers,
+          principle: principleFilter,
         } = filter_elements;
 
-        if (articlesData !== null && articleFilters !== null && articlesTotal) {
+        if (articleFilters !== null && articlesTotal) {
           const { article_title, author, area_of_law } = articleFilters;
           const options = [
             {
@@ -127,14 +132,9 @@ const Page = () => {
                 : itx;
             })
           );
-
-          setSearchDocuments({
-            documents: articlesData,
-            total: articlesTotal,
-          });
         }
 
-        if (casesData !== null && caseFilters !== null && casesTotal) {
+        if (caseFilters !== null && casesTotal) {
           const { court, area_of_law, year } = caseFilters;
           const options = [
             { id: "court", label: "Court", options: court },
@@ -153,18 +153,9 @@ const Page = () => {
                 : itx;
             })
           );
-
-          setSearchDocuments({
-            documents: casesData,
-            total: casesTotal,
-          });
         }
 
-        if (
-          legislationsData !== null &&
-          legislationFitlers !== null &&
-          legislationsTotal
-        ) {
+        if (legislationFitlers !== null && legislationsTotal) {
           const { document_title, section_number } = legislationFitlers;
           const options = [
             {
@@ -190,34 +181,31 @@ const Page = () => {
                 : itx;
             })
           );
-
-          setSearchDocuments({
-            documents: legislationsData,
-            total: legislationsTotal,
-          });
         }
 
-        // if (
-        //   searchType === "principles" &&
-        //   results_per_document_type.principles &&
-        //   principlesData
-        // ) {
-        //   setSearchDocuments({
-        //     documents: principlesData,
-        //     total: results_per_document_type.principle,
-        //   });
-        // }
+        if (principleFilter !== null && principlesTotal) {
+          const { court, subject_matter, year } = principleFilter;
+          const options: FilterOption[] = [
+            { id: "court", label: "Court", options: court },
+            {
+              id: "subject_matter",
+              label: "Subject matter",
+              options: subject_matter,
+            },
+            { id: "year", label: "Year", options: year ? year : [] },
+          ];
 
-        if (!casesData || !legislationsData) {
-          setSearchType("articles");
-        }
-
-        if (!casesData || !articlesData) {
-          setSearchType("legislations");
-        }
-
-        if (!casesData) {
-          setSearchOptions((prev) => prev.filter((itx) => itx.id !== "cases"));
+          setSearchOptions((prev) =>
+            prev.map((itx) => {
+              return itx.id === "principles"
+                ? {
+                    ...itx,
+                    label: `Principles (${principlesTotal})`,
+                    options,
+                  }
+                : itx;
+            })
+          );
         }
 
         if (!articlesData) {
@@ -226,53 +214,113 @@ const Page = () => {
           );
         }
 
+        if (!casesData) {
+          setSearchOptions((prev) => prev.filter((itx) => itx.id !== "cases"));
+        }
+
         if (!legislationsData) {
           setSearchOptions((prev) =>
             prev.filter((itx) => itx.id !== "legislations")
           );
         }
+
+        if (!principlesData) {
+          setSearchOptions((prev) =>
+            prev.filter((itx) => itx.id !== "principles")
+          );
+        }
+
+        if (casesData && casesData !== null && casesTotal) {
+          setSearchDocuments({ documents: casesData, total: casesTotal });
+        }
+
+        if (articlesData !== null && articlesTotal) {
+          setSearchDocuments({ documents: articlesData, total: articlesTotal });
+        }
+
+        if (legislationsData !== null && legislationsTotal) {
+          setSearchDocuments({
+            documents: legislationsData,
+            total: legislationsTotal,
+          });
+        }
+
+        if (principlesData !== null && principlesTotal) {
+          setSearchDocuments({
+            documents: principlesData,
+            total: principlesTotal,
+          });
+        }
+
+        if (!casesData || !legislationsData || !principlesData) {
+          setSearchType("articles");
+        }
+
+        if (!casesData || !articlesData || !principlesData) {
+          setSearchType("legislations");
+        }
+
+        if (!casesData || !articlesData || !legislationsData) {
+          setSearchType("principles");
+        }
       }
     }
 
     return () => {};
-  }, [data]);
+  }, [data, isFetching]);
 
+  // set documents
   useEffect(() => {
     if (data && data.searchResult !== null) {
       const { searchResult } = data;
-      const { results_per_document_type } = searchResult;
+
+      const {
+        articles,
+        cases,
+        legislation,
+        principles,
+        results_per_document_type,
+      } = searchResult;
+
       const {
         case: casesTotal,
         article: articlesTotal,
         legislation: legislationsTotal,
+        principle: principlesTotal,
       } = results_per_document_type;
 
-      if (searchType === "cases" && searchResult.case !== null && casesTotal) {
-        const documents = searchResult.case;
-
-        setSearchDocuments({ documents, total: casesTotal });
+      if (searchType === "cases" && cases !== null && casesTotal) {
+        setSearchDocuments({ documents: cases, total: casesTotal });
       }
 
-      if (searchType === "articles" && searchResult.articles && articlesTotal) {
-        const documents = searchResult.articles;
-
-        setSearchDocuments({ documents, total: articlesTotal });
+      if (searchType === "articles" && articles !== null && articlesTotal) {
+        setSearchDocuments({ documents: articles, total: articlesTotal });
       }
 
       if (
         searchType === "legislations" &&
-        searchResult.legislation &&
+        legislation !== null &&
         legislationsTotal
       ) {
-        const documents = searchResult.legislation;
+        setSearchDocuments({
+          documents: legislation,
+          total: legislationsTotal,
+        });
+      }
 
-        setSearchDocuments({ documents, total: legislationsTotal });
+      if (
+        searchType === "principles" &&
+        principles !== null &&
+        principlesTotal
+      ) {
+        setSearchDocuments({ documents: principles, total: principlesTotal });
       }
     }
 
     return () => {};
   }, [data, searchType]);
 
+  //  selected filter search
   useEffect(() => {
     const searchId: string =
       data && data.searchResult ? data.searchResult.searchID : "";
@@ -308,7 +356,7 @@ const Page = () => {
     };
 
     if (selectedOptions.length !== 0) {
-      fetchFilter();
+      // fetchFilter();
     }
 
     return () => {};
@@ -397,6 +445,8 @@ const Page = () => {
       { shallow: true }
     );
   };
+
+  console.log(searchType);
 
   return (
     <Fragment>
@@ -493,7 +543,7 @@ const Page = () => {
                         {searchDocuments &&
                           searchDocuments.documents?.map((data, idx) => (
                             <SearchResultMeta
-                              key={`${data.id}-${idx}`}
+                              key={`${data.metadata.document_id}-${idx}`}
                               index={String(idx + 1)}
                               data={data}
                               type={searchType}
@@ -509,7 +559,7 @@ const Page = () => {
                           <div>
                             {filterData?.map((data, idx) => (
                               <SearchResultMeta
-                                key={data.id}
+                                key={data.metadata.document_id}
                                 index={String(idx + 1)}
                                 data={data}
                                 type={searchType}

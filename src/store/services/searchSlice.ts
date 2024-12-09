@@ -1,3 +1,8 @@
+import { injectEndpoints } from "./endpoints";
+import type {
+  FetchBaseQueryError,
+  FetchBaseQueryMeta,
+} from "@reduxjs/toolkit/query";
 import {
   GenericObject,
   ListResponse,
@@ -6,11 +11,6 @@ import {
   SearchType,
   TSearchResultData,
 } from "@app/types";
-import { injectEndpoints } from "./endpoints";
-import type {
-  FetchBaseQueryError,
-  FetchBaseQueryMeta,
-} from "@reduxjs/toolkit/query";
 
 type SearchQuery = {
   query: string;
@@ -46,8 +46,8 @@ export const searchQueryAPI = injectEndpoints({
         const { query, pageNumber } = _arg;
 
         const defaultResults = await Promise.all([
-          _baseQuery(`/ask?question=${query}`),
-          _baseQuery(`/semantic/search?query=${query}`),
+          _baseQuery(`api/ask?question=${query}`),
+          _baseQuery(`api/semantic/search?query=${query}`),
         ]);
 
         results.push(...defaultResults);
@@ -105,7 +105,7 @@ export const searchQueryAPI = injectEndpoints({
         const appyAreaOfLaw = area_of_law ? `&${area_of_law}` : "";
         const filters = `${applyCourt}${applyYear}${appyAreaOfLaw}`;
         return {
-          url: `/semantic/filter?search_id=${id}${filters}`,
+          url: `api/semantic/filter?search_id=${id}${filters}`,
           method: "GET",
         };
       },

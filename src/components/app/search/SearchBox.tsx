@@ -36,6 +36,8 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
         setIsSearchModal(false);
       }
 
+      document.cookie = `search_query=${inputText}`;
+
       router.push({
         pathname: "/search",
         query: {
@@ -113,6 +115,7 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
     );
   }
 );
+
 export const SearchBoxButton = ({
   className,
   searchTextRef,
@@ -148,6 +151,7 @@ export const SearchBoxButton = ({
     </Fragment>
   );
 };
+
 export const SearchBoxModal = ({
   innerRef,
 }: {

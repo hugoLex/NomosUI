@@ -1,11 +1,17 @@
 import React, { Fragment, useState } from "react";
 
 import { PlusIcon } from "@app/components/icons";
-import { TreatmentTypes } from "@app/types";
+import { SelectedTreatment, TreatmentTypes } from "@app/types";
 
-function PrecedenceTreatment() {
+type PrecedenceTreatmentData = [TreatmentTypes, string[], string][];
+
+const PrecedenceTreatment = ({
+  selectedTreatment,
+}: {
+  selectedTreatment: SelectedTreatment;
+}) => {
   const [isVisible, setVisible] = useState<TreatmentTypes>("Positive");
-  type PrecedenceTreatmentData = [TreatmentTypes, string[], string][];
+
   const PrecedenceTreatmentdata: PrecedenceTreatmentData = [
     ["Positive", ["Followed", "Applied"], "text-[#11AB45]"],
     ["Neutral", ["Cited"], "text-[#1147AB]"],
@@ -59,6 +65,6 @@ function PrecedenceTreatment() {
       </div>
     </section>
   );
-}
+};
 
 export default PrecedenceTreatment;
