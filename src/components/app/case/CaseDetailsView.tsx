@@ -194,20 +194,29 @@ const CaseView = ({ id }: { id: string }) => {
               <LiaBalanceScaleSolid size={19} className=" " />
               Ratio
             </h2>
-            {/* please provide the ratio variable */}
+            {/* please check this ration text to ensure correct rendering */}
 
             <p className="text-[.88rem] mb-6 mt-[30px] bg-[rgb(255,229,153,0.25)]  border-[rgb(255,229,153)] border-solid border rounded-md px-2 py-3">
-              A final decision is one that leaves nothing to be judicially
+              {/* A final decision is one that leaves nothing to be judicially
               determined or ascertained thereafter, in order to render it
               effective and capable of execution, and is absolute, complete, and
-              certain.
+              certain. */}
+
+              {caseDetail.ratio_texts.map((itx, idx) => (
+                <p key={idx} className="text-[.88rem] my-1">
+                  <LuDot
+                    className={`text-[#245b91] text-[25px] inline-block`}
+                  />{" "}
+                  {itx}
+                </p>
+              ))}
             </p>
 
-            {caseDetail.ratio_texts.map((itx, idx) => (
+            {/* {caseDetail.ratio_texts.map((itx, idx) => (
               <p key={idx} className="text-[.88rem] my-1">
                 {itx}
               </p>
-            ))}
+            ))} */}
           </div>
         </div>
         <div className="col-span-4 self-baselane">
