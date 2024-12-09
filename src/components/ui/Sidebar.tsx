@@ -50,7 +50,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
             }`}
           >
             {showLogo && (
-              <Link href={"/"} className="">
+              <Link title="Home Page" href={"/"} className="">
                 {isCollapsed ? (
                   <Image src={logoIcon} alt="Logo" className="size-9" />
                 ) : (
@@ -76,7 +76,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
           <div className="grow flex-1">
             <div className="w-full px-4">
               <ul className="flex flex-col  py-3 mt-5 text-base font-medium leading-4 text-zinc-600 max-md:px-5">
-                <li className="w-full">
+                <li title="Search" className="w-full">
                   <Link
                     href={"/"}
                     className={`flex items-center gap-1 text-center whitespace-nowrap text-cyan-950 ${
@@ -91,7 +91,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                     </span>
                   </Link>
                 </li>
-                <li className="w-full">
+                <li title="Cases" className="w-full">
                   <Link
                     href={"/"}
                     className={`flex  items-center gap-1 mt-7 text-center whitespace-nowrap ${
@@ -106,7 +106,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                     </span>
                   </Link>
                 </li>
-                <li className="w-full">
+                <li title="View all judges" className="w-full">
                   <Link
                     href={"/judges"}
                     className={`flex  items-center gap-1 mt-7 text-center whitespace-nowrap ${
@@ -121,7 +121,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                     </span>
                   </Link>
                 </li>
-                <li className="w-full">
+                <li title="View all Counsel" className="w-full">
                   <Link
                     href={"/counsel"}
                     className={`flex  items-center gap-1 mt-7 text-center whitespace-nowrap ${
@@ -136,7 +136,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                     </span>
                   </Link>
                 </li>
-                <li className="w-full">
+                <li title="Articles" className="w-full">
                   <Link
                     href={"/"}
                     className={`flex items-center gap-1 mt-7 text-center whitespace-nowrap ${
@@ -151,7 +151,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                     </span>
                   </Link>
                 </li>
-                <li className="w-full">
+                <li title="Sign in" className="w-full">
                   <button
                     className={`w-full flex  items-center gap-1 mt-7 text-center whitespace-nowrap ${
                       isCollapsed ? "justify-center" : ""
