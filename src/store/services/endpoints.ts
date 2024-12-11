@@ -12,7 +12,7 @@ const baseAPI = createApi({
       return headers;
     },
   }),
-  tagTypes: ["ARTICLES", "CASES", "LEGISLATIONS"],
+  tagTypes: ["SEARCH", "CASE", "PRECEDENT"],
   endpoints: () => ({}),
 });
 

@@ -636,8 +636,8 @@ export const dummyResults = new Array(15).fill({
 
 export const searchOptions: FilterOption[] = [
   { id: "cases", label: "Cases", options: [] },
-  { id: "legislations", label: "Legislation", options: [] },
   { id: "articles", label: "Articles", options: [] },
+  { id: "legislations", label: "Legislation", options: [] },
   { id: "principles", label: "Principles", options: [] },
 ];
 

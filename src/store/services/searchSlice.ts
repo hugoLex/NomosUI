@@ -7,7 +7,6 @@ import {
   GenericObject,
   ListResponse,
   QueryReturnValue,
-  SearchData,
   SearchType,
   TSearchResultData,
 } from "@app/types";
@@ -96,6 +95,7 @@ export const searchQueryAPI = injectEndpoints({
           return { error };
         }
       },
+      // providesTags: ["SEARCH"],
     }),
 
     searchFilter: builder.query<any, any>({

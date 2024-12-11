@@ -127,36 +127,7 @@ export type AIResult = {
   message?: string;
 };
 
-export type SearchData = {
-  articlesData: ArticleResults | null;
-  legislationsData: LegislationResults | null;
-  llmData: AIResult | null;
-  casesData: CaseResults | null;
-};
-
-export type SearchDataResults =
-  | ArticleResults
-  | CaseResults
-  | LegislationResults;
-
-export type SearchDocuments =
-  | CaseDocuments[]
-  | LegislationDocuments[]
-  | ArticleDocuments[];
-
 export type SearchType = "articles" | "cases" | "legislations" | "principles";
-
-export type TreatmentTypes =
-  | "Positive"
-  | "Neutral"
-  | "Negative"
-  | "Cited by counsel";
-
-export type BigBarForRightSideLayoutProps = {
-  title: string;
-  icon?: React.ReactElement;
-  style: { ctnStyle: string; icon: string };
-};
 
 export type SearchResultDocumentMetaDocType =
   | "article"
@@ -196,18 +167,22 @@ export type TSearchResultDocumentType = {
 };
 
 export type TSearchResultDocumentsFilter = {
-  article: ArticleFilter | null;
-  case: CasesFilter | null;
-  legislation: LegislationFilter | null;
-  principle: PrinciplesFilter | null;
+  article?: ArticleFilter;
+  case?: CasesFilter;
+  legislation?: LegislationFilter;
+  principle?: PrinciplesFilter;
 };
 
-export type TSearchResultDocuments = Omit<TSearchData, "llm"> & {
+export type TSearchResultDocuments = {
   searchID: string;
   query: string;
   total: number;
   results_per_document_type: TSearchResultDocumentType;
   filter_elements: TSearchResultDocumentsFilter;
+  articles?: TSearchResultDocument[];
+  cases?: TSearchResultDocument[];
+  legislation?: TSearchResultDocument[];
+  principles?: TSearchResultDocument[];
 };
 
 export type TSearchResultData = {
@@ -216,9 +191,13 @@ export type TSearchResultData = {
 };
 
 export type TSearchData = {
-  articles: TSearchResultDocument[] | null;
-  cases: TSearchResultDocument[] | null;
-  legislation: TSearchResultDocument[] | null;
-  llm: LLMResult | null;
-  principles: TSearchResultDocument[] | null;
+  searchID: string;
+  llmData: LLMResult | null;
+  articlesData: { documents: TSearchResultDocument[]; total: number } | null;
+  casesData: { documents: TSearchResultDocument[]; total: number } | null;
+  legislationsData: {
+    documents: TSearchResultDocument[];
+    total: number;
+  } | null;
+  principlesData: { documents: TSearchResultDocument[]; total: number } | null;
 };

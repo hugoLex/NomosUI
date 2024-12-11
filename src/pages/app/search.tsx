@@ -21,6 +21,7 @@ import {
   FilterOption,
   GenericObject,
   SearchType,
+  TSearchData,
   TSearchResultDocument,
 } from "@app/types";
 import { useSearchQuery } from "@app/store/services/searchSlice";
@@ -52,7 +53,26 @@ const Page = () => {
   const [filterData, setFilterData] = useState<TSearchResultDocument[] | null>(
     null
   );
+  const [
+    {
+      searchID,
+      articlesData,
+      casesData,
+      llmData,
+      legislationsData,
+      principlesData,
+    },
+    setSearchData,
+  ] = useState<TSearchData>({
+    articlesData: null,
+    casesData: null,
+    llmData: null,
+    legislationsData: null,
+    principlesData: null,
+    searchID: "",
+  });
   const [searchDocuments, setSearchDocuments] = useState<{
+    searchID: string;
     documents: TSearchResultDocument[];
     total: number;
   } | null>(null);
@@ -65,7 +85,7 @@ const Page = () => {
     },
   });
 
-  const { isError, isLoading, isFetching, data } = useSearchQuery(
+  const { isError, isFetching, isLoading, isSuccess, data } = useSearchQuery(
     { query, pageNumber },
     {
       // refetchOnMountOrArgChange: true,
@@ -74,18 +94,23 @@ const Page = () => {
 
   // Initial data load
   useEffect(() => {
-    if (isFetching) {
+    if (isLoading || isFetching) {
       setSearchOptions(defaultSearchOptions);
-      setSearchDocuments({ documents: [], total: 0 });
+      setSearchDocuments(null);
       setSearchType("cases");
     }
 
     if (data) {
-      const { searchResult } = data;
+      const { llmResult, searchResult } = data;
+
+      if (llmResult !== null) {
+        setSearchData((prev) => ({ ...prev, llmData: llmResult }));
+      }
 
       if (searchResult !== null) {
-        const list = [];
+        const searchOptionList: FilterOption[] = [];
         const {
+          searchID,
           articles: articlesData,
           cases: casesData,
           legislation: legislationsData,
@@ -106,10 +131,10 @@ const Page = () => {
           article: articleFilters,
           case: caseFilters,
           legislation: legislationFitlers,
-          principle: principleFilter,
+          principle: principleFilters,
         } = filter_elements;
 
-        if (articleFilters !== null && articlesTotal) {
+        if (articleFilters && articlesTotal) {
           const { article_title, author, area_of_law } = articleFilters;
           const options = [
             {
@@ -121,20 +146,18 @@ const Page = () => {
             { id: "area_of_law", label: "Area of Law", options: area_of_law },
           ];
 
-          setSearchOptions((prev) =>
-            prev.map((itx) => {
-              return itx.id === "articles"
-                ? {
-                    ...itx,
-                    label: `Articles (${articlesTotal})`,
-                    options,
-                  }
-                : itx;
-            })
-          );
+          searchOptionList.push({
+            id: "articles",
+            label: `Articles (${articlesTotal})`,
+            options,
+          });
+
+          if (!casesData) {
+            setSearchType("articles");
+          }
         }
 
-        if (caseFilters !== null && casesTotal) {
+        if (caseFilters && casesTotal) {
           const { court, area_of_law, year } = caseFilters;
           const options = [
             { id: "court", label: "Court", options: court },
@@ -142,20 +165,14 @@ const Page = () => {
             { id: "year", label: "Year", options: year },
           ];
 
-          setSearchOptions((prev) =>
-            prev.map((itx) => {
-              return itx.id === "cases"
-                ? {
-                    ...itx,
-                    label: `Cases (${casesTotal})`,
-                    options,
-                  }
-                : itx;
-            })
-          );
+          searchOptionList.push({
+            id: "cases",
+            label: `Cases (${casesTotal})`,
+            options,
+          });
         }
 
-        if (legislationFitlers !== null && legislationsTotal) {
+        if (legislationFitlers && legislationsTotal) {
           const { document_title, section_number } = legislationFitlers;
           const options = [
             {
@@ -170,21 +187,19 @@ const Page = () => {
             },
           ];
 
-          setSearchOptions((prev) =>
-            prev.map((itx) => {
-              return itx.id === "legislations"
-                ? {
-                    ...itx,
-                    label: `Legislations (${legislationsTotal})`,
-                    options,
-                  }
-                : itx;
-            })
-          );
+          searchOptionList.push({
+            id: "legislations",
+            label: `Legislations (${legislationsTotal})`,
+            options,
+          });
+
+          if (!casesData || !articlesData) {
+            setSearchType("legislations");
+          }
         }
 
-        if (principleFilter !== null && principlesTotal) {
-          const { court, subject_matter, year } = principleFilter;
+        if (principleFilters && principlesTotal) {
+          const { court, subject_matter, year } = principleFilters;
           const options: FilterOption[] = [
             { id: "court", label: "Court", options: court },
             {
@@ -195,135 +210,91 @@ const Page = () => {
             { id: "year", label: "Year", options: year ? year : [] },
           ];
 
-          setSearchOptions((prev) =>
-            prev.map((itx) => {
-              return itx.id === "principles"
-                ? {
-                    ...itx,
-                    label: `Principles (${principlesTotal})`,
-                    options,
-                  }
-                : itx;
-            })
-          );
-        }
-
-        if (!articlesData) {
-          setSearchOptions((prev) =>
-            prev.filter((itx) => itx.id !== "articles")
-          );
-        }
-
-        if (!casesData) {
-          setSearchOptions((prev) => prev.filter((itx) => itx.id !== "cases"));
-        }
-
-        if (!legislationsData) {
-          setSearchOptions((prev) =>
-            prev.filter((itx) => itx.id !== "legislations")
-          );
-        }
-
-        if (!principlesData) {
-          setSearchOptions((prev) =>
-            prev.filter((itx) => itx.id !== "principles")
-          );
-        }
-
-        if (casesData && casesData !== null && casesTotal) {
-          setSearchDocuments({ documents: casesData, total: casesTotal });
-        }
-
-        if (articlesData !== null && articlesTotal) {
-          setSearchDocuments({ documents: articlesData, total: articlesTotal });
-        }
-
-        if (legislationsData !== null && legislationsTotal) {
-          setSearchDocuments({
-            documents: legislationsData,
-            total: legislationsTotal,
+          searchOptionList.push({
+            id: "principles",
+            label: `Principles (${principlesTotal})`,
+            options,
           });
+
+          if (!casesData || !articlesData || !legislationsData) {
+            setSearchType("principles");
+          }
         }
 
-        if (principlesData !== null && principlesTotal) {
-          setSearchDocuments({
-            documents: principlesData,
-            total: principlesTotal,
-          });
-        }
-
-        if (!casesData || !legislationsData || !principlesData) {
-          setSearchType("articles");
-        }
-
-        if (!casesData || !articlesData || !principlesData) {
-          setSearchType("legislations");
-        }
-
-        if (!casesData || !articlesData || !legislationsData) {
-          setSearchType("principles");
-        }
+        setSearchOptions(searchOptionList);
+        setSearchData((prev) => ({
+          ...prev,
+          articlesData:
+            articlesData && articlesTotal
+              ? { documents: articlesData, total: articlesTotal }
+              : null,
+          casesData:
+            casesData && casesTotal
+              ? { documents: casesData, total: casesTotal }
+              : null,
+          legislationsData:
+            legislationsData && legislationsTotal
+              ? { documents: legislationsData, total: legislationsTotal }
+              : null,
+          principlesData:
+            principlesData && principlesTotal
+              ? { documents: principlesData, total: principlesTotal }
+              : null,
+          searchID,
+        }));
       }
     }
 
     return () => {};
-  }, [data, isFetching]);
+  }, [isLoading, isFetching, data]);
 
-  // set documents
   useEffect(() => {
-    if (data && data.searchResult !== null) {
-      const { searchResult } = data;
+    if (searchType === "cases" && casesData !== null) {
+      setSearchDocuments({
+        searchID,
+        documents: casesData.documents,
+        total: casesData.total,
+      });
+    }
 
-      const {
-        articles,
-        cases,
-        legislation,
-        principles,
-        results_per_document_type,
-      } = searchResult;
+    if (searchType === "articles" && articlesData !== null) {
+      setSearchDocuments({
+        searchID,
+        documents: articlesData.documents,
+        total: articlesData.total,
+      });
+    }
 
-      const {
-        case: casesTotal,
-        article: articlesTotal,
-        legislation: legislationsTotal,
-        principle: principlesTotal,
-      } = results_per_document_type;
+    if (searchType === "legislations" && legislationsData !== null) {
+      setSearchDocuments({
+        searchID,
+        documents: legislationsData.documents,
+        total: legislationsData.total,
+      });
+    }
 
-      if (searchType === "cases" && cases !== null && casesTotal) {
-        setSearchDocuments({ documents: cases, total: casesTotal });
-      }
-
-      if (searchType === "articles" && articles !== null && articlesTotal) {
-        setSearchDocuments({ documents: articles, total: articlesTotal });
-      }
-
-      if (
-        searchType === "legislations" &&
-        legislation !== null &&
-        legislationsTotal
-      ) {
-        setSearchDocuments({
-          documents: legislation,
-          total: legislationsTotal,
-        });
-      }
-
-      if (
-        searchType === "principles" &&
-        principles !== null &&
-        principlesTotal
-      ) {
-        setSearchDocuments({ documents: principles, total: principlesTotal });
-      }
+    if (searchType === "principles" && principlesData !== null) {
+      setSearchDocuments({
+        searchID,
+        documents: principlesData.documents,
+        total: principlesData.total,
+      });
     }
 
     return () => {};
-  }, [data, searchType]);
+  }, [
+    searchType,
+    searchID,
+    casesData,
+    articlesData,
+    legislationsData,
+    principlesData,
+  ]);
 
   //  selected filter search
   useEffect(() => {
     const searchId: string =
-      data && data.searchResult ? data.searchResult.searchID : "";
+      searchDocuments !== null ? searchDocuments.searchID : "";
     const fetchFilter = async () => {
       const { area_of_law, court, year } = selectedOptions.reduce(
         (acc, curr) => {
@@ -360,7 +331,7 @@ const Page = () => {
     }
 
     return () => {};
-  }, [data, selectedOptions]);
+  }, [searchDocuments, selectedOptions]);
 
   const allFilters = flattenFilters(selectedOptions);
 
@@ -446,8 +417,6 @@ const Page = () => {
     );
   };
 
-  console.log(searchType);
-
   return (
     <Fragment>
       <Head title={`Search Result - ${q}`} />
@@ -523,15 +492,15 @@ const Page = () => {
 
                   {/* LLM result */}
                   <Fragment>
-                    {data && data.llmResult === null && <Fragment />}
-                    {data && data.llmResult !== null && (
+                    {llmData === null && <Fragment />}
+                    {llmData !== null && (
                       <SearchAIMetaResult
-                        detail={data.llmResult.detail}
+                        detail={llmData.detail}
                         llm={{
-                          replies: data.llmResult.llm.replies,
+                          replies: llmData.llm.replies,
                         }}
-                        message={data.llmResult.message}
-                        retriever={data.llmResult.retriever}
+                        message={llmData.message}
+                        retriever={llmData.retriever}
                       />
                     )}
                   </Fragment>

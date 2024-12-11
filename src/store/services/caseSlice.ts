@@ -11,12 +11,14 @@ export const casesQueryAPI = injectEndpoints({
       query: (id) => {
         return `case_details/${id}`;
       },
+      providesTags: ["CASE"],
     }),
 
     precedent: builder.query<TPrecedent, string>({
       query: (id) => {
         return `/precedent/cited_cases/${id}`;
       },
+      providesTags: ["PRECEDENT"],
     }),
   }),
   overrideExisting: true,
