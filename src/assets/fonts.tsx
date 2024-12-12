@@ -1,5 +1,5 @@
 import localFont from "next/font/local";
-import { Inter, Poppins, Rubik } from "next/font/google";
+import { Inter, Poppins, Rubik, Roboto } from "next/font/google";
 
 export const inter = Inter({
   variable: "--font-inter",
@@ -10,6 +10,13 @@ export const inter = Inter({
 
 export const poppins = Poppins({
   variable: "--font-paytone",
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  preload: true,
+});
+export const roboto = Roboto({
+  variable: "--font-roboto",
   subsets: ["latin"],
   weight: "400",
   display: "swap",

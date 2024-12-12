@@ -7,7 +7,7 @@ import { store } from "@app/store/store";
 import type { AppProps } from "next/app";
 import type { NextPageWithLayout } from "@app/types";
 
-import { inter, poppins, rubik } from "@app/assets/fonts";
+import { inter, poppins, rubik, roboto } from "@app/assets/fonts";
 import { NoSSR } from "@app/components/";
 
 import "../assets/app.css";
@@ -40,6 +40,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
           :root {
             --font-rubik: ${rubik.style.fontFamily};
             --font-inter: ${inter.style.fontFamily};
+            --font-inter: ${roboto.style.fontFamily};
             --font-poppins:${poppins.style.fontFamily};
             
           }

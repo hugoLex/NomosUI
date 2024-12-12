@@ -37,6 +37,7 @@ const config = {
         rubik: ["var(--font-rubik)", ...fontFamily.sans],
         "dm-sans": ["var(--font-dm-sans)", ...fontFamily.sans],
         inter: ["var(--font-inter)", ...fontFamily.sans],
+        roboto: ["var(--font-roboto)", ...fontFamily.sans],
         paytone: ["var(--font-paytone)", ...fontFamily.sans],
       },
       colors: {
