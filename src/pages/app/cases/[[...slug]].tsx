@@ -25,21 +25,12 @@ const Page = () => {
       <Head title={`Case - ${query.title}`} />
       <Layout>
         <CaseHeader />
-
-        <section className="relative mx-auto max-w-[1100px] py-6 ">
-          <div className="px-16 max-md:px-5 max-w-full">
-            <div className="md:grid grid-cols-12 gap-8">
-              {tabId === "case" && <CaseDetailsView id={caseId} />}
-              {tabId === "judgement" && (
-                <CaseJudgeAnalyticsView data={judgeData} />
-              )}
-              {tabId === "precedent" && (
-                <CasePrecedentAnalyticsView id={caseId} />
-              )}
-              {tabId === "counsel" && <CaseCounselView data={counselData} />}
-            </div>
-          </div>
-        </section>
+        <Fragment>
+          {tabId === "case" && <CaseDetailsView id={caseId} />}
+          {tabId === "judgement" && <CaseJudgeAnalyticsView data={judgeData} />}
+          {tabId === "precedent" && <CasePrecedentAnalyticsView id={caseId} />}
+          {tabId === "counsel" && <CaseCounselView data={counselData} />}
+        </Fragment>
       </Layout>
     </Fragment>
   );

@@ -59,7 +59,7 @@ const SummaryComponent = () => {
   const { close, searchParams } = UseQueryToggler();
   // const [showCaseSummary, setShowCaseSummary] = useState(index);
   return (
-    <div className="text-[.88rem] mt-[30px] bg-[rgb(255,229,153,0.25)]  border-[rgb(255,229,153)] border-solid border rounded-md px-2 pt-3 relative">
+    <div className="text-[.88rem] mt-[30px] bg-[#eaf0f2]/30 rounded-lg px-2 pt-3 relative">
       <button type="button" className="">
         Summary
       </button>
@@ -73,12 +73,12 @@ const SummaryComponent = () => {
         <SmallTextBtn
           smallBtnData={["Judgement"]}
           divStyle=""
-          btnStyle="border-white font-light  px-2 py-1  bg-[rgb(159,197,248)] text-black/80"
+          btnStyle="border-white font-light bg-primary  px-3 py-1 text-white/80"
         />
         <SmallTextBtn
           smallBtnData={["Precedent analytics"]}
           divStyle=""
-          btnStyle="border-white font-light  px-2 py-1  bg-[rgb(159,197,248)] text-black/80"
+          btnStyle="border-white font-light bg-primary  px-3 py-1 text-white/80"
         />
         <RiCloseLine
           onClick={() => close("showCaseSummary", undefined)}

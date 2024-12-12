@@ -63,3 +63,15 @@ export type PlatformOS = "Android" | "iOS" | "Linux" | "MacOS" | "Windows";
 export type SiteMode = "isLive" | "isComingSoon" | "isMaintenance";
 
 export type TabItem = { active: boolean; id: string; label: string };
+
+export type TreatmentTypes =
+  | "Positive"
+  | "Neutral"
+  | "Negative"
+  | "Cited by counsel";
+
+export type BigBarForRightSideLayoutProps = {
+  title: string;
+  icon?: React.ReactElement;
+  style: { ctnStyle: string; icon: string };
+};

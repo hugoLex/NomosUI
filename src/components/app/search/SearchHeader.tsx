@@ -1,18 +1,7 @@
-import React, {
-  MutableRefObject,
-  Ref,
-  RefObject,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import Image from "next/image";
-
+import React, { RefObject } from "react";
 import { Header } from "@app/components/ui";
 import { SearchBoxButton } from "./SearchBox";
 import { MoreIcon, Share1Icon } from "@app/components/icons";
-import { useVisibility } from "@app/hooks";
 
 type SearchHeaderProps = {
   query: string;
@@ -34,9 +23,9 @@ const SearchHeader = ({
               role="button"
               className=" px-2 py-2.5 whitespace-nowrap bg-primary rounded"
             > */}{" "}
-            <SearchBoxButton searchTextRef={searchBtnRef} />
             {/* <span>New Search</span> */}
             {/* </span> */}
+            <SearchBoxButton searchTextRef={searchBtnRef} />
           </div>
 
           <div
@@ -54,17 +43,17 @@ const SearchHeader = ({
           </div>
 
           <div className="w-[20%] inline-flex gap-4 justify-end items-center self-stretch pl-2 my-auto text-sm font-medium leading-4 text-center text-white whitespace-nowrap">
-            {/* <span role="button">
+            <span role="button">
               <MoreIcon />
-            </span> */}
+            </span>
 
-            {/* <span
+            <span
               role="button"
-              className="flex gap-1 justify-center px-2 py-2.5 bg-primary rounded"
+              className="flex gap-1 justify-center px-3 py-2.5 bg-primary rounded"
             >
               <Share1Icon />
               <span>Share</span>
-            </span> */}
+            </span>
           </div>
         </div>
       </div>

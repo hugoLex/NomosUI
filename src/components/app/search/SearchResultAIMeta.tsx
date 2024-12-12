@@ -11,32 +11,53 @@ const SearchAIMetaResult: FC<LLMResult> = (prop) => {
 
   return (
     <Fragment>
-      <div className="p-4 bg-[#eaf0f2]/30 rounded-lg flex flex-col justify-start items-start min-h-[10rem] mb-8">
+      {retriever && (
+        <div className="space-y-4 mb-4">
+          <h5 className="px-4">References</h5>
+          <div className="flex">
+            {retriever.documents.map(({ id, meta }, idx) => {
+              return (
+                <div
+                  key={id}
+                  className="flex flex-col justify-start items-start p-4 bg-[#eaf0f2]/30 rounded-lg"
+                >
+                  <span className="text-xs font-bold">{meta.case_title}</span>
+                  <span className="text-xs text-[#9ea7b4]">{meta.court}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+      <div className="p-4 bg-[#eaf0f2]/30 rounded-lg flex flex-col justify-start items-start min-h-[10rem] mb-4">
         <div className="flex flex-col self-stretch   justify-start items-start mb-6">
-          <div className="flex flex-col my-3">
-            <p>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                id="Layer_1"
-                data-name="Layer 1"
-                width={14}
-                height={14}
-                viewBox="0 0 24 24"
-                className="hidden"
-              >
-                <path
-                  d="M12,22H5c-1.654,0-3-1.346-3-3V5c0-1.654,1.346-3,3-3h4.515c.163,0,.325,.008,.485,.023V7c0,1.654,1.346,3,3,3h5.813c.633,.017,1.142-.639,.969-1.248-.311-1.217-.945-2.329-1.833-3.217l-3.485-3.485c-1.322-1.322-3.08-2.05-4.95-2.05H5C2.243,0,0,2.243,0,5v14c0,2.757,2.243,5,5,5h7c.552,0,1-.448,1-1s-.448-1-1-1Zm0-19.341c.379,.218,.732,.488,1.05,.806l3.485,3.485c.314,.314,.583,.668,.803,1.05h-4.338c-.551,0-1-.449-1-1V2.659Zm11.707,19.634l-3.957-3.957,1.586-1.586c.39,.516,1.135,.703,1.621,.207,.391-.391,.391-1.023,0-1.414l-4.5-4.5c-.391-.391-1.023-.391-1.414,0s-.391,1.023,0,1.414l.056,.056-4.586,4.586-.056-.056c-.391-.391-1.023-.391-1.414,0s-.391,1.023,0,1.414l4.5,4.5c.195,.195,.451,.293,.707,.293,1.033,.006,1.335-1.367,.5-1.914l1.586-1.586,3.957,3.957c.904,.931,2.345-.511,1.414-1.414Zm-9.78-3.78l4.586-4.586,1.41,1.41-4.586,4.586-1.41-1.41ZM4,8c0-.552,.448-1,1-1h2c.552,0,1,.448,1,1s-.448,1-1,1h-2c-.552,0-1-.448-1-1Zm9,5H5c-.552,0-1-.448-1-1s.448-1,1-1H13c.552,0,1,.448,1,1s-.448,1-1,1Zm-5,2c.552,0,1,.448,1,1s-.448,1-1,1h-3c-.552,0-1-.448-1-1s.448-1,1-1h3Z"
-                  stroke="#245b91"
-                />
-              </svg>
-              <span className="uppercase text-sm text-[#245b91] font-semibold">
+          <div className="inline-flex my-3 gap-3 items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 40 40"
+              fill="none"
+              height={40}
+              width={40}
+              className="inline-block"
+            >
+              <path
+                stroke="#385CAD"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.5"
+                d="M16.355 26.506L15 31.25l-1.355-4.744a7.5 7.5 0 00-5.151-5.15L3.75 20l4.744-1.355a7.5 7.5 0 005.15-5.151L15 8.75l1.355 4.744a7.5 7.5 0 005.151 5.15L26.25 20l-4.744 1.355a7.5 7.5 0 00-5.15 5.151zm14.076-11.982L30 16.25l-.431-1.726a5.625 5.625 0 00-4.093-4.093L23.75 10l1.726-.431a5.625 5.625 0 004.093-4.093L30 3.75l.431 1.726a5.625 5.625 0 004.093 4.093L36.25 10l-1.726.431a5.625 5.625 0 00-4.093 4.093zm-2.274 19.755L27.5 36.25l-.657-1.971a3.75 3.75 0 00-2.372-2.372L22.5 31.25l1.971-.657a3.75 3.75 0 002.372-2.372l.657-1.971.657 1.971a3.75 3.75 0 002.372 2.372l1.971.657-1.971.657a3.75 3.75 0 00-2.372 2.372z"
+              />
+            </svg>
+            <div className="flex flex-col gap-1">
+              <span className="uppercase text-sm text-[#245b91] font-semibold inline-block">
                 Law Lens
               </span>
-            </p>
-            <span className="text-xs">
-              This is an ai generated answer. Please always check the
-              references.
-            </span>
+
+              <span className="text-xs">
+                This is an ai generated answer. Please always check the
+                references.
+              </span>
+            </div>
           </div>
           <div className="my-1 border w-full border-gray-200 mb-3" />
           {llm.replies.map((itx, idx) => {
@@ -52,23 +73,6 @@ const SearchAIMetaResult: FC<LLMResult> = (prop) => {
           })}
         </div>
       </div>
-      {retriever && (
-        <div className="space-y-4">
-          <h5 className="px-4">References</h5>
-          <div className="flex">
-            {retriever.documents.map(({ id, meta }, idx) => (
-              <div
-                key={idx}
-                className="flex flex-col justify-start items-start p-4 bg-[#eaf0f2]/30 rounded-lg"
-              >
-                <span className="text-xs font-bold">{meta.case_title}</span>
-                <span className="text-xs">{meta.court}</span>
-                <span className="text-xs">{meta.year}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </Fragment>
   );
 };

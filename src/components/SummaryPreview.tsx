@@ -9,7 +9,7 @@ const SummaryPreview = ({ text }: { text: string }) => {
     <div className={`summary preview pb-5 relative overflow-y -hidden`}>
       <p
         className={`text overflow-hidden transition-all duration-500 ${
-          isShow && isCollapsed ? "h-[12rem]" : "h-auto"
+          isShow && isCollapsed ? "h-[5rem]" : "h-auto"
         }`}
       >
         {text
@@ -28,16 +28,16 @@ const SummaryPreview = ({ text }: { text: string }) => {
       </p>
       {isShow && (
         <div
-          className={`text-end my-3 ${
+          className={`text-end pt-6 pb-4 ${
             isCollapsed
-              ? "inline-flex items-end bg-transparent justify-center absolute z-50 transition duration-75 bottom-[-20%]  h-[65px] w-full"
+              ? "inline-flex items-end blurred justify-center absolute z-50 transition duration-75 bottom-0  h-[65px] w-full"
               : ""
           }`}
         >
           <span
             role="button"
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className={`inline-flex gap-2 items-center text-sm transition-all px-3 py-1.5 rounded-xl ${
+            className={`inline-flex gap-2 items-center text-sm transition-all px-3 py-1.5 rounded ${
               isCollapsed
                 ? "bg-neutral-200/80 hover:bg-neutral-200"
                 : "bg-neutral-200 hover:bg-neutral-200/50"
