@@ -34,7 +34,7 @@ export const SearchFilterSidebar = ({
               >
                 <Accordion.Trigger
                   className="text-base font-normal w-full 
-           flex justify-between border hover:bg-neutral-200/30 py-2 px-5 rounded-[10px]"
+           flex justify-between border hover:bg-neutral-200/30 py-2 px-5 rounded"
                 >
                   <p className="text-sm">{label}</p>
                   <PlusIcon />

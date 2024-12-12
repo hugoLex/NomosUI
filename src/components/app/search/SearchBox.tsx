@@ -131,22 +131,29 @@ export const SearchBoxButton = ({
 
   return (
     <Fragment>
-      <div
+      {/* <div
         role="button"
         onClick={() => {
           setIsSearchModal(true);
           searchTextRef;
         }}
-        // className={`w-full flex gap-2.5 px-4 py-2 border border-solid
-        // bg-stone-50 border-stone-300 rounded-[32px]  cursor-text ${className}`}
-        className=" w-fit px-4 py-2"
+        className={`w-full flex gap-2.5 px-4 py-2 border border-solid
+        bg-stone-50 border-stone-300 rounded-[32px]  cursor-text ${className}`}
       >
-        {/* <SearchIcon /> */}
-        {/* <span className="my-auto text-sm text-zinc-600">New search..</span> */}
-        <span className="md:px-2 py-2.5 text-white whitespace-nowrap text-sm bg-primary rounded-lg border-stone-300 border border-solid ">
-          New Search
-        </span>
-      </div>
+        <SearchIcon />
+        <span className="my-auto text-sm text-zinc-600">New search..</span>
+      </div> */}
+
+      <span
+        onClick={() => {
+          setIsSearchModal(true);
+          searchTextRef;
+        }}
+        role="button"
+        className="flex gap-1 justify-center px-3 py-2.5 bg-primary rounded"
+      >
+        New Search
+      </span>
       <SearchBoxModal innerRef={searchTextRef} />
     </Fragment>
   );
