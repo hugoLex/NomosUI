@@ -1,5 +1,7 @@
 import { PlatformOS } from "@app/types";
 
+export * from "./mention";
+
 export const getPlatformOS = (): PlatformOS | null => {
   const userAgent = window.navigator.userAgent;
   let os: PlatformOS | null = null;

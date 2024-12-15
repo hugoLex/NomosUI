@@ -34,7 +34,7 @@ const SearchHeader = ({
             }`}
           >
             <p
-              className={`font-medium text-center mx-auto max-w-[50%] text-[#245b91] ${
+              className={`font-medium text-center mx-auto max-w-[50%] text-primary ${
                 query.length > 32 ? "truncate" : ""
               }`}
             >

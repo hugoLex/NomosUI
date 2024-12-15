@@ -150,6 +150,7 @@ export type SearchResultDocumentMeta = {
   source_id?: string;
   suit_number?: string;
   subject_matter?: string[];
+  summary?: string;
   year?: string | number | string[] | number[];
 };
 

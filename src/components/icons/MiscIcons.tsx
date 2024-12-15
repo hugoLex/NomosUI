@@ -362,10 +362,11 @@ export const ChevronDownIcon = () => {
   );
 };
 
-export const PlusIcon = () => (
+export const PlusIcon = (props: SVGProps<SVGSVGElement>) => (
   <svg
-    width="20px"
-    height="20px"
+    className={props.className}
+    width={props.width ?? 24}
+    height={props.height ?? 24}
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

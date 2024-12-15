@@ -12,14 +12,11 @@ import {
   SearchHeader,
   SearchResultMeta,
 } from "@app/components/app";
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CloseIcon,
-} from "@app/components/icons";
+import { CloseIcon } from "@app/components/icons";
 import {
   FilterOption,
   GenericObject,
+  SearchResultDocumentMetaDocType,
   SearchType,
   TSearchData,
   TSearchResultDocument,
@@ -35,7 +32,7 @@ import { ErrorView404 } from "@app/components";
 
 const Page = () => {
   const router = useRouter();
-  const { q, page } = router.query;
+  const { q, page, type } = router.query;
   const query = String(q);
   const pageNumber = page ? Number(page) : undefined;
   const isPrev = pageNumber && pageNumber !== 1 ? false : true;
@@ -85,8 +82,12 @@ const Page = () => {
     },
   });
 
-  const { isError, isFetching, isLoading, isSuccess, data } = useSearchQuery(
-    { query, pageNumber },
+  const { isError, isFetching, isLoading, data } = useSearchQuery(
+    {
+      query,
+      pageNumber,
+      searchType: type as SearchResultDocumentMetaDocType | undefined,
+    },
     {
       // refetchOnMountOrArgChange: true,
     }
@@ -348,29 +349,6 @@ const Page = () => {
     ]);
   };
 
-  const prevPage = () => {
-    const url = {
-      pathname: `/search`,
-      query: { ...router.query, page: Number(pageNumber) - 1 },
-    };
-    router.push(url, undefined, {
-      shallow: true,
-    });
-  };
-
-  const nextPage = () => {
-    let next: number;
-
-    pageNumber ? (next = Number(pageNumber) + 1) : (next = 2);
-
-    const url = {
-      pathname: router.pathname,
-      query: { ...router.query, page: next },
-    };
-
-    router.push(url, undefined, { shallow: true });
-  };
-
   const handleSelection = (_id: string, _idx: string) => {
     const filteredSelection = searchOptions.filter(({ id }) => id === _id)[0];
     const filteredDataOption = filteredSelection.options.filter(
@@ -415,6 +393,35 @@ const Page = () => {
       undefined,
       { shallow: true }
     );
+  };
+
+  // const prevPage = () => {
+  //   const url = {
+  //     pathname: `/search`,
+  //     query: { ...router.query, page: Number(pageNumber) - 1 },
+  //   };
+  //   router.push(url, undefined, {
+  //     shallow: true,
+  //   });
+  // };
+
+  // const nextPage = () => {
+  //   let next: number;
+
+  //   pageNumber ? (next = Number(pageNumber) + 1) : (next = 2);
+
+  //   const url = {
+  //     pathname: router.pathname,
+  //     query: { ...router.query, page: next },
+  //   };
+
+  //   router.push(url, undefined, { shallow: true });
+  // };
+
+  const loadMoreDocs = () => {
+    if (searchDocuments?.documents && searchDocuments.total) {
+      console.log(searchDocuments.documents.length === searchDocuments.total);
+    }
   };
 
   return (
@@ -554,7 +561,7 @@ const Page = () => {
               </div>
 
               {/* Search result pagination */}
-              {searchDocuments && (
+              {/* {searchDocuments && (
                 <div className="flex flex-col justify-center gap-2">
                   <div className="inline-flex justify-content-center gap-8 mx-auto">
                     <button
@@ -572,9 +579,9 @@ const Page = () => {
                       <button
                         id="next"
                         className={`inline-flex gap-3 hover:opacity-40`}
-                        // disabled={
-                        //   data.search.length < 9 ? true : false //why setting isDisabled again
-                        // }
+                        disabled={
+                          data.search.length < 9 ? true : false //why setting isDisabled again
+                        }
                         onClick={nextPage}
                       >
                         Next <ArrowRightIcon stroke="black" />
@@ -589,7 +596,21 @@ const Page = () => {
                     <span>Page No: {pageNumber ?? "1"}</span>
                   </div>
                 </div>
-              )}
+              )} */}
+
+              {searchDocuments?.documents &&
+                searchDocuments.total &&
+                searchDocuments?.documents.length < searchDocuments?.total && (
+                  <Fragment>
+                    <button className="btn-primary">load more</button>
+                  </Fragment>
+                )}
+
+              <Fragment>
+                <button onClick={loadMoreDocs} className="btn-primary">
+                  load more
+                </button>
+              </Fragment>
             </div>
 
             {/* Filter drawer */}

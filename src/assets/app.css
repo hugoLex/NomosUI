@@ -294,6 +294,23 @@ h5 {
   animation: l3 1s infinite linear;
 }
 
+.accordion .accordion-header {
+  @apply text-base font-normal w-full flex justify-between 
+  py-2 px-5 rounded;
+}
+
+.accordion .accordion-header[data-state="closed"] {
+  @apply border hover:bg-neutral-200/30;
+}
+
+.accordion .accordion-header[data-state="open"] {
+  @apply bg-[#EBF2FF] text-primary font-medium;
+}
+
+.accordion .accordion-header[data-state="open"] svg > * {
+  @apply !fill-primary !stroke-primary;
+}
+
 @keyframes l3 {
   to {
     transform: rotate(1turn);

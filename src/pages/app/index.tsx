@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Head, Header, Heading } from "@app/components/ui";
 import { SearchBox } from "@app/components/app";
+import { Mentions } from "@app/components";
 import { AppLayout as Layout } from "@app/components/layout";
 import { logo, logo2, logoIcon } from "@app/assets";
 import { NextPageWithLayout } from "@app/types";
@@ -14,7 +15,7 @@ const Page: NextPageWithLayout = () => {
       <Head title={"Search"} />
       <Layout>
         <section
-          className="flex flex-col justify-center max-w-full m-auto
+          className="relative flex flex-col justify-center max-w-full m-auto
         md:w-[700px] self-stretch p-5"
         >
           <Link href={"/"} className="mx-auto">
@@ -25,6 +26,7 @@ const Page: NextPageWithLayout = () => {
             />
           </Link>
           <SearchBox />
+
           <div className=" hidden  gap-2 mt-4 max-md:flex-wrap">
             <button
               className="flex gap-2 p-1.5 w-full rounded-lg hover:bg-neutral-100

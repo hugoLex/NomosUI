@@ -775,3 +775,22 @@ export const dummyCaseDetails = {
     },
   ],
 };
+
+export const mentionsList = [
+  {
+    label: "Article",
+    name: "article",
+  },
+  {
+    label: "Case",
+    name: "case",
+  },
+  {
+    label: "Legislation",
+    name: "legislation",
+  },
+  {
+    label: "Principle",
+    name: "principle",
+  },
+];
