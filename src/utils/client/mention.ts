@@ -1,9 +1,9 @@
 export const GetCoords = (textArea: any) => {
   let replica = document.createElement("div");
   const copyStyle = getComputedStyle(textArea);
-  for (const prop of copyStyle) {
-    replica.style[prop] = copyStyle[prop];
-  }
+  // for (const prop of copyStyle) {
+  //   replica.style[prop] = copyStyle[prop];
+  // }
   replica.style.height = "auto";
   replica.style.width = "auto";
   let span = document.createElement("span");
@@ -14,7 +14,7 @@ export const GetCoords = (textArea: any) => {
     .substr(0, content.selectionStart)
     .split(/[\n\r]/g).length;
   let replicaContent = "";
-  contentLines.map((l, i) => {
+  contentLines.map((l: any, i: number) => {
     if (i === currentline - 1 && i < contentLines.length) {
       replicaContent += contentLines[i];
       return;
