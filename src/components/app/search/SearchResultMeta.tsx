@@ -55,36 +55,37 @@ const SummaryView = ({
   );
 };
 
-const SummaryComponent = () => {
+const SummaryComponent = ({ summary }: { summary?: string }) => {
   const { close, searchParams } = UseQueryToggler();
   // const [showCaseSummary, setShowCaseSummary] = useState(index);
-  return (
-    <div className="text-[.88rem] mt-[30px] bg-[#eaf0f2]/30 rounded-lg px-2 pt-3 relative">
-      <button type="button" className="">
-        Summary
-      </button>
-      <hr className="mt-2 mb-5" />
-      <p>
-        A final decision is one that leaves nothing to be judicially determined
+
+  const defaultSummary = ` A final decision is one that leaves nothing to be judicially determined
         or ascertained thereafter, in order to render it effective and capable
-        of execution, and is absolute, complete, and certain.
-      </p>
+        of execution, and is absolute, complete, and certain.`;
+
+  return (
+    <div className="mt-[30px] bg-[#eaf0f2]/30 rounded-lg px-4 pt-3 relative">
+      <div className="flex justify-between">
+        <p className="text-sm">Summary</p>
+        <RiCloseLine
+          onClick={() => close("showCaseSummary", undefined)}
+          className="text-pink-600 ml-auto cursor-pointer"
+          size={19}
+        />
+      </div>
+      <hr className="mt-2 mb-5" />
+      <p className="text-sm flex-wrap">{summary ?? defaultSummary}</p>
       <div className="flex gap-5 items-center py-5">
         <SmallTextBtn
           smallBtnData={["Judgement"]}
           divStyle=""
           btnStyle="border-white font-light bg-primary  px-3 py-1 text-white/80"
         />
-        <SmallTextBtn
+        {/* <SmallTextBtn
           smallBtnData={["Precedent analytics"]}
           divStyle=""
           btnStyle="border-white font-light bg-primary  px-3 py-1 text-white/80"
-        />
-        <RiCloseLine
-          onClick={() => close("showCaseSummary", undefined)}
-          className="text-pink-600 ml-auto cursor-pointer"
-          size={19}
-        />
+        /> */}
       </div>
     </div>
   );
@@ -120,6 +121,10 @@ const SearchResultMeta = (prop: {
 
   return (
     <div className="mb-8 space-y-3">
+      <span className="text-[#008E00] bg-[#008E00]/10 text-xs px-3 py-1 rounded">
+        {metadata.document_type}
+      </span>
+
       <h3 className="text-base font-medium">
         <Link
           href={`/cases/${
@@ -187,11 +192,9 @@ const SearchResultMeta = (prop: {
       )}
 
       <div>
-        <p
-          dangerouslySetInnerHTML={{ __html: fmtTxt }}
-          className="text-[0.875rem]"
-        />
+        <p dangerouslySetInnerHTML={{ __html: fmtTxt }} className="text-sm" />
         {/* when i wrote this logic, I understood it, as you read it God help you to understand it in your attempt to change it */}
+        {/* God help us all 🤣🤣🤣? */}
         {index == "1" && showCaseSummary !== null && showCaseSummary !== "1" ? (
           <HiOutlineDocumentText
             title="Case summary"
@@ -209,11 +212,17 @@ const SearchResultMeta = (prop: {
         ) : null}
       </div>
 
-      {showCaseSummary == index ? (
-        <SummaryComponent />
-      ) : index == "1" && showCaseSummary == null ? (
-        <SummaryComponent />
-      ) : null}
+      {type === "cases" && (
+        <Fragment>
+          {showCaseSummary !== null && showCaseSummary === index && (
+            <SummaryComponent summary={metadata.summary} />
+          )}
+
+          {showCaseSummary === null && index === "1" && (
+            <SummaryComponent summary={metadata.summary} />
+          )}
+        </Fragment>
+      )}
     </div>
   );
 };

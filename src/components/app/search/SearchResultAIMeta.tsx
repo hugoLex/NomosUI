@@ -13,13 +13,17 @@ const SearchAIMetaResult: FC<LLMResult> = (prop) => {
     <Fragment>
       {retriever && (
         <div className="space-y-4 mb-4">
-          <h5 className="px-4">References</h5>
-          <div className="flex">
+          <h5>References</h5>
+          <div className="flex gap-4">
             {retriever.documents.map(({ id, meta }, idx) => {
+              if (meta.case_title === "" && meta.court === "") {
+                return <Fragment key={idx} />;
+              }
+
               return (
                 <div
                   key={id}
-                  className="flex flex-col justify-start items-start p-4 bg-[#eaf0f2]/30 rounded-lg"
+                  className="flex flex-col justify-start items-start p-4 bg-[#eaf0f2]/30 roundedLg"
                 >
                   <span className="text-xs font-bold">{meta.case_title}</span>
                   <span className="text-xs text-[#9ea7b4]">{meta.court}</span>
@@ -29,23 +33,37 @@ const SearchAIMetaResult: FC<LLMResult> = (prop) => {
           </div>
         </div>
       )}
-      <div className="p-4 bg-[#eaf0f2]/30 rounded-lg flex flex-col justify-start items-start min-h-[10rem] mb-4">
+      <div className="p-4 bg-[#eaf0f2]/30 roundedLg flex flex-col justify-start items-start min-h-[10rem] mb-4">
         <div className="flex flex-col self-stretch   justify-start items-start mb-6">
           <div className="inline-flex my-3 gap-3 items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 40 40"
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+              color="#000000"
               fill="none"
-              height={40}
-              width={40}
-              className="inline-block"
             >
               <path
-                stroke="#385CAD"
+                d="M16.0001 16.5L20 20.5"
+                stroke="currentColor"
+                strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+              />
+              <path
+                d="M18 11.5C18 15.366 14.866 18.5 11 18.5C7.13401 18.5 4 15.366 4 11.5C4 7.63404 7.13401 4.50003 11 4.50003"
+                stroke="currentColor"
                 strokeWidth="1.5"
-                d="M16.355 26.506L15 31.25l-1.355-4.744a7.5 7.5 0 00-5.151-5.15L3.75 20l4.744-1.355a7.5 7.5 0 005.15-5.151L15 8.75l1.355 4.744a7.5 7.5 0 005.151 5.15L26.25 20l-4.744 1.355a7.5 7.5 0 00-5.15 5.151zm14.076-11.982L30 16.25l-.431-1.726a5.625 5.625 0 00-4.093-4.093L23.75 10l1.726-.431a5.625 5.625 0 004.093-4.093L30 3.75l.431 1.726a5.625 5.625 0 004.093 4.093L36.25 10l-1.726.431a5.625 5.625 0 00-4.093 4.093zm-2.274 19.755L27.5 36.25l-.657-1.971a3.75 3.75 0 00-2.372-2.372L22.5 31.25l1.971-.657a3.75 3.75 0 002.372-2.372l.657-1.971.657 1.971a3.75 3.75 0 002.372 2.372l1.971.657-1.971.657a3.75 3.75 0 00-2.372 2.372z"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M15.5 3.50003L15.7579 4.19706C16.0961 5.11105 16.2652 5.56805 16.5986 5.90142C16.932 6.2348 17.389 6.4039 18.303 6.74211L19 7.00003L18.303 7.25795C17.389 7.59616 16.932 7.76527 16.5986 8.09864C16.2652 8.43201 16.0961 8.88901 15.7579 9.803L15.5 10.5L15.2421 9.803C14.9039 8.88901 14.7348 8.43201 14.4014 8.09864C14.068 7.76527 13.611 7.59616 12.697 7.25795L12 7.00003L12.697 6.74211C13.611 6.4039 14.068 6.2348 14.4014 5.90142C14.7348 5.56805 14.9039 5.11105 15.2421 4.19706L15.5 3.50003Z"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               />
             </svg>
             <div className="flex flex-col gap-1">
@@ -65,7 +83,7 @@ const SearchAIMetaResult: FC<LLMResult> = (prop) => {
               <Fragment key={`id-${idx}`}>
                 <SummaryPreview text={itx} />
                 {/* <p
-                  className="text-black/80 text-sm leading-6 font-normal whitespace-pre-wrap"
+                  className="text-black/80 text-sm leading-6 font-normal whitespace-preWrap"
                   dangerouslySetInnerHTML={{ __html: itx.trim().split("\n") }}
                 /> */}
               </Fragment>

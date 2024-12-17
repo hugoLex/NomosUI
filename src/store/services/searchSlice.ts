@@ -7,14 +7,14 @@ import {
   GenericObject,
   ListResponse,
   QueryReturnValue,
-  SearchType,
+  SearchResultDocumentMetaDocType,
   TSearchResultData,
 } from "@app/types";
 
 type SearchQuery = {
   query: string;
   pageNumber?: number | string;
-  searchType?: SearchType;
+  searchType?: SearchResultDocumentMetaDocType;
 };
 
 const handlePromiseResults = (results: GenericObject[]) => {
@@ -42,11 +42,15 @@ export const searchQueryAPI = injectEndpoints({
           FetchBaseQueryError,
           FetchBaseQueryMeta
         >[] = [];
-        const { query, pageNumber } = _arg;
+        const { query, pageNumber, searchType } = _arg;
 
         const defaultResults = await Promise.all([
           _baseQuery(`api/ask?question=${query}`),
-          _baseQuery(`api/semantic/search?query=${query}`),
+          _baseQuery(
+            `api/semantic/search?query=${query}${
+              searchType ? `&document_type=${searchType}` : ""
+            }`
+          ),
         ]);
 
         results.push(...defaultResults);
