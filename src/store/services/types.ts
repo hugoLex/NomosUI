@@ -106,3 +106,64 @@ export type CounselResponse = {
     user_id: string;                   // user_id is a string
     counsels: Counsel[];               // counsels is an array of Counsel objects
 };
+
+
+// Judge details page  
+interface Case {
+    year: number;
+    court: string;
+    case_title: string;
+    document_id: string;
+    suit_number: string;
+    case_summary: string;
+    judge_stance: 'Concurring' | 'Dissented' | 'Lead Judgment' | 'Other'; // you can extend this list as needed
+    is_lead_judge: boolean;
+}
+
+interface JudgeStatisticsT {
+    total_cases: number;
+    total_concurred: number;
+    total_dissented: number;
+    total_lead_judgments: number;
+}
+
+interface JudgeInfoT {
+    judge_id: number;
+    name: string;
+    profile: string;
+    statistics: JudgeStatisticsT;
+    cases: Case[];
+}
+
+interface JudgeJudicialMetricsT {
+    concurrence_rate: number;
+    dissent_rate: number;
+    lead_judgment_rate: number;
+}
+
+export interface JudgeProfileResponseT {
+    user_id: string;
+    judge_info: JudgeInfoT;
+    judicial_metrics: JudgeJudicialMetricsT;
+    page: number;
+}
+
+
+
+// All judges list 
+
+interface JudgeInfoT {
+    judge_id: number;
+    name: string;
+    profile: string;
+    court: string;
+    division: string;
+    jurisdiction: string;
+    total_cases: number;
+}
+
+export interface AllJudgesListResponseT {
+    user_id: string;
+    page: number;
+    judges: JudgeInfoT[];
+}

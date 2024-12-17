@@ -1,16 +1,16 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // import { logOut, setCredentials } from "../auth/authSlice";
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://lexgateway.lexanalytics.ai",
+  baseUrl: "https://lexgateway.lexanalytics.ai/api",
   // credentials: "include",
-//   prepareHeaders: (headers, { getState }) => {
-//     const token = getState().auth.token;
-//     // If we have a token set in state, let's assume that we should be passing it.
-//     if (token) {
-//       headers.set("authorization", `Bearer ${token}`);
-//     }
-//     return headers;
-//   },
+  //   prepareHeaders: (headers, { getState }) => {
+  //     const token = getState().auth.token;
+  //     // If we have a token set in state, let's assume that we should be passing it.
+  //     if (token) {
+  //       headers.set("authorization", `Bearer ${token}`);
+  //     }
+  //     return headers;
+  //   },
 });
 
 // const baseQueryWithReauth = async (args, api, extraOptions) => {
@@ -41,7 +41,7 @@ const baseQuery = fetchBaseQuery({
 
 export const lexGateWayApiSlice = createApi({
   baseQuery: baseQuery,
-//   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Analytics","Judge","Counsel" ],
+  //   baseQuery: baseQueryWithReauth,
+  tagTypes: ["Analytics", "Judge", "Counsel"],
   endpoints: (builder) => ({}),
 });

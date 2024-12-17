@@ -1,14 +1,28 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import SearchBarAnalytics from "../../generalSharedComponents/SearchBarAnalytics";
 import Link from "next/link";
 import { useGetAllJudgeQuery } from "@app/store/services/judgeAndCounselAnalytics";
 import BigLoadingSpinner from "../../generalSharedComponents/BigLoadingSpinner";
 import { ErrorView404 } from "@app/components/ErrorView";
+import { AllJudgesListResponseT } from "@app/store/services/types";
 
 const AllJudgesView = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [allData, setAllData] = useState<[] | AllJudgesListResponseT["judges"]>(
+    []
+  ); // Store accumulated data
   const { isError, isFetching, isLoading, data } = useGetAllJudgeQuery({
-    page: 1,
+    page: currentPage,
   });
+  // Update the accumulated data when new data is fetched
+  useEffect(() => {
+    if (data) {
+      setAllData((prevData) => [...prevData, ...data.judges]); // Append new data
+    }
+  }, [data]);
+  const loadMore = () => {
+    setCurrentPage((prevPage) => prevPage + 1); // Increment page number
+  };
   return (
     <>
       {(isFetching || isLoading) && <BigLoadingSpinner />}
@@ -46,7 +60,7 @@ const AllJudgesView = () => {
               <section className="lg:flex gap-[5%] justify-between relative ">
                 {/* <section className="lg:flex gap-[5%] px-16 max-md:px-5 max-w-full"> */}
                 <div className="basis-[65%]">
-                  {data.judges.map((judge) => (
+                  {allData?.map((judge) => (
                     <Fragment key={judge.judge_id}>
                       <div className="pt-[46px]">
                         <div className="border-b border-solid border-gray-200 flex items-center gap-[8px]  pb-[15px] mb-[15px]">
@@ -95,7 +109,14 @@ const AllJudgesView = () => {
                         </p>
                       </div>
                     </Fragment>
-                  ))}
+                  ))}{" "}
+                  <button
+                    onClick={loadMore}
+                    disabled={isFetching}
+                    className="mt-5 rounded-[6px] text-[.875rem] px-[20px] py-[9px] bg-red-600 border-gray-200 boder font-bold text-white"
+                  >
+                    Load more
+                  </button>
                 </div>
               </section>
             </div>
