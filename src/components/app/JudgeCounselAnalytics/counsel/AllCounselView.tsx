@@ -1,17 +1,29 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import SearchBarAnalytics from "../../generalSharedComponents/SearchBarAnalytics";
 import Link from "next/link";
 import { useGetAllCounselQuery } from "@app/store/services/judgeAndCounselAnalytics";
 // import { UseQueryToggler } from "@app/hooks/queryHandler";
 import BigLoadingSpinner from "../../generalSharedComponents/BigLoadingSpinner";
 import { ErrorView404 } from "@app/components/ErrorView";
+import { CounselResponseT } from "@app/store/services/types";
 
 const AllCounselView = () => {
   //   const { searchParams } = UseQueryToggler();
   //   const counselId = searchParams.get("counselId");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [allData, setAllData] = useState<[] | CounselResponseT["counsels"]>([]); // Store accumulated data
   const { isError, isFetching, isLoading, data } = useGetAllCounselQuery({
-    page: 1,
+    page: currentPage,
   });
+  // Update the accumulated data when new data is fetched
+  useEffect(() => {
+    if (data) {
+      setAllData((prevData) => [...prevData, ...data.counsels]); // Append new data
+    }
+  }, [data]);
+  const loadMore = () => {
+    setCurrentPage((prevPage) => prevPage + 1); // Increment page number
+  };
 
   return (
     <>
@@ -24,7 +36,7 @@ const AllCounselView = () => {
         />
       )}
       {!isFetching && !isError && data?.counsels && (
-        <section className="relative mx-auto max-w-[1400px] py-6 ">
+        <section className="relative w-full mx-auto max-w-[1400px] py-6 ">
           <div className="px-16 max-md:px-5 max-w-full">
             <div className="">
               <div className="flex justify-between pb-[32px] pt-[15px] font-rubik ">
@@ -45,13 +57,13 @@ const AllCounselView = () => {
                   <span className="text-[1.875rem] font-normal">Library</span>
                 </h3>
 
-                <SearchBarAnalytics classname="basis-[56%]" type="judge" />
+                <SearchBarAnalytics classname="basis-[56%]" type="counsel" />
               </div>
               <hr />
               <section className="lg:flex gap-[5%] justify-between relative ">
                 {/* <section className="lg:flex gap-[5%] px-16 max-md:px-5 max-w-full"> */}
                 <div className="basis-[65%]">
-                  {data.counsels.map((counsel) => (
+                  {allData?.map((counsel) => (
                     <Fragment key={counsel.counsel_id}>
                       <div className="pt-[46px]">
                         <div className="border-b border-solid border-gray-200 flex items-center gap-[8px]  pb-[15px] mb-[15px]">
@@ -68,9 +80,7 @@ const AllCounselView = () => {
                             />
                           </svg>
                           <Link
-                            href={`/counsel?counselId=${
-                              counsel.counsel_id ?? "80"
-                            }&counsel=${counsel.counsel_name}`}
+                            href={`/counsel?counselId=${counsel.counsel_id}&counsel=${counsel.counsel_name}`}
                             className="text-[1.125rem] font-medium leading-[28px]"
                           >
                             {counsel.counsel_name}
@@ -78,10 +88,10 @@ const AllCounselView = () => {
                         </div>
                       </div>
                       <div>
-                        <h3 className="capitalize text-base font-medium text-lex-blue">
-                          {counsel.roles}
-                          {/* {counsel.law_firms} */}
+                        <h3 className="text-base font-medium text-lex-blue">
+                          {counsel.law_firms}
                         </h3>
+                        {/* <h3 className="text-base font-medium text-[#208390]">{judge.court}</h3> */}
                         <h3 className=" flex items-center gap-[5px] mt-[2px] text-[.75rem] font-medium">
                           <svg
                             width="11"
@@ -97,19 +107,19 @@ const AllCounselView = () => {
                           </svg>
                           8 days ago
                         </h3>
-                        {/* <p className="text-base text-[#64645F]">
-                          {counsel.roles}
-                        </p> */}
                         <p className="text-base text-[#64645F]">
-                          Lawyer qualified to practice law in Nigeria, with over
-                          eight years post-qualification experience working in
-                          dispute resolution commercial disputes, IP, trade and
-                          employment corporate law, and intellectual property
-                          law IP Advisory, trademarks, patents.
+                          {"Profile not yet available."}
                         </p>
                       </div>
                     </Fragment>
-                  ))}
+                  ))}{" "}
+                  <button
+                    onClick={loadMore}
+                    disabled={isFetching}
+                    className="mt-5 rounded-[6px] text-[.875rem] px-[20px] py-[9px] bg-red-600 border-gray-200 boder font-bold text-white"
+                  >
+                    Load more
+                  </button>
                 </div>
               </section>
             </div>

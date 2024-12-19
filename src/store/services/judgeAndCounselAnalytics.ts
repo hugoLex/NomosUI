@@ -6,10 +6,11 @@
 import { lexGateWayApiSlice } from "../baseApi/lexgatewayApi";
 import {
   CounselProfileResponse,
-  CounselResponse,
+  CounselResponseT,
   GetCounselAppearancesRequest,
   AllJudgesListResponseT,
   JudgeProfileResponseT,
+  CounselDetailT,
 } from "./types";
 
 // type for each appearance
@@ -45,19 +46,19 @@ export const judgeCounselAnalyticsAPISlice = lexGateWayApiSlice.injectEndpoints(
         providesTags: ["Analytics", "Judge"],
       }),
       getAllCounsel: builder.query<
-        CounselResponse,
+        CounselResponseT,
         Omit<GetCounselAppearancesRequest, "counsel_id">
       >({
-        query: ({ page }) => `/get_all_counsels`,
+        query: ({ page }) => `/counsels/list?page=${page}`,
         providesTags: ["Analytics", "Counsel"],
       }),
 
       getCounselAnalytics: builder.query<
-        CounselProfileResponse,
+        CounselDetailT,
         GetCounselAppearancesRequest
       >({
         query: ({ counsel_id, page }) =>
-          `/counsel_consolidated/${counsel_id}?page=${page}`,
+          `/counsels/detail/${counsel_id}`,
         // query: ({ counsel_id,page  }) => `/counsel_appearance/${counsel_id}?page=${page}`,
         //     {https://lexgateway.lexanalytics.ai/counsel_consolidated/80
         //   return {

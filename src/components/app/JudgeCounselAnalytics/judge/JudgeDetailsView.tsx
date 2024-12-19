@@ -19,6 +19,7 @@ import {
   JudgeInfoResponseT,
   JudgeProfileResponseT,
 } from "@app/store/services/types";
+import TextBox from "../../generalSharedComponents/TextBox";
 
 type stanceT = "Concurred" | "Dissented";
 const JudgeDetailsView = () => {
@@ -217,8 +218,8 @@ const JudgeDetailsView = () => {
                       name="sortBy"
                       id="hiee"
                     >
-                      <option value={"Most popular"}>Most popular</option>
                       <option value={"Most recent"}>Most recent</option>
+                      <option value={"Most popular"}>Most popular</option>
                     </select>
                     {/* <select
                       className=" appearance-auto  px-4 outline-none"
@@ -228,7 +229,13 @@ const JudgeDetailsView = () => {
                       <option value={"Most recent"}>Most recent</option>
                       <option value={"Most popular"}>Most popular</option>
                     </select> */}
-                    <span className="ml-auto">{`${data.judge_info.statistics.total_cases} Cases`}</span>
+                    <span className="ml-auto text-[#008E00] bg-[#008E00]/10 text-xs px-3 py-1 rounded">
+                      {`${
+                        data.judge_info.statistics.total_cases > 1
+                          ? `${data.judge_info.statistics.total_cases} Cases`
+                          : `${data.judge_info.statistics.total_cases} Case`
+                      } `}
+                    </span>
                   </div>
 
                   {/* <div className="font-paytone border-b border-solid border-gray-200 pb-3">
@@ -257,9 +264,9 @@ const JudgeDetailsView = () => {
                       <p className="text-[.96rem] font-normal leading-[21px]">
                         {item.case_summary}
                       </p>
-                      <SmallTextBtn
+                      <TextBox
                         smallBtnData={["Marriage", "constitution", "Election"]}
-                        btnStyle="px-2 py-1 text-primary"
+                        // btnStyle="px-2 py-1 text-primary"
                         divStyle="flex gap-3 mt-3"
                       />
                     </div>
@@ -267,7 +274,7 @@ const JudgeDetailsView = () => {
                   <button
                     onClick={loadMore}
                     disabled={isFetching}
-                    className="mt-5 rounded-[6px] text-[.875rem] px-[20px] py-[9px] bg-red-600 border-gray-200 boder font-bold text-white"
+                    className="mt-5 rounded-[6px] text-[.875rem] px-[20px] py-[9px] bg-primary border-gray-200 boder font-bold text-white"
                   >
                     Load more
                   </button>

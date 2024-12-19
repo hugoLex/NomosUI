@@ -91,21 +91,7 @@ export type JudgeInfoResponseT = {
 };
 
 
-// Type for the counsel information
-type Counsel = {
-    counsel_id: number;                // counsel_id is a number
-    counsel_name: string;              // counsel_name is a string
-    total_cases: number;               // total_cases is a number
-    roles: string;                     // roles is a string
-    law_firms: string;                 // law_firms is a string
-    total_precedents_cited: number;    // total_precedents_cited is a number
-};
 
-// Type for the full response structure
-export type CounselResponse = {
-    user_id: string;                   // user_id is a string
-    counsels: Counsel[];               // counsels is an array of Counsel objects
-};
 
 
 // Judge details page  
@@ -166,4 +152,64 @@ export interface AllJudgesListResponseT {
     user_id: string;
     page: number;
     judges: JudgeInfoT[];
+}
+
+
+interface CounselT {
+    counsel_id: number;
+    counsel_name: string;
+    total_cases: number;
+    law_firms: string[];
+    total_cases_won: number;
+    total_cases_lost: number;
+}
+
+export interface CounselResponseT {
+    user_id: string;
+    page: number;
+    counsels: CounselT[];
+}
+
+
+// Represents the details of the counsel (lawyer)
+interface CounselDetailsT {
+    counsel_id: number;
+    counsel_name: string;
+    law_firms: string[];
+    cases: CounselCaseT[];
+}
+
+// Represents a case with its relevant details
+interface CounselCaseT {
+    role: string;
+    court: string;
+    verdict: string;
+    case_title: string;
+    document_id: string;
+    suit_number: string;
+    case_summary: string;
+    year_decided: number;
+    subject_matters: string[];
+    precedents_cited: CounselPrecedentT[];
+}
+
+// Represents a precedent cited in a case
+interface CounselPrecedentT {
+    role: string;
+    citation: string;
+}
+
+// Represents performance metrics of the counsel
+interface CounselPerformanceMetricsT {
+    win_rate: number;
+    total_cases: number;
+    case_distribution: Record<string, number>;
+}
+
+// Main interface for user data, including counsel and performance metrics
+export interface CounselDetailT {
+    user_id: string;
+    counsel_details: CounselDetailsT;
+    performance_metrics: CounselPerformanceMetricsT;
+    page: number;
 }
