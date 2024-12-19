@@ -16,7 +16,12 @@ import type {
 
 import { useRouter } from "next/router";
 import ReactTextareaAutosize from "react-textarea-autosize";
-import { ClipPaperIcon, FilterIcon, RigthArrowIcon } from "../../icons";
+import {
+  ClipPaperIcon,
+  FilterIcon,
+  RigthArrowIcon,
+  SearchIcon,
+} from "../../icons";
 import { Modal } from "@app/components/ui";
 import { AppLayoutContext as LayoutContext } from "@app/components/layout";
 import { escapeRegExp, mentionsList } from "@app/utils";
@@ -235,7 +240,7 @@ export const SearchBoxButton = ({
 
   return (
     <Fragment>
-      {/* <div
+      <div
         role="button"
         onClick={() => {
           setIsSearchModal(true);
@@ -246,19 +251,7 @@ export const SearchBoxButton = ({
       >
         <SearchIcon />
         <span className="my-auto text-sm text-zinc-600">New search..</span>
-      </div> */}
-
-      <span
-        onClick={() => {
-          setIsSearchModal(true);
-          searchTextRef;
-        }}
-        role="button"
-        className="flex gap-1 justify-center px-3 py-2.5 bg-primary rounded"
-      >
-        New Search
-      </span>
-      <SearchBoxModal innerRef={searchTextRef} />
+      </div>
     </Fragment>
   );
 };
