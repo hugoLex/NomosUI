@@ -5,6 +5,7 @@ import { useGetAllJudgeQuery } from "@app/store/services/judgeAndCounselAnalytic
 import BigLoadingSpinner from "../../generalSharedComponents/BigLoadingSpinner";
 import { ErrorView404 } from "@app/components/ErrorView";
 import { AllJudgesListResponseT } from "@app/store/services/types";
+import { LoadMoreBtn } from "../../generalSharedComponents/LoadMoreBtn";
 
 const AllJudgesView = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,7 +33,7 @@ const AllJudgesView = () => {
           desc="Check your search terms and try again, or explore our curated collection of legal resources to find what you need"
         />
       )}
-      {!isFetching && !isError && data?.judges && (
+      {!isError && data?.judges && (
         <section className="relative mx-auto max-w-[1400px] py-6 ">
           <div className="px-16 max-md:px-5 max-w-full">
             <div className="">
@@ -110,13 +111,7 @@ const AllJudgesView = () => {
                       </div>
                     </Fragment>
                   ))}{" "}
-                  <button
-                    onClick={loadMore}
-                    disabled={isFetching}
-                    className="mt-5 rounded-[6px] text-[.875rem] px-[20px] py-[9px] bg-red-600 border-gray-200 boder font-bold text-white"
-                  >
-                    Load more
-                  </button>
+                  <LoadMoreBtn isFetching={isFetching} loadMore={loadMore} />
                 </div>
               </section>
             </div>

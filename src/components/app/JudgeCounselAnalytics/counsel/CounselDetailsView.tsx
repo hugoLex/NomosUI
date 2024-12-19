@@ -11,6 +11,7 @@ import { CounselDetailT } from "@app/store/services/types";
 import Image from "next/image";
 import { IoClose } from "react-icons/io5";
 import TextBox from "../../generalSharedComponents/TextBox";
+import { LoadMoreBtn } from "../../generalSharedComponents/LoadMoreBtn";
 
 const CounselDetailsView = () => {
   const { searchParams, close } = UseQueryToggler();
@@ -118,7 +119,7 @@ const CounselDetailsView = () => {
                         fill
                         // width={50}
                         // height={50}
-                        src={`/images/${"judge_analytics_av.jpg"}`}
+                        src={`/images/${"counsel_analytics_av.jpg"}`}
                         alt="judge counsel profile"
                       />
                     </div>
@@ -132,13 +133,13 @@ const CounselDetailsView = () => {
 
                     <div className="flex gap -5 items-center justify-center mt-[20px] divide-x-2 border-t border-b border-gray-200 p-[16.4px]">
                       <div className="basis-1/2 text-[#2fa826]">
-                        <h6 className="block text-center ">Concurred</h6>
+                        <h6 className="block text-center ">Win</h6>
                         <h6 className="text-center text-[.875rem]">
                           {data.performance_metrics.win_rate}
                         </h6>
                       </div>
                       <div className="pl- [30px] basis-1/2 text-[#D71E30]">
-                        <h6 className="block text-center">Dissented</h6>
+                        <h6 className="block text-center">Loss</h6>
                         <h6 className="text-center text-[.875rem] ">
                           {data.performance_metrics.win_rate}
                         </h6>
@@ -225,7 +226,7 @@ const CounselDetailsView = () => {
                     <select
                       className="appearance-auto  pr-4 outline-none"
                       name="sortBy"
-                      id="hiee"
+                      id="Hi_Wendy"
                     >
                       <option value={"Most recent"}>Most recent</option>
                       <option value={"Most popular"}>Most popular</option>
@@ -263,14 +264,12 @@ const CounselDetailsView = () => {
                   {data.counsel_details.cases.map((item, index) => (
                     <div
                       key={item.suit_number}
-                      className="font-paytone bord er-b border-solid border-gray-200 pb-3 mt-[5px]"
+                      className="font-paytone pb-3 mt-[5px]"
                     >
                       <h3 className="text-[.94rem] font-normal">
                         {item.case_title}
                       </h3>
-                      <p className="text-[.96rem] font-normal leading-[21px]">
-                        {item.case_summary}
-                      </p>
+                      <p className="text-sm ">{item.case_summary}</p>
                       <TextBox
                         smallBtnData={item.subject_matters}
                         // smallBtnData={["Marriage", "constitution", "Election"]}
@@ -279,13 +278,7 @@ const CounselDetailsView = () => {
                       />
                     </div>
                   ))}
-                  <button
-                    onClick={loadMore}
-                    disabled={isFetching}
-                    className="mt-5 rounded-[6px] text-[.875rem] px-[20px] py-[9px] bg-primary border-gray-200 boder font-bold text-white"
-                  >
-                    Load more
-                  </button>
+                  <LoadMoreBtn isFetching={isFetching} loadMore={loadMore} />
                 </div>
                 {/* <JudgeCounselGraphLayout /> */}
                 {/* {judgecounselgraph && <Graphmodal />} */}

@@ -20,6 +20,7 @@ import {
   JudgeProfileResponseT,
 } from "@app/store/services/types";
 import TextBox from "../../generalSharedComponents/TextBox";
+import { LoadMoreBtn } from "../../generalSharedComponents/LoadMoreBtn";
 
 type stanceT = "Concurred" | "Dissented";
 const JudgeDetailsView = () => {
@@ -212,7 +213,7 @@ const JudgeDetailsView = () => {
                       <p>{data.judge_info.profile}</p>
                     </div>
                   )}
-                  <div className="flex items-center border-b border-solid border-gray-200 pb-3">
+                  <div className="flex items-center border-b border-solid border-gray-200 pb-3 mb-3">
                     <select
                       className="appearance-auto  pr-4 outline-none"
                       name="sortBy"
@@ -256,14 +257,12 @@ const JudgeDetailsView = () => {
                   {data.judge_info.cases.map((item, index) => (
                     <div
                       key={item.document_id}
-                      className="font-paytone bord er-b border-solid border-gray-200 pb-3 mt-[5px]"
+                      className="font-paytone pb-3 mt-[5px]"
                     >
                       <h3 className="text-[.94rem] font-normal">
                         {item.case_title}
                       </h3>
-                      <p className="text-[.96rem] font-normal leading-[21px]">
-                        {item.case_summary}
-                      </p>
+                      <p className="text-sm">{item.case_summary}</p>
                       <TextBox
                         smallBtnData={["Marriage", "constitution", "Election"]}
                         // btnStyle="px-2 py-1 text-primary"
@@ -271,13 +270,7 @@ const JudgeDetailsView = () => {
                       />
                     </div>
                   ))}
-                  <button
-                    onClick={loadMore}
-                    disabled={isFetching}
-                    className="mt-5 rounded-[6px] text-[.875rem] px-[20px] py-[9px] bg-primary border-gray-200 boder font-bold text-white"
-                  >
-                    Load more
-                  </button>
+                  <LoadMoreBtn isFetching={isFetching} loadMore={loadMore} />
                 </div>
                 {/* <JudgeCounselGraphLayout /> */}
                 {/* {judgecounselgraph && <Graphmodal />} */}
