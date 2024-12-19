@@ -68,7 +68,12 @@ h5 {
 
 @layer components {
   .btn {
-    @apply flex justify-center items-center gap-1 text-white bg-primary p-2  rounded-[.3rem] transition-all hover:bg-primary/75;
+    @apply flex justify-center items-center gap-1 
+    px-3 py-2.5 rounded transition-all;
+  }
+
+  .btn.outline {
+    @apply bg-none;
   }
 
   .max-container {

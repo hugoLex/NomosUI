@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import { Head, Loader } from "@app/components/ui";
+import { Button, Head, Loader } from "@app/components/ui";
 import {
   AppLayout as Layout,
   AppLayoutContext as LayoutContext,
@@ -29,6 +29,7 @@ import {
 } from "@app/utils/constants";
 import { useVisibility } from "@app/hooks";
 import { ErrorView404 } from "@app/components";
+import { paginateData } from "@app/utils";
 
 const Page = () => {
   const router = useRouter();
@@ -68,6 +69,7 @@ const Page = () => {
     principlesData: null,
     searchID: "",
   });
+
   const [searchDocuments, setSearchDocuments] = useState<{
     searchID: string;
     documents: TSearchResultDocument[];
@@ -250,34 +252,59 @@ const Page = () => {
   }, [isLoading, isFetching, data]);
 
   useEffect(() => {
+    const offset = 0,
+      limit = 5;
+
     if (searchType === "cases" && casesData !== null) {
+      const documents: TSearchResultDocument[] = paginateData(
+        casesData.documents,
+        offset,
+        limit
+      );
+
       setSearchDocuments({
         searchID,
-        documents: casesData.documents,
+        documents,
         total: casesData.total,
       });
     }
 
     if (searchType === "articles" && articlesData !== null) {
+      const documents: TSearchResultDocument[] = paginateData(
+        articlesData.documents,
+        offset,
+        limit
+      );
+
       setSearchDocuments({
         searchID,
-        documents: articlesData.documents,
+        documents,
         total: articlesData.total,
       });
     }
 
     if (searchType === "legislations" && legislationsData !== null) {
+      const documents: TSearchResultDocument[] = paginateData(
+        legislationsData.documents,
+        offset,
+        limit
+      );
       setSearchDocuments({
         searchID,
-        documents: legislationsData.documents,
+        documents,
         total: legislationsData.total,
       });
     }
 
     if (searchType === "principles" && principlesData !== null) {
+      const documents: TSearchResultDocument[] = paginateData(
+        principlesData.documents,
+        offset,
+        limit
+      );
       setSearchDocuments({
         searchID,
-        documents: principlesData.documents,
+        documents,
         total: principlesData.total,
       });
     }
@@ -419,8 +446,54 @@ const Page = () => {
   // };
 
   const loadMoreDocs = () => {
-    if (searchDocuments?.documents && searchDocuments.total) {
-      console.log(searchDocuments.documents.length === searchDocuments.total);
+    if (searchDocuments) {
+      const offset =
+        searchDocuments.documents.length > 0
+          ? searchDocuments.documents.length + 1
+          : 0;
+      let docs: TSearchResultDocument[] = [];
+
+      switch (searchType) {
+        case "articles":
+          docs = paginateData(
+            articlesData ? articlesData?.documents : [],
+            offset,
+            5
+          );
+          break;
+
+        case "cases":
+          docs = paginateData(casesData ? casesData?.documents : [], offset, 5);
+
+          break;
+
+        case "legislations":
+          docs = paginateData(
+            legislationsData ? legislationsData?.documents : [],
+            offset,
+            5
+          );
+
+          break;
+
+        case "principles":
+          docs = paginateData(
+            principlesData ? principlesData?.documents : [],
+            offset,
+            5
+          );
+
+          break;
+      }
+
+      setSearchDocuments((prev) =>
+        prev
+          ? {
+              ...prev,
+              documents: [...prev.documents, ...docs],
+            }
+          : prev
+      );
     }
   };
 
@@ -598,19 +671,16 @@ const Page = () => {
                 </div>
               )} */}
 
-              {searchDocuments?.documents &&
-                searchDocuments.total &&
-                searchDocuments?.documents.length < searchDocuments?.total && (
-                  <Fragment>
-                    <button className="btn-primary">load more</button>
-                  </Fragment>
+              {searchDocuments &&
+                searchDocuments.documents.length < searchDocuments.total && (
+                  <div className="flex justify-center py-2.5">
+                    <Button
+                      label={"load more"}
+                      onClick={loadMoreDocs}
+                      className="hover:bg-primary/75 bg-primary text-white h-[36px]"
+                    />
+                  </div>
                 )}
-
-              <Fragment>
-                <button onClick={loadMoreDocs} className="btn-primary">
-                  load more
-                </button>
-              </Fragment>
             </div>
 
             {/* Filter drawer */}

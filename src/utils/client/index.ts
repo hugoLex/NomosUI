@@ -29,3 +29,8 @@ export const getPlatformOS = (): PlatformOS | null => {
 
 export const escapeRegExp = (text: string) =>
   text.replace(/[.*+-/?^${}()|[\]\\]/g, "\\$&");
+
+export const paginateData = (data: any[], offset: number, limit: number) => {
+  if (limit < 0) return data.slice(offset);
+  return data.slice(offset, offset + limit);
+};
