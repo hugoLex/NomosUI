@@ -9,7 +9,9 @@ export const casesQueryAPI = injectEndpoints({
   endpoints: (builder) => ({
     case: builder.query<TCase, string>({
       query: (id) => {
-        return `case_details/${id}`;
+        return `/cases/detail/${id}`;
+        // edit when the endpoint is ready before pushing to production
+        // return `case_details/${id}`;
       },
       providesTags: ["CASE"],
     }),

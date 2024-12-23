@@ -30,6 +30,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--accents-0);
   overscroll-behavior-x: none;
+  /* scroll-behavior: smooth; */
 }
 
 h1,
