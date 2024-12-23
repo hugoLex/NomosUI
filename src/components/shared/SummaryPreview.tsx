@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { CaretDown, CaretUp } from "./icons";
+import { CaretDown, CaretUp } from "../icons";
 
 const SummaryPreview = ({ text }: { text: string }) => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(true);

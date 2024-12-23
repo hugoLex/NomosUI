@@ -3,7 +3,7 @@ import { HiAdjustmentsHorizontal } from "react-icons/hi2";
 import { MoreIcon } from "@app/components/icons";
 import PrecedenceTreatment from "./PrecedenceTreatment";
 import { usePrecedentQuery } from "@app/store/services/caseSlice";
-import { ErrorView } from "@app/components/ErrorView";
+import { ErrorView } from "@app/components/shared";
 import { Loader } from "@app/components/ui";
 import { dummyCaseDetails } from "@app/utils";
 import { SelectedTreatment } from "@app/types";

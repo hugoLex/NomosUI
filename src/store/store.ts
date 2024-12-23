@@ -7,17 +7,15 @@ import {
 } from "./services/endpoints";
 import appReducer from "./slices/appSlice";
 import generalMessageReducer from "./slices/messagesSlice";
-import { lexGateWayApiSlice } from "./baseApi/lexgatewayApi";
 
 export const store = configureStore({
   reducer: {
     app: appReducer,
     generalMessage: generalMessageReducer,
     [searchPath]: searchReducer,
-    [lexGateWayApiSlice.reducerPath]: lexGateWayApiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }).concat(searchMiddleware,lexGateWayApiSlice.middleware),
+    getDefaultMiddleware({ serializableCheck: false }).concat(searchMiddleware),
 });
 
 setupListeners(store.dispatch);

@@ -1,6 +1,6 @@
 import React, { FC, Fragment, useState } from "react";
 import { AIResult, LLMResult } from "@app/types";
-import { SummaryPreview } from "@app/components";
+import { SummaryPreview } from "@app/components/shared";
 
 const SearchAIMetaResult: FC<LLMResult> = (prop) => {
   const { detail, message, llm, retriever } = prop;

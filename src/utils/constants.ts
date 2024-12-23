@@ -6,7 +6,10 @@ import {
   LegislationResults,
   ArticleResults,
   FilterOption,
+  MenuLink,
 } from "@app/types";
+
+import { Search, Bench, Library } from "@app/components/icons";
 
 export const searchURL = "https://lexasearch.lexanalytics.ai/api";
 
@@ -792,5 +795,35 @@ export const mentionsList = [
   {
     label: "Principle",
     name: "principle",
+  },
+];
+
+export const menuIcon = {
+  home: Search,
+  library: Library,
+  bench: Bench,
+};
+
+export const menuList: MenuLink[] = [
+  {
+    label: "Home",
+    path: "/",
+  },
+  {
+    label: "Library",
+    path: "/library",
+    children: [
+      { label: "Cases", path: "/cases" },
+      { label: "Legislations", path: "/legislations" },
+      { label: "Articles", path: "/articles" },
+    ],
+  },
+  {
+    label: "Bench",
+    path: "/bench",
+    children: [
+      { label: "Judges", path: "/judges" },
+      { label: "Counsels", path: "/counsels" },
+    ],
   },
 ];

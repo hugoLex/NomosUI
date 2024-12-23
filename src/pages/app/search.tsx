@@ -11,7 +11,7 @@ import {
   SearchFilterSidebar,
   SearchHeader,
   SearchResultMeta,
-} from "@app/components/app";
+} from "@app/components/app/search";
 import { CloseIcon } from "@app/components/icons";
 import {
   FilterOption,
@@ -28,7 +28,7 @@ import {
   searchOptions as defaultSearchOptions,
 } from "@app/utils/constants";
 import { useVisibility } from "@app/hooks";
-import { ErrorView404 } from "@app/components";
+import { ErrorView404 } from "@app/components/shared";
 import { paginateData } from "@app/utils";
 
 const Page = () => {
@@ -677,7 +677,7 @@ const Page = () => {
                     <Button
                       label={"load more"}
                       onClick={loadMoreDocs}
-                      className="hover:bg-primary/75 bg-primary text-white h-[36px]"
+                      className="primary"
                     />
                   </div>
                 )}

@@ -1,18 +1,14 @@
 import React, { Fragment, useEffect, useMemo, useState } from "react";
-import { GenericObject, TCase, TCaseData } from "@app/types";
-import { ErrorView, SummaryPreview } from "@app/components";
+import axios from "axios";
 import { LuDot } from "react-icons/lu";
 import { HiMiniListBullet, HiPlus } from "react-icons/hi2";
 import { PiGavelThin } from "react-icons/pi";
 import { IoPeople } from "react-icons/io5";
 import { LiaBalanceScaleSolid } from "react-icons/lia";
 import { UseQueryToggler } from "@app/hooks/queryHandler";
-import SmallTextBtn from "../generalSharedComponents/SmallBtn";
-import axios from "axios";
+import { ErrorView, SummaryPreview, SmallBtn } from "@app/components/shared";
 import { useCaseQuery } from "@app/store/services/caseSlice";
 import { Loader } from "@app/components/ui";
-import { title } from "process";
-// import SmallTextBtn from "./SmallBtn";
 type ContentOutline =
   | "Judicial Panel"
   | "Decision history"
@@ -171,7 +167,7 @@ const CaseView = ({ id }: { id: string }) => {
                   <PiGavelThin size={19} className=" " />
                   Judgement
                 </h2>
-                <SmallTextBtn
+                <SmallBtn
                   smallBtnData={
                     caseDetail.subject_matters.length > 0
                       ? caseDetail.subject_matters
@@ -252,7 +248,7 @@ const CaseView = ({ id }: { id: string }) => {
                       {item === "Judicial Panel" ? <IoPeople /> : <HiPlus />}
                     </span>
                     {item == "Judicial Panel" && tab == "Judicial Panel" ? (
-                      <SmallTextBtn
+                      <SmallBtn
                         smallBtnData={
                           caseDetail.judge_names.length > 0
                             ? caseDetail.judge_names

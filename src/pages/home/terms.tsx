@@ -3,7 +3,7 @@ import { Head, Header } from "@app/components/ui";
 import { BaseLayout } from "@app/components/layout";
 import getMarkdownData from "@app/utils/getMarkdown";
 import { DataProp, NextPageWithLayout } from "@app/types";
-import { Markdown } from "@app/components";
+import { Markdown } from "@app/components/shared";
 
 const Page = ({ data }: { data: DataProp }) => {
   const { slug, content } = data;

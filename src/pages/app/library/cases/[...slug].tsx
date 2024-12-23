@@ -7,7 +7,7 @@ import {
   CaseHeader,
   CaseJudgeAnalyticsView,
   CasePrecedentAnalyticsView,
-} from "@app/components/app";
+} from "@app/components/app/case";
 import { AppLayout as Layout } from "@app/components/layout";
 import { dummyCaseDetails } from "@app/utils";
 

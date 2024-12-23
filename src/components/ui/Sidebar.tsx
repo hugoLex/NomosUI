@@ -1,29 +1,40 @@
 import React, { FC, Fragment, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import Image from "next/image";
 
-import { ComponentProps, LinkProps } from "@app/types";
+import { ComponentProps, LinkProps, MenuLink } from "@app/types";
 
 import {
   CloseIcon,
-  CompassIcon,
   ExpandIcon,
-  LibraryIcon,
   LoginIcon,
-  SearchIcon,
+  Search,
+  Library,
+  Bench,
 } from "../icons";
 
 import { Modal } from ".";
-import Image from "next/image";
 import { logo, logoIcon } from "@app/assets";
-import { useRouter } from "next/router";
-import { PiFilesThin, PiGavelThin } from "react-icons/pi";
 
 type Variant = "default" | "empty";
 
 interface SidebarProps extends ComponentProps {
-  links?: LinkProps[];
+  links?: MenuLink[];
   variants?: Variant;
 }
+
+const MenuIcons = ({ path }: { path: string }) => {
+  return (
+    <Fragment>
+      <span className="inline-block shrink-0 w-5 aspect-[1.25]">
+        {path === "/" && <Search />}
+        {path === "/library" && <Library />}
+        {path === "/bench" && <Bench />}
+      </span>
+    </Fragment>
+  );
+};
 
 const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
   const router = useRouter();
@@ -31,179 +42,206 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
   const [isAuthModal, setIsAuthModal] = useState<boolean>(false);
 
   const showLogo = router.asPath !== "/";
+  const sidebarWidth = isCollapsed ? "w-[4rem]" : "w-[15rem]";
 
   return (
     <Fragment>
       <aside
-        className={`sticky top-0 hidden md:block bg-transparent h-screen overflow-y-auto transition-all duration-300 ease-in-out ${
-          isCollapsed ? "w-[4rem]" : "w-[15rem]"
-        }`}
+        className={`relative hidden md:block bg-transparent 
+          h-screen overflow-y-auto transition-all duration-400
+         ease-in-out z-10 ${sidebarWidth}`}
       >
         <div
-          className={`min-h-full w-full flex flex-col pt-3 pb-7 grow transition-all duration-300 ease-in-out`}
+          className={`fixed flex top-0 min-h-full transition-all duration-500 ${sidebarWidth}`}
         >
           <div
-            className={`flex items-center transition-all ${
-              !isCollapsed
-                ? "md:px-5 md:justify-center md:gap-4"
-                : "md:justify-center"
-            }`}
+            className={`sticky top-0 min-h-full w-full flex flex-col  pt-3 
+            pb-7 grow transition-all duration-500 ease-in-out`}
           >
-            {showLogo && (
-              <Link title="Home Page" href={"/"} className="">
-                {isCollapsed ? (
-                  <Image src={logoIcon} alt="Logo" className="size-9" />
-                ) : (
-                  <Image
-                    src={logo}
-                    alt="Logo"
-                    className="shrink-0 max-w-full aspect-[4.35]"
-                  />
-                )}
-              </Link>
-            )}
-            <button
-              title="Collapse"
-              role="button"
-              onClick={() => setIsCollapsed(true)}
-              className={` bg-white/70 rounded-full p-2 ${
-                isCollapsed ? "hidden" : "inline-block"
+            <div
+              className={`flex items-center transition-all ${
+                !isCollapsed
+                  ? "md:px-4 md:justify-center md:gap-4"
+                  : "md:justify-center"
               }`}
             >
-              <ExpandIcon className="rotate-180 size-[18px]" />
-            </button>
-          </div>
-          <div className="grow flex-1">
-            <div className="w-full px-4">
-              <ul className="flex flex-col  py-3 mt-5 text-base font-medium leading-4 text-zinc-600 max-md:px-5">
-                <li title="Search" className="w-full">
-                  <Link
-                    href={"/"}
-                    className={`flex items-center gap-1 text-center whitespace-nowrap text-cyan-950 ${
-                      isCollapsed ? "justify-center" : ""
-                    }`}
-                  >
-                    <span className="inline-block shrink-0 w-5 aspect-[1.25]">
-                      <SearchIcon />
-                    </span>
-                    <span className={isCollapsed ? "hidden" : "inline-block"}>
-                      Search
-                    </span>
-                  </Link>
-                </li>
-                <li title="Cases" className="w-full">
-                  <Link
-                    href={"/"}
-                    className={`flex  items-center gap-1 mt-7 text-center whitespace-nowrap ${
-                      isCollapsed ? "justify-center" : ""
-                    }`}
-                  >
-                    <span className="inline-block shrink-0 w-5 aspect-[1.25]">
-                      <CompassIcon />
-                    </span>
-                    <span className={isCollapsed ? "hidden" : "inline-block"}>
-                      Cases
-                    </span>
-                  </Link>
-                </li>
-                <li title="View all judges" className="w-full">
-                  <Link
-                    href={"/judges"}
-                    className={`flex  items-center gap-1 mt-7 text-center whitespace-nowrap ${
-                      isCollapsed ? "justify-center" : ""
-                    }`}
-                  >
-                    <span className="inline-block shrink-0 w-5 aspect-[1.25]">
-                      <PiGavelThin size={20} />
-                    </span>
-                    <span className={isCollapsed ? "hidden" : "inline-block"}>
-                      Judges
-                    </span>
-                  </Link>
-                </li>
-                <li title="View all Counsel" className="w-full">
-                  <Link
-                    href={"/counsel"}
-                    className={`flex  items-center gap-1 mt-7 text-center whitespace-nowrap ${
-                      isCollapsed ? "justify-center" : ""
-                    }`}
-                  >
-                    <span className="inline-block shrink-0 w-5 aspect-[1.25]">
-                      <PiFilesThin size={20} />
-                    </span>
-                    <span className={isCollapsed ? "hidden" : "inline-block"}>
-                      Counsel
-                    </span>
-                  </Link>
-                </li>
-                <li title="Articles" className="w-full">
-                  <Link
-                    href={"/"}
-                    className={`flex items-center gap-1 mt-7 text-center whitespace-nowrap ${
-                      isCollapsed ? "justify-center" : ""
-                    }`}
-                  >
-                    <span className="inline-block shrink-0 w-5 aspect-[1.25]">
-                      <LibraryIcon />
-                    </span>
-                    <span className={isCollapsed ? "hidden" : "inline-block"}>
-                      Articles
-                    </span>
-                  </Link>
-                </li>
+              {showLogo && (
+                <Link title="Home Page" href={"/"} className="">
+                  {isCollapsed ? (
+                    <Image src={logoIcon} alt="Logo" className="size-9" />
+                  ) : (
+                    <Image
+                      src={logo}
+                      alt="Logo"
+                      className="shrink-0 max-w-full aspect-[4.35]"
+                    />
+                  )}
+                </Link>
+              )}
+              <button
+                title="Collapse"
+                role="button"
+                onClick={() => setIsCollapsed(true)}
+                className={` bg-white/70 rounded-full p-2 ${
+                  isCollapsed ? "hidden" : "inline-block"
+                }`}
+              >
+                <ExpandIcon className="rotate-180 size-[18px]" />
+              </button>
+            </div>
+
+            <div className="flex-1 px-4">
+              <ul
+                className="flex flex-col space-y-4 py-3 text-base 
+            font-medium leading-4 text-zinc-600 max-md:px-5"
+              >
+                {links &&
+                  links.map(({ label, children, path }, idx) => (
+                    <Fragment key={path}>
+                      <li title={label} className="relative w-full">
+                        {!children && (
+                          <Link
+                            href={path}
+                            className={`flex items-center gap-1 text-center whitespace-nowrap 
+                               ${isCollapsed ? "justify-center" : ""}
+                              ${
+                                path === router.asPath
+                                  ? "text-primary font-medium"
+                                  : "hover:text-primary"
+                              }
+                              `}
+                          >
+                            <MenuIcons path={path} />
+                            <span
+                              className={
+                                isCollapsed ? "hidden" : "inline-block pl-2"
+                              }
+                            >
+                              {label}
+                            </span>
+                          </Link>
+                        )}
+
+                        {children && (
+                          <Fragment>
+                            <span
+                              role="button"
+                              className={`flex items-center gap-1 text-center
+                               whitespace-nowrap pb-2 peer
+                                ${isCollapsed ? "justify-center" : ""}`}
+                              id={`menu-item-${idx}`}
+                              aria-expanded="true"
+                              aria-haspopup="true"
+                            >
+                              <MenuIcons path={path} />
+                              <span
+                                className={
+                                  isCollapsed ? "hidden" : "inline-block pl-2"
+                                }
+                              >
+                                {label}
+                              </span>
+                            </span>
+                            <ul
+                              className={`space-y-2 transition-all duration-300 ${
+                                isCollapsed
+                                  ? "absolute opacity-0 invisible peer-hover:opacity-100 peer-hover:visible peer-hover:left-[2.5rem] bg-white drop-shadow-md rounded z-10 -top-3 left-0 p-2 min-w-[8rem]"
+                                  : "relative ml-4"
+                              }`}
+                              role="menu"
+                              aria-orientation="vertical"
+                              aria-labelledby={`menu-item-${idx}`}
+                              tabIndex={-1}
+                            >
+                              {children.map(
+                                ({
+                                  label: subLabel,
+                                  path: subPath,
+                                  children,
+                                }) => (
+                                  <li
+                                    key={subPath}
+                                    title={subLabel}
+                                    className="border-l border-[#64645F]"
+                                  >
+                                    <Link
+                                      href={`${path}${subPath}`}
+                                      className={`text-center whitespace-nowrap 
+                                       
+                                  ${
+                                    `${path}${subPath}` === router.asPath
+                                      ? "text-primary font-medium"
+                                      : "hover:text-primary"
+                                  }
+                                        `}
+                                    >
+                                      <span className="pl-2">{subLabel}</span>
+                                    </Link>
+                                  </li>
+                                )
+                              )}
+                            </ul>
+                          </Fragment>
+                        )}
+                      </li>
+                    </Fragment>
+                  ))}
+
                 <li title="Sign in" className="w-full">
-                  <button
-                    className={`w-full flex  items-center gap-1 mt-7 text-center whitespace-nowrap ${
+                  <Link
+                    href={"/signin"}
+                    className={`w-full flex  items-center gap-1 text-center whitespace-nowrap ${
                       isCollapsed ? "justify-center" : ""
                     }`}
-                    onClick={() => {
-                      // setIsAuthModal(true)
-                      router.push("/signin");
-                    }}
                   >
                     <span className="inline-block shrink-0 w-5 aspect-[1.25]">
                       <LoginIcon />
                     </span>
-                    <span className={isCollapsed ? "hidden" : "inline-block"}>
+                    <span
+                      className={`hover:text-primary ${
+                        isCollapsed ? "hidden" : "inline-block pl-2"
+                      }`}
+                    >
                       Sign in
                     </span>
-                  </button>
+                  </Link>
                 </li>
               </ul>
             </div>
-          </div>
-          <div className="flex flex-col items-center justify-center">
-            {isCollapsed ? (
-              <span
-                title="Expand"
-                role="button"
-                onClick={() => setIsCollapsed(false)}
-                className="bg-white/70 focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out font-sans  select-none items-center relative group/button  justify-center text-center  rounded-full cursor-point active:scale-95 origin-center whitespace-nowrap inline-flex text-base aspect-square h-10"
-              >
-                <ExpandIcon />
-              </span>
-            ) : (
-              <div className="flex flex-col px-4 py-1.5 text-sm font-medium text-cyan-950 max-md:mt-10">
-                <div className="leading-[143%]">Try Pro</div>
-                <div className="leading-5 text-zinc-600">
-                  Upgrade for image upload,
-                  <br />
-                  smarter AI, and more Pro
-                  <br />
-                  Search.
-                </div>
-                <div className="flex flex-col justify-center px-2 py-2.5 mt-1 w-full text-center rounded bg-stone-200 leading-[100%]">
-                  <div className="flex gap-1 justify-center">
-                    <img
-                      loading="lazy"
-                      src="https://cdn.builder.io/api/v1/image/assets/TEMP/c8f2d15a25a6f2034b84fe16cd98c898ce8ad590790a90d80211fe3313f7730c?"
-                      className="shrink-0 aspect-[1.28] w-[18px]"
-                    />
-                    <div>Learn More</div>
+
+            <div className="flex flex-col items-center justify-center">
+              {isCollapsed ? (
+                <span
+                  title="Expand"
+                  role="button"
+                  onClick={() => setIsCollapsed(false)}
+                  className="bg-white/70 focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out font-sans  select-none items-center relative group/button  justify-center text-center  rounded-full cursor-point active:scale-95 origin-center whitespace-nowrap inline-flex text-base aspect-square h-10"
+                >
+                  <ExpandIcon />
+                </span>
+              ) : (
+                <div className="flex flex-col px-4 py-1.5 text-sm font-medium text-cyan-950 max-md:mt-10">
+                  <div className="leading-[143%]">Try Pro</div>
+                  <div className="leading-5 text-zinc-600">
+                    Upgrade for image upload,
+                    <br />
+                    smarter AI, and more Pro
+                    <br />
+                    Search.
+                  </div>
+                  <div className="flex flex-col justify-center px-2 py-2.5 mt-1 w-full text-center rounded bg-stone-200 leading-[100%]">
+                    <div className="flex gap-1 justify-center">
+                      <img
+                        loading="lazy"
+                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/c8f2d15a25a6f2034b84fe16cd98c898ce8ad590790a90d80211fe3313f7730c?"
+                        className="shrink-0 aspect-[1.28] w-[18px]"
+                      />
+                      <div>Learn More</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </aside>

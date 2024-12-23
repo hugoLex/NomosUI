@@ -8,7 +8,7 @@ import type { AppProps } from "next/app";
 import type { NextPageWithLayout } from "@app/types";
 
 import { inter, poppins, rubik, roboto } from "@app/assets/fonts";
-import { NoSSR } from "@app/components/";
+import { NoSSR } from "@app/components/shared";
 
 import "../assets/app.css";
 

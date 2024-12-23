@@ -14,7 +14,7 @@ type CaseTreatment = {
     // remove this before production
     | "Cases cited";
 };
-export const CaseTreatmentParagraph: React.FC<CaseTreatment> = ({
+const CaseTreatmentParagraph: React.FC<CaseTreatment> = ({
   practitioner_type,
   reason,
   treatment,
@@ -52,3 +52,5 @@ export const CaseTreatmentParagraph: React.FC<CaseTreatment> = ({
     </>
   );
 };
+
+export default CaseTreatmentParagraph;

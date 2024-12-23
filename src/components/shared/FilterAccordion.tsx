@@ -1,5 +1,5 @@
 import * as Accordion from "@radix-ui/react-accordion";
-import { PlusIcon } from "./icons";
+import { PlusIcon } from "../icons";
 
 const FilterAccordion = ({
   data,

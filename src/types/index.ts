@@ -5,7 +5,6 @@ import React, {
   ReactNode,
 } from "react";
 import { NextPage } from "next";
-import { SearchResultMeta } from "@app/components/app";
 
 export * from "./cases";
 export * from "./search";
@@ -74,4 +73,9 @@ export type BigBarForRightSideLayoutProps = {
   title: string;
   icon?: React.ReactElement;
   style: { ctnStyle: string; icon: string };
+};
+
+export type MenuLink = LinkProps & {
+  icon?: ReactElement;
+  children?: MenuLink[];
 };

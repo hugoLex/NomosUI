@@ -1,12 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useRouter } from "next/router";
-
-import { Header, Tabs } from "@app/components/ui";
-import { TabItem } from "@app/types";
-import { SearchBoxButton } from "../search";
-import { CollapseIcon } from "@app/components/icons";
-import { IoMdArrowRoundBack } from "react-icons/io";
 import { HiArrowUturnLeft } from "react-icons/hi2";
+import { AppLayoutContext as LayoutContext } from "@app/components/layout";
+import { Button, Header, Tabs } from "@app/components/ui";
+import { TabItem } from "@app/types";
+import { SearchBoxModal } from "../search";
+
 const tabItems: TabItem[] = [
   {
     active: true,
@@ -33,6 +38,7 @@ const tabItems: TabItem[] = [
 
 const CaseHeader = () => {
   const router = useRouter();
+  const { setIsSearchModal } = useContext(LayoutContext);
 
   const searchRef = useRef<HTMLTextAreaElement | null>(null);
   const [tabs, setTabs] = useState(tabItems);
@@ -59,7 +65,7 @@ const CaseHeader = () => {
     setTabs(newTabs);
     // setSelectedTab(tabs.filter((itx) => itx.id === _id)[0]);
     router.push({
-      pathname: `/cases/${slug}`,
+      pathname: `/library/cases/${slug}`,
       query: {
         tab: tabs.filter((itx) => itx.id === _id)[0].id,
       },
@@ -67,26 +73,30 @@ const CaseHeader = () => {
   };
 
   return (
-    <Header>
-      <div className="flex border-b border-solid bg-stone-50 border-stone-300 border-opacity-50 rounded-t-lg pt-4 justify-between px-8">
-        <div className="flex items-center w-[20%] pb-2 gap-2">
-          {/* <CollapseIcon
-            width={36}
-            height={38}
-            className="inline-block items-center align-middle"
-          /> */}
-          <HiArrowUturnLeft
-            className="inline-block items-center align-middle cursor-pointer text-gray-400"
-            size={25}
-            onClick={handleGoBack}
-          />
-          <SearchBoxButton searchTextRef={searchRef} />
+    <Fragment>
+      <Header>
+        <div className="flex border-b border-solid bg-stone-50 border-stone-300 border-opacity-50 rounded-t-lg pt-4 justify-between px-8">
+          <div className="flex items-center w-[20%] pb-2 gap-2">
+            <HiArrowUturnLeft
+              className="inline-block items-center align-middle cursor-pointer text-gray-400"
+              size={25}
+              onClick={handleGoBack}
+            />
+            <Button
+              label="New search"
+              onClick={() => {
+                setIsSearchModal(true);
+              }}
+              className="primary"
+            />
+          </div>
+          <div className="flex-1 flex justify-end">
+            <Tabs tabs={tabs} onClick={onTabsSelect} />
+          </div>
         </div>
-        <div className="flex-1 flex justify-end">
-          <Tabs tabs={tabs} onClick={onTabsSelect} />
-        </div>
-      </div>
-    </Header>
+      </Header>
+      <SearchBoxModal innerRef={searchRef} />
+    </Fragment>
   );
 };
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import SmallTextBtn from "../../generalSharedComponents/SmallBtn";
+import SmallTextBtn from "../../../shared/SmallBtn";
 import { useVisibility } from "@app/hooks";
 import { UseQueryToggler } from "@app/hooks/queryHandler";
-import { useGetCounselAnalyticsQuery } from "@app/store/services/judgeAndCounselAnalytics";
+import { useGetCounselAnalyticsQuery } from "@app/store/services/benchSlice";
 import { SearchHeader } from "../../search";
 import { Loader } from "@app/components/ui";
 import JudgeCounselHeadings from "../JudgeCounselHeadings";
@@ -10,8 +10,7 @@ import { skipToken } from "@reduxjs/toolkit/query";
 import { CounselDetailT } from "@app/store/services/types";
 import Image from "next/image";
 import { IoClose } from "react-icons/io5";
-import TextBox from "../../generalSharedComponents/TextBox";
-import { LoadMoreBtn } from "../../generalSharedComponents/LoadMoreBtn";
+import { LoadMoreBtn, TextBox } from "@app/components/shared/";
 
 const CounselDetailsView = () => {
   const { searchParams, close } = UseQueryToggler();
