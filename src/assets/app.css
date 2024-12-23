@@ -320,6 +320,10 @@ h5 {
   @apply !fill-primary !stroke-primary;
 }
 
+#judgement .markdown.wrapper p {
+  @apply text-sm;
+}
+
 @keyframes l3 {
   to {
     transform: rotate(1turn);

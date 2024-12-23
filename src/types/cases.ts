@@ -1,14 +1,14 @@
 export type TCaseData = {
-  case_title: string;
-  suit_number: string;
-  court: string;
-  court_division: string | null;
-  jurisdiction: string;
-  date_decided: string;
-  lex_citation: string;
-  main_judgement_url: string | null;
-  case_summary: string;
-  decision_history: string | null;
+  case_title: string | null;
+  suit_number: string | null;
+  court: string | null;
+  court_division?: string | null;
+  jurisdiction: string | null;
+  date_decided: string | null;
+  lex_citation: string | null;
+  main_judgement_url?: string | null;
+  case_summary: string | null;
+  decision_history?: string | null;
   ratio_texts: string[];
   judge_ids: number[];
   judge_names: string[];
@@ -36,3 +36,7 @@ export type TPrecedent = {
 };
 
 export type SelectedTreatment = "all" | "positive" | "negative" | "neutral";
+
+export type TCaseDocument = Omit<TCaseData, "main_judgement_url"> & {
+  judgement?: string | null;
+};

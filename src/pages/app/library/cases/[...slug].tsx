@@ -10,6 +10,7 @@ import {
 } from "@app/components/app/case";
 import { AppLayout as Layout } from "@app/components/layout";
 import { dummyCaseDetails } from "@app/utils";
+import { getMarkdownRemoteStream } from "@app/utils/getMarkdown";
 
 const Page = () => {
   const router = useRouter();
@@ -35,5 +36,13 @@ const Page = () => {
     </Fragment>
   );
 };
+
+// export const getServerSideProps = async () => {
+//   // Fetch data from external API
+//   const data = getMarkdownRemoteStream('');
+
+//   // Pass data to the page via props
+//   return { props: { data } };
+// };
 
 export default Page;

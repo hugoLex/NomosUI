@@ -1,10 +1,16 @@
 import React, { Fragment } from "react";
 import ReactMarkdown from "react-markdown";
 
-const Markdown = ({ content }: { content: string }) => {
+const Markdown = ({
+  content,
+  className,
+}: {
+  content: string;
+  className?: string;
+}) => {
   return (
     <Fragment>
-      <div className="markdown">
+      <div className={`markdown ${className ? className : ""}`}>
         <ReactMarkdown>{content}</ReactMarkdown>
       </div>
     </Fragment>

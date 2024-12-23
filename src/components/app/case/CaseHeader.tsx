@@ -75,7 +75,11 @@ const CaseHeader = () => {
   return (
     <Fragment>
       <Header>
-        <div className="flex border-b border-solid bg-stone-50 border-stone-300 border-opacity-50 rounded-t-lg pt-4 justify-between px-8">
+        <div
+          className="flex border-b border-solid bg-stone-50
+         border-stone-300 border-opacity-50
+         rounded-t-lg pt-4 justify-between px-4 md:px-8"
+        >
           <div className="flex items-center w-[20%] pb-2 gap-2">
             <HiArrowUturnLeft
               className="inline-block items-center align-middle cursor-pointer text-gray-400"

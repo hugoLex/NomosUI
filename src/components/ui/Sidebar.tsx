@@ -42,7 +42,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
   const [isAuthModal, setIsAuthModal] = useState<boolean>(false);
 
   const showLogo = router.asPath !== "/";
-  const sidebarWidth = isCollapsed ? "w-[4rem]" : "w-[15rem]";
+  const sidebarWidth = isCollapsed ? "w-[5%]" : "w-[20%]";
 
   return (
     <Fragment>
@@ -55,8 +55,8 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
           className={`fixed flex top-0 min-h-full transition-all duration-500 ${sidebarWidth}`}
         >
           <div
-            className={`sticky top-0 min-h-full w-full flex flex-col  pt-3 
-            pb-7 grow transition-all duration-500 ease-in-out`}
+            className={`sticky top-0 min-h-full flex flex-col  pt-3 
+            pb-7 grow transition-all duration-500 ease-in-out ${sidebarWidth}`}
           >
             <div
               className={`flex items-center transition-all ${

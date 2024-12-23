@@ -8,10 +8,12 @@ import CounselCaseTreatment from "./counsel/CounselCaseTreatment";
 import AllJudgesView from "./judge/AllJudgesView";
 import JudgeCaseFeaturing from "./judge/JudgeCaseFeaturing";
 import JudgeDetailsView from "./judge/JudgeDetailsView";
+import BenchHeader from "./BenchHeader";
 
 export {
   AllCounselView,
   AllJudgesView,
+  BenchHeader,
   CounselCaseTreatment,
   CounselDetailsView,
   JudgeCaseFeaturing,

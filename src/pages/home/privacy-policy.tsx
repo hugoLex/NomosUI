@@ -4,7 +4,7 @@ import { DataProp } from "@app/types";
 import { Head, Header } from "@app/components/ui";
 import { BaseLayout } from "@app/components/layout";
 import {} from "@app/utils/constants";
-import getMarkdownData from "@app/utils/getMarkdown";
+import { getMarkdownLocalStream } from "@app/utils/getMarkdown";
 import { Markdown } from "@app/components/shared";
 
 const Page = ({ data }: { data: DataProp }) => {
@@ -28,7 +28,7 @@ const Page = ({ data }: { data: DataProp }) => {
 
 export const getServerSideProps = async () => {
   // Fetch data from external API
-  const data = getMarkdownData("privacy.md");
+  const data = getMarkdownLocalStream("privacy.md");
 
   // Pass data to the page via props
   return { props: { data } };
