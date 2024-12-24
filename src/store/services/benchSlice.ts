@@ -35,12 +35,12 @@ export const benchAPISlice = injectEndpoints({
       AllJudgesListResponseT,
       Omit<RequestParams, "judge_id">
     >({
-      query: ({ page }) => `api/judges/list?page=${page}`,
+      query: ({ page }) => `/judges/list?page=${page}`,
       providesTags: ["Analytics", "Judge"],
     }),
 
     getJudgeAnalytics: builder.query<JudgeProfileResponseT, RequestParams>({
-      query: ({ judge_id }) => `api/judges/detail/${judge_id}`,
+      query: ({ judge_id }) => `/judges/detail/${judge_id}`,
       providesTags: ["Analytics", "Judge"],
     }),
 
@@ -48,7 +48,7 @@ export const benchAPISlice = injectEndpoints({
       CounselResponseT,
       Omit<GetCounselAppearancesRequest, "counsel_id">
     >({
-      query: ({ page }) => `api/counsels/list?page=${page}`,
+      query: ({ page }) => `/counsels/list?page=${page}`,
       providesTags: ["Analytics", "Counsel"],
     }),
 
@@ -56,7 +56,7 @@ export const benchAPISlice = injectEndpoints({
       CounselDetailT,
       GetCounselAppearancesRequest
     >({
-      query: ({ counsel_id, page }) => `api/counsels/detail/${counsel_id}`,
+      query: ({ counsel_id, page }) => `/counsels/detail/${counsel_id}`,
       // query: ({ counsel_id,page  }) => `/counsel_appearance/${counsel_id}?page=${page}`,
       //     {https://lexgateway.lexanalytics.ai/counsel_consolidated/80
       //   return {

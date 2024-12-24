@@ -5,7 +5,7 @@ import { HiMiniListBullet, HiPlus } from "react-icons/hi2";
 import { PiGavelThin } from "react-icons/pi";
 import { IoPeople } from "react-icons/io5";
 import { LiaBalanceScaleSolid } from "react-icons/lia";
-import { UseQueryToggler } from "@app/hooks/queryHandler";
+// import { UseQueryToggler } from "@app/hooks/queryHandler";
 import matter from "gray-matter";
 import {
   ErrorView,
@@ -52,8 +52,8 @@ const CaseView = ({ id }: { id: string }) => {
 
   const [tab, setTab] = useState<ContentOutline>("Judicial Panel");
   const { isError, isLoading, data } = useCaseQuery(id);
-  const { createQueryString, router, pathname, urlSearchParamsString } =
-    UseQueryToggler();
+  // const { createQueryString, router, pathname, urlSearchParamsString } =
+  //   UseQueryToggler();
 
   const [
     {
@@ -162,7 +162,7 @@ const CaseView = ({ id }: { id: string }) => {
                 ))}
               </ul>
             </nav>
-            <div className="lg:pl-[50px]">
+            <div className="lg:pl-[150px] xl:pl-[50px]">
               {" "}
               <h3 className=" font-light text-[0.813rem] text-black/80  mt-2 pr-2.5 py-1 leading-[1.25rem]">
                 CASE
@@ -250,7 +250,7 @@ const CaseView = ({ id }: { id: string }) => {
               {judgement && (
                 <div
                   id="judgement"
-                  ref={(el) => (sectionRefs.current[0] = el)}
+                  ref={(el) => (sectionRefs.current[1] = el)}
                   className="has-[p]:text-sm"
                 >
                   <h2 className="mt-[40px] mb-[30px] text-base font-normal font-rubik text-black/50 flex items-center gap-2 ">

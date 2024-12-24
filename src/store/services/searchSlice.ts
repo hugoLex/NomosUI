@@ -45,10 +45,9 @@ export const searchQueryAPI = injectEndpoints({
         const { query, pageNumber, searchType } = _arg;
 
         const defaultResults = await Promise.all([
-          _baseQuery(`api/ask?question=${query}`),
+          _baseQuery(`/ask?question=${query}`),
           _baseQuery(
-            `api/semantic/search?query=${query}${
-              searchType ? `&document_type=${searchType}` : ""
+            `/semantic/search?query=${query}${searchType ? `&document_type=${searchType}` : ""
             }`
           ),
         ]);
@@ -109,7 +108,7 @@ export const searchQueryAPI = injectEndpoints({
         const appyAreaOfLaw = area_of_law ? `&${area_of_law}` : "";
         const filters = `${applyCourt}${applyYear}${appyAreaOfLaw}`;
         return {
-          url: `api/semantic/filter?search_id=${id}${filters}`,
+          url: `/semantic/filter?search_id=${id}${filters}`,
           method: "GET",
         };
       },

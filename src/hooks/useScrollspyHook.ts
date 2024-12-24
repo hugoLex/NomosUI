@@ -33,7 +33,7 @@ export const useScrollspy = ({
     const sectionRefs = useRef<(HTMLElement | null)[]>([]);
     const observerRef = useRef<IntersectionObserver | null>(null);
     const visibleSectionsRef = useRef(new Map<string, VisibleSection>());
-
+    // console.log(sectionRefs)
     const handleIntersection = useCallback((entries: IntersectionObserverEntry[]) => {
         entries.forEach((entry) => {
             visibleSectionsRef.current.set(entry.target.id, {
@@ -54,9 +54,11 @@ export const useScrollspy = ({
         });
 
         if (maxRatio > 0) {
+            // console.log("from hook scrollspy", maxSection)
             setActiveSection((prevSection) => {
                 // Only update if the section has changed
-                return prevSection !== maxSection ? maxSection : prevSection;
+                return maxSection
+                // return prevSection !== maxSection ? maxSection : prevSection;
             });
         }
     }, [activeSection]);
