@@ -2,10 +2,9 @@ import { AppLayout } from "@app/components/layout";
 import React, { Fragment } from "react";
 import { Head } from "@app/components/ui";
 import { UseQueryToggler } from "@app/hooks/queryHandler";
-import AllCounselView from "@app/components/app/JudgeCounselAnalytics/counsel/AllCounselView";
-import CounselDetailsView from "@app/components/app/JudgeCounselAnalytics/counsel/CounselDetailsView";
+import { AllCounselView, CounselDetailsView } from "@app/components/app/bench/";
 
-function CounselAnalytics() {
+const Page = () => {
   const { searchParams } = UseQueryToggler();
 
   const counselId = searchParams.get("counselId");
@@ -51,6 +50,6 @@ function CounselAnalytics() {
     //   </section>
     // </AppLayout>
   );
-}
+};
 
-export default CounselAnalytics;
+export default Page;

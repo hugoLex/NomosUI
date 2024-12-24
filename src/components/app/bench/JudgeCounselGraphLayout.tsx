@@ -1,6 +1,6 @@
 import React from "react";
 import { HiAdjustmentsHorizontal } from "react-icons/hi2";
-import BigBarForRightSideLayout from "../generalSharedComponents/BigBarForRightSideLayout";
+import BigBarForRightSideLayout from "../../shared/BigBarForRightSideLayout";
 
 function JudgeCounselGraphLayout() {
   return (

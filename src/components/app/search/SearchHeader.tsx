@@ -2,7 +2,7 @@ import React, { Fragment, RefObject, useContext } from "react";
 import { AppLayoutContext as LayoutContext } from "@app/components/layout";
 import { Button, Header } from "@app/components/ui";
 import { SearchBoxModal } from "./SearchBox";
-import { MoreIcon, Share1Icon } from "@app/components/icons";
+import { ActionButtons } from "@app/components/shared";
 
 type SearchHeaderProps = {
   query: string;
@@ -20,19 +20,26 @@ const SearchHeader = ({
   return (
     <Fragment>
       <Header>
-        <div className="border-b border-solid bg-stone-50 border-stone-300 border-opacity-50 rounded-t-lg">
-          <div className="flex gap-5 justify-between  items-center px-4 py-2.5 w-full relative">
-            <div className="w-[20%] inline-flex gap-4 justify-start items-center self-stretch pl-2 my-auto text-sm font-medium leading-4 text-center text-white whitespace-nowrap">
-              <span
+        <div
+          className="border-b border-solid bg-stone-50 
+        border-stone-300 border-opacity-50 rounded-t-lg"
+        >
+          <div
+            className="flex gap-5 justify-between  
+          items-center px-4 md:px-8 py-2.5 w-full relative"
+          >
+            <div
+              className="w-[20%] inline-flex gap-4 justify-start 
+            items-center self-stretch text-sm font-medium
+            leading-4 text-center text-white whitespace-nowrap"
+            >
+              <Button
+                label="New search"
                 onClick={() => {
                   setIsSearchModal(true);
-                  searchBtnRef;
                 }}
-                role="button"
-                className="flex gap-1 justify-center px-3 py-2.5 bg-primary rounded"
-              >
-                New Search
-              </span>
+                className="primary"
+              />
             </div>
 
             <div
@@ -49,17 +56,7 @@ const SearchHeader = ({
               </p>
             </div>
 
-            <div className="w-[20%] inline-flex gap-4 justify-end items-center self-stretch pl-2 my-auto text-sm font-medium leading-4 text-center text-white whitespace-nowrap">
-              <span role="button">
-                <MoreIcon />
-              </span>
-
-              <Button
-                label="share"
-                className=" bg-primary"
-                icon={<Share1Icon />}
-              />
-            </div>
+            <ActionButtons />
           </div>
         </div>
       </Header>

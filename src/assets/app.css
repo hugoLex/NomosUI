@@ -77,6 +77,10 @@ h5 {
     @apply bg-none;
   }
 
+  .btn.primary {
+    @apply hover:bg-primary/75 bg-primary text-white h-[36px];
+  }
+
   .max-container {
     max-width: 1440px;
     margin: 0 auto;
@@ -315,6 +319,10 @@ h5 {
 
 .accordion .accordion-header[data-state="open"] svg > * {
   @apply !fill-primary !stroke-primary;
+}
+
+#judgement .markdown.wrapper p {
+  @apply text-sm;
 }
 
 @keyframes l3 {

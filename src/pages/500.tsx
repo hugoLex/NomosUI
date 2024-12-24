@@ -4,7 +4,7 @@ import { Button, Head, Header } from "@app/components/ui";
 import { RigthArrowIcon } from "@app/components/icons";
 
 import cloud from "../../public/cloud.svg";
-import { ErrorView500 } from "@app/components";
+import { ErrorView500 } from "@app/components/shared";
 
 const Page = () => {
   return (

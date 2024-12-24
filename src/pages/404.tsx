@@ -4,7 +4,7 @@ import { Button, Head, Header } from "@app/components/ui";
 import { RigthArrowIcon } from "@app/components/icons";
 
 import { useRouter } from "next/router";
-import { ErrorView404 } from "@app/components";
+import { ErrorView404 } from "@app/components/shared";
 
 const Page = () => {
   const router = useRouter();

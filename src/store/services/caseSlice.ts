@@ -1,18 +1,10 @@
 import { injectEndpoints } from "./endpoints";
-import type {
-  FetchBaseQueryError,
-  FetchBaseQueryMeta,
-} from "@reduxjs/toolkit/query";
 import { TCase, TPrecedent } from "@app/types";
 
 export const casesQueryAPI = injectEndpoints({
   endpoints: (builder) => ({
     case: builder.query<TCase, string>({
-      query: (id) => {
-        return `/cases/detail/${id}`;
-        // edit when the endpoint is ready before pushing to production
-        // return `case_details/${id}`;
-      },
+      query: (id: string) => `/cases/detail/${id}`,
       providesTags: ["CASE"],
     }),
 
@@ -21,6 +13,14 @@ export const casesQueryAPI = injectEndpoints({
         return `/precedent/cited_cases/${id}`;
       },
       providesTags: ["PRECEDENT"],
+    }),
+
+    precedenCited: builder.query<any, any>({
+      query: (id: string) => `/precedents/cited/${id}`,
+    }),
+
+    precedenOverruled: builder.query<any, any>({
+      query: (id: string) => `/precedents/overruled/${id}`,
     }),
   }),
   overrideExisting: true,

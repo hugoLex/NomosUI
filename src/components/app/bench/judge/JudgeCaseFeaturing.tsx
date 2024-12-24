@@ -1,6 +1,9 @@
 import React from "react";
-import NameCourtyearSuitNo from "../../generalSharedComponents/NameCourtyearSuitNo";
-import { CaseTreatmentParagraph } from "../../generalSharedComponents/caseTreatmentParagraph";
+
+import {
+  CaseTreatmentParagraph,
+  NameCourtyearSuitNo,
+} from "@app/components/shared/";
 
 type JudgeCaseFeaturingProps = {
   caseTitle: string;

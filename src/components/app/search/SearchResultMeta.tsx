@@ -9,7 +9,7 @@ import {
   TSearchResultDocument,
 } from "@app/types";
 import { escapeRegExp } from "@app/utils";
-import SmallTextBtn from "../generalSharedComponents/SmallBtn";
+import SmallTextBtn from "../../shared/SmallBtn";
 import { RiCloseLine } from "react-icons/ri";
 import { HiOutlineDocumentText } from "react-icons/hi2";
 import { UseQueryToggler } from "@app/hooks/queryHandler";
@@ -127,7 +127,7 @@ const SearchResultMeta = (prop: {
 
       <h3 className="text-base font-medium">
         <Link
-          href={`/cases/${
+          href={`/library/cases/${
             metadata.document_id
               ? metadata.document_id
               : _link.replace(/\s/g, "-")

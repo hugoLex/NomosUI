@@ -40,9 +40,9 @@ const Button: FC<ButtonProps> = ({
           type={type}
           disabled={disabled}
         >
-          {iconPosition === "left" && <span className="ml-2">{icon}</span>}
+          {iconPosition === "left" && <span className="mr-1">{icon}</span>}
           <span>{label}</span>
-          {iconPosition === "right" && <span className="ml-2">{icon}</span>}
+          {iconPosition === "right" && <span className="ml-1">{icon}</span>}
         </button>
       )}
     </Fragment>

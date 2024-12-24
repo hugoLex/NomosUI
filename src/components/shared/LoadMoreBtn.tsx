@@ -5,10 +5,7 @@ interface LoadMoreBtnProps {
   isFetching: boolean;
 }
 
-export const LoadMoreBtn: React.FC<LoadMoreBtnProps> = ({
-  loadMore,
-  isFetching,
-}) => {
+const LoadMoreBtn: React.FC<LoadMoreBtnProps> = ({ loadMore, isFetching }) => {
   return (
     <button
       onClick={loadMore}
@@ -18,3 +15,5 @@ export const LoadMoreBtn: React.FC<LoadMoreBtnProps> = ({
     </button>
   );
 };
+
+export default LoadMoreBtn;

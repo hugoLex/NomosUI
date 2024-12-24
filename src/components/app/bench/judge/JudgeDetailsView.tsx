@@ -1,26 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import JudgeCounselGraphLayout from "../JudgeCounselGraphLayout";
-import Graphmodal from "../../generalSharedComponents/Graphmodal";
-import JudgeCounselProfile from "../profile";
-import JudgesFeaturing_CounselAppearances from "../JudgesFeaturing_CounselAppearances";
 import JudgeCounselHeadings from "../JudgeCounselHeadings";
-import { useGetJudgeAnalyticsQuery } from "@app/store/services/judgeAndCounselAnalytics";
+import { useGetJudgeAnalyticsQuery } from "@app/store/services/benchSlice";
 import { UseQueryToggler } from "@app/hooks/queryHandler";
 import { useVisibility } from "@app/hooks";
 import { SearchHeader } from "../../search";
-// import JudgeCaseFeaturing from "./JudgeCaseFeaturing";
-import BigLoadingSpinner from "../../generalSharedComponents/BigLoadingSpinner";
+import BigLoadingSpinner from "../../../shared/LoadingSpinner";
 import { skipToken } from "@reduxjs/toolkit/query";
 import Image from "next/image";
-// import Link from "next/link";
-import SmallTextBtn from "../../generalSharedComponents/SmallBtn";
 import { IoClose } from "react-icons/io5";
 import {
   JudgeInfoResponseT,
   JudgeProfileResponseT,
 } from "@app/store/services/types";
-import TextBox from "../../generalSharedComponents/TextBox";
-import { LoadMoreBtn } from "../../generalSharedComponents/LoadMoreBtn";
+
+import { LoadMoreBtn, TextBox } from "@app/components/shared/";
 
 type stanceT = "Concurred" | "Dissented";
 const JudgeDetailsView = () => {
