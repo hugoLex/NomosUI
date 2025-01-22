@@ -107,9 +107,10 @@ const AllJudgesView = () => {
                               fill
                               // width={50}
                               // height={50}
-                              src={
-                                "https://images.pexels.com/photos/8090145/pexels-photo-8090145.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                              }
+                              src={`/images/${"judge_analytics_av.jpg"}`}
+                              // src={
+                              //   "https://images.pexels.com/photos/8090145/pexels-photo-8090145.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                              // }
                               loading="lazy"
                               // src={`/images/${"judge_analytics_av.jpg"}`}
                               alt="judge counsel profile"
