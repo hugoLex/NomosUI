@@ -15,7 +15,7 @@ const LibraryHeader = ({ searchBtnRef }: HeaderProps) => {
     <Fragment>
       <Header>
         <div
-          className="flex border-b border-solid bg-stone-50
+          className="alterpadding flex border-b border-solid bg-stone-50
          border-stone-300 border-opacity-50 rounded-t-lg py-2.5
           justify-between px-4 md:px-8 "
         >
@@ -25,7 +25,7 @@ const LibraryHeader = ({ searchBtnRef }: HeaderProps) => {
               onClick={() => {
                 setIsSearchModal(true);
               }}
-              className="primary"
+              className="primary max-md:text-sm text-nowrap"
             />
           </div>
           <ActionButtons />

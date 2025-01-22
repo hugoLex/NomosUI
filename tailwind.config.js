@@ -38,7 +38,7 @@ const config = {
         "dm-sans": ["var(--font-dm-sans)", ...fontFamily.sans],
         inter: ["var(--font-inter)", ...fontFamily.sans],
         roboto: ["var(--font-roboto)", ...fontFamily.sans],
-        paytone: ["var(--font-paytone)", ...fontFamily.sans],
+        poppins: ["var(--font-poppins)", ...fontFamily.sans],
       },
       colors: {
         primary: "#245b91",

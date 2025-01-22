@@ -9,14 +9,20 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   experimental: { missingSuspenseWithCSRBailout: false },
-  transpilePackages: ['ui'],
+  transpilePackages: ["ui"],
   productionBrowserSourceMaps: true,
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'cdn.builder.io',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "cdn.builder.io",
+        pathname: "/**",
+      },
+      // remove when you stop using the placeholder image in allJudges component
+      {
+        protocol: "https",
+        hostname: "images.pexels.com",
+        pathname: "/**",
       },
     ],
   },

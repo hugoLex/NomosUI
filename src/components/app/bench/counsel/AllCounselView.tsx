@@ -8,7 +8,10 @@ import {
 } from "@app/components/shared";
 import { CounselResponseT } from "@app/store/services/types";
 import BenchHeader from "../BenchHeader";
+import Image from "next/image";
+import { GiSplash, GiWaves } from "react-icons/gi";
 
+import { HiMiniPlus } from "react-icons/hi2";
 const AllCounselView = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [allData, setAllData] = useState<[] | CounselResponseT["counsels"]>([]); // Store accumulated data
@@ -37,17 +40,59 @@ const AllCounselView = () => {
       )}
 
       {!isError && data?.counsels && (
-        <section className="relative w-full mx-auto max-w-[1400px] py-6 ">
-          <div className="px-16 max-md:px-5 max-w-full">
+        <section className="relative w-full mx-auto max-w-[1400px] pb-6 ">
+          <div className="px- 16 max-md:px- 5 max-w-full ">
+            {/* <div className="px- 16 max-md:px- 5 max-w-full [&_.alterpadding]:px-16 [&_.alterpadding]:max-md:px-5"> */}
             <BenchHeader />
             <hr />
-            <div className="lg:flex gap-[5%] justify-between relative ">
+            <div className="px-16 pt-[24px] max-md:px-5 lg:flex gap-[5%] justify-center relative ">
               <div className="basis-[65%]">
-                {allData?.map((counsel) => (
-                  <Fragment key={counsel.counsel_id}>
-                    <div className="pt-[46px]">
-                      <div className="border-b border-solid border-gray-200 flex items-center gap-[8px]  pb-[15px] mb-[15px]">
-                        <svg
+                <div className="mb-8">
+                  <h1 className="text-xx font-normal my-2">Counsel</h1>
+                  <h5 className="text-base text-[#9ea7b4] ">All counsel</h5>
+                  <div className="mt-8 grid max-lg:grid-rows-2 lg:grid-cols-2 lg:justify-center gap-5">
+                    <div className="flex gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] ">
+                      <svg
+                        width="16"
+                        height="11"
+                        viewBox="0 0 16 11"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M15.1299 2.23906H8.04152V3.81406H15.1299V2.23906ZM15.1299 5.38906H8.04152V6.96406H15.1299V5.38906ZM8.04152 0.664062H0.953125V2.23906H8.04152V0.664062ZM8.04152 3.81406H0.953125V5.38906H8.04152V3.81406ZM8.04152 6.96406H0.953125V8.53906H8.04152V6.96406ZM15.1299 8.53906H8.04152V10.1141H15.1299V8.53906Z"
+                          fill="black"
+                        />
+                      </svg>
+
+                      <span>Thread</span>
+                      <HiMiniPlus className="ml-auto" />
+                    </div>
+                    <div className="flex gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] ">
+                      <GiSplash />
+                      <span>Page</span>
+                      <HiMiniPlus className="ml-auto" />
+                    </div>
+                  </div>
+                  {/* <select
+                    className="appearance-auto  pr-4 outline-none"
+                    name="sortBy"
+                    id="counselFilter"
+                  >
+                    <option value={"Most recent"}>Most recent</option>
+                    <option value={"Most popular"}>Most popular</option>
+                  </select> */}
+                </div>
+                <div>
+                  {allData?.map((counsel, index) => (
+                    <Fragment key={counsel.counsel_id}>
+                      <div className="pt-[46px] group first:pt-0 flex gap-3">
+                        <span className="text-gray-500 mt-3 ">
+                          {index + 1}.
+                        </span>
+                        <div className=" ">
+                          <div className="borde r-b borde r-solid borde r-gray-200 flex items-center gap-[8px]  pb-[ 15px] mb-[ 15px]">
+                            {/* <svg
                           width="19"
                           height="19"
                           viewBox="0 0 19 19"
@@ -58,16 +103,50 @@ const AllCounselView = () => {
                             d="M9.25 0.25C8.95117 0.25 8.65234 0.309766 8.37813 0.429297L1.01992 3.58281C0.552344 3.7832 0.25 4.24023 0.25 4.75C0.25 5.25977 0.552344 5.7168 1.01992 5.91719L8.37813 9.0707C8.65234 9.19023 8.95117 9.25 9.25 9.25C9.54883 9.25 9.84766 9.19023 10.1219 9.0707L17.4801 5.91719C17.9477 5.7168 18.25 5.25625 18.25 4.75C18.25 4.24375 17.9477 3.7832 17.4801 3.58281L10.1219 0.429297C9.84766 0.309766 9.54883 0.25 9.25 0.25ZM9.04258 1.97969C9.10938 1.95156 9.17969 1.9375 9.25 1.9375C9.32031 1.9375 9.39062 1.95156 9.45742 1.97969L15.9191 4.75L9.45742 7.52031C9.39062 7.54844 9.32031 7.5625 9.25 7.5625C9.17969 7.5625 9.10938 7.54844 9.04258 7.52031L2.58086 4.75L9.04258 1.97969ZM1.01992 8.08281C0.552344 8.2832 0.25 8.74023 0.25 9.25C0.25 9.75977 0.552344 10.2168 1.01992 10.4172L8.37813 13.5707C8.65234 13.6902 8.95117 13.75 9.25 13.75C9.54883 13.75 9.84766 13.6902 10.1219 13.5707L17.4801 10.4172C17.9477 10.2168 18.25 9.75625 18.25 9.25C18.25 8.74375 17.9477 8.2832 17.4801 8.08281L16.3832 7.61172L14.2422 8.5293L15.9191 9.25L9.45742 12.0203C9.39062 12.0484 9.32031 12.0625 9.25 12.0625C9.17969 12.0625 9.10938 12.0484 9.04258 12.0203L2.58086 9.25L4.25781 8.5293L2.1168 7.61172L1.01992 8.08281ZM1.01992 12.5828C0.552344 12.7832 0.25 13.2402 0.25 13.75C0.25 14.2598 0.552344 14.7168 1.01992 14.9172L8.37813 18.0707C8.65234 18.1902 8.95117 18.25 9.25 18.25C9.54883 18.25 9.84766 18.1902 10.1219 18.0707L17.4801 14.9172C17.9477 14.7168 18.25 14.2563 18.25 13.75C18.25 13.2437 17.9477 12.7832 17.4801 12.5828L16.3832 12.1117L14.2422 13.0293L15.9191 13.75L9.45742 16.5203C9.39062 16.5484 9.32031 16.5625 9.25 16.5625C9.17969 16.5625 9.10938 16.5484 9.04258 16.5203L2.58086 13.75L4.25781 13.0293L2.1168 12.1117L1.01992 12.5828Z"
                             fill="#13343B"
                           />
-                        </svg>
-                        <Link
+                        </svg> */}
+                            {/* <Link
                           href={`/bench/counsels?counselId=${counsel.counsel_id}&counsel=${counsel.counsel_name}`}
                           className="text-[1.125rem] font-medium leading-[28px]"
                         >
                           {counsel.counsel_name}
-                        </Link>
+                        </Link> */}
+
+                            <div className="relative rounded-full overflow-clip w-[40px] h-[40px] ">
+                              <Image
+                                className=""
+                                style={{ objectFit: "cover" }}
+                                fill
+                                // width={50}
+                                // height={50}
+                                src={
+                                  "https://images.pexels.com/photos/8090145/pexels-photo-8090145.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                }
+                                loading="lazy"
+                                // src={`/images/${"judge_analytics_av.jpg"}`}
+                                alt="judge counsel profile"
+                              />
+                            </div>
+                            <div>
+                              <Link
+                                href={`/bench/counsels?counselId=${counsel.counsel_id}&counsel=${counsel.counsel_name}`}
+                                className="text-base [1.125rem] font-normal leading- [28px] font-poppins"
+                              >
+                                {counsel.counsel_name}
+                              </Link>
+                              <h3 className="text-base font-poppins font-normal text-lex-blue">
+                                {counsel.law_firms}
+                              </h3>
+                            </div>
+                          </div>
+                          <p className="text-sm text-[#4C4D50] [#64645F]">
+                            {/* {counsel.profile ?? "Profile not yet available."} */}
+                            President of the Queen's Bench Division. Former Lady
+                            Justice of Appeal. Specialist in Media Law and
+                            Public Law. Education: Bristol University.
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <div>
+                      {/* <div>
                       <h3 className="text-base font-medium text-lex-blue">
                         {counsel.law_firms}
                       </h3>
@@ -89,9 +168,10 @@ const AllCounselView = () => {
                       <p className="text-base text-[#64645F]">
                         {"Profile not yet available."}
                       </p>
-                    </div>
-                  </Fragment>
-                ))}
+                    </div> */}
+                    </Fragment>
+                  ))}
+                </div>
                 <LoadMoreBtn isFetching={isFetching} loadMore={loadMore} />
               </div>
             </div>
