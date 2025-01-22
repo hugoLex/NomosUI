@@ -9,6 +9,8 @@ import {
 import { AllJudgesListResponseT } from "@app/store/services/types";
 import BenchHeader from "../BenchHeader";
 import Image from "next/image";
+import { HiMiniPlus } from "react-icons/hi2";
+import { GiSplash } from "react-icons/gi";
 
 const AllJudgesView = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,17 +39,56 @@ const AllJudgesView = () => {
         />
       )}
       {!isError && data?.judges && (
-        <section className="relative mx-auto max-w-[1400px] py-6 ">
-          <div className="px-16 max-md:px-5 max-w-full">
+        <section className="relative mx-auto max-w-[1400px] pb-6 ">
+          <div className=" max-w-full">
             <BenchHeader />
             {/* <hr /> */}
-            <div className="lg:flex gap-[5%] justify-center relative ">
+            <div className="lg:flex gap-[5%] justify-center relative px-16 max-md:px-5 pt-[24px]">
               <div className="basis-[65%]">
-                {allData?.map((judge, idx) => (
-                  <Fragment key={`judge-id${judge.judge_id}-${idx}`}>
-                    <div className="pt-[46px]">
-                      <div className="border- b border- solid border-gray- 200 flex items-center gap-[8px]  pb-[5px] mb- [15px]">
-                        {/* <svg
+                <div className="mb-8">
+                  <h1 className="text-xx font-normal my-2">Judges</h1>
+                  <h5 className="text-base text-[#9ea7b4] ">All justices</h5>
+                  <div className="mt-8 grid max-lg:grid-rows-2 lg:grid-cols-2 lg:justify-center gap-5">
+                    <div className="flex gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] ">
+                      <svg
+                        width="16"
+                        height="11"
+                        viewBox="0 0 16 11"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M15.1299 2.23906H8.04152V3.81406H15.1299V2.23906ZM15.1299 5.38906H8.04152V6.96406H15.1299V5.38906ZM8.04152 0.664062H0.953125V2.23906H8.04152V0.664062ZM8.04152 3.81406H0.953125V5.38906H8.04152V3.81406ZM8.04152 6.96406H0.953125V8.53906H8.04152V6.96406ZM15.1299 8.53906H8.04152V10.1141H15.1299V8.53906Z"
+                          fill="black"
+                        />
+                      </svg>
+
+                      <span>Thread</span>
+                      <HiMiniPlus className="ml-auto" />
+                    </div>
+                    <div className="flex gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] ">
+                      <GiSplash />
+                      <span>Page</span>
+                      <HiMiniPlus className="ml-auto" />
+                    </div>
+                  </div>
+                  {/* <select
+                                    className="appearance-auto  pr-4 outline-none"
+                                    name="sortBy"
+                                    id="counselFilter"
+                                  >
+                                    <option value={"Most recent"}>Most recent</option>
+                                    <option value={"Most popular"}>Most popular</option>
+                                  </select> */}
+                </div>
+                <div>
+                  {" "}
+                  {allData?.map((judge, idx) => (
+                    <Fragment key={`judge-id${judge.judge_id}-${idx}`}>
+                      <div className="pt-[46px] group first:pt-0 flex gap-3">
+                        <span className="text-gray-500 mt-3 ">{idx + 1}.</span>
+                        <div className="border- b border- solid border-gray- 200 flex items-center gap-[8px]  pb-[5px] mb- [15px]">
+                          {/* <svg
                           width="19"
                           height="19"
                           viewBox="0 0 19 19"
@@ -59,39 +100,39 @@ const AllJudgesView = () => {
                             fill="#13343B"
                           />
                         </svg> */}
-                        <div className="relative rounded-full overflow-clip w-[40px] h-[40px] ">
-                          <Image
-                            className=""
-                            style={{ objectFit: "cover" }}
-                            fill
-                            // width={50}
-                            // height={50}
-                            src={
-                              "https://images.pexels.com/photos/8090145/pexels-photo-8090145.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                            }
-                            loading="lazy"
-                            // src={`/images/${"judge_analytics_av.jpg"}`}
-                            alt="judge counsel profile"
-                          />
-                        </div>
-                        <div>
-                          <Link
-                            href={`/bench/judges?judgeId=${judge.judge_id}&judge=${judge.name}`}
-                            className="text-base [1.125rem] font-normal leading- [28px] font-poppins"
-                          >
-                            {judge.name}
-                          </Link>
-                          <h3 className="text-base font-poppins font-normal text-lex-blue">
-                            {judge.court}
-                          </h3>
+                          <div className="relative rounded-full overflow-clip w-[40px] h-[40px] ">
+                            <Image
+                              className=""
+                              style={{ objectFit: "cover" }}
+                              fill
+                              // width={50}
+                              // height={50}
+                              src={
+                                "https://images.pexels.com/photos/8090145/pexels-photo-8090145.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                              }
+                              loading="lazy"
+                              // src={`/images/${"judge_analytics_av.jpg"}`}
+                              alt="judge counsel profile"
+                            />
+                          </div>
+                          <div>
+                            <Link
+                              href={`/bench/judges?judgeId=${judge.judge_id}&judge=${judge.name}`}
+                              className="text-base [1.125rem] font-normal leading- [28px] font-poppins"
+                            >
+                              {judge.name}
+                            </Link>
+                            <h3 className="text-base font-poppins font-normal text-lex-blue">
+                              {judge.court}
+                            </h3>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div>
-                      {/* <h3 className="text-base font-poppins font-normal text-lex-blue">
+                      <div>
+                        {/* <h3 className="text-base font-poppins font-normal text-lex-blue">
                         {judge.court}
                       </h3> */}
-                      {/* <h3 className=" flex items-center gap-[5px] mt-[2px] text-[.75rem] font-medium">
+                        {/* <h3 className=" flex items-center gap-[5px] mt-[2px] text-[.75rem] font-medium">
                         <svg
                           width="11"
                           height="11"
@@ -106,13 +147,14 @@ const AllJudgesView = () => {
                         </svg>
                         8 days ago
                       </h3> */}
-                      <p className="text-sm text-[#4C4D50] [#64645F]">
-                        {judge.profile ?? "Profile not yet available."}
-                      </p>
-                    </div>
-                  </Fragment>
-                ))}
-                <LoadMoreBtn isFetching={isFetching} loadMore={loadMore} />
+                        <p className="text-sm text-[#4C4D50] [#64645F]">
+                          {judge.profile ?? "Profile not yet available."}
+                        </p>
+                      </div>
+                    </Fragment>
+                  ))}
+                  <LoadMoreBtn isFetching={isFetching} loadMore={loadMore} />
+                </div>
               </div>
             </div>
           </div>

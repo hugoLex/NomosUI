@@ -41,7 +41,7 @@ const AllCounselView = () => {
 
       {!isError && data?.counsels && (
         <section className="relative w-full mx-auto max-w-[1400px] pb-6 ">
-          <div className="px- 16 max-md:px- 5 max-w-full ">
+          <div className=" max-w-full ">
             {/* <div className="px- 16 max-md:px- 5 max-w-full [&_.alterpadding]:px-16 [&_.alterpadding]:max-md:px-5"> */}
             <BenchHeader />
             <hr />
