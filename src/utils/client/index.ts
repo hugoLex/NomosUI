@@ -36,8 +36,8 @@ export const paginateData = (data: any[], offset: number, limit: number) => {
 };
 
 export const getCookie = (name: string = "") => {
-  let cookies = document.cookie;
-  let cookiestore = {};
+  let cookies: any = document.cookie;
+  let cookiestore: any = {};
 
   cookies = cookies.split(";");
 
@@ -45,8 +45,8 @@ export const getCookie = (name: string = "") => {
     return undefined;
   }
 
-  cookies.forEach(function (cookie) {
-    cookie = cookie.split(/=(.+)/);
+  cookies.forEach((itx: any) => {
+    let cookie = itx.split(/=(.+)/);
     if (cookie[0].substr(0, 1) == " ") {
       cookie[0] = cookie[0].substr(1);
     }
