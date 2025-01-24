@@ -1,4 +1,4 @@
-import { PlatformOS } from "@app/types";
+import { GenericObject, PlatformOS } from "@app/types";
 
 export * from "./mention";
 
@@ -34,3 +34,33 @@ export const paginateData = (data: any[], offset: number, limit: number) => {
   if (limit < 0) return data.slice(offset);
   return data.slice(offset, offset + limit);
 };
+
+export const getCookie = (name: string = "") => {
+  let cookies = document.cookie;
+  let cookiestore = {};
+
+  cookies = cookies.split(";");
+
+  if (cookies[0] == "" && cookies[0][0] == undefined) {
+    return undefined;
+  }
+
+  cookies.forEach(function (cookie) {
+    cookie = cookie.split(/=(.+)/);
+    if (cookie[0].substr(0, 1) == " ") {
+      cookie[0] = cookie[0].substr(1);
+    }
+    cookiestore[cookie[0]] = cookie[1];
+  });
+
+  return name !== "" ? cookiestore[name] : cookiestore;
+};
+
+// (name: string) => {
+//   let cookie: GenericObject = {};
+//   document.cookie.split(";").forEach(function (el) {
+//     let split = el.split("=");
+//     cookie[split[0].trim()] = split.slice(1).join("=");
+//   });
+//   return cookie[name];
+// };

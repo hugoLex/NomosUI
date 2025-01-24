@@ -1,25 +1,16 @@
 import { Fragment } from "react";
 import { Provider } from "react-redux";
 import Head from "next/head";
-
 import { store } from "@app/store/store";
-
-import type { AppProps } from "next/app";
-import type { NextPageWithLayout } from "@app/types";
+import { NoSSR } from "@app/components/shared";
+import { AppPropsWithLayout } from "@app/types";
 
 import { inter, poppins, rubik, roboto } from "@app/assets/fonts";
-import { NoSSR } from "@app/components/shared";
-
 import "../assets/app.css";
-
-type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout;
-};
 
 function App({ Component, pageProps }: AppPropsWithLayout) {
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page);
-  const Layout = Component.layout ?? Fragment;
 
   return (
     <Fragment>
@@ -46,7 +37,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
           }
         `}
           </style>
-          <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
+          <Fragment>{getLayout(<Component {...pageProps} />)}</Fragment>
         </NoSSR>
       </Provider>
     </Fragment>

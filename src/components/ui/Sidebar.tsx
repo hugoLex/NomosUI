@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useState } from "react";
+import React, { FC, Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -9,13 +9,14 @@ import {
   CloseIcon,
   ExpandIcon,
   LoginIcon,
-  Search,
-  Library,
-  Bench,
+  Search2,
+  Library2,
+  Bench2,
 } from "../icons";
 
 import { Modal } from ".";
 import { logo, logoIcon } from "@app/assets";
+import { getCookie } from "@app/utils";
 
 type Variant = "default" | "empty";
 
@@ -28,9 +29,9 @@ const MenuIcons = ({ path }: { path: string }) => {
   return (
     <Fragment>
       <span className="inline-block shrink-0 w-5 aspect-[1.25]">
-        {path === "/" && <Search />}
-        {path === "/library" && <Library />}
-        {path === "/bench" && <Bench />}
+        {path === "/" && <Search2 />}
+        {path === "/library" && <Library2 />}
+        {path === "/bench" && <Bench2 />}
       </span>
     </Fragment>
   );
@@ -42,7 +43,22 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
   const [isAuthModal, setIsAuthModal] = useState<boolean>(false);
 
   const showLogo = router.asPath !== "/";
-  const sidebarWidth = isCollapsed ? "w-[5%]" : "w-[20%]";
+  const sidebarWidth = isCollapsed ? "w-[5%]" : "w-[15%]";
+
+  useEffect(() => {
+    const isSidebar = getCookie("isSidebar");
+
+    if (isSidebar) {
+      isSidebar === "true" ? setIsCollapsed(true) : setIsCollapsed(false);
+    }
+
+    return () => {};
+  }, []);
+
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+    document.cookie = `isSidebar=${!isCollapsed}`;
+  };
 
   return (
     <Fragment>
@@ -56,7 +72,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
         >
           <div
             className={`sticky top-0 min-h-full flex flex-col  pt-3 
-            pb-7 grow transition-all duration-500 ease-in-out ${sidebarWidth}`}
+            pb-7 grow `}
           >
             <div
               className={`flex items-center transition-all ${
@@ -65,23 +81,28 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                   : "md:justify-center"
               }`}
             >
-              {showLogo && (
-                <Link title="Home Page" href={"/"} className="">
-                  {isCollapsed ? (
-                    <Image src={logoIcon} alt="Logo" className="size-9" />
-                  ) : (
-                    <Image
-                      src={logo}
-                      alt="Logo"
-                      className="shrink-0 max-w-full aspect-[4.35]"
-                    />
-                  )}
-                </Link>
-              )}
+              <Link
+                title="Home Page"
+                href={"/"}
+                className={`transition-all duration-200  ${
+                  showLogo ? "visible opacity-100" : "invisible opacity-0"
+                }`}
+              >
+                {isCollapsed ? (
+                  <Image src={logoIcon} alt="Logo" className="size-9" />
+                ) : (
+                  <Image
+                    src={logo}
+                    alt="Logo"
+                    className="shrink-0 max-w-full aspect-[4.35]"
+                  />
+                )}
+              </Link>
+
               <button
                 title="Collapse"
                 role="button"
-                onClick={() => setIsCollapsed(true)}
+                onClick={toggleSidebar}
                 className={` bg-white/70 rounded-full p-2 ${
                   isCollapsed ? "hidden" : "inline-block"
                 }`}
@@ -98,7 +119,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                 {links &&
                   links.map(({ label, children, path }, idx) => (
                     <Fragment key={path}>
-                      <li title={label} className="relative w-full">
+                      <li title={label} className="relative w-full group">
                         {!children && (
                           <Link
                             href={path}
@@ -127,7 +148,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                             <span
                               role="button"
                               className={`flex items-center gap-1 text-center
-                               whitespace-nowrap pb-2 peer
+                               whitespace-nowrap pb-2 
                                 ${isCollapsed ? "justify-center" : ""}`}
                               id={`menu-item-${idx}`}
                               aria-expanded="true"
@@ -145,7 +166,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                             <ul
                               className={`space-y-2 transition-all duration-300 ${
                                 isCollapsed
-                                  ? "absolute opacity-0 invisible peer-hover:opacity-100 peer-hover:visible peer-hover:left-[2.5rem] bg-white drop-shadow-md rounded z-10 -top-3 left-0 p-2 min-w-[8rem]"
+                                  ? "absolute opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:left-[2.5rem] bg-white drop-shadow-md rounded z-10 -top-3 left-0 p-2 min-w-[8rem]"
                                   : "relative ml-4"
                               }`}
                               role="menu"
@@ -187,7 +208,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                     </Fragment>
                   ))}
 
-                <li title="Sign in" className="w-full">
+                <li title="Sign in" className="w-full hidden">
                   <Link
                     href={"/signin"}
                     className={`w-full flex  items-center gap-1 text-center whitespace-nowrap ${
@@ -214,7 +235,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                 <span
                   title="Expand"
                   role="button"
-                  onClick={() => setIsCollapsed(false)}
+                  onClick={toggleSidebar}
                   className="bg-white/70 focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out font-sans  select-none items-center relative group/button  justify-center text-center  rounded-full cursor-point active:scale-95 origin-center whitespace-nowrap inline-flex text-base aspect-square h-10"
                 >
                   <ExpandIcon />

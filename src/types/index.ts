@@ -5,6 +5,7 @@ import React, {
   ReactNode,
 } from "react";
 import { NextPage } from "next";
+import type { AppProps } from "next/app";
 
 export * from "./cases";
 export * from "./search";
@@ -26,7 +27,11 @@ export type GenericObject = { [key: string]: any };
 export type NextPageWithLayout<P = {}> = NextPage<P> & {
   // You can disable whichever you don't need
   getLayout?: (page: ReactElement) => ReactNode;
-  layout?: ComponentType;
+  // layout?: ComponentType;
+};
+
+export type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
 };
 
 export interface LayoutProp extends ComponentProps {}

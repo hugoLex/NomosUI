@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { useRouter } from "next/router";
 import { Head } from "@app/components/ui";
-import { AppLayout as Layout } from "@app/components/layout";
+import { AppLayout } from "@app/components/layout";
 import { dummyCaseDetails } from "@app/utils";
 import {
   CaseCounselView,
@@ -10,8 +10,9 @@ import {
   CaseJudgeAnalyticsView,
   CasePrecedentAnalyticsView,
 } from "@app/components/app/case";
+import { NextPageWithLayout } from "@app/types";
 
-const Page = () => {
+const Page: NextPageWithLayout = () => {
   const router = useRouter();
   const query = router.query;
   const slug = query.slug ? query.slug : "";
@@ -23,17 +24,24 @@ const Page = () => {
   return (
     <Fragment>
       <Head title={`Case - ${query.title}`} />
-      <Layout>
-        <CaseHeader />
-        <Fragment>
-          {tabId === "case" && <CaseDetailsView id={caseId} />}
-          {tabId === "judgement" && <CaseJudgeAnalyticsView data={judgeData} />}
-          {tabId === "precedent" && <CasePrecedentAnalyticsView id={caseId} />}
-          {tabId === "counsel" && <CaseCounselView data={counselData} />}
-        </Fragment>
-      </Layout>
+
+      <CaseHeader />
+      <Fragment>
+        {tabId === "case" && <CaseDetailsView id={caseId} />}
+        {tabId === "judgement" && <CaseJudgeAnalyticsView data={judgeData} />}
+        {tabId === "precedent" && <CasePrecedentAnalyticsView id={caseId} />}
+        {tabId === "counsel" && <CaseCounselView data={counselData} />}
+      </Fragment>
     </Fragment>
   );
 };
 
+Page.getLayout = (page) => {
+  return (
+    <Fragment>
+      <Head title={"Search"} />
+      <AppLayout>{page}</AppLayout>
+    </Fragment>
+  );
+};
 export default Page;

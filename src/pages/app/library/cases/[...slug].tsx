@@ -8,11 +8,12 @@ import {
   CaseJudgeAnalyticsView,
   CasePrecedentAnalyticsView,
 } from "@app/components/app/case";
-import { AppLayout as Layout } from "@app/components/layout";
+import { AppLayout } from "@app/components/layout";
 import { dummyCaseDetails } from "@app/utils";
 import { getMarkdownRemoteStream } from "@app/utils/getMarkdown";
+import { NextPageWithLayout } from "@app/types";
 
-const Page = () => {
+const Page: NextPageWithLayout = () => {
   const router = useRouter();
   const query = router.query;
   const slug = query.slug ? query.slug : "";
@@ -24,15 +25,11 @@ const Page = () => {
   return (
     <Fragment>
       <Head title={`Case - ${query.title}`} />
-      <Layout>
-        <CaseHeader />
-        <Fragment>
-          {tabId === "case" && <CaseDetailsView id={caseId} />}
-          {tabId === "judgement" && <CaseJudgeAnalyticsView data={judgeData} />}
-          {tabId === "precedent" && <CasePrecedentAnalyticsView id={caseId} />}
-          {tabId === "counsel" && <CaseCounselView data={counselData} />}
-        </Fragment>
-      </Layout>
+      <CaseHeader />
+      {tabId === "case" && <CaseDetailsView id={caseId} />}
+      {tabId === "judgement" && <CaseJudgeAnalyticsView data={judgeData} />}
+      {tabId === "precedent" && <CasePrecedentAnalyticsView id={caseId} />}
+      {tabId === "counsel" && <CaseCounselView data={counselData} />}
     </Fragment>
   );
 };
@@ -44,5 +41,7 @@ const Page = () => {
 //   // Pass data to the page via props
 //   return { props: { data } };
 // };
+
+Page.getLayout = (page) => <AppLayout>{page}</AppLayout>;
 
 export default Page;

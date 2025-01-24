@@ -1,12 +1,7 @@
 import React, { Fragment } from "react";
 import * as Accordion from "@radix-ui/react-accordion";
 
-import {
-  CloseIcon,
-  Filter2Icon,
-  FilterIcon2,
-  PlusIcon,
-} from "@app/components/icons";
+import { CloseIcon, FilterIcon3, PlusIcon } from "@app/components/icons";
 import { FilterOption, SearchType } from "@app/types";
 
 export const SearchFilterSidebar = ({
@@ -16,14 +11,15 @@ export const SearchFilterSidebar = ({
   handleSelectedSearchType,
 }: {
   data: FilterOption[];
-  defaultValue: SearchType;
+  defaultValue: string;
   handleSelection: (id: string, idx: string) => void;
   handleSelectedSearchType: (id: SearchType) => void;
 }) => {
+  console.log(defaultValue);
   return (
     <div className="flex flex-col self-stretch rounded py-3">
       <div className="w-full flex gap-4 items-center mb-3">
-        <FilterIcon2 />
+        <FilterIcon3 />
         <h3 className="text-base font-normal">All content</h3>
       </div>
       <Fragment>
@@ -33,7 +29,7 @@ export const SearchFilterSidebar = ({
           className="flex flex-col gap-2 max-h-[80vh] overflow-y-auto scrollbar accordion"
         >
           {data.map(({ id, label, options }, idx) => (
-            <Accordion.Item value={id ?? idx} key={id}>
+            <Accordion.Item value={id} key={id + idx}>
               <Accordion.Header
                 onClick={() => handleSelectedSearchType(id as SearchType)}
               >
@@ -44,11 +40,11 @@ export const SearchFilterSidebar = ({
               </Accordion.Header>
               <Accordion.Content className="px-5">
                 {options.map(
-                  ({ id: idx, label }: { id: string; label: string }) => (
+                  ({ id: otx, label }: { id: string; label: string }) => (
                     <button
-                      key={idx}
+                      key={otx}
                       className="flex items-center my-2 px-1.5 py-1 text-start text-sm rounded-md gap-2  text-black/80 hover:bg-neutral-200/50"
-                      onClick={() => handleSelection(id, idx)}
+                      onClick={() => handleSelection(id, otx)}
                     >
                       {label}
                     </button>
