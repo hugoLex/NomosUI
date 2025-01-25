@@ -97,7 +97,7 @@ const AllCounselView = () => {
                           >
                             {counsel.counsel_name}
                           </Link>
-                          <h3 className="text-base font-poppins font-normal text-lex-blue">
+                          <h3 className="text-xs font-poppins font-normal text-lex-blue">
                             {counsel.law_firms}
                           </h3>
                         </div>
