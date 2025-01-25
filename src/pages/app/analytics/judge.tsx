@@ -2,7 +2,7 @@ import { AppLayout } from "@app/components/layout";
 import React, { Fragment } from "react";
 import { UseQueryToggler } from "@app/hooks/queryHandler";
 import { Head } from "@app/components/ui";
-import { AllJudgesView, JudgeDetailsView } from "@app/components/app/bench/";
+import { AllJudgesView, JudgeDetailsView } from "@app/components/app/analytics";
 import { NextPageWithLayout } from "@app/types";
 
 const Page: NextPageWithLayout = () => {

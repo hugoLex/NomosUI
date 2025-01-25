@@ -3,8 +3,8 @@ import { Button, Head, Loader } from "@app/components/ui";
 import { AppLayout } from "@app/components/layout";
 import { LibraryHeader } from "@app/components/app/library";
 import { useGetLegislationsQuery } from "@app/store/services/librarySlice";
-import { ErrorView404 } from "@app/components/shared";
-import { FilterIcon2 } from "@app/components/icons";
+import { Container, ErrorView404 } from "@app/components/shared";
+import { FilterIcon3 } from "@app/components/icons";
 import { useRouter } from "next/router";
 import { NextPageWithLayout } from "@app/types";
 
@@ -60,9 +60,9 @@ const Page: NextPageWithLayout = () => {
       )}
 
       {data && (
-        <section className="relative flex self-stretch min-h-screen">
-          <div className={`py-6 px-16 max-md:px-5  mx-auto max-w-[1100px] `}>
-            <div className="md:grid grid-cols-12 gap-8">
+        <Container>
+          <div className="py-6">
+            <div className=" md:grid grid-cols-12 gap-8">
               <div className="col-span-8">
                 <h1 className="text-xx font-normal mb-2">Library</h1>
                 <h5 className="text-base text-[#9ea7b4] mb-4">Cases</h5>
@@ -76,8 +76,8 @@ const Page: NextPageWithLayout = () => {
                 <div className="sticky md:top-[68px]">
                   <div>
                     <div className="inline-flex space-x-1">
-                      <FilterIcon2 />
-                      <h5>Filter by Taxonomies</h5>
+                      <FilterIcon3 />
+                      <h5>Filter</h5>
                     </div>
                     <div className="p-4">
                       <p>Find cases by legal classification</p>
@@ -89,7 +89,7 @@ const Page: NextPageWithLayout = () => {
               </div>
             </div>
           </div>
-        </section>
+        </Container>
       )}
     </Fragment>
   );

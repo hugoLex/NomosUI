@@ -14,7 +14,7 @@ import {
   Bench2,
 } from "../icons";
 
-import { Modal } from ".";
+import { Modal } from "../ui";
 import { logo, logoIcon } from "@app/assets";
 import { getCookie } from "@app/utils";
 
@@ -28,10 +28,10 @@ interface SidebarProps extends ComponentProps {
 const MenuIcons = ({ path }: { path: string }) => {
   return (
     <Fragment>
-      <span className="inline-block shrink-0 w-5 aspect-[1.25]">
+      <span className="inline-block shrink-0 w-5 aspect-[1.25] align-middle">
         {path === "/" && <Search2 />}
         {path === "/library" && <Library2 />}
-        {path === "/bench" && <Bench2 />}
+        {path === "/analytics" && <Bench2 />}
       </span>
     </Fragment>
   );
@@ -42,8 +42,8 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
   const [isAuthModal, setIsAuthModal] = useState<boolean>(false);
 
-  const showLogo = router.asPath !== "/";
-  const sidebarWidth = isCollapsed ? "w-[5%]" : "w-[15%]";
+  const isHome = router.asPath === "/";
+  const sidebarWidth = isCollapsed ? "md:w-[5%]" : "md:w-[15%]";
 
   useEffect(() => {
     const isSidebar = getCookie("isSidebar");
@@ -64,7 +64,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
     <Fragment>
       <aside
         className={`relative hidden md:block bg-transparent 
-          h-screen overflow-y-auto transition-all duration-400
+          h-screen overflow-y-auto transition-all duration-500
          ease-in-out z-10 ${sidebarWidth}`}
       >
         <div
@@ -75,17 +75,17 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
             pb-7 grow `}
           >
             <div
-              className={`flex items-center transition-all ${
+              className={`flex py-2.5 items-center transition-all ${
                 !isCollapsed
-                  ? "md:px-4 md:justify-center md:gap-4"
+                  ? "px-4 max-md:px-5 md:justify-center md:gap-4"
                   : "md:justify-center"
-              }`}
+              }${isCollapsed && isHome ? "hidden" : ""}`}
             >
               <Link
                 title="Home Page"
                 href={"/"}
                 className={`transition-all duration-200  ${
-                  showLogo ? "visible opacity-100" : "invisible opacity-0"
+                  isHome ? "invisible opacity-0" : "visible opacity-100"
                 }`}
               >
                 {isCollapsed ? (
@@ -111,15 +111,16 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
               </button>
             </div>
 
-            <div className="flex-1 px-4">
-              <ul
-                className="flex flex-col space-y-4 py-3 text-base 
-            font-medium leading-4 text-zinc-600 max-md:px-5"
-              >
+            <div className="flex-1">
+              <ul className="flex flex-col gap-4 py-3 w-full">
                 {links &&
                   links.map(({ label, children, path }, idx) => (
                     <Fragment key={path}>
-                      <li title={label} className="relative w-full group">
+                      <li
+                        title={label}
+                        className={`relative w-full group text-base font-medium 
+                          leading-4 text-zinc-600 px-4 max-md:px-5 `}
+                      >
                         {!children && (
                           <Link
                             href={path}
@@ -148,8 +149,9 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                             <span
                               role="button"
                               className={`flex items-center gap-1 text-center
-                               whitespace-nowrap pb-2 
-                                ${isCollapsed ? "justify-center" : ""}`}
+                               whitespace-nowrap  ${
+                                 isCollapsed ? "justify-center" : "pb-2"
+                               }`}
                               id={`menu-item-${idx}`}
                               aria-expanded="true"
                               aria-haspopup="true"
@@ -164,9 +166,12 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                               </span>
                             </span>
                             <ul
-                              className={`space-y-2 transition-all duration-300 ${
+                              className={`space-y-2 transition-all ${
                                 isCollapsed
-                                  ? "absolute opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:left-[2.5rem] bg-white drop-shadow-md rounded z-10 -top-3 left-0 p-2 min-w-[8rem]"
+                                  ? `absolute opacity-0 invisible 
+                                bg-white drop-shadow-md rounded z-10 -top-3 p-2 left-full translate-z-0 min-w-[8rem]
+                                  group-hover:opacity-100 group-hover:visible group-hover:translate-z-[5%]
+                                  `
                                   : "relative ml-4"
                               }`}
                               role="menu"
@@ -196,7 +201,9 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                                   }
                                         `}
                                     >
-                                      <span className="pl-2">{subLabel}</span>
+                                      <span className="pl-2 text-sm">
+                                        {subLabel}
+                                      </span>
                                     </Link>
                                   </li>
                                 )

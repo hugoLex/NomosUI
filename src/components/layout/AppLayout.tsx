@@ -1,6 +1,6 @@
 import React, { FC, createContext, useState } from "react";
 import { ComponentProps, LayoutContextProp } from "@app/types";
-import { Sidebar } from "../ui";
+import { Sidebar } from "../shared";
 import { menuList } from "@app/utils";
 
 export const AppLayoutContext = createContext<LayoutContextProp>({

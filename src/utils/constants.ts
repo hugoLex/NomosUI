@@ -819,10 +819,10 @@ export const menuList: MenuLink[] = [
     ],
   },
   {
-    label: "Bench",
-    path: "/bench",
+    label: "Analytics",
+    path: "/analytics",
     children: [
-      { label: "Judges", path: "/judges" },
+      { label: "Judges", path: "/judge" },
       { label: "Counsels", path: "/counsels" },
     ],
   },

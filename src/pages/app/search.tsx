@@ -26,7 +26,7 @@ import {
   searchOptions as defaultSearchOptions,
 } from "@app/utils/constants";
 import { useVisibility } from "@app/hooks";
-import { ErrorView404 } from "@app/components/shared";
+import { Container, ErrorView404 } from "@app/components/shared";
 import { paginateData } from "@app/utils";
 
 const Page: NextPageWithLayout = () => {
@@ -517,12 +517,8 @@ const Page: NextPageWithLayout = () => {
       )}
 
       {!isFetching && !isError && (
-        <section className="relative flex self-stretch min-h-screen">
-          <div
-            className={`py-6 px-16 max-md:px-5  mx-auto max-w-[1100px]
-                  `}
-            // ${ isFilterDrawer ? "w-[80%] flex-1" : ""  }
-          >
+        <Container>
+          <div className={`py-6`}>
             <div className="md:grid grid-cols-12 gap-8">
               <div className="col-span-8">
                 <h1
@@ -685,7 +681,7 @@ const Page: NextPageWithLayout = () => {
             closeDrawer={() => setIsFilterDrawer(false)}
             onSelectedOption={handleSelectedOption}
           />
-        </section>
+        </Container>
       )}
     </Fragment>
   );

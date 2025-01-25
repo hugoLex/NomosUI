@@ -2,7 +2,10 @@ import React, { Fragment } from "react";
 import { Head } from "@app/components/ui";
 import { AppLayout } from "@app/components/layout";
 import { UseQueryToggler } from "@app/hooks/queryHandler";
-import { AllCounselView, CounselDetailsView } from "@app/components/app/bench/";
+import {
+  AllCounselView,
+  CounselDetailsView,
+} from "@app/components/app/analytics";
 import { NextPageWithLayout } from "@app/types";
 
 const Page: NextPageWithLayout = () => {

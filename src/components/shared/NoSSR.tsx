@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
+import type { ReactNode } from "react";
 
-const NoSSR = ({ children }: { children: React.ReactNode }) => {
+const NoSSR = ({ children }: { children: ReactNode }) => {
   const [hasMounted, setHasMounted] = useState<boolean>(false);
 
   useEffect(() => {

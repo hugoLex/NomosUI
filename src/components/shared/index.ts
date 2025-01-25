@@ -12,12 +12,15 @@ import SummaryPreview from "./SummaryPreview";
 import Mentions from "./Mentions";
 import TextBox from "./TextBox";
 import ActionButtons from "./ActionButtons";
+import Sidebar from "./Sidebar";
+import Container from "./Container";
 
 export * from "./ErrorView";
 
 export {
   ActionButtons,
   BigBarForRightSideLayout,
+  Container,
   LoadingSpinner,
   Graphmodal,
   LoadMoreBtn,
@@ -28,6 +31,7 @@ export {
   Markdown,
   Mentions,
   NoSSR,
+  Sidebar,
   SummaryPreview,
   TextBox,
 };

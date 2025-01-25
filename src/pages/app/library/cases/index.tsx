@@ -3,8 +3,8 @@ import { Button, Head, Loader } from "@app/components/ui";
 import { AppLayout } from "@app/components/layout";
 import { LibraryHeader } from "@app/components/app/library";
 import { useGetCasesQuery } from "@app/store/services/librarySlice";
-import { ErrorView404 } from "@app/components/shared";
-import { FilterIcon2 } from "@app/components/icons";
+import { ErrorView404, Container } from "@app/components/shared";
+import { FilterIcon3 } from "@app/components/icons";
 import { useRouter } from "next/router";
 import { NextPageWithLayout } from "@app/types";
 
@@ -69,9 +69,9 @@ const Page: NextPageWithLayout = () => {
       )}
 
       {!isLoading && (
-        <section className="relative w-full mx-auto max-w-[1100px] px-4 md:px-16 ">
+        <Container>
           <div className={`py-6`}>
-            <div className="md:grid grid-cols-12 gap-8">
+            <div className="grid grid-cols-12 gap-8">
               <div className="col-span-8">
                 <h1 className="text-xx font-normal mb-2">Library</h1>
                 <h5 className="text-base text-[#9ea7b4] mb-4">Cases</h5>
@@ -120,13 +120,12 @@ const Page: NextPageWithLayout = () => {
                   />
                 </div>
               </div>
-
               <div className="col-span-4">
                 <div className="sticky md:top-[68px]">
                   <div className="space-y-3">
                     <div className="inline-flex space-x-1">
-                      <FilterIcon2 />
-                      <h5>Filter by Taxonomies</h5>
+                      <FilterIcon3 />
+                      <h5>Filter</h5>
                     </div>
                     <div className="flex flex-col items-center p-4 bg-[#eaf0f2] space-y-4 rounded-md">
                       <p className="text-sm">
@@ -140,7 +139,7 @@ const Page: NextPageWithLayout = () => {
               </div>
             </div>
           </div>
-        </section>
+        </Container>
       )}
     </Fragment>
   );
