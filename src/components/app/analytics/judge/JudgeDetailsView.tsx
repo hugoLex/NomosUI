@@ -3,7 +3,6 @@ import JudgeCounselHeadings from "../JudgeCounselHeadings";
 import { useGetJudgeAnalyticsQuery } from "@app/store/services/benchSlice";
 import { UseQueryToggler } from "@app/hooks/queryHandler";
 import { useVisibility } from "@app/hooks";
-import { SearchHeader } from "../../search";
 import BigLoadingSpinner from "../../../shared/LoadingSpinner";
 import { skipToken } from "@reduxjs/toolkit/query";
 import Image from "next/image";

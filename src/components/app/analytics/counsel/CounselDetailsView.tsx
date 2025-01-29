@@ -5,7 +5,6 @@ import SmallTextBtn from "../../../shared/SmallBtn";
 import { useVisibility } from "@app/hooks";
 import { UseQueryToggler } from "@app/hooks/queryHandler";
 import { useGetCounselAnalyticsQuery } from "@app/store/services/benchSlice";
-import { SearchHeader } from "../../search";
 import { Loader } from "@app/components/ui";
 import JudgeCounselHeadings from "../JudgeCounselHeadings";
 import { skipToken } from "@reduxjs/toolkit/query";
