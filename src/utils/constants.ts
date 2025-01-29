@@ -826,4 +826,8 @@ export const menuList: MenuLink[] = [
       { label: "Counsels", path: "/counsels" },
     ],
   },
+  {
+    label: "Taxonomy",
+    path: "/taxonomy",
+  },
 ];

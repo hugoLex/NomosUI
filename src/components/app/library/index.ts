@@ -1,3 +1,1 @@
-import LibraryHeader from "./LibraryHeader";
-
-export { LibraryHeader };
+export {};

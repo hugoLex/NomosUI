@@ -10,7 +10,6 @@ import { HiArrowUturnLeft } from "react-icons/hi2";
 import { AppLayoutContext as LayoutContext } from "@app/components/layout";
 import { Button, Header, Tabs } from "@app/components/ui";
 import { TabItem } from "@app/types";
-import { SearchBoxModal } from "../search";
 
 const tabItems: TabItem[] = [
   {
@@ -38,11 +37,9 @@ const tabItems: TabItem[] = [
 
 const CaseHeader = () => {
   const router = useRouter();
-  const { setIsSearchModal } = useContext(LayoutContext);
+  const {} = useContext(LayoutContext);
 
-  const searchRef = useRef<HTMLTextAreaElement | null>(null);
   const [tabs, setTabs] = useState(tabItems);
-  // const [selectedTab, setSelectedTab] = useState(tabs[0]);
 
   const slug = String(router.query.slug);
   const title = slug.replace(/-/g, " ");
@@ -86,20 +83,12 @@ const CaseHeader = () => {
               size={25}
               onClick={handleGoBack}
             />
-            <Button
-              label="New search"
-              onClick={() => {
-                setIsSearchModal(true);
-              }}
-              className="primary"
-            />
           </div>
           <div className="flex-1 flex justify-end">
             <Tabs tabs={tabs} onClick={onTabsSelect} />
           </div>
         </div>
       </Header>
-      <SearchBoxModal innerRef={searchRef} />
     </Fragment>
   );
 };

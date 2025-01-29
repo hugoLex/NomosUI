@@ -2,11 +2,10 @@ import React, { Fragment, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Head, Header, Heading } from "@app/components/ui";
-import { SearchBox } from "@app/components/app/search";
-import { Mentions } from "@app/components/shared";
+import { Head } from "@app/components/ui";
+import { SearchBox } from "@app/components/shared";
 import { AppLayout } from "@app/components/layout";
-import { logo, logo2, logoIcon } from "@app/assets";
+import { logo2 } from "@app/assets";
 import { NextPageWithLayout } from "@app/types";
 
 const Page: NextPageWithLayout = () => {

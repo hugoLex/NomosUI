@@ -1,9 +1,8 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Button, Head, Loader } from "@app/components/ui";
 import { AppLayout } from "@app/components/layout";
-import { LibraryHeader } from "@app/components/app/library";
 import { useGetArticlesQuery } from "@app/store/services/librarySlice";
-import { Container, ErrorView404 } from "@app/components/shared";
+import { Container, ErrorView404, Navbar } from "@app/components/shared";
 import { FilterIcon3 } from "@app/components/icons";
 import { useRouter } from "next/router";
 import { NextPageWithLayout } from "@app/types";
@@ -44,8 +43,7 @@ const Page: NextPageWithLayout = () => {
   return (
     <Fragment>
       <Head title={`Artilces - ${title}`} />
-
-      <LibraryHeader searchBtnRef={searchRef} />
+      <Navbar query="" isH1Visible={false} searchBtnRef={searchRef} />
       {(isFetching || isLoading) && (
         <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
           <Loader variant="classic" size={80} />

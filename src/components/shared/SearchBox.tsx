@@ -21,7 +21,7 @@ import {
   FilterIcon,
   RigthArrowIcon,
   SearchIcon,
-} from "../../icons";
+} from "../icons";
 import { Modal } from "@app/components/ui";
 import { AppLayoutContext as LayoutContext } from "@app/components/layout";
 import { escapeRegExp, mentionsList } from "@app/utils";

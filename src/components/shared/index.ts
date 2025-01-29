@@ -14,6 +14,9 @@ import TextBox from "./TextBox";
 import ActionButtons from "./ActionButtons";
 import Sidebar from "./Sidebar";
 import Container from "./Container";
+import Navbar from "./Navbar";
+
+export * from "./SearchBox";
 
 export * from "./ErrorView";
 
@@ -30,6 +33,7 @@ export {
   CaseTreatmentParagraph,
   Markdown,
   Mentions,
+  Navbar,
   NoSSR,
   Sidebar,
   SummaryPreview,

@@ -10,7 +10,12 @@ import { Loader } from "@app/components/ui";
 import JudgeCounselHeadings from "../JudgeCounselHeadings";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { CounselDetailT } from "@app/store/services/types";
-import { LoadMoreBtn, TextBox, Container } from "@app/components/shared/";
+import {
+  LoadMoreBtn,
+  TextBox,
+  Container,
+  Navbar,
+} from "@app/components/shared/";
 
 const CounselDetailsView = () => {
   const { searchParams, close } = UseQueryToggler();
@@ -72,9 +77,7 @@ const CounselDetailsView = () => {
   };
   return (
     <>
-      <SearchHeader
-        // uncomment the query out and use when the end point is ready
-        // query={query}
+      <Navbar
         query={profileName ?? "Counsel"}
         isH1Visible={isH1Visible}
         searchBtnRef={searchRef}

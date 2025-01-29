@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { GiSplash, GiWaves } from "react-icons/gi";
@@ -9,9 +9,9 @@ import {
   LoadingSpinner,
   LoadMoreBtn,
   Container,
+  Navbar,
 } from "@app/components/shared";
 import { CounselResponseT } from "@app/store/services/types";
-import Navbar from "../Navbar";
 
 const AllCounselView = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,6 +19,8 @@ const AllCounselView = () => {
   const { isError, isFetching, isLoading, data } = useGetAllCounselQuery({
     page: currentPage,
   });
+  const searchRef = useRef<HTMLTextAreaElement | null>(null);
+
   // Update the accumulated data when new data is fetched
   useEffect(() => {
     if (data) {
@@ -31,7 +33,7 @@ const AllCounselView = () => {
 
   return (
     <Fragment>
-      <Navbar />
+      <Navbar query={""} isH1Visible={false} searchBtnRef={searchRef} />
 
       {(isFetching || isLoading) && <LoadingSpinner variant="big" />}
 

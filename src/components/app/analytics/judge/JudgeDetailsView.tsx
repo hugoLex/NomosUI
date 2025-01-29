@@ -13,7 +13,12 @@ import {
   JudgeProfileResponseT,
 } from "@app/store/services/types";
 
-import { Container, LoadMoreBtn, TextBox } from "@app/components/shared/";
+import {
+  Container,
+  LoadMoreBtn,
+  Navbar,
+  TextBox,
+} from "@app/components/shared/";
 
 type stanceT = "Concurred" | "Dissented";
 const JudgeDetailsView = () => {
@@ -60,9 +65,9 @@ const JudgeDetailsView = () => {
 
   return (
     <>
-      <SearchHeader
+      <Navbar
         query={profileName ?? "Justice"}
-        isH1Visible={isH1Visible}
+        isH1Visible={false}
         searchBtnRef={searchRef}
       />
       {(isFetching || isLoading) && <BigLoadingSpinner />}

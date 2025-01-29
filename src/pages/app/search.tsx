@@ -6,7 +6,6 @@ import {
   SearchAIMetaResult,
   SearchFilterDrawer,
   SearchFilterSidebar,
-  SearchHeader,
   SearchResultMeta,
 } from "@app/components/app/search";
 import { CloseIcon } from "@app/components/icons";
@@ -26,7 +25,7 @@ import {
   searchOptions as defaultSearchOptions,
 } from "@app/utils/constants";
 import { useVisibility } from "@app/hooks";
-import { Container, ErrorView404 } from "@app/components/shared";
+import { Container, ErrorView404, Navbar } from "@app/components/shared";
 import { paginateData } from "@app/utils";
 
 const Page: NextPageWithLayout = () => {
@@ -497,7 +496,7 @@ const Page: NextPageWithLayout = () => {
     <Fragment>
       <Head title={`Search Result - ${q}`} />
 
-      <SearchHeader
+      <Navbar
         query={query}
         isH1Visible={isH1Visible}
         searchBtnRef={searchRef}

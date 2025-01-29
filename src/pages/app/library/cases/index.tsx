@@ -1,10 +1,9 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Button, Head, Loader } from "@app/components/ui";
 import { AppLayout } from "@app/components/layout";
-import { LibraryHeader } from "@app/components/app/library";
 import { useGetCasesQuery } from "@app/store/services/librarySlice";
-import { ErrorView404, Container } from "@app/components/shared";
-import { FilterIcon3 } from "@app/components/icons";
+import { ErrorView404, Container, Navbar } from "@app/components/shared";
+import { FilterIcon2 } from "@app/components/icons";
 import { useRouter } from "next/router";
 import { NextPageWithLayout } from "@app/types";
 
@@ -26,7 +25,6 @@ const Page: NextPageWithLayout = () => {
   });
 
   const [cases, setCases] = useState<Case[]>([]);
-
   useEffect(() => {
     if (data) {
       setCases((prev) => [...prev, ...data.cases]);
@@ -53,9 +51,9 @@ const Page: NextPageWithLayout = () => {
   return (
     <Fragment>
       <Head title={`Cases - ${title}`} />
+      <Navbar query={""} isH1Visible={false} searchBtnRef={searchRef} />
 
-      <LibraryHeader searchBtnRef={searchRef} />
-      {isLoading && (
+      {(isFetching || isLoading) && (
         <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
           <Loader variant="classic" size={80} />
         </div>
@@ -68,7 +66,7 @@ const Page: NextPageWithLayout = () => {
         />
       )}
 
-      {!isLoading && (
+      {data && (
         <Container>
           <div className={`py-6`}>
             <div className="grid grid-cols-12 gap-8">
@@ -124,7 +122,7 @@ const Page: NextPageWithLayout = () => {
                 <div className="sticky md:top-[68px]">
                   <div className="space-y-3">
                     <div className="inline-flex space-x-1">
-                      <FilterIcon3 />
+                      <FilterIcon2 />
                       <h5>Filter</h5>
                     </div>
                     <div className="flex flex-col items-center p-4 bg-[#eaf0f2] space-y-4 rounded-md">

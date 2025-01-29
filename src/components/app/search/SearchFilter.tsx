@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import * as Accordion from "@radix-ui/react-accordion";
 
-import { CloseIcon, FilterIcon3, PlusIcon } from "@app/components/icons";
+import { CloseIcon, FilterIcon2, PlusIcon } from "@app/components/icons";
 import { FilterOption, SearchType } from "@app/types";
 
 export const SearchFilterSidebar = ({
@@ -19,7 +19,7 @@ export const SearchFilterSidebar = ({
   return (
     <div className="flex flex-col self-stretch rounded py-3">
       <div className="w-full flex gap-4 items-center mb-3">
-        <FilterIcon3 />
+        <FilterIcon2 />
         <h3 className="text-base font-normal">All content</h3>
       </div>
       <Fragment>

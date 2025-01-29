@@ -1,22 +1,16 @@
 import React, { Fragment, RefObject, useContext } from "react";
 import { AppLayoutContext as LayoutContext } from "@app/components/layout";
 import { Button, Header } from "@app/components/ui";
-import { SearchBoxModal } from "./SearchBox";
 import { ActionButtons } from "@app/components/shared";
+import { SearchBoxModal } from "./SearchBox";
 
-type SearchHeaderProps = {
+type NavbarProps = {
   query: string;
   isH1Visible: boolean;
   searchBtnRef: RefObject<HTMLTextAreaElement>;
 };
 
-const SearchHeader = ({
-  query,
-  isH1Visible,
-  searchBtnRef,
-}: SearchHeaderProps) => {
-  const { setIsSearchModal } = useContext(LayoutContext);
-
+const Navbar = ({ query, isH1Visible, searchBtnRef }: NavbarProps) => {
   return (
     <Fragment>
       <Header>
@@ -29,18 +23,10 @@ const SearchHeader = ({
           items-center px-4 md:px-8 py-2.5 w-full relative"
           >
             <div
-              className="w-[20%] inline-flex gap-4 justify-start 
+              className="invisible w-[20%] inline-flex gap-4 justify-start 
             items-center self-stretch text-sm font-medium
             leading-4 text-center text-white whitespace-nowrap"
-            >
-              <Button
-                label="New search"
-                onClick={() => {
-                  setIsSearchModal(true);
-                }}
-                className="primary"
-              />
-            </div>
+            ></div>
 
             <div
               className={`flex-1 transition-all duration-300 ${
@@ -60,9 +46,8 @@ const SearchHeader = ({
           </div>
         </div>
       </Header>
-      <SearchBoxModal innerRef={searchBtnRef} />
     </Fragment>
   );
 };
 
-export default SearchHeader;
+export default Navbar;

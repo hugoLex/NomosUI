@@ -215,6 +215,7 @@ export const CompassIcon = () => (
     />
   </svg>
 );
+
 export const CaretUp = ({
   stroke = "white",
   width = "24",
@@ -235,6 +236,7 @@ export const CaretUp = ({
     />
   </svg>
 );
+
 export const CaretDown = ({
   stroke = "white",
   width = "24",

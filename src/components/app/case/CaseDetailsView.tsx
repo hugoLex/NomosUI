@@ -12,6 +12,7 @@ import {
   SummaryPreview,
   SmallBtn,
   Markdown,
+  Container,
 } from "@app/components/shared";
 import { useCaseQuery } from "@app/store/services/caseSlice";
 import { Loader } from "@app/components/ui";
@@ -117,24 +118,15 @@ const CaseView = ({ id }: { id: string }) => {
     return () => {};
   }, [data]);
 
-  if (isLoading)
-    return (
-      <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
-        <Loader variant="classic" size={80} />
-      </div>
-    );
-
-  if (isError) {
-    return (
-      <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
-        <ErrorView />
-      </div>
-    );
-  }
-
   return (
-    <section className="relative mx-auto max-w-[1200px] py-6 ">
-      <div className="px-16 max-md:px-5 max-w-full">
+    <Container>
+      {isLoading && (
+        <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
+          <Loader variant="classic" size={80} />
+        </div>
+      )}
+      {isError && <ErrorView />}
+      {data && (
         <div className="md:grid grid-cols-12 gap-8">
           <div className="col-span-8 lg:flex gap-3">
             <nav className="hidden lg:block fixed left-[100px] w-[120px] py-2 pr-2 shrink-0">
@@ -408,8 +400,8 @@ const CaseView = ({ id }: { id: string }) => {
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      )}
+    </Container>
   );
 };
 

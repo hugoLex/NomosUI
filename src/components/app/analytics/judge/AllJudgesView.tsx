@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { GiSplash } from "react-icons/gi";
@@ -8,9 +8,10 @@ import {
   LoadingSpinner,
   LoadMoreBtn,
   Container,
+  Navbar,
 } from "@app/components/shared";
 import { AllJudgesListResponseT } from "@app/store/services/types";
-import Navbar from "../Navbar";
+
 import { HiMiniPlus } from "react-icons/hi2";
 
 const AllJudgesView = () => {
@@ -21,6 +22,7 @@ const AllJudgesView = () => {
   const { isError, isFetching, isLoading, data } = useGetAllJudgeQuery({
     page: currentPage,
   });
+  const searchRef = useRef<HTMLTextAreaElement | null>(null);
   // Update the accumulated data when new data is fetched
   useEffect(() => {
     if (data) {
@@ -32,7 +34,7 @@ const AllJudgesView = () => {
   };
   return (
     <Fragment>
-      <Navbar />
+      <Navbar query={""} isH1Visible={false} searchBtnRef={searchRef} />
       {(isFetching || isLoading) && <LoadingSpinner variant="big" />}
       {isError && (
         <ErrorView404
