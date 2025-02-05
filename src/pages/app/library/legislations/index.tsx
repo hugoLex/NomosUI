@@ -1,26 +1,20 @@
-import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Button, Head, Loader } from "@app/components/ui";
 import { AppLayout } from "@app/components/layout";
-import { useGetCasesQuery } from "@app/store/services/librarySlice";
-import {
-  ErrorView404,
-  Container,
-  Navbar,
-  SummaryComponent,
-} from "@app/components/shared";
+import { useGetLegislationsQuery } from "@app/store/services/librarySlice";
+import { Container, ErrorView404, Navbar } from "@app/components/shared";
 import { FilterIcon2 } from "@app/components/icons";
 import { useRouter } from "next/router";
 import { NextPageWithLayout } from "@app/types";
 import Link from "next/link";
 
-type Case = {
+type Legislation = {
   document_id: string;
-  case_title: string;
-  case_summary?: string;
-  court: string;
-  year_decided: number;
-  area_of_law?: string[];
-  subject_matters?: string[];
+  legislation_title: string;
+  year_commenced: string | number;
+  primary_domain: string;
+  secondary_domain: string;
+  specific_legal_concept: string;
 };
 
 const Page: NextPageWithLayout = () => {
@@ -28,18 +22,19 @@ const Page: NextPageWithLayout = () => {
   const router = useRouter();
   const { page } = router.query;
   const searchRef = useRef<HTMLTextAreaElement | null>(null);
-  const { data, isError, isFetching, isLoading } = useGetCasesQuery({
+  const [legislations, setLegislations] = useState<Legislation[]>([]);
+  const [isPageError, setIsPageError] = useState<boolean>(false);
+
+  const { data, isError, isFetching, isLoading } = useGetLegislationsQuery({
     page,
   });
 
-  const [cases, setCases] = useState<Case[]>([]);
-  const [isPageError, setIsPageError] = useState<boolean>(false);
-
   useEffect(() => {
     if (data) {
-      setCases((prev) => Array.from(new Set([...prev, ...data.cases])));
+      setLegislations((prev) =>
+        Array.from(new Set([...prev, ...data.legislation]))
+      );
     }
-
     if (isError && Number(page) > 1) {
       setIsPageError(true);
     }
@@ -51,7 +46,7 @@ const Page: NextPageWithLayout = () => {
     const pageNumber = page ? Number(page) + 1 : 2;
     router.push(
       {
-        pathname: "/library/cases",
+        pathname: "/library/legislations",
         query: {
           page: pageNumber,
         },
@@ -80,7 +75,6 @@ const Page: NextPageWithLayout = () => {
     // Simplified error check
     return (
       <Fragment>
-        <Head title={`Cases - ${title}`} />
         <Navbar query={""} isH1Visible={false} searchBtnRef={searchRef} />
         <ErrorView404
           caption="No matching legal resources found"
@@ -92,80 +86,52 @@ const Page: NextPageWithLayout = () => {
 
   return (
     <Fragment>
-      <Navbar query={""} isH1Visible={false} searchBtnRef={searchRef} />
-
+      <Navbar query="" isH1Visible={false} searchBtnRef={searchRef} />
       {data && (
         <Container>
-          <div className={`py-6`}>
-            <div className="grid grid-cols-12 gap-8">
+          <div className="py-6">
+            <div className=" md:grid grid-cols-12 gap-8">
               <div className="col-span-8">
                 <h1 className="text-xx font-normal mb-2">Library</h1>
-                <h5 className="text-base text-[#9ea7b4] mb-4">Cases</h5>
+                <h5 className="text-base text-[#9ea7b4] mb-4">
+                  Laws & Legislation
+                </h5>
 
-                {cases.map(
+                {legislations.map(
                   (
                     {
-                      area_of_law,
-
-                      case_title,
-                      case_summary,
                       document_id,
-                      court,
-                      subject_matters,
-                      year_decided,
-                    }: Case,
+                      legislation_title,
+                      year_commenced,
+                      primary_domain,
+                      secondary_domain,
+                      specific_legal_concept,
+                    },
                     idx: number
                   ) => (
-                    <div key={idx} className="space-y-2 mb-6">
+                    <div key={idx} className="space-y-2 mb-4">
                       <h5>
-                        <Link href={`/library/cases/${document_id}`}>
-                          {idx + 1}. {case_title}
+                        <Link href={`/library/legislations/${document_id}`}>
+                          {idx + 1}. {legislation_title}
                         </Link>
                       </h5>
-                      <div className="inline-flex gap-2">
+                      <div className="inline-flex gap-2 flex-wrap">
                         <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
-                          {court}
+                          {primary_domain}
                         </span>
                         <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
-                          {year_decided}
+                          {year_commenced}
+                        </span>
+                        <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+                          {secondary_domain}
+                        </span>
+                        <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+                          {specific_legal_concept}
                         </span>
                       </div>
-
-                      {case_summary && (
-                        <SummaryComponent summary={case_summary} />
-                      )}
-
-                      {area_of_law && (
-                        <p className="flex items-center  gap-2 text-xs flex-wrap">
-                          Area of law:
-                          {area_of_law.map((atx, adx) => (
-                            <span
-                              key={adx}
-                              className="text-[#008E00] bg-[#008E00]/10 px-3 py-1 rounded"
-                            >
-                              {atx}
-                            </span>
-                          ))}
-                        </p>
-                      )}
-
-                      {subject_matters && (
-                        <p className="flex items-center gap-2 text-xs flex-wrap">
-                          Subject matters:
-                          {subject_matters.map((stx, sdx) => (
-                            <span
-                              key={sdx}
-                              className="bg-stone-100 text-teal-900  px-3 py-1 rounded"
-                            >
-                              {stx}
-                            </span>
-                          ))}
-                        </p>
-                      )}
                     </div>
                   )
                 )}
-
                 <div className="flex justify-center py-2.5">
                   <Button
                     disabled={isPageError}
@@ -177,6 +143,7 @@ const Page: NextPageWithLayout = () => {
                   />
                 </div>
               </div>
+
               <div className="col-span-4">
                 <div className="sticky md:top-[68px]">
                   <div className="space-y-3">
@@ -202,11 +169,13 @@ const Page: NextPageWithLayout = () => {
   );
 };
 
-Page.getLayout = (page) => (
-  <Fragment>
-    <Head title={`Cases - List`} />
-    <AppLayout>{page}</AppLayout>;
-  </Fragment>
-);
+Page.getLayout = (page) => {
+  return (
+    <Fragment>
+      <Head title={"Legislations"} />
+      <AppLayout>{page}</AppLayout>
+    </Fragment>
+  );
+};
 
 export default Page;

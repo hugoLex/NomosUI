@@ -122,9 +122,6 @@ const CounselDetailsView = () => {
                     <h3 className="text-[1.4rem] text-center font-paytone leading-none font-medium text-primary mt-[24px]">
                       {data.counsel_details.counsel_name}
                     </h3>
-                    <span className="text-[.8125rem] font-normal text-center text-[#6C757D] block mt-[5px] mb-[24px]">
-                      JSC
-                    </span>
 
                     <div className="flex gap -5 items-center justify-center mt-[20px] divide-x-2 border-t border-b border-gray-200 p-[16.4px]">
                       <div className="basis-1/2 text-[#2fa826]">

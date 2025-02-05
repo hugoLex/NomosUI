@@ -8,7 +8,6 @@ import SmallBtn from "./SmallBtn";
 import CaseTreatmentParagraph from "./caseTreatmentParagraph";
 import Markdown from "./Markdown";
 import NoSSR from "./NoSSR";
-import SummaryPreview from "./SummaryPreview";
 import Mentions from "./Mentions";
 import TextBox from "./TextBox";
 import ActionButtons from "./ActionButtons";
@@ -17,8 +16,8 @@ import Container from "./Container";
 import Navbar from "./Navbar";
 
 export * from "./SearchBox";
-
 export * from "./ErrorView";
+export * from "./Summary";
 
 export {
   ActionButtons,
@@ -36,6 +35,5 @@ export {
   Navbar,
   NoSSR,
   Sidebar,
-  SummaryPreview,
   TextBox,
 };
