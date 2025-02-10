@@ -81,7 +81,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
           <div className={`fixed h-full ${sidebarWidth}`}>
             <div
               className={`hidden min-h-full md:flex flex-col  pt-3 
-            pb-7 grow ${sidebarWidth} overflow-x-hidden`}
+            pb-7 grow ${sidebarWidth}`}
             >
               {/* Logo */}
               <div
