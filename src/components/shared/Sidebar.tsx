@@ -1,4 +1,11 @@
-import React, { FC, Fragment, useContext, useEffect, useState } from "react";
+import React, {
+  FC,
+  Fragment,
+  memo,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -74,7 +81,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
           <div className={`fixed h-full ${sidebarWidth}`}>
             <div
               className={`hidden min-h-full md:flex flex-col  pt-3 
-            pb-7 grow ${sidebarWidth} `}
+            pb-7 grow ${sidebarWidth} overflow-x-hidden`}
             >
               {/* Logo */}
               <div
@@ -306,4 +313,4 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
   );
 };
 
-export default Sidebar;
+export default memo(Sidebar);

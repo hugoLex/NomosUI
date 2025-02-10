@@ -1,4 +1,11 @@
-import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useRouter } from "next/router";
 import { Button, Head, Loader } from "@app/components/ui";
 import { AppLayout, AppLayoutContext } from "@app/components/layout";
@@ -30,13 +37,13 @@ import { paginateData } from "@app/utils";
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
+  const { setReferrer } = useContext(AppLayoutContext);
   const { q, page, type } = router.query;
   const query = String(q);
   const pageNumber = page ? Number(page) : undefined;
   const isPrev = pageNumber && pageNumber !== 1 ? false : true;
 
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
-  const searchRef = useRef<HTMLTextAreaElement | null>(null);
 
   const [isFilterDrawer, setIsFilterDrawer] = useState<boolean>(false);
   const [searchType, setSearchType] = useState<SearchType>("cases");
@@ -72,7 +79,7 @@ const Page: NextPageWithLayout = () => {
     total: number;
   } | null>(null);
 
-  const isH1Visible = useVisibility({
+  const isTitle = useVisibility({
     ref: h1Ref,
     options: {
       root: null,
@@ -93,6 +100,8 @@ const Page: NextPageWithLayout = () => {
 
   // Initial data load
   useEffect(() => {
+    setReferrer(router.asPath);
+
     if (isLoading || isFetching) {
       setSearchOptions(defaultSearchOptions);
       setSearchDocuments(null);
@@ -491,16 +500,11 @@ const Page: NextPageWithLayout = () => {
     }
   };
 
-  console.log(searchType);
   return (
     <Fragment>
       <Head title={`Search Result - ${q}`} />
 
-      <Navbar
-        query={query}
-        isH1Visible={isH1Visible}
-        searchBtnRef={searchRef}
-      />
+      <Navbar query={query} isTitle={isTitle} />
 
       {(isFetching || isLoading) && (
         <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">

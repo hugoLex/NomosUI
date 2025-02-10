@@ -1,8 +1,10 @@
-import React, {
+import type {
   ComponentType,
+  Dispatch,
   PropsWithChildren,
   ReactElement,
   ReactNode,
+  SetStateAction,
 } from "react";
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
@@ -38,7 +40,9 @@ export interface LayoutProp extends ComponentProps {}
 
 export type LayoutContextProp = {
   isSearchModal: boolean;
-  setIsSearchModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsSearchModal: Dispatch<SetStateAction<boolean>>;
+  referrer?: string;
+  setReferrer: Dispatch<SetStateAction<string | undefined>>;
 };
 
 export interface ComponentProps extends PropsWithChildren {

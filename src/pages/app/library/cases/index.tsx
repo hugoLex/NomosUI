@@ -1,6 +1,13 @@
-import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Button, Head, Loader } from "@app/components/ui";
-import { AppLayout } from "@app/components/layout";
+import { AppLayout, AppLayoutContext } from "@app/components/layout";
 import { useGetCasesQuery } from "@app/store/services/librarySlice";
 import {
   ErrorView404,
@@ -26,8 +33,9 @@ type Case = {
 const Page: NextPageWithLayout = () => {
   const title = "List";
   const router = useRouter();
+  const { setReferrer } = useContext(AppLayoutContext);
+
   const { page } = router.query;
-  const searchRef = useRef<HTMLTextAreaElement | null>(null);
   const { data, isError, isFetching, isLoading } = useGetCasesQuery({
     page,
   });
@@ -36,6 +44,8 @@ const Page: NextPageWithLayout = () => {
   const [isPageError, setIsPageError] = useState<boolean>(false);
 
   useEffect(() => {
+    setReferrer(router.asPath);
+
     if (data) {
       setCases((prev) => Array.from(new Set([...prev, ...data.cases])));
     }
@@ -45,7 +55,7 @@ const Page: NextPageWithLayout = () => {
     }
 
     return () => {};
-  }, [data, page, isError]);
+  }, [data, page, isError, setReferrer, router.asPath]);
 
   const loadMoreDocs = () => {
     const pageNumber = page ? Number(page) + 1 : 2;
@@ -67,8 +77,8 @@ const Page: NextPageWithLayout = () => {
     // Early return for loading state
     return (
       <Fragment>
-        <Navbar query={""} isH1Visible={false} searchBtnRef={searchRef} />{" "}
-        {/* Removed isH1Visible as it's always false*/}
+        <Navbar query={""} isTitle />
+        {/* Removed isTitle as it's always false*/}
         <div className="flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
           <Loader variant="classic" size={80} />
         </div>
@@ -81,7 +91,7 @@ const Page: NextPageWithLayout = () => {
     return (
       <Fragment>
         <Head title={`Cases - ${title}`} />
-        <Navbar query={""} isH1Visible={false} searchBtnRef={searchRef} />
+        <Navbar query={""} isTitle />
         <ErrorView404
           caption="No matching legal resources found"
           desc="Check your search terms and try again, or explore our curated collection of legal resources to find what you need"
@@ -92,7 +102,7 @@ const Page: NextPageWithLayout = () => {
 
   return (
     <Fragment>
-      <Navbar query={""} isH1Visible={false} searchBtnRef={searchRef} />
+      <Navbar query={""} isTitle />
 
       {data && (
         <Container>
@@ -101,70 +111,73 @@ const Page: NextPageWithLayout = () => {
               <div className="col-span-8">
                 <h1 className="text-xx font-normal mb-2">Library</h1>
                 <h5 className="text-base text-[#9ea7b4] mb-4">Cases</h5>
+                <div className="space-y-4">
+                  {cases.map(
+                    (
+                      {
+                        area_of_law,
 
-                {cases.map(
-                  (
-                    {
-                      area_of_law,
+                        case_title,
+                        case_summary,
+                        document_id,
+                        court,
+                        subject_matters,
+                        year_decided,
+                      }: Case,
+                      idx: number
+                    ) => (
+                      <div key={idx} className="space-y-2 mb-6">
+                        <h5>
+                          <Link
+                            href={`/library/cases/${document_id}?title=${case_title}&tab=case`}
+                            className="text-[#245b91]"
+                          >
+                            {idx + 1}. {case_title}
+                          </Link>
+                        </h5>
+                        <div className="inline-flex gap-2">
+                          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+                            {court}
+                          </span>
+                          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+                            {year_decided}
+                          </span>
+                        </div>
 
-                      case_title,
-                      case_summary,
-                      document_id,
-                      court,
-                      subject_matters,
-                      year_decided,
-                    }: Case,
-                    idx: number
-                  ) => (
-                    <div key={idx} className="space-y-2 mb-6">
-                      <h5>
-                        <Link href={`/library/cases/${document_id}`}>
-                          {idx + 1}. {case_title}
-                        </Link>
-                      </h5>
-                      <div className="inline-flex gap-2">
-                        <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
-                          {court}
-                        </span>
-                        <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
-                          {year_decided}
-                        </span>
+                        {case_summary && (
+                          <SummaryComponent
+                            summary={case_summary}
+                            isCollapsible={false}
+                          />
+                        )}
+
+                        <p className="flex items-center  gap-2 text-xs flex-wrap my-3">
+                          {area_of_law &&
+                            area_of_law.map((atx, adx) => (
+                              <span
+                                key={adx}
+                                title="Area of law"
+                                className="text-[#008E00] bg-[#008E00]/10 px-3 py-1 rounded"
+                              >
+                                {atx}
+                              </span>
+                            ))}
+
+                          {subject_matters &&
+                            subject_matters.map((stx, sdx) => (
+                              <span
+                                key={sdx}
+                                title="Subject matter"
+                                className="bg-stone-100 text-teal-900  px-3 py-1 rounded"
+                              >
+                                {stx}
+                              </span>
+                            ))}
+                        </p>
                       </div>
-
-                      {case_summary && (
-                        <SummaryComponent summary={case_summary} />
-                      )}
-
-                      {area_of_law && (
-                        <p className="flex items-center  gap-2 text-xs flex-wrap">
-                          Area of law:
-                          {area_of_law.map((atx, adx) => (
-                            <span
-                              key={adx}
-                              className="text-[#008E00] bg-[#008E00]/10 px-3 py-1 rounded"
-                            >
-                              {atx}
-                            </span>
-                          ))}
-                        </p>
-                      )}
-
-                      {subject_matters && (
-                        <p className="flex items-center gap-2 text-xs flex-wrap">
-                          Subject matters:
-                          {subject_matters.map((stx, sdx) => (
-                            <span
-                              key={sdx}
-                              className="bg-stone-100 text-teal-900  px-3 py-1 rounded"
-                            >
-                              {stx}
-                            </span>
-                          ))}
-                        </p>
-                      )}
-                    </div>
-                  )
-                )}
+                    )
+                  )}
+                </div>
 
                 <div className="flex justify-center py-2.5">
                   <Button

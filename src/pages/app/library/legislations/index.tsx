@@ -1,6 +1,12 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Button, Head, Loader } from "@app/components/ui";
-import { AppLayout } from "@app/components/layout";
+import { AppLayout, AppLayoutContext } from "@app/components/layout";
 import { useGetLegislationsQuery } from "@app/store/services/librarySlice";
 import { Container, ErrorView404, Navbar } from "@app/components/shared";
 import { FilterIcon2 } from "@app/components/icons";
@@ -20,6 +26,7 @@ type Legislation = {
 const Page: NextPageWithLayout = () => {
   const title = "List";
   const router = useRouter();
+  const { setReferrer } = useContext(AppLayoutContext);
   const { page } = router.query;
   const searchRef = useRef<HTMLTextAreaElement | null>(null);
   const [legislations, setLegislations] = useState<Legislation[]>([]);
@@ -30,6 +37,7 @@ const Page: NextPageWithLayout = () => {
   });
 
   useEffect(() => {
+    setReferrer(router.asPath);
     if (data) {
       setLegislations((prev) =>
         Array.from(new Set([...prev, ...data.legislation]))
@@ -62,8 +70,8 @@ const Page: NextPageWithLayout = () => {
     // Early return for loading state
     return (
       <Fragment>
-        <Navbar query={""} isH1Visible={false} searchBtnRef={searchRef} />{" "}
-        {/* Removed isH1Visible as it's always false*/}
+        <Navbar query={""} isTitle />
+        {/* Removed isTitle as it's always false*/}
         <div className="flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
           <Loader variant="classic" size={80} />
         </div>
@@ -75,7 +83,7 @@ const Page: NextPageWithLayout = () => {
     // Simplified error check
     return (
       <Fragment>
-        <Navbar query={""} isH1Visible={false} searchBtnRef={searchRef} />
+        <Navbar query={""} isTitle />
         <ErrorView404
           caption="No matching legal resources found"
           desc="Check your search terms and try again, or explore our curated collection of legal resources to find what you need"
@@ -86,7 +94,7 @@ const Page: NextPageWithLayout = () => {
 
   return (
     <Fragment>
-      <Navbar query="" isH1Visible={false} searchBtnRef={searchRef} />
+      <Navbar query="" isTitle />
       {data && (
         <Container>
           <div className="py-6">
@@ -97,41 +105,46 @@ const Page: NextPageWithLayout = () => {
                   Laws & Legislation
                 </h5>
 
-                {legislations.map(
-                  (
-                    {
-                      document_id,
-                      legislation_title,
-                      year_commenced,
-                      primary_domain,
-                      secondary_domain,
-                      specific_legal_concept,
-                    },
-                    idx: number
-                  ) => (
-                    <div key={idx} className="space-y-2 mb-4">
-                      <h5>
-                        <Link href={`/library/legislations/${document_id}`}>
-                          {idx + 1}. {legislation_title}
-                        </Link>
-                      </h5>
-                      <div className="inline-flex gap-2 flex-wrap">
-                        <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
-                          {primary_domain}
-                        </span>
-                        <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
-                          {year_commenced}
-                        </span>
-                        <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
-                          {secondary_domain}
-                        </span>
-                        <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
-                          {specific_legal_concept}
-                        </span>
+                <div className="space-y-6">
+                  {legislations.map(
+                    (
+                      {
+                        document_id,
+                        legislation_title,
+                        year_commenced,
+                        primary_domain,
+                        secondary_domain,
+                        specific_legal_concept,
+                      },
+                      idx: number
+                    ) => (
+                      <div key={idx} className="space-y-2 mb-4">
+                        <h5>
+                          <Link
+                            href={`/library/legislations/${document_id}`}
+                            className="text-[#245b91]"
+                          >
+                            {idx + 1}. {legislation_title}
+                          </Link>
+                        </h5>
+                        <div className="inline-flex gap-2 flex-wrap">
+                          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+                            {primary_domain}
+                          </span>
+                          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+                            {year_commenced}
+                          </span>
+                          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+                            {secondary_domain}
+                          </span>
+                          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+                            {specific_legal_concept}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  )
-                )}
+                    )
+                  )}
+                </div>
                 <div className="flex justify-center py-2.5">
                   <Button
                     disabled={isPageError}
@@ -172,7 +185,7 @@ const Page: NextPageWithLayout = () => {
 Page.getLayout = (page) => {
   return (
     <Fragment>
-      <Head title={"Legislations"} />
+      <Head title={"Legislations - List"} />
       <AppLayout>{page}</AppLayout>
     </Fragment>
   );

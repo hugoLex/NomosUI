@@ -1,16 +1,34 @@
-import React, { Fragment, RefObject, useContext } from "react";
-import { AppLayoutContext as LayoutContext } from "@app/components/layout";
-import { Button, Header } from "@app/components/ui";
-import { ActionButtons } from "@app/components/shared";
-import { SearchBoxModal } from "./SearchBox";
+import React, {
+  Fragment,
+  PropsWithChildren,
+  RefObject,
+  useContext,
+} from "react";
+import { useRouter } from "next/router";
 
-type NavbarProps = {
+import { Header } from "@app/components/ui";
+import { ActionButtons } from "@app/components/shared";
+
+import { HiArrowUturnLeft } from "react-icons/hi2";
+
+type NavbarProps = PropsWithChildren & {
   query: string;
-  isH1Visible: boolean;
-  searchBtnRef: RefObject<HTMLTextAreaElement>;
+  isTitle: boolean;
+  referrer?: string;
 };
 
-const Navbar = ({ query, isH1Visible, searchBtnRef }: NavbarProps) => {
+const Navbar = ({
+  children,
+  query,
+  isTitle = false,
+  referrer,
+}: NavbarProps) => {
+  const router = useRouter();
+  const handleGoBack = () => {
+    if (referrer) {
+      router.push(referrer);
+    }
+  };
   return (
     <Fragment>
       <Header>
@@ -22,15 +40,19 @@ const Navbar = ({ query, isH1Visible, searchBtnRef }: NavbarProps) => {
             className="flex gap-5 justify-between  
           items-center px-4 md:px-8 py-2.5 w-full relative"
           >
-            <div
-              className="invisible w-[20%] inline-flex gap-4 justify-start 
-            items-center self-stretch text-sm font-medium
-            leading-4 text-center text-white whitespace-nowrap"
-            ></div>
+            <div className="flex items-center w-[20%] pb-2 gap-2">
+              {referrer && (
+                <HiArrowUturnLeft
+                  className="inline-block items-center align-middle cursor-pointer text-gray-400"
+                  size={25}
+                  onClick={handleGoBack}
+                />
+              )}
+            </div>
 
             <div
               className={`flex-1 transition-all duration-300 ${
-                !isH1Visible ? "opacity-1 visible" : "opacity-0 invisible"
+                !isTitle ? "opacity-1 visible" : "opacity-0 invisible"
               }`}
             >
               <p
@@ -42,7 +64,8 @@ const Navbar = ({ query, isH1Visible, searchBtnRef }: NavbarProps) => {
               </p>
             </div>
 
-            <ActionButtons />
+            {!children && <ActionButtons />}
+            {children && children}
           </div>
         </div>
       </Header>

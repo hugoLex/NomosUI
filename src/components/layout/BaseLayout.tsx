@@ -4,17 +4,13 @@ import { useRouter } from "next/router";
 import { ComponentProps, LayoutContextProp } from "@app/types";
 import { Footer, Header } from "../ui";
 
-export const BaseLayoutContext = createContext<LayoutContextProp>({
-  isSearchModal: false,
-  setIsSearchModal: () => {},
-});
+export const BaseLayoutContext = createContext<any>({});
 
 export const BaseLayout: FC<ComponentProps> = ({ children }) => {
   const router = useRouter();
   const [show, setShow] = useState<boolean>(false);
-  const [isSearchModal, setIsSearchModal] = useState<boolean>(false);
 
-  const props = { isSearchModal, setIsSearchModal };
+  const props = {};
 
   return (
     <BaseLayoutContext.Provider value={props}>

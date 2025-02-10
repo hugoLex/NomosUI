@@ -17,7 +17,7 @@ export const libraryAPISlice = injectEndpoints({
     }),
 
     getArticle: builder.query<any, any>({
-      query: (id: string) => `/articles/detail/${id}`,
+      query: (id: string) => `/articles/details/${id}`,
     }),
 
     getLegislations: builder.query<any, any>({
@@ -31,7 +31,7 @@ export const libraryAPISlice = injectEndpoints({
     }),
 
     getLegislation: builder.query<any, any>({
-      query: (id: string) => `/articles/detail/${id}`,
+      query: (id: string) => `/legislation/details/${id}`,
     }),
   }),
 });

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import JudgeCounselHeadings from "../JudgeCounselHeadings";
 import { useGetJudgeAnalyticsQuery } from "@app/store/services/benchSlice";
 import { UseQueryToggler } from "@app/hooks/queryHandler";
@@ -18,9 +18,12 @@ import {
   Navbar,
   TextBox,
 } from "@app/components/shared/";
+import { AppLayoutContext } from "@app/components/layout";
+import { Loader } from "@app/components/ui";
 
 type stanceT = "Concurred" | "Dissented";
 const JudgeDetailsView = () => {
+  const { referrer } = useContext(AppLayoutContext);
   const { searchParams, close } = UseQueryToggler();
   const judgeId = searchParams.get("judgeId");
   const profile = searchParams.get("profile");
@@ -66,10 +69,14 @@ const JudgeDetailsView = () => {
     <>
       <Navbar
         query={profileName ?? "Justice"}
-        isH1Visible={false}
-        searchBtnRef={searchRef}
+        isTitle={isH1Visible}
+        referrer={referrer}
       />
-      {(isFetching || isLoading) && <BigLoadingSpinner />}
+      {(isFetching || isLoading) && (
+        <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-screen">
+          <Loader variant="classic" size={80} />
+        </div>
+      )}
 
       {!isFetching && !isError && data?.judge_info && (
         <Container>

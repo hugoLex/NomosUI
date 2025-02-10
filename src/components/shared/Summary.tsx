@@ -82,7 +82,13 @@ const SummaryView = ({
   );
 };
 
-export const SummaryComponent = ({ summary }: { summary?: string }) => {
+export const SummaryComponent = ({
+  summary,
+  isCollapsible = false,
+}: {
+  summary?: string;
+  isCollapsible: boolean;
+}) => {
   const { close, searchParams } = UseQueryToggler();
   // const [showCaseSummary, setShowCaseSummary] = useState(index);
 
@@ -93,12 +99,14 @@ export const SummaryComponent = ({ summary }: { summary?: string }) => {
   return (
     <div className="mt-[30px] bg-[#eaf0f2]/30 rounded-lg px-4 py-3 relative">
       <div className="flex justify-between">
-        <p className="text-sm">Summary</p>
-        <RiCloseLine
-          onClick={() => close("showCaseSummary", undefined)}
-          className="text-pink-600 ml-auto cursor-pointer"
-          size={19}
-        />
+        <h4 className="text-sm font-medium">Summary</h4>
+        {isCollapsible && (
+          <RiCloseLine
+            onClick={() => close("showCaseSummary", undefined)}
+            className="text-pink-600 ml-auto cursor-pointer"
+            size={19}
+          />
+        )}
       </div>
       <hr className="mt-2 mb-5" />
       <p className="text-sm flex-wrap">{summary ?? defaultSummary}</p>

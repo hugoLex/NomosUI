@@ -1,8 +1,8 @@
-import React, { Fragment, useMemo, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import { HiAdjustmentsHorizontal } from "react-icons/hi2";
-import { MoreIcon } from "@app/components/icons";
+import { FilterIcon2, MoreIcon } from "@app/components/icons";
 import PrecedenceTreatment from "./PrecedenceTreatment";
-import { usePrecedentQuery } from "@app/store/services/caseSlice";
+import { usePrecedenCitedQuery } from "@app/store/services/caseSlice";
 import { Container, ErrorView } from "@app/components/shared";
 import { Loader } from "@app/components/ui";
 import { dummyCaseDetails } from "@app/utils";
@@ -11,16 +11,25 @@ import { SelectedTreatment } from "@app/types";
 const PrecedentView = ({ id }: { id: string }) => {
   const { precedentData } = dummyCaseDetails;
 
+  const [cases, setCases] = useState<
+    {
+      citation_id: string;
+      citation_type: any;
+      citation: string;
+      context: string;
+    }[]
+  >([]);
   const [selectedTreatment, setSelectedTreatment] =
     useState<SelectedTreatment>("all");
-  const { isLoading, isError, data } = usePrecedentQuery(id);
+  const { isLoading, isError, data } = usePrecedenCitedQuery(id);
 
-  const cases = useMemo(() => {
+  useEffect(() => {
     if (data) {
-      const { cited_cases } = data;
-      return cited_cases;
+      const { citations } = data;
+      setCases((prev) => Array.from(new Set([...prev, ...citations])));
     }
-    return null;
+
+    return () => {};
   }, [data]);
 
   const handleTreatmentSelection = (_id: SelectedTreatment) =>
@@ -29,13 +38,15 @@ const PrecedentView = ({ id }: { id: string }) => {
   return (
     <Container>
       {isLoading && (
-        <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
+        <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-screen">
           <Loader variant="classic" size={80} />
         </div>
       )}
+
       {isError && <ErrorView />}
+
       {data && (
-        <div className="md:grid grid-cols-12 gap-8">
+        <div className="py-6 md:grid grid-cols-12 gap-8">
           <div className="col-span-8">
             <p className=" font-light uppercase text-[0.813rem] text-black/80  mt-2 pr-2.5 py-1 leading-[1.25rem]">
               Judicial insight
@@ -81,11 +92,7 @@ const PrecedentView = ({ id }: { id: string }) => {
               {/* <div className="flex gap-2 items-center"> */}
 
               <h5 className="relative flex gap-2 items-center pl- [8px] text-base text-[#171F46] font-midium font-rubik">
-                <HiAdjustmentsHorizontal
-                  size={24}
-                  className=""
-                  // className="absolute left-[-20px] top-[4px]"
-                />
+                <FilterIcon2 />
                 Filter Treatments
               </h5>
               {/* </div> */}

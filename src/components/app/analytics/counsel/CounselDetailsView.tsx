@@ -76,13 +76,9 @@ const CounselDetailsView = () => {
   };
   return (
     <>
-      <Navbar
-        query={profileName ?? "Counsel"}
-        isH1Visible={isH1Visible}
-        searchBtnRef={searchRef}
-      />
+      <Navbar query={profileName ?? "Counsel"} isTitle />
       {(isFetching || isLoading) && (
-        <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
+        <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-screen">
           <Loader variant="classic" size={80} />
         </div>
       )}

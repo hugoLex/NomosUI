@@ -40,23 +40,35 @@ const Page: NextPageWithLayout = () => {
     );
   };
 
-  return (
-    <Fragment>
-      <Head title={`Artilces - ${title}`} />
-      <Navbar query="" isH1Visible={false} searchBtnRef={searchRef} />
-      {(isFetching || isLoading) && (
-        <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
+  if (isLoading) {
+    // Early return for loading state
+    return (
+      <Fragment>
+        <Navbar query={""} isTitle />
+        {/* Removed isTitle as it's always false*/}
+        <div className="flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
           <Loader variant="classic" size={80} />
         </div>
-      )}
+      </Fragment>
+    );
+  }
 
-      {isError && (
+  if (!data && isError) {
+    // Simplified error check
+    return (
+      <Fragment>
+        <Navbar query={""} isTitle />
         <ErrorView404
           caption="No matching legal resources found"
           desc="Check your search terms and try again, or explore our curated collection of legal resources to find what you need"
         />
-      )}
+      </Fragment>
+    );
+  }
 
+  return (
+    <Fragment>
+      <Navbar query="" isTitle />
       {data && (
         <Container>
           <div className={`py-6`}>
@@ -104,7 +116,7 @@ const Page: NextPageWithLayout = () => {
 Page.getLayout = (page) => {
   return (
     <Fragment>
-      <Head title={"Search"} />
+      <Head title={"Articles - List"} />
       <AppLayout>{page}</AppLayout>
     </Fragment>
   );

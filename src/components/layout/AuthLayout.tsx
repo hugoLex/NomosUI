@@ -3,17 +3,13 @@ import { useRouter } from "next/router";
 
 import { ComponentProps, LayoutContextProp } from "@app/types";
 
-export const AuthLayoutContext = createContext<LayoutContextProp>({
-  isSearchModal: false,
-  setIsSearchModal: () => {},
-});
+export const AuthLayoutContext = createContext<any>({});
 
 export const AuthLayout: FC<ComponentProps> = ({ children }) => {
   const router = useRouter();
   const [show, setShow] = useState<boolean>(false);
-  const [isSearchModal, setIsSearchModal] = useState<boolean>(false);
 
-  const props = { isSearchModal, setIsSearchModal };
+  const props = {};
 
   return (
     <AuthLayoutContext.Provider value={props}>

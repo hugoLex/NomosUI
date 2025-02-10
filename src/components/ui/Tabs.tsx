@@ -13,7 +13,7 @@ const Tabs: FC<TabsProps> = ({ tabs, onClick }) => {
   const searchParams = useSearchParams();
   const tabClicked = searchParams.get("tab");
   return (
-    <div className="relative flex gap-x-4 items-center ">
+    <div className="relative flex gap-x-4 items-center flex-grow ">
       {tabs.map(({ active, id, label }, idx) => (
         <span
           key={`tabitem-${idx}`}

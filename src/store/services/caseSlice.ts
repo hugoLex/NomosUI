@@ -26,4 +26,5 @@ export const casesQueryAPI = injectEndpoints({
   overrideExisting: true,
 });
 
-export const { useCaseQuery, usePrecedentQuery } = casesQueryAPI;
+export const { useCaseQuery, usePrecedentQuery, usePrecedenCitedQuery } =
+  casesQueryAPI;

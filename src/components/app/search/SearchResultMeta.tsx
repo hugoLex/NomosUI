@@ -232,11 +232,11 @@ export const SearchResultMeta = (prop: {
       {type === "cases" && (
         <Fragment>
           {showCaseSummary !== null && showCaseSummary === index && (
-            <SummaryComponent summary={metadata.summary} />
+            <SummaryComponent summary={metadata.summary} isCollapsible />
           )}
 
           {showCaseSummary === null && index === "1" && (
-            <SummaryComponent summary={metadata.summary} />
+            <SummaryComponent summary={metadata.summary} isCollapsible />
           )}
         </Fragment>
       )}

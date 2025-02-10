@@ -8,15 +8,18 @@ import { Modal } from "../ui";
 export const AppLayoutContext = createContext<LayoutContextProp>({
   isSearchModal: false,
   setIsSearchModal: () => {},
+  referrer: undefined,
+  setReferrer: () => {},
 });
 
 export const AppLayout: FC<ComponentProps> = ({ children }) => {
   const [isSearchModal, setIsSearchModal] = useState<boolean>(false);
   const [isAuthModal, setIsAuthModal] = useState<boolean>(false);
+  const [referrer, setReferrer] = useState<string | undefined>(undefined);
 
   const searchRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const props = { isSearchModal, setIsSearchModal };
+  const props = { isSearchModal, setIsSearchModal, referrer, setReferrer };
 
   return (
     <AppLayoutContext.Provider value={props}>
@@ -27,9 +30,9 @@ export const AppLayout: FC<ComponentProps> = ({ children }) => {
         <Sidebar links={menuList} />
         <main
           id="mainWrapper"
-          className="relative grow lg:pr-2 lg:py-2 min-h-full "
+          className="relative grow lg:pr-2 lg:py-2 min-h-full"
         >
-          <div className="relative flex flex-col w-full rounded-lg shadow-sm bg-stone-50 min-h-full">
+          <div className="relative flex flex-col w-full rounded-lg shadow-sm bg-stone-50 min-h-full ">
             {children}
           </div>
         </main>
