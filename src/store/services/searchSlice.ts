@@ -47,7 +47,8 @@ export const searchQueryAPI = injectEndpoints({
         const defaultResults = await Promise.all([
           _baseQuery(`/ask?question=${query}`),
           _baseQuery(
-            `/semantic/search?query=${query}${searchType ? `&document_type=${searchType}` : ""
+            `/semantic/search?query=${query}${
+              searchType ? `&document_type=${searchType}` : ""
             }`
           ),
         ]);
@@ -98,7 +99,7 @@ export const searchQueryAPI = injectEndpoints({
           return { error };
         }
       },
-      // providesTags: ["SEARCH"],
+      providesTags: ["SEARCH"],
     }),
 
     searchFilter: builder.query<any, any>({

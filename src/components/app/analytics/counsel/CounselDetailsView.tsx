@@ -1,4 +1,10 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Image from "next/image";
 import { IoClose } from "react-icons/io5";
 import SmallTextBtn from "../../../shared/SmallBtn";
@@ -15,8 +21,11 @@ import {
   Container,
   Navbar,
 } from "@app/components/shared/";
+import { AppLayoutContext } from "@app/components/layout";
 
 const CounselDetailsView = () => {
+  const { referrer } = useContext(AppLayoutContext);
+
   const { searchParams, close } = UseQueryToggler();
   const counselId = searchParams.get("counselId");
   const profile = searchParams.get("profile");
@@ -76,7 +85,7 @@ const CounselDetailsView = () => {
   };
   return (
     <>
-      <Navbar query={profileName ?? "Counsel"} isTitle />
+      <Navbar query={profileName ?? "Counsel"} isTitle referrer={referrer} />
       {(isFetching || isLoading) && (
         <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-screen">
           <Loader variant="classic" size={80} />

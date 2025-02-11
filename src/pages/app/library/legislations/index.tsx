@@ -97,7 +97,7 @@ const Page: NextPageWithLayout = () => {
       <Navbar query="" isTitle />
       {data && (
         <Container>
-          <div className="py-6">
+          <div className={`py-8 w-full md:min-w-[980px]`}>
             <div className=" md:grid grid-cols-12 gap-8">
               <div className="col-span-8">
                 <h1 className="text-xx font-normal mb-2">Library</h1>

@@ -3,7 +3,7 @@ import { Button, Head, Loader } from "@app/components/ui";
 import { AppLayout } from "@app/components/layout";
 import { useGetArticlesQuery } from "@app/store/services/librarySlice";
 import { Container, ErrorView404, Navbar } from "@app/components/shared";
-import { FilterIcon3 } from "@app/components/icons";
+import { FilterIcon2, FilterIcon3 } from "@app/components/icons";
 import { useRouter } from "next/router";
 import { NextPageWithLayout } from "@app/types";
 
@@ -19,7 +19,8 @@ const Page: NextPageWithLayout = () => {
 
   useEffect(() => {
     if (data) {
-      setArticles((prev) => [...prev, ...data.cases]);
+      console.log(data);
+      // setArticles((prev) => [...prev, ...data.cases]);
     }
     return () => {};
   }, [data]);
@@ -28,7 +29,7 @@ const Page: NextPageWithLayout = () => {
     const pageNumber = page ? Number(page) + 1 : 2;
     router.push(
       {
-        pathname: "/library/cases",
+        pathname: "/library/articles",
         query: {
           page: pageNumber,
         },
@@ -71,11 +72,11 @@ const Page: NextPageWithLayout = () => {
       <Navbar query="" isTitle />
       {data && (
         <Container>
-          <div className={`py-6`}>
+          <div className={`py-8 w-full md:min-w-[980px]`}>
             <div className="md:grid grid-cols-12 gap-8">
               <div className="col-span-8">
                 <h1 className="text-xx font-normal mb-2">Library</h1>
-                <h5 className="text-base text-[#9ea7b4] mb-4">Cases</h5>
+                <h5 className="text-base text-[#9ea7b4] mb-4">Articles</h5>
 
                 {articles.map((itx, idx: number) => (
                   <div key={idx} className="space-y-2 mb-4"></div>
@@ -92,13 +93,15 @@ const Page: NextPageWithLayout = () => {
 
               <div className="col-span-4">
                 <div className="sticky md:top-[68px]">
-                  <div>
+                  <div className="space-y-3">
                     <div className="inline-flex space-x-1">
-                      <FilterIcon3 />
+                      <FilterIcon2 />
                       <h5>Filter</h5>
                     </div>
-                    <div className="p-4">
-                      <p>Find cases by legal classification</p>
+                    <div className="flex flex-col items-center p-4 bg-[#eaf0f2] space-y-4 rounded-md">
+                      <p className="text-sm">
+                        Find cases by legal classification
+                      </p>
                       <Button label="Coming soon" className="primary" />
                     </div>
                     <div></div>

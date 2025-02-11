@@ -1,4 +1,4 @@
-import { AppLayout } from "@app/components/layout";
+import { AppLayout, AppLayoutContext } from "@app/components/layout";
 import { Navbar, ErrorView404 } from "@app/components/shared";
 import { Head, Loader } from "@app/components/ui";
 import { useVisibility } from "@app/hooks";
@@ -6,10 +6,11 @@ import { useGetArticleQuery } from "@app/store/services/librarySlice";
 import { NextPageWithLayout } from "@app/types";
 import { useRouter } from "next/router";
 
-import React, { Fragment, useRef } from "react";
+import React, { Fragment, useContext, useRef } from "react";
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
+  const { referrer } = useContext(AppLayoutContext);
   const query = router.query;
   const slug = query.slug ? query.slug : "";
   const articleId = slug as string;

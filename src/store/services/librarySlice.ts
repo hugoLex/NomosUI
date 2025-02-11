@@ -10,6 +10,7 @@ export const libraryAPISlice = injectEndpoints({
         const query = `/cases/list${paramPage.trim()}${paramCourt.trim()}${paramYear.trim()}`;
         return query;
       },
+      providesTags: ["CASES"],
     }),
 
     getArticles: builder.query<any, any>({

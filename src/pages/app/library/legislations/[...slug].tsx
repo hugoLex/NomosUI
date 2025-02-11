@@ -1,6 +1,12 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useRouter } from "next/router";
-import { AppLayout } from "@app/components/layout";
+import { AppLayout, AppLayoutContext } from "@app/components/layout";
 import {
   Navbar,
   ErrorView404,
@@ -25,6 +31,7 @@ type Legislation = {
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
+  const { referrer } = useContext(AppLayoutContext);
   const query = router.query;
   const slug = query.slug ? query.slug : "";
   const legislationId = slug as string;
@@ -88,10 +95,10 @@ const Page: NextPageWithLayout = () => {
 
   return (
     <Fragment>
-      <Navbar query={""} isTitle={isTitle} />
+      <Navbar query={""} isTitle={isTitle} referrer={referrer} />
       {data && (
         <Container>
-          <div className="py-6 space-y-6 text-dark-2">
+          <div className="py-8 space-y-6 text-dark-2">
             <h1
               id="searchQuery"
               ref={h1Ref}
@@ -119,7 +126,10 @@ const Page: NextPageWithLayout = () => {
             <p className="text-sm">{data.specific_legal_concept}</p>
             {legislation && (
               <div>
-                <Markdown content={legislation} className="wrapper" />
+                <Markdown
+                  content={legislation}
+                  className="wrapper text-wrap overflow-x-hidden"
+                />
               </div>
             )}
           </div>

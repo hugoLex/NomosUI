@@ -9,11 +9,13 @@ export type TCaseData = {
   main_judgement_url?: string | null;
   case_summary: string | null;
   decision_history?: string | null;
-  ratio_texts: string[];
+  ratio_decidendi: string[];
   judge_ids: number[];
-  judge_names: string[];
-  analysis_urls: string[];
-  subject_matters: string[];
+  judges: { id: string; name: string }[];
+  counsels: string[];
+  cause_of_action?: string[];
+  analysis_url: string[];
+  subject_matters?: string[];
 };
 
 export type TPrecedentData = {
