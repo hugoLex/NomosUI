@@ -321,7 +321,7 @@ h5 {
   @apply !fill-primary !stroke-primary;
 }
 
-#judgement .markdown.wrapper > * {
+.markdown.wrapper > * {
   @apply text-sm text-inherit;
 }
 

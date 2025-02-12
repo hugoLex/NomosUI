@@ -34,45 +34,17 @@ const sections = [
 ];
 
 const CaseView = ({
-  id,
+  caseDocument,
   innerRef,
 }: {
-  id: string;
+  caseDocument: TCaseDocument;
   innerRef: MutableRefObject<any>;
 }) => {
-  const { isError, isLoading, data } = useCaseQuery(id);
   const { activeSection, sectionRefs, scrollToSection } = useScrollspy({
     sections,
   });
   // const { createQueryString, router, pathname, urlSearchParamsString } =
   //   UseQueryToggler();
-
-  const [caseDocument, setCaseDocument] = useState<TCaseDocument | null>(null);
-
-  useEffect(() => {
-    if (data) {
-      const { case_data } = data;
-      const { main_judgement_url: url } = case_data;
-      if (url) {
-        (async () => {
-          try {
-            const res = await axios.get(url);
-            const { content } = matter(res.data);
-
-            setCaseDocument({ ...case_data, judgement: content });
-          } catch (error) {
-            console.log(error);
-
-            setCaseDocument({ ...case_data });
-          }
-        })();
-      } else {
-        setCaseDocument({ ...case_data });
-      }
-    }
-
-    return () => {};
-  }, [data]);
 
   const caseSidebarProps = {
     activeSection,
@@ -82,14 +54,8 @@ const CaseView = ({
   };
 
   return (
-    <Container>
-      {isLoading && (
-        <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-screen">
-          <Loader variant="classic" size={80} />
-        </div>
-      )}
-      {isError && <ErrorView />}
-      {caseDocument && (
+    caseDocument && (
+      <Container>
         <div className={`py-8  w-full md:min-w-[980px]`}>
           <div className="md:grid grid-cols-12 gap-8">
             <div className="col-span-8 lg:flex gap-3 text-dark-2">
@@ -123,10 +89,10 @@ const CaseView = ({
                   </span>
                 </div>
 
-                {caseDocument.subject_matters &&
-                  caseDocument.subject_matters.length > 0 && (
+                {caseDocument.subject_matter &&
+                  caseDocument.subject_matter.length > 0 && (
                     <div className="flex items-center gap-2 flex-wrap mb-4">
-                      {caseDocument.subject_matters.map((subjectMatter) => (
+                      {caseDocument.subject_matter.map((subjectMatter) => (
                         <span
                           className={` px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium`}
                           key={subjectMatter}
@@ -206,8 +172,8 @@ const CaseView = ({
             </div>
           </div>
         </div>
-      )}
-    </Container>
+      </Container>
+    )
   );
 };
 

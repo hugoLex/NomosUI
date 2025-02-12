@@ -1,18 +1,28 @@
-import React, { Fragment, useContext, useRef, useState } from "react";
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useRouter } from "next/router";
-import { Head, Tabs } from "@app/components/ui";
+import { Head, Loader, Tabs } from "@app/components/ui";
 import {
   CaseCounselView,
   CaseDetailsView,
-  CaseJudgeAnalyticsView,
+  CaseJudgementAnalysisView,
   CasePrecedentAnalyticsView,
 } from "@app/components/app/library/case";
 import { AppLayout, AppLayoutContext } from "@app/components/layout";
 import { dummyCaseDetails } from "@app/utils";
 import { getMarkdownRemoteStream } from "@app/utils/getMarkdown";
-import { NextPageWithLayout, TabItem } from "@app/types";
-import { Navbar } from "@app/components/shared";
+import { NextPageWithLayout, TabItem, TCaseDocument } from "@app/types";
+import { ErrorView, Navbar } from "@app/components/shared";
 import { useVisibility } from "@app/hooks";
+import { useCaseQuery } from "@app/store/services/caseSlice";
+import axios from "axios";
+import matter from "gray-matter";
+import { isError } from "util";
 
 const tabItems: TabItem[] = [
   {
@@ -45,6 +55,7 @@ const Page: NextPageWithLayout = () => {
   const caseId = slug as string;
   const caseTitle = String(title);
   const tabId: string = tab ? String(tab) : "case";
+  const { counselData, judgeData } = dummyCaseDetails;
 
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
 
@@ -55,10 +66,44 @@ const Page: NextPageWithLayout = () => {
       threshold: 0.8,
     },
   });
-
-  const { counselData, judgeData } = dummyCaseDetails;
-
   const [tabs, setTabs] = useState(tabItems);
+
+  const { isError, isLoading, data } = useCaseQuery(caseId);
+  const [caseDocument, setCaseDocument] = useState<TCaseDocument | null>(null);
+  const [analysisDocument, setAnalysisDocument] = useState<any>(undefined);
+
+  useEffect(() => {
+    if (data) {
+      const { case_data } = data;
+      const { main_judgement_url: judgementUrl, analysis_url: analysisUrl } =
+        case_data;
+
+      if (judgementUrl && analysisUrl) {
+        (async () => {
+          try {
+            const [judgementRes, analysisRes] = await Promise.all([
+              axios.get(judgementUrl),
+              axios.get(analysisUrl),
+            ]);
+            // const res = await axios.get(judgementUrl);
+            const { content: judgementData } = matter(judgementRes.data);
+            const { content: analysisData } = matter(analysisRes.data);
+
+            setCaseDocument({ ...case_data, judgement: judgementData });
+            setAnalysisDocument(analysisData);
+          } catch (error) {
+            console.log(error);
+
+            setCaseDocument({ ...case_data });
+          }
+        })();
+      } else {
+        setCaseDocument({ ...case_data });
+      }
+    }
+
+    return () => {};
+  }, [data]);
 
   // const handleGoBack = () => {
   //   const query = document.cookie
@@ -85,6 +130,15 @@ const Page: NextPageWithLayout = () => {
     });
   };
 
+  if (isLoading)
+    return (
+      <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-screen">
+        <Loader variant="classic" size={80} />
+      </div>
+    );
+
+  if (!data && isError) return <ErrorView />;
+
   return (
     <Fragment>
       <Head title={`Case - ${caseTitle}`} />
@@ -95,9 +149,18 @@ const Page: NextPageWithLayout = () => {
         </div>
       </Navbar>
 
-      {tabId === "case" && <CaseDetailsView id={caseId} innerRef={h1Ref} />}
+      {tabId === "case" && (
+        <Fragment>
+          {caseDocument && (
+            <CaseDetailsView caseDocument={caseDocument} innerRef={h1Ref} />
+          )}
+          {caseDocument === null && <ErrorView />}
+        </Fragment>
+      )}
       {tabId === "counsel" && <CaseCounselView data={counselData} />}
-      {tabId === "judgement" && <CaseJudgeAnalyticsView data={judgeData} />}
+      {tabId === "judgement" && (
+        <CaseJudgementAnalysisView data={analysisDocument} />
+      )}
       {tabId === "precedent" && <CasePrecedentAnalyticsView id={caseId} />}
     </Fragment>
   );

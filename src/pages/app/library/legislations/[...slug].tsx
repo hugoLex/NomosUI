@@ -95,46 +95,49 @@ const Page: NextPageWithLayout = () => {
 
   return (
     <Fragment>
-      <Navbar query={""} isTitle={isTitle} referrer={referrer} />
-      {data && (
-        <Container>
-          <div className="py-8 space-y-6 text-dark-2">
-            <h1
-              id="searchQuery"
-              ref={h1Ref}
-              className="text-xx font-normal mb-3 text-[#245b91]"
+      <Navbar
+        query={data.legislation_title}
+        isTitle={isTitle}
+        referrer={referrer}
+      />
+
+      <Container>
+        <div className="py-6 space-y-6 text-dark-2">
+          <h1
+            id="searchQuery"
+            ref={h1Ref}
+            className="text-xx font-normal mb-3 text-[#245b91]"
+          >
+            {data.legislation_title}
+          </h1>
+
+          <div className="flex items-center gap-2 flex-wrap mb-4">
+            <span
+              className={` px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium`}
+              title="Primary domain"
             >
-              {data.legislation_title}
-            </h1>
+              {data.primary_domain}
+            </span>
 
-            <div className="flex items-center gap-2 flex-wrap mb-4">
-              <span
-                className={` px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium`}
-                title="Primary domain"
-              >
-                {data.primary_domain}
-              </span>
-
-              <span
-                className={` px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium`}
-                title="Primary domain"
-              >
-                {data.secondary_domain}
-              </span>
-            </div>
-
-            <p className="text-sm">{data.specific_legal_concept}</p>
-            {legislation && (
-              <div>
-                <Markdown
-                  content={legislation}
-                  className="wrapper text-wrap overflow-x-hidden"
-                />
-              </div>
-            )}
+            <span
+              className={` px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium`}
+              title="Primary domain"
+            >
+              {data.secondary_domain}
+            </span>
           </div>
-        </Container>
-      )}
+
+          <p className="text-sm">{data.specific_legal_concept}</p>
+          {legislation && (
+            <div>
+              <Markdown
+                content={legislation}
+                className="wrapper text-wrap overflow-x-hidden"
+              />
+            </div>
+          )}
+        </div>
+      </Container>
     </Fragment>
   );
 };

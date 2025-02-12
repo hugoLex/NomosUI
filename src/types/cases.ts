@@ -14,8 +14,8 @@ export type TCaseData = {
   judges: { id: string; name: string }[];
   counsels: string[];
   cause_of_action?: string[];
-  analysis_url: string[];
-  subject_matters?: string[];
+  analysis_url: string;
+  subject_matter?: string[];
 };
 
 export type TPrecedentData = {

@@ -1,11 +1,11 @@
 import CaseCounselView from "./CaseCounselView";
 import CaseDetailsView from "./CaseDetailsView";
-import CaseJudgeAnalyticsView from "./CaseJudgeAnalyticsView";
+import CaseJudgementAnalysisView from "./CaseJudgementAnalysisView";
 import CasePrecedentAnalyticsView from "./CasePrecedentAnalyticsView";
 
 export {
   CaseDetailsView,
-  CaseJudgeAnalyticsView,
+  CaseJudgementAnalysisView,
   CasePrecedentAnalyticsView,
   CaseCounselView,
 };

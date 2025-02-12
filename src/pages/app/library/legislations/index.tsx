@@ -48,7 +48,7 @@ const Page: NextPageWithLayout = () => {
     }
 
     return () => {};
-  }, [data, page, isError]);
+  }, [data, page, isError, setReferrer, router.asPath]);
 
   const loadMoreDocs = () => {
     const pageNumber = page ? Number(page) + 1 : 2;

@@ -1,29 +1,52 @@
-import React, { Fragment, useEffect, useRef, useState } from "react";
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Button, Head, Loader } from "@app/components/ui";
-import { AppLayout } from "@app/components/layout";
+import { AppLayout, AppLayoutContext } from "@app/components/layout";
 import { useGetArticlesQuery } from "@app/store/services/librarySlice";
 import { Container, ErrorView404, Navbar } from "@app/components/shared";
 import { FilterIcon2, FilterIcon3 } from "@app/components/icons";
 import { useRouter } from "next/router";
-import { NextPageWithLayout } from "@app/types";
+import {
+  NextPageWithLayout,
+  SearchResultDocumentMetaDocType,
+} from "@app/types";
+import Link from "next/link";
 
-type Article = {};
+type Article = {
+  article_title: string;
+  date_published: string;
+  document_id: string;
+  document_type?: SearchResultDocumentMetaDocType;
+  primary_domain: string;
+  publisher: string;
+  secondary_domains: string[];
+  specific_legal_concepts: string[];
+  year: number;
+};
 
 const Page: NextPageWithLayout = () => {
-  const title = "List";
   const router = useRouter();
+  const { setReferrer } = useContext(AppLayoutContext);
+
   const { page } = router.query;
-  const searchRef = useRef<HTMLTextAreaElement | null>(null);
   const [articles, setArticles] = useState<Article[]>([]);
-  const { data, isError, isFetching, isLoading } = useGetArticlesQuery({});
+  const { data, isError, isFetching, isLoading } = useGetArticlesQuery({
+    page,
+  });
 
   useEffect(() => {
+    setReferrer(router.asPath);
+
     if (data) {
-      console.log(data);
-      // setArticles((prev) => [...prev, ...data.cases]);
+      setArticles((prev) => Array.from(new Set([...prev, ...data.articles])));
     }
     return () => {};
-  }, [data]);
+  }, [data, router.asPath, setReferrer]);
 
   const loadMoreDocs = () => {
     const pageNumber = page ? Number(page) + 1 : 2;
@@ -78,11 +101,73 @@ const Page: NextPageWithLayout = () => {
                 <h1 className="text-xx font-normal mb-2">Library</h1>
                 <h5 className="text-base text-[#9ea7b4] mb-4">Articles</h5>
 
-                {articles.map((itx, idx: number) => (
-                  <div key={idx} className="space-y-2 mb-4"></div>
-                ))}
+                <div className="space-y-6">
+                  {articles.map(
+                    (
+                      {
+                        article_title,
+                        document_id,
+                        date_published,
+                        primary_domain,
+                        secondary_domains,
+                        specific_legal_concepts,
+                        year,
+                      },
+                      idx: number
+                    ) => (
+                      <div key={idx} className="space-y-2 mb-4">
+                        <h5>
+                          <Link
+                            href={`/library/articles/${document_id}`}
+                            className="text-[#245b91] text-wrap"
+                          >
+                            {idx + 1}. {article_title}
+                          </Link>
+                        </h5>
+                        <div className="flex gap-2 flex-wrap">
+                          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+                            {year}
+                          </span>
+                          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+                            {primary_domain}
+                          </span>
+                          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+                            {date_published}
+                          </span>
+                          {/* <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+                            {secondary_domain}
+                          </span>
+                          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+                            {specific_legal_concept}
+                          </span> */}
+                        </div>
 
-                <div className="flex justify-center py-2.5">
+                        <div className="flex gap-2 flex-wrap">
+                          {secondary_domains.map((stx, sdx) => (
+                            <span
+                              key={sdx}
+                              title="Secondary domain"
+                              className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium"
+                            >
+                              {stx}
+                            </span>
+                          ))}
+                          {specific_legal_concepts.map((slc, sdx) => (
+                            <span
+                              key={sdx}
+                              title="Specific legal concept"
+                              className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium"
+                            >
+                              {slc}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )
+                  )}
+                </div>
+
+                <div className="flex justify-center my-6">
                   <Button
                     label={`${isFetching ? "loading..." : "load more"}`}
                     onClick={loadMoreDocs}

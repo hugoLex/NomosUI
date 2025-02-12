@@ -1,12 +1,32 @@
+import React, {
+  Fragment,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { useRouter } from "next/router";
 import { AppLayout, AppLayoutContext } from "@app/components/layout";
-import { Navbar, ErrorView404 } from "@app/components/shared";
+import {
+  Navbar,
+  ErrorView404,
+  Container,
+  Markdown,
+} from "@app/components/shared";
 import { Head, Loader } from "@app/components/ui";
 import { useVisibility } from "@app/hooks";
 import { useGetArticleQuery } from "@app/store/services/librarySlice";
 import { NextPageWithLayout } from "@app/types";
-import { useRouter } from "next/router";
+import axios from "axios";
+import matter from "gray-matter";
 
-import React, { Fragment, useContext, useRef } from "react";
+type Article = {
+  document_id: string;
+  article_title: string;
+  author: string;
+  main_text_url: string;
+  year: number;
+};
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
@@ -15,6 +35,7 @@ const Page: NextPageWithLayout = () => {
   const slug = query.slug ? query.slug : "";
   const articleId = slug as string;
 
+  const [article, setArticle] = useState<string | undefined>(undefined);
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
 
   const isTitle = useVisibility({
@@ -27,11 +48,32 @@ const Page: NextPageWithLayout = () => {
 
   const { data, isLoading, isError } = useGetArticleQuery(articleId);
 
+  useEffect(() => {
+    if (data) {
+      const { article } = data;
+      const { main_text_url: url } = article as Article;
+
+      if (url) {
+        (async () => {
+          try {
+            const res = await axios.get(url);
+            const { content } = matter(res.data);
+
+            setArticle(content);
+          } catch (error) {
+            console.log(error);
+          }
+        })();
+      }
+    }
+    return () => {};
+  }, [data]);
+
   if (isLoading) {
     // Early return for loading state
     return (
       <Fragment>
-        <Navbar query={""} isTitle={isTitle} />
+        <Navbar query={""} isTitle />
         {/* Removed isTitle as it's always false*/}
         <div className="flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
           <Loader variant="classic" size={80} />
@@ -44,7 +86,7 @@ const Page: NextPageWithLayout = () => {
     // Simplified error check
     return (
       <Fragment>
-        <Navbar query={""} isTitle />
+        <Navbar query={""} isTitle={isTitle} />
         <ErrorView404
           caption="No matching legal resources found"
           desc="Check your search terms and try again, or explore our curated collection of legal resources to find what you need"
@@ -52,7 +94,53 @@ const Page: NextPageWithLayout = () => {
       </Fragment>
     );
   }
-  return <div>Article: {articleId}</div>;
+
+  return (
+    <Fragment>
+      <Navbar
+        query={data.article.article_title}
+        isTitle={isTitle}
+        referrer={referrer}
+      />
+
+      <Container>
+        <div className="py-8 space-y-6 text-dark-2">
+          <h1
+            id="searchQuery"
+            ref={h1Ref}
+            className="text-xx font-normal mb-3 text-[#245b91]"
+          >
+            {data.article.article_title}
+          </h1>
+
+          <div className="flex items-center gap-2 flex-wrap mb-4">
+            <span
+              className={` px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium`}
+              title="Primary domain"
+            >
+              {data.article.author}
+            </span>
+
+            <span
+              className={` px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium`}
+              title=" domain"
+            >
+              {data.article.year}
+            </span>
+          </div>
+
+          {article && (
+            <div>
+              <Markdown
+                content={article}
+                className="wrapper text-wrap overflow-x-hidden"
+              />
+            </div>
+          )}
+        </div>
+      </Container>
+    </Fragment>
+  );
 };
 
 Page.getLayout = (page) => {
