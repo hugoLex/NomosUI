@@ -144,13 +144,6 @@ const Page: NextPageWithLayout = () => {
                           </span>
                         </div>
 
-                        {case_summary && (
-                          <SummaryComponent
-                            summary={case_summary}
-                            isCollapsible={false}
-                          />
-                        )}
-
                         <p className="flex items-center  gap-2 text-xs flex-wrap my-3">
                           {area_of_law &&
                             area_of_law.map((atx, adx) => (
@@ -174,6 +167,37 @@ const Page: NextPageWithLayout = () => {
                               </span>
                             ))}
                         </p>
+
+                        {case_summary && (
+                          <SummaryComponent
+                            summary={case_summary}
+                            isCollapsible={false}
+                          />
+                        )}
+
+                        {/* <p className="flex items-center  gap-2 text-xs flex-wrap my-3">
+                          {area_of_law &&
+                            area_of_law.map((atx, adx) => (
+                              <span
+                                key={adx}
+                                title="Area of law"
+                                className="text-[#008E00] bg-[#008E00]/10 px-3 py-1 rounded"
+                              >
+                                {atx}
+                              </span>
+                            ))}
+
+                          {subject_matters &&
+                            subject_matters.map((stx, sdx) => (
+                              <span
+                                key={sdx}
+                                title="Subject matter"
+                                className="bg-stone-100 text-teal-900  px-3 py-1 rounded"
+                              >
+                                {stx}
+                              </span>
+                            ))}
+                        </p> */}
                       </div>
                     )
                   )}

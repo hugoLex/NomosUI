@@ -154,7 +154,7 @@ const Page: NextPageWithLayout = () => {
           {caseDocument && (
             <CaseDetailsView caseDocument={caseDocument} innerRef={h1Ref} />
           )}
-          {caseDocument === null && <ErrorView />}
+          {caseDocument === null && isError && <ErrorView />}
         </Fragment>
       )}
       {tabId === "counsel" && <CaseCounselView data={counselData} />}
