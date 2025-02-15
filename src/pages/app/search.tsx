@@ -252,7 +252,7 @@ const Page: NextPageWithLayout = () => {
     }
 
     return () => {};
-  }, [isLoading, isFetching, data]);
+  }, [isLoading, isFetching, data, setReferrer, router.asPath]);
 
   useEffect(() => {
     const offset = 0,

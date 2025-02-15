@@ -11,6 +11,7 @@ import type { AppProps } from "next/app";
 
 export * from "./cases";
 export * from "./search";
+export * from "./taxonomy";
 
 export type QueryReturnValue<T = unknown, E = unknown, M = unknown> =
   | {

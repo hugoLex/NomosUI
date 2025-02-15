@@ -114,27 +114,37 @@ export const SearchResultMeta = (prop: {
   type: SearchType;
 }) => {
   const { index, data, type } = prop;
-  const { content, context, metadata } = data;
+  const { occurrences, metadata } = data;
   let _link: string = "what is law";
-  let fmtTxt: string = content;
   let _metadata: any;
 
   const { close, searchParams } = UseQueryToggler();
   const showCaseSummary = searchParams.get("showCaseSummary");
 
-  if (typeof context === "string") {
-    fmtTxt = fmtTxt.replace(
-      RegExp(escapeRegExp(`${context}`), "gi"),
-      `<span class=\"bg-[#FFE89E]\">${context}</span>`
-    );
-  } else {
-    context.forEach((txt, idx) => {
-      fmtTxt = fmtTxt.replace(
-        RegExp(escapeRegExp(`${txt}`), "gi"),
-        `<span class=\"bg-[#FFE89E]\">${txt}</span>`
+  const Occurrences = () =>
+    occurrences.map(({ content, context }, ptx) => {
+      let fmtTxt: string = content;
+      if (typeof context === "string") {
+        fmtTxt = fmtTxt.replace(
+          RegExp(escapeRegExp(`${context}`), "gi"),
+          `<span class=\"bg-[#FFE89E]\">${context}</span>`
+        );
+      } else {
+        context.forEach((txt, idx) => {
+          fmtTxt = fmtTxt.replace(
+            RegExp(escapeRegExp(`${txt}`), "gi"),
+            `<span class=\"bg-[#FFE89E]\">${txt}</span>`
+          );
+        });
+      }
+      return (
+        <p
+          key={ptx}
+          dangerouslySetInnerHTML={{ __html: fmtTxt }}
+          className="text-sm"
+        />
       );
     });
-  }
 
   return (
     <div className="mb-8 space-y-3">
@@ -209,7 +219,8 @@ export const SearchResultMeta = (prop: {
       )}
 
       <div>
-        <p dangerouslySetInnerHTML={{ __html: fmtTxt }} className="text-sm" />
+        <Occurrences />
+        {/* <p dangerouslySetInnerHTML={{ __html: fmtTxt }} className="text-sm" /> */}
         {/* when i wrote this logic, I understood it, as you read it God help you to understand it in your attempt to change it */}
         {/* God help us all 🤣🤣🤣? */}
         {index == "1" && showCaseSummary !== null && showCaseSummary !== "1" ? (

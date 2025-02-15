@@ -15,7 +15,7 @@ export const searchURL = "https://lexasearch.lexanalytics.ai/api";
 
 export const aiURL = "https://llmsearch.lexanalytics.ai/api";
 
-export const baseURL = "https://lexgateway.lexanalytics.ai/api";
+export const baseURL = "https://webapp.lexanalytics.ai/api";
 
 export const dummyCasesResult: CaseResults = {
   search_id: "9d182815-5515-437c-bc85-66de4619fcc7",
@@ -831,3 +831,58 @@ export const menuList: MenuLink[] = [
     path: "/taxonomy",
   },
 ];
+
+// Sample data
+export const topLevelAreas = [
+  {
+    id: 1,
+    name: "Contract Law",
+    document_breakdown: {
+      case: 500,
+      legislation: 50,
+      article: 30,
+    },
+    children: [
+      {
+        id: 11,
+        name: "Contract Formation",
+        children: [
+          {
+            id: 111,
+            name: "Offer and Acceptance",
+            document_breakdown: {
+              case: 100,
+              legislation: 10,
+              article: 5,
+            },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: "Property Law",
+    document_breakdown: {
+      case: 300,
+      legislation: 40,
+      article: 20,
+    },
+    children: [],
+  },
+];
+
+// Sample documents for concepts
+export const conceptDocuments = {
+  111: [
+    {
+      id: 1,
+      title: "Smith v. Jones [2023] NGHC 123",
+      type: "case",
+      summary: "Leading case on offer and acceptance",
+      citation: "NGHC 123",
+      year: 2023,
+      url: "/cases/smith-v-jones",
+    },
+  ],
+};

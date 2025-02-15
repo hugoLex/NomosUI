@@ -1,24 +1,48 @@
-import React, { Fragment } from "react";
-import { NextPageWithLayout } from "@app/types";
+import React, { Fragment, useEffect, useState } from "react";
 import { AppLayout } from "@app/components/layout";
-import { Container, ErrorView404, Navbar } from "@app/components/shared";
+import { ErrorView404, Navbar } from "@app/components/shared";
 import { Head, Loader } from "@app/components/ui";
+import {
+  TaxonomyHybridView,
+  TaxonomyView,
+} from "@app/components/app/taxonomy/";
 import { useGetTaxonomyStructureQuery } from "@app/store/services/taxnomySlice";
-import Link from "next/link";
-
-type Taxonomy = {
-  document_breakdown: string | null;
-  hierarchy_path: string;
-  id: number;
-  level: number;
-  name: string;
-  parent_id: number;
-  total_documents: number;
-  type: string;
-};
+import { MappedTx, NextPageWithLayout, Taxonomy } from "@app/types";
 
 const Page: NextPageWithLayout = () => {
+  const [mappedTx, setMappedTx] = useState<MappedTx[]>([]);
   const { data, isLoading, isError } = useGetTaxonomyStructureQuery({});
+
+  useEffect(() => {
+    if (data) {
+      const mapData = data as Taxonomy[];
+
+      // const t = treatment.reduce((acc, value) => {
+      //   acc[value.Label] = acc[value.Label] || [];
+      //   acc[value.Label].push(value);
+      //   return acc;
+      // }, {});
+
+      // for (let [key, value] of Object.entries(t)) {
+      //   rel.push({ name: key, children: value });
+      // }
+
+      const mapSortedTx = mapData.reduce((acc, val) => {
+        if (val.parent_id === null) {
+          acc.push({ id: val.id, name: val.name, children: [val] });
+          return acc;
+        }
+
+        acc.filter(({ id }) => id === val.parent_id)[0].children.push(val);
+
+        return acc;
+      }, [] as MappedTx[]);
+
+      setMappedTx(mapSortedTx);
+    }
+
+    return () => {};
+  }, [data]);
 
   if (isLoading) {
     // Early return for loading state
@@ -46,38 +70,7 @@ const Page: NextPageWithLayout = () => {
     );
   }
 
-  return (
-    <Fragment>
-      <Navbar query="" isTitle />
-      <Container>
-        <div className={`py-8 w-full md:min-w-[980px]`}>
-          <div className="space-y-3">
-            {data.map(
-              (
-                { id, hierarchy_path, name, total_documents, type }: Taxonomy,
-                idx: number
-              ) => (
-                <div key={idx}>
-                  <h5>
-                    <Link
-                      href={`/taxonomy/${id}`}
-                      className="text-[#245b91] text-wrap"
-                    >
-                      {idx + 1}. {name}
-                    </Link>
-                  </h5>
-                  <div>
-                    <span>{hierarchy_path}: </span>
-                    {/* <span>{type}</span> */}
-                  </div>
-                </div>
-              )
-            )}
-          </div>
-        </div>
-      </Container>
-    </Fragment>
-  );
+  return <TaxonomyHybridView data={mappedTx} />;
 };
 
 Page.getLayout = (page) => {

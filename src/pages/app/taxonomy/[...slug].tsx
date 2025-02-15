@@ -1,28 +1,10 @@
 import React, { Fragment, useContext } from "react";
-import { NextPageWithLayout } from "@app/types";
+import { NextPageWithLayout, TaxonomyDocument } from "@app/types";
 import { AppLayout, AppLayoutContext } from "@app/components/layout";
 import { Container, ErrorView404, Navbar } from "@app/components/shared";
 import { Head, Loader } from "@app/components/ui";
 import { useRouter } from "next/router";
 import { useGetTaxonomyDocumentQuery } from "@app/store/services/taxnomySlice";
-
-type TaxonomyDocument = {
-  doc_type: string;
-  document_id: string;
-  hierarchy_level: string;
-  source_data: '{"year": 2020, "court": "Court of Appeal", "citation": "LEX[2020]-CA/L/1007/18"}';
-  title: string;
-};
-
-type TaxonomyDocuments = {
-  documents: TaxonomyDocument[];
-  page: number;
-  per_page: number;
-  scope: string;
-  taxonomy_id: number;
-  taxonomy_type: string;
-  total_count: number;
-};
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
