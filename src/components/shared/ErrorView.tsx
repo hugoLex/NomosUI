@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import Image from "next/image";
 
 type ErrorMessage = {
@@ -46,7 +46,10 @@ export const ErrorView500 = ({ caption, desc }: ErrorMessage) => {
   );
 };
 
-export const ErrorView = () => {
+export const ErrorView = ({
+  children,
+  title = "Unknown error occurred.",
+}: PropsWithChildren & { title?: string }) => {
   return (
     <div className="flex-1 flex justify-center items-center self-stretch">
       <div className="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
@@ -74,25 +77,29 @@ export const ErrorView = () => {
               className="text-lg font-medium leading-6 text-gray-900"
               id="modal-title"
             >
-              Unknown error occurred.
+              {title}
             </h3>
-            <div className="mt-2">
-              <p className="text-sm text-gray-500">
-                Follow these steps to resolve:
-              </p>
-              <ol className="text-sm text-gray-500 list-disc ml-8 mt-2 flex gap-2 flex-col">
-                <li className="list-item list-disc">
-                  Retry a different search term or keyword.
-                </li>
-                <li className="list-item list-disc">Reload the tab.</li>
-                <li className="list-item list-disc">
-                  Clear cache and reload the tab.
-                </li>
-                <li className="list-item list-disc">
-                  Close and relaunch the browser.
-                </li>
-              </ol>
-            </div>
+
+            {!children && (
+              <div className="mt-2">
+                <p className="text-sm text-gray-500">
+                  Follow these steps to resolve:
+                </p>
+                <ol className="text-sm text-gray-500 list-disc ml-8 mt-2 flex gap-2 flex-col">
+                  <li className="list-item list-disc">
+                    Retry a different search term or keyword.
+                  </li>
+                  <li className="list-item list-disc">Reload the tab.</li>
+                  <li className="list-item list-disc">
+                    Clear cache and reload the tab.
+                  </li>
+                  <li className="list-item list-disc">
+                    Close and relaunch the browser.
+                  </li>
+                </ol>
+              </div>
+            )}
+            {children && children}
           </div>
         </div>
       </div>

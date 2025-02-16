@@ -1,16 +1,15 @@
-import { UseQueryToggler } from "@app/hooks/queryHandler";
-import { BigBarForRightSideLayoutProps } from "@app/types";
-import Link from "next/link";
 import React, { useState } from "react";
-
+import Link from "next/link";
 import { HiPlus } from "react-icons/hi2";
+import { BigBarForRightSideLayoutProps } from "@app/types";
+import { useQueryHandler } from "@app/hooks";
 
 const BigBarForRightSideLayout: React.FC<BigBarForRightSideLayoutProps> = ({
   title,
   icon = <HiPlus />,
   style,
 }) => {
-  const { router, pathname, createQueryString } = UseQueryToggler();
+  const { router, pathname, createQueryString } = useQueryHandler();
 
   //   const [tab, setTab] = useState<string>("Judicial Panel");
 

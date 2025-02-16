@@ -6,19 +6,12 @@ import { usePrecedenCitedQuery } from "@app/store/services/caseSlice";
 import { Container, ErrorView } from "@app/components/shared";
 import { Loader } from "@app/components/ui";
 import { dummyCaseDetails } from "@app/utils";
-import { SelectedTreatment } from "@app/types";
+import { SelectedTreatment, TPrecedentData } from "@app/types";
 
 const PrecedentView = ({ id }: { id: string }) => {
   const { precedentData } = dummyCaseDetails;
 
-  const [cases, setCases] = useState<
-    {
-      citation_id: string;
-      citation_type: any;
-      citation: string;
-      context: string;
-    }[]
-  >([]);
+  const [cases, setCases] = useState<TPrecedentData[]>([]);
   const [selectedTreatment, setSelectedTreatment] =
     useState<SelectedTreatment>("all");
   const { isLoading, isError, data } = usePrecedenCitedQuery(id);
@@ -48,7 +41,7 @@ const PrecedentView = ({ id }: { id: string }) => {
       {data && (
         <div className="py-6 md:grid grid-cols-12 gap-8">
           <div className="col-span-8">
-            <p className=" font-light uppercase text-[0.813rem] text-black/80  mt-2 pr-2.5 py-1 leading-[1.25rem]">
+            <p className="hidden font-light uppercase text-[0.813rem] text-black/80  mt-2 pr-2.5 py-1 leading-[1.25rem]">
               Judicial insight
             </p>
             <h2
@@ -57,34 +50,45 @@ const PrecedentView = ({ id }: { id: string }) => {
             >
               Precedent analytics
             </h2>
-            {cases !== null &&
-              cases.map(
-                ({ citation_id, citation_type, citation, context }, idx) => (
-                  <Fragment key={citation_id ?? idx}>
-                    <div className="relative">
-                      <span className="text-gray-500 absolute -left-5 top-0">
-                        {idx + 1}.
-                      </span>
-                      {/* make the text to be first letter capital letter and others small */}
-                      <h5 className="text-base capitalize">{citation}</h5>
-                      <span
-                        className={`text-[0.875rem] mt-[10px] block ${
-                          "positive" == "positive" ? "text-[#11AB45]" : ""
-                        } gray-200`}
-                      >
-                        {citation_type}
-                      </span>
-                      <p className="text-[0.875rem] gray-200 ">{context}</p>
-                    </div>
-                    <div className="flex justify-end mb-2">
-                      <span role="button">
-                        <MoreIcon />
-                      </span>
-                    </div>
-                    <hr className="mt-3 mb-6" />
-                  </Fragment>
-                )
-              )}
+            <div className="space-y-4">
+              {cases !== null &&
+                cases.map(
+                  ({ citation_id, citation, context, treatment_type }, idx) => (
+                    <Fragment key={citation_id ?? idx}>
+                      <div className="relative space-y-2">
+                        <div className="flex gap-3">
+                          <span className="text-gray-500">{idx + 1}.</span>
+                          {/* make the text to be first letter capital letter and others small */}
+                          <h5 className="text-base capitalize">{citation}</h5>
+                        </div>
+
+                        <div className="flex flex-wrap text-xs">
+                          <span className="text-[#008E00] bg-[#008E00]/10 px-3 py-1 rounded">
+                            {treatment_type}
+                          </span>
+                          {/* <span
+                          className={`text-[0.875rem] mt-[10px] block ${
+                            "positive" == "positive" ? "text-[#11AB45]" : ""
+                          } gray-200`}
+                        >
+                          {treatment_type}
+                        </span> */}
+                        </div>
+                        <p className="text-[0.875rem] gray-200 ">{context}</p>
+                      </div>
+
+                      <div className="hidden">
+                        <div className="flex justify-end mb-2">
+                          <span role="button">
+                            <MoreIcon />
+                          </span>
+                        </div>
+                        <hr className="mt-3 mb-6" />
+                      </div>
+                    </Fragment>
+                  )
+                )}
+            </div>
           </div>
           <div className="col-span-4 self-baselane">
             <div className="sticky top-[68px]  py-[2rem]">

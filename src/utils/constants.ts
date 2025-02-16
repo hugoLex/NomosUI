@@ -822,7 +822,7 @@ export const menuList: MenuLink[] = [
     label: "Analytics",
     path: "/analytics",
     children: [
-      { label: "Judges", path: "/judge" },
+      { label: "Judges", path: "/judges" },
       { label: "Counsels", path: "/counsels" },
     ],
   },

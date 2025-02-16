@@ -8,13 +8,12 @@ import React, {
 import Image from "next/image";
 import { IoClose } from "react-icons/io5";
 import SmallTextBtn from "../../../shared/SmallBtn";
-import { useVisibility } from "@app/hooks";
-import { UseQueryToggler } from "@app/hooks/queryHandler";
-import { useGetCounselAnalyticsQuery } from "@app/store/services/benchSlice";
-import { Loader } from "@app/components/ui";
+import { useQueryHandler, useVisibility } from "@app/hooks";
+import { useGetCounselAnalyticsQuery } from "@app/store/services/analyticsSlice";
+import { Head, Loader } from "@app/components/ui";
 import JudgeCounselHeadings from "../JudgeCounselHeadings";
 import { skipToken } from "@reduxjs/toolkit/query";
-import { CounselDetailT } from "@app/store/services/types";
+import { CounselDetailT } from "@app/types/analytics";
 import {
   LoadMoreBtn,
   TextBox,
@@ -22,11 +21,12 @@ import {
   Navbar,
 } from "@app/components/shared/";
 import { AppLayoutContext } from "@app/components/layout";
+import Link from "next/link";
 
 const CounselDetailsView = () => {
   const { referrer } = useContext(AppLayoutContext);
 
-  const { searchParams, close } = UseQueryToggler();
+  const { searchParams, close } = useQueryHandler();
   const counselId = searchParams.get("counselId");
   const profile = searchParams.get("profile");
   const [currentPage, setCurrentPage] = useState(1);
@@ -85,6 +85,8 @@ const CounselDetailsView = () => {
   };
   return (
     <>
+      <Head title={`Counsel - ${counselName}`} />
+
       <Navbar query={profileName ?? "Counsel"} isTitle referrer={referrer} />
       {(isFetching || isLoading) && (
         <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-screen">
@@ -181,22 +183,66 @@ const CounselDetailsView = () => {
                     } `}</span>
                   </div>
 
-                  {data.counsel_details.cases.map((item, index) => (
-                    <div
-                      key={item.suit_number}
-                      className="font-paytone pb-3 mt-[5px]"
-                    >
-                      <h3 className="text-[.94rem] font-normal">
-                        {item.case_title}
-                      </h3>
-                      <p className="text-sm ">{item.case_summary}</p>
-                      <TextBox
-                        smallBtnData={item.subject_matters}
-                        divStyle="flex gap-3 mt-3"
-                      />
-                    </div>
-                  ))}
-                  <LoadMoreBtn isFetching={isFetching} loadMore={loadMore} />
+                  <div className="space-y-4 py-4">
+                    {data.counsel_details.cases.map((item, index) => (
+                      <div
+                        key={item.suit_number}
+                        className="font-paytone pb-3 space-y-4"
+                      >
+                        <h3 className="text-base font-semibold text-primary">
+                          <Link
+                            href={`/library/cases/${item.document_id}?title=${item.case_title}&tab=case`}
+                            className=""
+                          >
+                            {item.case_title}
+                          </Link>
+                        </h3>
+
+                        <div className="inline-flex gap-2 text-sm font-medium">
+                          <span
+                            title="Court"
+                            className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 "
+                          >
+                            {item.court}
+                          </span>
+                          <span
+                            title="Year decided"
+                            className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900"
+                          >
+                            {item.year_decided}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 flex-wrap mb-4 text-sm">
+                          {item.subject_matters.map((txt, tdx) => (
+                            <span
+                              key={tdx}
+                              title="Subject matter"
+                              className="bg-stone-100 text-teal-900  px-3 py-1 rounded"
+                            >
+                              {txt}
+                            </span>
+                          ))}
+                        </div>
+
+                        <p className="text-sm ">{item.case_summary}</p>
+                        <div className="flex items-center gap-2 flex-wrap mb-4 text-sm">
+                          {item.precedents_cited.map((txt, tdx) => (
+                            <span
+                              key={tdx}
+                              className="bg-stone-100 text-dark-2  px-3 py-1 rounded"
+                              title="Cited case"
+                            >
+                              {txt.citation}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {data.counsel_details.cases.length > 10 && (
+                    <LoadMoreBtn isFetching={isFetching} loadMore={loadMore} />
+                  )}
                 </div>
               </div>
             </div>

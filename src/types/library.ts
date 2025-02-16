@@ -6,25 +6,26 @@ export type TCaseData = {
   jurisdiction: string | null;
   date_decided: string | null;
   lex_citation: string | null;
-  main_judgement_url?: string | null;
   case_summary: string | null;
-  decision_history?: string | null;
+  decision_history: string | null;
   ratio_decidendi: string[];
   judge_ids: number[];
   judges: { id: string; name: string }[];
   counsels: string[];
-  cause_of_action?: string[];
-  analysis_url: string;
-  subject_matter?: string[];
+  cause_of_action: string[];
+  main_judgement_url: string | null;
+  analysis_url: string | null;
+  subject_matter: string[];
 };
 
 export type TPrecedentData = {
   citation_id: number;
   citation: string;
   citation_type: string;
-  document_type?: string;
   context: string;
-  subject_matters: string[];
+  document_type?: string;
+  subject_matters?: string[];
+  treatment_type: string;
 };
 
 export type TCase = {

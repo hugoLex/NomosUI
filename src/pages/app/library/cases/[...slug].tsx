@@ -78,28 +78,41 @@ const Page: NextPageWithLayout = () => {
       const { main_judgement_url: judgementUrl, analysis_url: analysisUrl } =
         case_data;
 
-      if (judgementUrl && analysisUrl) {
-        (async () => {
-          try {
-            const [judgementRes, analysisRes] = await Promise.all([
-              axios.get(judgementUrl),
-              axios.get(analysisUrl),
-            ]);
-            // const res = await axios.get(judgementUrl);
-            const { content: judgementData } = matter(judgementRes.data);
-            const { content: analysisData } = matter(analysisRes.data);
+      (async () => {
+        try {
+          let judgementData: any = undefined;
+          let analysisData: any = undefined;
 
-            setCaseDocument({ ...case_data, judgement: judgementData });
-            setAnalysisDocument(analysisData);
-          } catch (error) {
-            console.log(error);
+          const [judgementRes, analysisRes] = await Promise.all([
+            judgementUrl
+              ? axios.get(judgementUrl)
+              : Promise.resolve({ data: null }),
+            analysisUrl
+              ? axios.get(analysisUrl)
+              : Promise.resolve({ data: null }),
+          ]);
+          // const res = await axios.get(judgementUrl);
 
-            setCaseDocument({ ...case_data });
+          console.log(judgementRes, analysisRes);
+
+          if (judgementRes) {
+            const { content } = matter(judgementRes.data);
+            judgementData = content;
           }
-        })();
-      } else {
-        setCaseDocument({ ...case_data });
-      }
+
+          if (analysisRes.data) {
+            const { content } = matter(analysisRes.data);
+            analysisData = content;
+          }
+
+          setCaseDocument({ ...case_data, judgement: judgementData });
+          setAnalysisDocument(analysisData);
+        } catch (error) {
+          console.log(error);
+
+          setCaseDocument({ ...case_data });
+        }
+      })();
     }
 
     return () => {};

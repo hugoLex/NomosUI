@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { RiCloseLine } from "react-icons/ri";
 import { CaretDown, CaretUp } from "../icons";
 import SmallTextBtn from "./SmallBtn";
-import { UseQueryToggler } from "@app/hooks/queryHandler";
+import { useQueryHandler } from "@app/hooks";
 
 {
   /* <div
@@ -89,7 +89,7 @@ export const SummaryComponent = ({
   summary?: string;
   isCollapsible: boolean;
 }) => {
-  const { close, searchParams } = UseQueryToggler();
+  const { close, searchParams } = useQueryHandler();
   // const [showCaseSummary, setShowCaseSummary] = useState(index);
 
   const defaultSummary = ` A final decision is one that leaves nothing to be judicially determined

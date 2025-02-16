@@ -10,10 +10,10 @@ import {
 } from "@app/types";
 import { escapeRegExp } from "@app/utils";
 import { HiOutlineDocumentText } from "react-icons/hi2";
-import { UseQueryToggler } from "@app/hooks/queryHandler";
 
 import { LLMResult } from "@app/types";
 import { SummaryComponent, SummaryPreview } from "@app/components/shared";
+import { useQueryHandler } from "@app/hooks";
 
 export const SearchAIMetaResult: FC<LLMResult> = (prop) => {
   const { detail, message, llm, retriever } = prop;
@@ -118,30 +118,32 @@ export const SearchResultMeta = (prop: {
   let _link: string = "what is law";
   let _metadata: any;
 
-  const { close, searchParams } = UseQueryToggler();
+  const { close, searchParams } = useQueryHandler();
   const showCaseSummary = searchParams.get("showCaseSummary");
 
   const Occurrences = () =>
     occurrences.map(({ content, context }, ptx) => {
-      let fmtTxt: string = content;
-      if (typeof context === "string") {
-        fmtTxt = fmtTxt.replace(
-          RegExp(escapeRegExp(`${context}`), "gi"),
-          `<span class=\"bg-[#FFE89E]\">${context}</span>`
-        );
-      } else {
-        context.forEach((txt, idx) => {
-          fmtTxt = fmtTxt.replace(
-            RegExp(escapeRegExp(`${txt}`), "gi"),
-            `<span class=\"bg-[#FFE89E]\">${txt}</span>`
-          );
-        });
-      }
+      let fmtTxt: string = content.trim();
+      // if (typeof context === "string") {
+
+      fmtTxt = fmtTxt.replace(
+        RegExp(escapeRegExp(`${context.trim()}`), "gi"),
+        `<span class=\"bg-[#FFE89E]\">${context.trim()}</span>`
+      );
+
+      // } else {
+      //   context.forEach((txt, idx) => {
+      //     fmtTxt = fmtTxt.replace(
+      //       RegExp(escapeRegExp(`${txt}`), "gi"),
+      //       `<span class=\"bg-[#FFE89E]\">${txt}</span>`
+      //     );
+      //   });
+      // }
       return (
         <p
           key={ptx}
           dangerouslySetInnerHTML={{ __html: fmtTxt }}
-          className="text-sm"
+          className="text-sm mb-6"
         />
       );
     });

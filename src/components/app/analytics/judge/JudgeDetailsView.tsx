@@ -1,33 +1,24 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import JudgeCounselHeadings from "../JudgeCounselHeadings";
-import { useGetJudgeAnalyticsQuery } from "@app/store/services/benchSlice";
-import { UseQueryToggler } from "@app/hooks/queryHandler";
-import { useVisibility } from "@app/hooks";
-import BigLoadingSpinner from "../../../shared/LoadingSpinner";
-import { skipToken } from "@reduxjs/toolkit/query";
+import Link from "next/link";
 import Image from "next/image";
 import { IoClose } from "react-icons/io5";
-import {
-  JudgeInfoResponseT,
-  JudgeProfileResponseT,
-} from "@app/store/services/types";
-
-import {
-  Container,
-  LoadMoreBtn,
-  Navbar,
-  TextBox,
-} from "@app/components/shared/";
+import { skipToken } from "@reduxjs/toolkit/query";
+import { useVisibility, useQueryHandler } from "@app/hooks";
+import { Loader, Head } from "@app/components/ui";
+import { Container, LoadMoreBtn, Navbar } from "@app/components/shared/";
 import { AppLayoutContext } from "@app/components/layout";
-import { Loader } from "@app/components/ui";
+import { useGetJudgeAnalyticsQuery } from "@app/store/services/analyticsSlice";
+import JudgeCounselHeadings from "../JudgeCounselHeadings";
+import { JudgeProfileResponseT } from "@app/types/analytics";
 
 type stanceT = "Concurred" | "Dissented";
+
 const JudgeDetailsView = () => {
   const { referrer } = useContext(AppLayoutContext);
-  const { searchParams, close } = UseQueryToggler();
+  const { searchParams, close } = useQueryHandler();
   const judgeId = searchParams.get("judgeId");
   const profile = searchParams.get("profile");
-
+  const judgeName = searchParams.get("judge");
   const [currentPage, setCurrentPage] = useState(1);
   const [allData, setAllData] = useState<
     [] | JudgeProfileResponseT["judge_info"][]
@@ -42,12 +33,14 @@ const JudgeDetailsView = () => {
       : skipToken
     //     // judge_id: parseInt(judgeId as unknown as string),
   );
+
   // Update the accumulated data when new data is fetched
   useEffect(() => {
     if (data) {
       setAllData((prevData) => [...prevData, data.judge_info]); // Append new data
     }
   }, [data]);
+
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
   const isH1Visible = useVisibility({
     ref: h1Ref,
@@ -56,22 +49,23 @@ const JudgeDetailsView = () => {
       threshold: 0.8,
     },
   });
-  const searchRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const judgeName = searchParams.get("judge");
   const profileName = judgeName || data?.judge_info.name;
-  const judgecounselgraph = searchParams.get("judgecounselgraph");
+
   const loadMore = () => {
     setCurrentPage((prevPage) => prevPage + 1); // Increment page number
   };
 
   return (
     <>
+      <Head title={`Judge - ${profileName}`} />
+
       <Navbar
         query={profileName ?? "Justice"}
         isTitle={isH1Visible}
         referrer={referrer}
       />
+
       {(isFetching || isLoading) && (
         <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-screen">
           <Loader variant="classic" size={80} />
@@ -168,19 +162,53 @@ const JudgeDetailsView = () => {
                 {data.judge_info.cases.map((item, index) => (
                   <div
                     key={item.document_id}
-                    className="font-paytone pb-3 mt-[5px]"
+                    className="font-paytone pb-3 space-y-3"
                   >
-                    <h3 className="text-[.94rem] font-normal">
-                      {item.case_title}
+                    <h3 className="text-base font-semibold text-primary">
+                      <Link
+                        href={`/library/cases/${item.document_id}?title=${item.case_title}&tab=case`}
+                      >
+                        {item.case_title}
+                      </Link>
                     </h3>
+
+                    <div className="inline-flex gap-2">
+                      <span
+                        title="Year"
+                        className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium"
+                      >
+                        {item.year}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2 flex-wrap mb-4">
+                      {item.area_of_law &&
+                        item.area_of_law.map((subjectMatter) => (
+                          <span
+                            className={` px-2 py-[0.125rem] text-[#008E00] bg-[#008E00]/10 rounded text-center  text-sm font-normal`}
+                            key={subjectMatter}
+                            title="A"
+                          >
+                            {subjectMatter}
+                          </span>
+                        ))}
+                      {item.subject_matters &&
+                        item.subject_matters.map((subjectMatter) => (
+                          <span
+                            className={` px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-normal`}
+                            key={subjectMatter}
+                            title="Subject matter"
+                          >
+                            {subjectMatter}
+                          </span>
+                        ))}
+                    </div>
                     <p className="text-sm">{item.case_summary}</p>
-                    <TextBox
-                      smallBtnData={["Marriage", "constitution", "Election"]}
-                      divStyle="flex gap-3 mt-3"
-                    />
                   </div>
                 ))}
-                <LoadMoreBtn isFetching={isFetching} loadMore={loadMore} />
+                {data.judge_info.cases.length > 9 && (
+                  <LoadMoreBtn isFetching={isFetching} loadMore={loadMore} />
+                )}
               </div>
             </div>
           </div>

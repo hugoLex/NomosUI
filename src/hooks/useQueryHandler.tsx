@@ -4,7 +4,7 @@ import { useCallback } from "react";
 // this hook is used to reconstruct url before injecting it back, manipulation of the url can be done using the hook
 // you can also get params and paths by calling it
 
-export function UseQueryToggler() {
+const useQueryToggler = () => {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -51,4 +51,6 @@ export function UseQueryToggler() {
     close,
     removeQueryParam,
   };
-}
+};
+
+export default useQueryToggler;

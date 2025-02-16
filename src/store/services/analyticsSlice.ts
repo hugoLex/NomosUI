@@ -12,7 +12,7 @@ import {
   AllJudgesListResponseT,
   JudgeProfileResponseT,
   CounselDetailT,
-} from "./types";
+} from "@app/types/analytics";
 
 // type for each appearance
 type Appearance = {

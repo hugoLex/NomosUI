@@ -1,21 +1,16 @@
 import React, { Fragment, MutableRefObject, useEffect, useState } from "react";
-import axios from "axios";
 import { LuDot } from "react-icons/lu";
 import { PiGavelThin } from "react-icons/pi";
 import { LiaBalanceScaleSolid } from "react-icons/lia";
 
 // import { UseQueryToggler } from "@app/hooks/queryHandler";
-import matter from "gray-matter";
-import { ErrorView, Markdown, Container } from "@app/components/shared";
-import { useCaseQuery } from "@app/store/services/caseSlice";
-import { Loader } from "@app/components/ui";
-import { getMarkdownRemoteStream } from "@app/utils/getMarkdown";
 import { useScrollspy } from "@app/hooks/useScrollspyHook";
+import { SummaryComponent, Markdown, Container } from "@app/components/shared";
 
-import { TCaseDocument } from "@app/types";
-import { SummaryComponent } from "@app/components/shared";
+import { getMarkdownRemoteStream } from "@app/utils/getMarkdown";
+
 import CaseDetailsSidebarView from "./CaseDetailsSidebarView";
-import { ErrorBoundary } from "@app/hoc";
+import { TCaseDocument } from "@app/types";
 
 const sections = [
   {
@@ -59,7 +54,7 @@ const CaseView = ({
         <div className={`py-8  w-full md:min-w-[980px]`}>
           <div className="md:grid grid-cols-12 gap-8">
             <div className="col-span-8 lg:flex gap-3 text-dark-2">
-              <div className="block">
+              <div className="block text-wrap overflow-x-hidden">
                 <h3 className="hidden font-light text-[0.813rem]   mt-2 pr-2.5 py-1 leading-[1.25rem]">
                   CASE
                 </h3>
@@ -125,7 +120,7 @@ const CaseView = ({
                     </h4>
                     <Markdown
                       content={caseDocument.judgement}
-                      className="wrapper"
+                      className="wrapper "
                     />
                   </div>
                 )}

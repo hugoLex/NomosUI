@@ -9,9 +9,10 @@ import type {
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
 
-export * from "./cases";
+export * from "./library";
 export * from "./search";
 export * from "./taxonomy";
+export * from "./analytics";
 
 export type QueryReturnValue<T = unknown, E = unknown, M = unknown> =
   | {

@@ -1,14 +1,8 @@
-import React, {
-  Fragment,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { GiSplash } from "react-icons/gi";
-import { useGetAllJudgeQuery } from "@app/store/services/benchSlice";
+import { useGetAllJudgeQuery } from "@app/store/services/analyticsSlice";
 import {
   ErrorView404,
   LoadingSpinner,
@@ -16,11 +10,12 @@ import {
   Container,
   Navbar,
 } from "@app/components/shared";
-import { AllJudgesListResponseT } from "@app/store/services/types";
+import { AllJudgesListResponseT } from "@app/types/analytics";
 
 import { HiMiniPlus } from "react-icons/hi2";
 import { AppLayoutContext } from "@app/components/layout";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
+import { Head } from "@app/components/ui";
 
 const AllJudgesView = () => {
   const router = useRouter();
@@ -48,6 +43,8 @@ const AllJudgesView = () => {
     // Early return for loading state
     return (
       <Fragment>
+        <Head title={`Judges - List`} />
+
         <Navbar query={""} isTitle />
         {/* Removed isH1Visible as it's always false*/}
         <div className="flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-screen">
@@ -61,6 +58,8 @@ const AllJudgesView = () => {
     // Simplified error check
     return (
       <Fragment>
+        <Head title={`Judges - List`} />
+
         <Navbar query={""} isTitle />
         <ErrorView404
           caption="No matching legal resources found"
@@ -72,6 +71,8 @@ const AllJudgesView = () => {
 
   return (
     <Fragment>
+      <Head title={`Judges - List`} />
+
       <Navbar query={""} isTitle />
 
       {allData && (
@@ -127,7 +128,7 @@ const AllJudgesView = () => {
                         </div>
                         <div>
                           <Link
-                            href={`/analytics/judge?judgeId=${judge.judge_id}&judge=${judge.name}`}
+                            href={`/analytics/judges?judgeId=${judge.judge_id}&judge=${judge.name}`}
                             className="text-base [1.125rem] font-normal leading- [28px] font-poppins"
                           >
                             {judge.name}

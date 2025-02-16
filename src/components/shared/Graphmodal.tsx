@@ -1,8 +1,9 @@
-import { UseQueryToggler } from "@app/hooks/queryHandler";
+import { useQueryHandler } from "@app/hooks";
 import React from "react";
 import { IoClose } from "react-icons/io5";
+
 const Graphmodal = () => {
-  const { removeQueryParam } = UseQueryToggler();
+  const { removeQueryParam } = useQueryHandler();
   return (
     <section className="fixed grid items-center z-[999]  justify-center h-dvh w-dvw top-0 bottom-0 right-0 left-0 opacity-100 delay-100 transition-opacity bg-[#ccdcf9]/50">
       <div className="px-5 flex flex-col w-[90vw] h-[80vh]  bg-white/90 mx-auto rounded-md">

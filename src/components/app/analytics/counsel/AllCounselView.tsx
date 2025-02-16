@@ -9,7 +9,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { GiSplash, GiWaves } from "react-icons/gi";
 import { HiMiniPlus } from "react-icons/hi2";
-import { useGetAllCounselQuery } from "@app/store/services/benchSlice";
+import { useGetAllCounselQuery } from "@app/store/services/analyticsSlice";
 import {
   ErrorView404,
   LoadingSpinner,
@@ -17,10 +17,10 @@ import {
   Container,
   Navbar,
 } from "@app/components/shared";
-import { CounselResponseT } from "@app/store/services/types";
+import { CounselResponseT } from "@app/types/analytics";
 import { AppLayoutContext } from "@app/components/layout";
 import { useRouter } from "next/router";
-import { Loader } from "@app/components/ui";
+import { Head, Loader } from "@app/components/ui";
 
 const AllCounselView = () => {
   const router = useRouter();
@@ -50,6 +50,7 @@ const AllCounselView = () => {
     // Early return for loading state
     return (
       <Fragment>
+        <Head title={`Counsel - ${"List"}`} />
         <Navbar query={""} isTitle={false} />{" "}
         {/* Removed isTitle as it's always false*/}
         <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-screen">
@@ -63,6 +64,8 @@ const AllCounselView = () => {
     // Simplified error check
     return (
       <Fragment>
+        <Head title={`Counsel - ${"List"}`} />
+
         <Navbar query={""} isTitle />
         <ErrorView404
           caption="No matching legal resources found"
@@ -74,6 +77,8 @@ const AllCounselView = () => {
 
   return (
     <Fragment>
+      <Head title={`Counsel - ${"List"}`} />
+
       <Navbar query={""} isTitle />
       {allData && (
         <Container className="">
