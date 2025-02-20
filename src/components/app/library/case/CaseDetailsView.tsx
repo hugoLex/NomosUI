@@ -161,7 +161,7 @@ const CaseView = ({
               </div>
             </div>
             <div className="col-span-4 self-baselane">
-              <div className="sticky top-[68px] space-y-2">
+              <div className="sticky top-[68px] space-y-2 overflow-y-scroll">
                 <CaseDetailsSidebarView {...caseSidebarProps} />
               </div>
             </div>

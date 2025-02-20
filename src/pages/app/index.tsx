@@ -1,4 +1,4 @@
-import React, { Fragment, useRef } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -7,8 +7,19 @@ import { SearchBox } from "@app/components/shared";
 import { AppLayout } from "@app/components/layout";
 import { logo2 } from "@app/assets";
 import { NextPageWithLayout } from "@app/types";
+import { useSearchTrendingQuery } from "@app/store/services/searchSlice";
 
 const Page: NextPageWithLayout = () => {
+  const [trendingSearches, setTrendingSearches] = useState<any[]>([]);
+  const { data, isError } = useSearchTrendingQuery({});
+
+  useEffect(() => {
+    if (data) {
+      const { trending_searches } = data;
+      setTrendingSearches(trending_searches);
+    }
+  }, [data]);
+
   return (
     <Fragment>
       <section
@@ -24,45 +35,25 @@ const Page: NextPageWithLayout = () => {
         </Link>
         <SearchBox />
 
-        <div className=" hidden  gap-2 mt-4 max-md:flex-wrap">
-          <button
-            className="flex gap-2 p-1.5 w-full rounded-lg hover:bg-neutral-100
-             border border-solid border-stone-300/50"
-          >
-            <div
-              className="flex justify-center items-center p-1
-               w-8 h-8 rounded-md bg-stone-100"
-            >
-              <Image
-                loading="lazy"
-                alt=""
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/386c05f7f3554f970c33f757629b7de7efcd1134c291d8289497d059dc1610f7?"
-                fill
-                className="w-5 aspect-square"
-              />
+        {trendingSearches.length > 0 && (
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold">Trending Searches</h3>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {trendingSearches.map((trend) => (
+                <button
+                  key={trend.text}
+                  className="px-3 py-1 text-sm bg-gray-100 rounded-full hover:bg-gray-200"
+                  // onClick={() => handleTrendClick(trend)}
+                >
+                  {trend.text}
+                  <span className="ml-2 text-xs text-gray-500">
+                    {trend.usage_count}
+                  </span>
+                </button>
+              ))}
             </div>
-            <div className="my-auto text-sm font-medium leading-5 text-cyan-950">
-              Upcoming AI events
-            </div>
-          </button>
-          <button
-            className="flex gap-2 p-1.5 w-full rounded-lg hover:bg-neutral-100
-             border border-solid border-stone-300/50"
-          >
-            <div className="flex justify-center items-center px-1.5 py-1 w-8 h-8 rounded-md bg-stone-100">
-              <Image
-                loading="lazy"
-                alt=""
-                fill
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/386c05f7f3554f970c33f757629b7de7efcd1134c291d8289497d059dc1610f7?"
-                className="w-5 aspect-square"
-              />
-            </div>
-            <div className="my-auto text-sm font-medium leading-5 text-cyan-950">
-              Latest men&apos;s fashion trends summer 2024
-            </div>
-          </button>
-        </div>
+          </div>
+        )}
 
         <Link
           href={"/signin"}
