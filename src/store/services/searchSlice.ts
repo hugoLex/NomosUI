@@ -8,6 +8,7 @@ import {
   ListResponse,
   QueryReturnValue,
   SearchResultDocumentMetaDocType,
+  SearchSuggestion,
   TSearchResultData,
 } from "@app/types";
 
@@ -114,9 +115,22 @@ export const searchQueryAPI = injectEndpoints({
         };
       },
     }),
+
+    searchAssit: builder.query<SearchSuggestion, any>({
+      query: (query) => `/query-assist/suggest?q=${query}&limit=7`,
+    }),
+
+    searchTrending: builder.query<any, any>({
+      query: () => `/query-assist/trending?limit=7`,
+    }),
   }),
   overrideExisting: true,
 });
 
-export const { useSearchFilterQuery, useSearchQuery, usePrefetch } =
-  searchQueryAPI;
+export const {
+  useSearchAssitQuery,
+  useSearchFilterQuery,
+  useSearchQuery,
+  useSearchTrendingQuery,
+  usePrefetch,
+} = searchQueryAPI;

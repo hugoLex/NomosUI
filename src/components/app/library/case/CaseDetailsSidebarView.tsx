@@ -6,6 +6,7 @@ import * as Accordion from "@radix-ui/react-accordion";
 import { DocumentInfo } from "@app/components/icons";
 import { useScrollspy } from "@app/hooks/useScrollspyHook";
 import { TCaseDocument } from "@app/types";
+import Link from "next/link";
 
 type ContentOutline = "Judicial Panel" | "Decision history";
 // | "judgement"
@@ -125,13 +126,13 @@ const CaseDetailsSidebarView = (props: {
             ))}
           </div>
 
-          <div className="space-y-4 text-dark-2">
-            <h4 className="flex items-center gap-4 text-base font-semibold font-rubik ">
+          <div className="space-y-4 text-dark-2 font-rubik overflow-y-scroll h-screen">
+            <h4 className="flex items-center gap-4 text-base font-medium  ">
               <DocumentInfo />
               Document Info
             </h4>
 
-            <div className="space-y-6">
+            <div className="space-y-6 ">
               <div>
                 <h5 className="text-base font-medium text-inherit">
                   Decision History
@@ -139,24 +140,53 @@ const CaseDetailsSidebarView = (props: {
                 <p className="text-sm">{caseDocument.decision_history}</p>
               </div>
 
-              <div>
+              <div className="space-y-3">
                 <h5 className="text-base font-medium text-inherit">Judges</h5>
                 <ul className="text-inherit text-sm">
                   {caseDocument.judges.map(({ id, name }) => (
-                    <li key={id}>{name}</li>
+                    <li key={id}>
+                      <Link
+                        href={`/analytics/judges?judgeId=${id}&judge=${name}`}
+                        className="text-primary"
+                      >
+                        {name}
+                      </Link>
+                    </li>
                   ))}
                 </ul>
               </div>
 
-              <div>
+              <div className="space-y-3">
                 <h5 className="text-base font-medium text-inherit">Actions</h5>
+
+                <ul className="space-y-2">
+                  {actions.map((btn, btx) => (
+                    <li
+                      key={btx}
+                      className="bg-[#EBF2FF] text-primary py-2 px-5 rounded"
+                    >
+                      {btn}
+                    </li>
+                  ))}
+                </ul>
               </div>
 
-              <div>
+              <div className="space-y-3">
                 {/* <Root></Root> */}
                 <h5 className="text-base font-medium text-inherit">
                   Similar cases
                 </h5>
+
+                <ul className="space-y-2">
+                  {cases.map((btn, btx) => (
+                    <li
+                      key={btx}
+                      className="bg-[#EBF2FF] text-primary py-2 px-5 rounded"
+                    >
+                      {btn}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>

@@ -201,3 +201,16 @@ export type TSearchData = {
   } | null;
   principlesData: { documents: TSearchResultDocument[]; total: number } | null;
 };
+
+export type Suggestion = {
+  id: string;
+  relevance: number;
+  text: string;
+  type: string;
+};
+
+export type SearchSuggestion = {
+  query: string;
+  suggestions: Suggestion[];
+  user_id: string;
+};

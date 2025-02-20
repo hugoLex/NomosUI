@@ -2,6 +2,7 @@ import React, {
   Fragment,
   forwardRef,
   useContext,
+  useEffect,
   useImperativeHandle,
   useRef,
   useState,
@@ -13,9 +14,9 @@ import type {
   MouseEvent,
   KeyboardEvent,
 } from "react";
-
 import { useRouter } from "next/router";
 import ReactTextareaAutosize from "react-textarea-autosize";
+import { GoArrowUpRight, GoArrowUpLeft } from "react-icons/go";
 import {
   ClipPaperIcon,
   FilterIcon,
@@ -24,71 +25,131 @@ import {
 } from "../icons";
 import { Modal } from "@app/components/ui";
 import { AppLayoutContext as LayoutContext } from "@app/components/layout";
-import { escapeRegExp, mentionsList } from "@app/utils";
+import { baseURL, escapeRegExp, mentionsList } from "@app/utils";
 import { generateId } from "@app/utils/client";
+import useDebounce from "@app/hooks/useDebounce";
+import { useSearchAssitQuery } from "@app/store/services/searchSlice";
+import { skipToken } from "@reduxjs/toolkit/query";
+import Link from "next/link";
+import { Suggestion } from "@app/types";
+import axios, { AxiosError } from "axios";
 
 export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
   function Search(props, forwardedRef) {
     const symbol = "@";
     const router = useRouter();
-    const ref = useRef<HTMLTextAreaElement | null>(null);
     const { isSearchModal, setIsSearchModal } = useContext(LayoutContext);
-    useImperativeHandle(forwardedRef, () => ref.current as HTMLTextAreaElement);
 
     const [id] = useState("mention-" + generateId());
     const [lookupId] = useState("lookup-" + generateId());
     const [mentions, setMentions] = useState<string | null>(null);
-    const [inputText, setInputText] = useState<string>("");
-    const [isSearchFocus, setIsSearchFocus] = useState<boolean>(false);
+    const [inputText, setInputText] = useState<string | undefined>(undefined);
+    const [isSearchTags, setIsSearchTags] = useState<boolean>(false);
+    const [isSearchSuggetions, setIsSearchSuggestions] =
+      useState<boolean>(false);
+    const [suggestionsList, setSuggestionsList] = useState<Suggestion[]>([]);
+    const [selectedIndex, setSelectedIndex] = useState(-1);
+    const inputRef = useRef<HTMLTextAreaElement | null>(null);
+    const suggestionRefs = useRef<(HTMLLIElement | null)[]>([]);
+
+    useImperativeHandle(
+      forwardedRef,
+      () => inputRef.current as HTMLTextAreaElement
+    );
+
+    const searchTerm = useDebounce(inputText, 1500);
+
+    const { data, isError } = useSearchAssitQuery(searchTerm || skipToken);
+
+    useEffect(() => {
+      if (data) {
+        const { suggestions } = data;
+        setSuggestionsList(suggestions);
+        setIsSearchSuggestions(true);
+      }
+
+      if (inputText?.length === 0) {
+        setIsSearchSuggestions(false);
+        setIsSearchTags(false);
+        setSuggestionsList([]);
+      }
+
+      return () => {};
+    }, [data, inputText]);
 
     const onSearchSubmit = (evt: FormEvent<HTMLFormElement>) => {
       evt.preventDefault();
 
       const { currentTarget } = evt;
 
-      currentTarget.reset();
-
       if (isSearchModal) {
         setIsSearchModal(false);
       }
 
-      document.cookie = `search_query=${inputText}`;
+      if (inputRef.current) {
+        document.cookie = `search_query=${inputRef.current.value}`;
 
-      if (mentions) {
-        const removeType = RegExp(escapeRegExp(`${mentions}`), "gi");
-        const removeSymbol = RegExp(escapeRegExp("@"), "gi");
-        const query = inputText.replace(removeType, "").trim();
-        console.log(query);
-        const documentType = mentions.replace(removeSymbol, "");
+        if (mentions) {
+          const removeType = RegExp(escapeRegExp(`${mentions}`), "gi");
+          const removeSymbol = RegExp(escapeRegExp("@"), "gi");
+          const query = inputRef.current.value.replace(removeType, "").trim();
+          const documentType = mentions.replace(removeSymbol, "");
+
+          router.push({
+            pathname: "/search",
+            query: {
+              q: query,
+              type: documentType,
+            },
+          });
+        }
 
         router.push({
           pathname: "/search",
           query: {
-            q: query,
-            type: documentType,
+            q: inputRef.current.value,
           },
         });
       }
 
-      router.push({
-        pathname: "/search",
-        query: {
-          q: inputText,
-        },
-      });
+      currentTarget.reset();
     };
 
     const insertNameIntoInput = (
       e: MouseEvent<HTMLLIElement>,
       dataField: string | any[]
     ) => {
-      if (ref.current) {
-        const textArea = ref.current;
+      if (inputRef.current) {
+        const textArea = inputRef.current;
         const mention = `${symbol}${dataField as string}`;
         textArea.value = mention;
         textArea.focus();
         setMentions(mention);
-        setIsSearchFocus(false);
+        setIsSearchTags(false);
+      }
+    };
+
+    const insertSuggestionIntiInput = (
+      e: MouseEvent<HTMLLIElement>,
+      dataField: string | any[],
+      id: string
+    ) => {
+      if (inputRef.current) {
+        const textArea = inputRef.current;
+        textArea.value = dataField as string;
+        textArea.focus();
+
+        (async () => {
+          try {
+            await axios.post(`${baseURL}/query-assist/record-usage/${id}`, {
+              query: dataField,
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        })();
+
+        setIsSearchTags(false);
       }
     };
 
@@ -98,13 +159,49 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
       const character = value.substring(start - 1, start);
 
       if (character === symbol) {
-        setIsSearchFocus(true);
+        setIsSearchTags(true);
         return;
       }
 
       if (character === " " || value.trim() === "") {
-        setIsSearchFocus(false);
+        setIsSearchTags(false);
         return;
+      }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent<HTMLFormElement>) => {
+      switch (e.key) {
+        case "ArrowDown":
+          e.preventDefault();
+          setSelectedIndex((prev) =>
+            prev < suggestionsList.length - 1 ? prev + 1 : prev
+          );
+          // Scroll into view if needed
+          suggestionRefs.current[selectedIndex + 1]?.scrollIntoView({
+            block: "nearest",
+          });
+          break;
+
+        case "ArrowUp":
+          e.preventDefault();
+          setSelectedIndex((prev) => (prev > 0 ? prev - 1 : -1));
+          suggestionRefs.current[selectedIndex - 1]?.scrollIntoView({
+            block: "nearest",
+          });
+          break;
+
+        case "Enter":
+          e.preventDefault();
+          onSearchSubmit(e);
+          if (selectedIndex >= 0 && selectedIndex < suggestionsList.length) {
+            // handleSuggestionSelect(suggestions[selectedIndex]);
+          }
+          break;
+
+        case "Escape":
+          setSuggestionsList([]);
+          setSelectedIndex(-1);
+          break;
       }
     };
 
@@ -113,24 +210,19 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
         <form
           id="searchBox"
           onSubmit={onSearchSubmit}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              onSearchSubmit(e);
-            }
-          }}
+          onKeyDown={handleKeyDown}
           className="relative flex flex-col gap-5 p-2.5 rounded-md mt-8 text-2xl duration-300
             transition-all bg-stone-50 ring-1 ring-[#d5e1e4] focus-within:ring-2"
         >
           <ReactTextareaAutosize
             maxRows={10}
             placeholder="Search legal documents..."
-            // value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            className="p-2 text-base placeholder:text-[17px] leading-6 bg-stone-50 text-zinc-600
-        outline-none scrollbar-hide resize-none max-h-[40vh]"
+            className={`p-2 font-rubik text-base placeholder:text-[17px] 
+              leading-6 bg-stone-50 text-zinc-600
+              outline-none scrollbar-hide resize-none max-h-[40vh]`}
             autoFocus
-            ref={ref}
+            ref={inputRef}
             id={id}
             wrap="off"
             onKeyUp={handleKeyUp}
@@ -170,9 +262,15 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
                 type="submit"
                 form="searchBox"
                 className={`flex justify-center items-center px-2 py-2.5 w-8 h-8 rounded-full ${
-                  inputText.length <= 3 ? "bg-neutral-200" : "bg-primary"
+                  inputText
+                    ? inputText.length <= 3
+                      ? "bg-neutral-200"
+                      : "bg-primary"
+                    : "bg-neutral-200"
                 }`}
-                disabled={inputText.length <= 3}
+                disabled={
+                  inputText ? (inputText.length <= 3 ? true : false) : true
+                }
               >
                 <RigthArrowIcon />
               </button>
@@ -180,46 +278,77 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
           </div>
         </form>
 
-        <ul
+        <div
           className={`relative w-full space-y-1 rounded-b-md transition-all
-         bg-stone-50 ring-1 ring-[#d5e1e4] focus-within:ring-2 p-2.5
-        ${
-          isSearchFocus
-            ? "z-10 h-auto bottom-[5px] opacity-100 visible"
-            : "z-0 h-0 bottom-0 opacity-0 invisible"
-        }`}
+         bg-stone-50 ring-1 ring-[#d5e1e4] focus-within:ring-2 p-3
+            ${
+              isSearchTags || isSearchSuggetions
+                ? "z-10 h-auto bottom-[5px] opacity-100 visible"
+                : "z-0 h-0 bottom-0 opacity-0 invisible"
+            }
+         `}
         >
-          {mentionsList.map((mention, i) => {
-            return (
-              <li
-                key={i}
-                role="button"
-                className={`flex justify-between items-center text-base hover:bg-neutral-200/30`}
-                onClick={(e: MouseEvent<HTMLLIElement>) =>
-                  insertNameIntoInput(e, mention["name"])
-                }
-                data-mention={mention["name"]}
-              >
-                <p>
-                  <span>{symbol}</span>
-                  <span>{mention["name"]}</span>
-                </p>
-                <svg
-                  width="10"
-                  height="10"
-                  viewBox="0 0 10 10"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+          {isSearchTags && (
+            <ul className={`relative flex gap-3 w-full transition-all my-3`}>
+              {mentionsList.map((mention, i) => {
+                return (
+                  <li
+                    key={i}
+                    role="button"
+                    className={`flex gap-3 justify-between items-center text-base bg-[#EBF2FF] text-primary rounded  px-1 `}
+                    onClick={(e: MouseEvent<HTMLLIElement>) =>
+                      insertNameIntoInput(e, mention["name"])
+                    }
+                    data-mention={mention["name"]}
+                  >
+                    <p className="font-rubik text-inherit">
+                      <span>{symbol}</span>
+                      <span>{mention["name"]}</span>
+                    </p>
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 10 10"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className=" text-primary"
+                    >
+                      <path
+                        d="M1.28125 0.625C0.917578 0.625 0.625 0.917578 0.625 1.28125V7.84375C0.625 8.20742 0.917578 8.5 1.28125 8.5C1.64492 8.5 1.9375 8.20742 1.9375 7.84375V2.86445L8.25391 9.18359C8.51094 9.44062 8.92656 9.44062 9.18086 9.18359C9.43516 8.92656 9.43789 8.51094 9.18086 8.25664L2.86445 1.94023H7.84375C8.20742 1.94023 8.5 1.64766 8.5 1.28398C8.5 0.920312 8.20742 0.627734 7.84375 0.627734H1.28125V0.625Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+
+          {data && (
+            <ul className="list-none">
+              {suggestionsList.map(({ id: sId, type, text }, sdx) => (
+                <li
+                  key={sdx}
+                  role="button"
+                  ref={(el) => (suggestionRefs.current[sdx] = el)}
+                  onClick={(evt) => insertSuggestionIntiInput(evt, text, sId)}
+                  className="flex justify-between items-center hover:bg-stone-200/80 p-1"
                 >
-                  <path
-                    d="M1.28125 0.625C0.917578 0.625 0.625 0.917578 0.625 1.28125V7.84375C0.625 8.20742 0.917578 8.5 1.28125 8.5C1.64492 8.5 1.9375 8.20742 1.9375 7.84375V2.86445L8.25391 9.18359C8.51094 9.44062 8.92656 9.44062 9.18086 9.18359C9.43516 8.92656 9.43789 8.51094 9.18086 8.25664L2.86445 1.94023H7.84375C8.20742 1.94023 8.5 1.64766 8.5 1.28398C8.5 0.920312 8.20742 0.627734 7.84375 0.627734H1.28125V0.625Z"
-                    fill="#64645F"
-                  />
-                </svg>
-              </li>
-            );
-          })}
-        </ul>
+                  <span>{text}</span>
+                  {type === "case_title" && (
+                    <Link
+                      href={`/library/cases/${sId}?title=${text}&tab=case`}
+                      className="px-0.5 inline-flex items-center bg-[#EBF2FF] text-primary rounded-sm "
+                    >
+                      view
+                      <GoArrowUpRight />
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     );
   }
