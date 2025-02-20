@@ -175,11 +175,22 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                           {children && (
                             <Fragment>
                               <span
+                                //   // debugging activate state failure
+                                // onMouseEnter={() => {
+                                //   console.log(
+                                //     path,
+                                //     "url path",
+                                //     `/${router.asPath.split("/")[1]}`
+                                //   );
+                                // }}
                                 role="button"
                                 className={`flex items-center gap-1 text-center
                                whitespace-nowrap  ${
-                                 isCollapsed ? "justify-center" : "pb-2"
-                               }`}
+                                 // I added this logic to implement activate state for the rest of the tabs. Since you wrote the original logic, you can change it to what works best
+                                 path === `/${router.asPath.split("/")[1]}`
+                                   ? "text-primary font-medium"
+                                   : "hover:text-primary"
+                               }  ${isCollapsed ? "justify-center" : "pb-2"}`}
                                 id={`menu-item-${idx}`}
                                 aria-expanded="true"
                                 aria-haspopup="true"
@@ -240,9 +251,12 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                             </Fragment>
                           )}
 
-                          {isCollapsed && path === router.asPath && (
-                            <div className="absolute rounded-l-sm w-[3px] h-full right-0 top-0 bg-primary" />
-                          )}
+                          {isCollapsed &&
+                            (path === router.asPath ||
+                              // I added this logic to implement activate state for the rest of the tabs. Since you wrote the original logic, you can change it to what works best
+                              path === `/${router.asPath.split("/")[1]}`) && (
+                              <div className="absolute rounded-l-sm w-[3px] h-full right-0 top-0 bg-primary" />
+                            )}
                         </li>
                       </Fragment>
                     ))}

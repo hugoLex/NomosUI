@@ -53,6 +53,8 @@ const config = {
         "white-400": "rgba(255, 255, 255, 0.80)",
         "lex-blue": "rgba(36, 91, 145, 0.72)",
         overlay: "rgba(36, 91, 145, 0.72)",
+        "gray-black": "rgb(230, 230, 230)",
+        "gray-authinput": "rgb(153 153 153)",
       },
       boxShadow: {
         "3xl": "0 10px 40px rgba(0, 0, 0, 0.1)",

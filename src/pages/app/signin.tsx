@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -6,9 +6,90 @@ import { Head } from "@app/components/ui";
 import { AuthLayout as Layout } from "@app/components/layout";
 import { accountType1, logo } from "@app/assets";
 import { NextPageWithLayout } from "@app/types";
-
+import { useFormik } from "formik";
+import * as Yup from "yup";
 const Page: NextPageWithLayout = () => {
-  const router = useRouter();
+  type InitiaStateT = {
+    email: string;
+    password: string;
+    [key: string]: string;
+  };
+  const InitiaState: InitiaStateT = {
+    email: "",
+    password: "",
+  };
+
+  // const [formValue, setFormData] = useState(() => InitiaState);
+  // const [pwdInputType, setPwdInputType] = useState(true);
+  // const [errorMessage, setErrorMsg] = useState<string | null>(null);
+
+  const formik = useFormik({
+    initialValues: InitiaState,
+    validationSchema: Yup.object({
+      email: Yup.string().email().required("Required"),
+      password: Yup.string().required("Required").min(8),
+    }),
+    onSubmit: handleSubmit,
+  });
+
+  // useEffect(() => {
+  //   accessToken && token && router.push("/dashboard");
+  //   // accessToken && token && router.back();
+  // }, [accessToken, token]);
+
+  async function handleSubmit(
+    values: InitiaStateT,
+    { resetForm }: { resetForm: any }
+  ) {
+    console.log("Attempting to Login");
+
+    try {
+      // const res = await login({
+      //   ...values,
+      //   email: values?.email.toLowerCase(),
+      // }).unwrap();
+      // if (res) {
+      //   // Cookies.set("accessToken", res.access_token);
+      //   // dispatch(
+      //   //   setCredentials({
+      //   //     accessToken: res.access_token,
+      //   //   })
+      //   // );
+      //   resetForm();
+      //   // router.push("/");
+      // }
+      console.log("Response from login page,saving!!", {
+        // res,
+      });
+    } catch (error) {
+      if (error) console.log("Login page error", error);
+      // if ((error as errorRtk)?.data) {
+      //   setErrorMsg((error as errorRtk)?.data?.detail);
+      //   toast.error((error as errorRtk)?.data?.detail);
+      console.log("Login failed!!!", error);
+    }
+    // if (!error.originalStatus) return "No server response";
+    // if (error.originalStatus >= 500) {
+    //   setErrorMsg(500);
+    //   console.log(error);
+    // }
+    // if (error.originalStatus === 401) {
+    //   setErrorMsg("Unauthorized");
+    //   return;
+    // }
+    // if (error.originalStatus === 400) {
+    //   setErrorMsg(400);
+    //   return;
+    // }
+    // if (error?.data) {
+    //   setErrorMsg(error?.data?.error);
+  }
+
+  // }
+  // function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  //   const { name, value } = e.target;
+  //   formik.setValues((prev) => ({ ...prev, [name]: value }));
+  // }
 
   return (
     <Fragment>
@@ -67,7 +148,7 @@ const Page: NextPageWithLayout = () => {
                         type="password"
                         autoComplete="current-password"
                         required
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-md border-0 pl-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       />
                     </div>
                     <div className="text-sm my-6">
@@ -101,7 +182,7 @@ const Page: NextPageWithLayout = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </div>{" "}
           <div className="grow relative min-h-full hidden md:block md:w-[50%] overflow-hidden">
             <div
               className="relative overflow-hidden flex flex-col justify-center
@@ -122,7 +203,7 @@ const Page: NextPageWithLayout = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </div>{" "}
         </section>
       </Layout>
     </Fragment>

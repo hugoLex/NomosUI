@@ -24,7 +24,13 @@ const useQueryToggler = () => {
       scroll: false,
     });
   }
+  function UpdateUrlParams(key: string, value: string | Number) {
+    urlSearchParamsString.set(key, value as string);
 
+    router.push(`${pathname}?${urlSearchParamsString}`, {
+      scroll: false,
+    });
+  }
   const removeQueryParam = (paramToDelete: string) => {
     // Remove the parameter from the query object
     urlSearchParamsString.delete(paramToDelete);
@@ -44,6 +50,7 @@ const useQueryToggler = () => {
   return {
     createQueryString,
     searchParams,
+    UpdateUrlParams,
     mobileView,
     router,
     pathname,

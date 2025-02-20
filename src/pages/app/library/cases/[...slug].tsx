@@ -1,3 +1,4 @@
+"use client";
 import React, {
   Fragment,
   useContext,
@@ -23,6 +24,8 @@ import { useCaseQuery } from "@app/store/services/caseSlice";
 import axios from "axios";
 import matter from "gray-matter";
 import { isError } from "util";
+import { useSearchParams } from "next/navigation";
+import useQueryToggler from "@app/hooks/useQueryHandler";
 
 const tabItems: TabItem[] = [
   {
@@ -49,16 +52,26 @@ const tabItems: TabItem[] = [
 ];
 
 const Page: NextPageWithLayout = () => {
+  const { UpdateUrlParams, searchParams } = useQueryToggler();
+  const caseTitleName = searchParams.get("title");
+  const caseTitleNam = searchParams.get("tab");
   const router = useRouter();
   const { referrer } = useContext(AppLayoutContext);
   const { slug, title, tab } = router.query;
   const caseId = slug as string;
-  const caseTitle = String(title);
+  const caseTitle = String(caseTitleName);
   const tabId: string = tab ? String(tab) : "case";
   const { counselData, judgeData } = dummyCaseDetails;
 
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
-
+  const h2Ref = useRef<HTMLHeadingElement | null>(null);
+  const isH2Visible = useVisibility({
+    ref: h2Ref,
+    options: {
+      root: null,
+      threshold: 0.8,
+    },
+  });
   const isH1Visible = useVisibility({
     ref: h1Ref,
     options: {
@@ -66,6 +79,7 @@ const Page: NextPageWithLayout = () => {
       threshold: 0.8,
     },
   });
+
   const [tabs, setTabs] = useState(tabItems);
 
   const { isError, isLoading, data } = useCaseQuery(caseId);
@@ -127,21 +141,21 @@ const Page: NextPageWithLayout = () => {
   //   router.push(`/search?q=${query}`);
   // };
 
-  const onTabsSelect = (_id: string) => {
-    const newTabs = tabs.map(({ active, id, label }, k) => {
-      id === _id ? (active = true) : (active = false);
-      return { active, id, label };
-    });
+  // const onTabsSelect = (_id: string) => {
+  //   const newTabs = tabs.map(({ active, id, label }, k) => {
+  //     id === _id ? (active = true) : (active = false);
+  //     return { active, id, label };
+  //   });
 
-    setTabs(newTabs);
-    // setSelectedTab(tabs.filter((itx) => itx.id === _id)[0]);
-    router.push({
-      pathname: `/library/cases/${slug}`,
-      query: {
-        tab: tabs.filter((itx) => itx.id === _id)[0].id,
-      },
-    });
-  };
+  //   setTabs(newTabs);
+  //   // setSelectedTab(tabs.filter((itx) => itx.id === _id)[0]);
+  //   router.push({
+  //     pathname: `/library/cases/${slug}`,
+  //     query: {
+  //       tab: tabs.filter((itx) => itx.id === _id)[0].id,
+  //     },
+  //   });
+  // };
 
   if (isLoading)
     return (
@@ -156,9 +170,15 @@ const Page: NextPageWithLayout = () => {
     <Fragment>
       <Head title={`Case - ${caseTitle}`} />
 
-      <Navbar query={caseTitle} isTitle={isH1Visible} referrer={referrer}>
+      <Navbar
+        query={caseTitle as string}
+        isTitle={isH1Visible}
+        isTitle2={isH2Visible}
+        referrer={referrer}
+      >
         <div className="flex-1 flex justify-end">
-          <Tabs tabs={tabs} onClick={onTabsSelect} />
+          <Tabs tabs={tabs} />
+          {/* <Tabs tabs={tabs} onClick={onTabsSelect} /> */}
         </div>
       </Navbar>
 
@@ -174,7 +194,9 @@ const Page: NextPageWithLayout = () => {
       {tabId === "judgement" && (
         <CaseJudgementAnalysisView data={analysisDocument} />
       )}
-      {tabId === "precedent" && <CasePrecedentAnalyticsView id={caseId} />}
+      {tabId === "precedent" && (
+        <CasePrecedentAnalyticsView innerRef={h2Ref} id={caseId} />
+      )}
     </Fragment>
   );
 };

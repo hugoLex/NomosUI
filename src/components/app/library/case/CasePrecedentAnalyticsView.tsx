@@ -1,4 +1,10 @@
-import React, { Fragment, useEffect, useMemo, useState } from "react";
+import React, {
+  Fragment,
+  MutableRefObject,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { HiAdjustmentsHorizontal } from "react-icons/hi2";
 import { FilterIcon2, MoreIcon } from "@app/components/icons";
 import PrecedenceTreatment from "./PrecedenceTreatment";
@@ -8,7 +14,13 @@ import { Loader } from "@app/components/ui";
 import { dummyCaseDetails } from "@app/utils";
 import { SelectedTreatment, TPrecedentData } from "@app/types";
 
-const PrecedentView = ({ id }: { id: string }) => {
+const PrecedentView = ({
+  id,
+  innerRef,
+}: {
+  id: string;
+  innerRef: MutableRefObject<any>;
+}) => {
   const { precedentData } = dummyCaseDetails;
 
   const [cases, setCases] = useState<TPrecedentData[]>([]);
@@ -45,7 +57,8 @@ const PrecedentView = ({ id }: { id: string }) => {
               Judicial insight
             </p>
             <h2
-              id="searchQuery"
+              ref={innerRef}
+              id="Judicialinsight"
               className="text-xx font-normal text-[#245b91] mb-6"
             >
               Precedent analytics

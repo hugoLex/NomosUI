@@ -16,15 +16,15 @@ export * from "./analytics";
 
 export type QueryReturnValue<T = unknown, E = unknown, M = unknown> =
   | {
-      error: E;
-      data?: undefined;
-      meta?: M;
-    }
+    error: E;
+    data?: undefined;
+    meta?: M;
+  }
   | {
-      error?: undefined;
-      data: T;
-      meta?: M;
-    };
+    error?: undefined;
+    data: T;
+    meta?: M;
+  };
 
 export type GenericObject = { [key: string]: any };
 
@@ -38,7 +38,8 @@ export type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
-export interface LayoutProp extends ComponentProps {}
+export type errorRTK = { data: { detail: string }; status: number };
+export interface LayoutProp extends ComponentProps { }
 
 export type LayoutContextProp = {
   isSearchModal: boolean;
