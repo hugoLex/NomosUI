@@ -53,6 +53,13 @@ const CaseView = ({
       <Container>
         <div className={`py-8  w-full md:min-w-[980px]`}>
           <div className="md:grid grid-cols-12 gap-8">
+            <div className="col-span-4 self-baselane">
+              <div className="sticky top-[68px] space-y-2">
+                <div className="overflow-y-auto scrollbar">
+                  <CaseDetailsSidebarView {...caseSidebarProps} />
+                </div>
+              </div>
+            </div>
             <div className="col-span-8 lg:flex gap-3 text-dark-2">
               <div className="block text-wrap overflow-x-hidden">
                 <h3 className="hidden font-light text-[0.813rem]   mt-2 pr-2.5 py-1 leading-[1.25rem]">
@@ -158,11 +165,6 @@ const CaseView = ({
                 </p>
               ))} */}
                 </div>
-              </div>
-            </div>
-            <div className="col-span-4 self-baselane">
-              <div className="sticky top-[68px] space-y-2 overflow-y-scroll">
-                <CaseDetailsSidebarView {...caseSidebarProps} />
               </div>
             </div>
           </div>

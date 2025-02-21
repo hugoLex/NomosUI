@@ -126,22 +126,22 @@ const CaseDetailsSidebarView = (props: {
             ))}
           </div>
 
-          <div className="space-y-4 text-dark-2 font-rubik overflow-y-scroll h-screen">
-            <h4 className="flex items-center gap-4 text-base font-medium  ">
+          <div className="space-y-4 text-dark-2 font-rubik">
+            <h4 className="flex items-center gap-2 text-base font-normal  ">
               <DocumentInfo />
               Document Info
             </h4>
 
-            <div className="space-y-6 ">
-              <div>
-                <h5 className="text-base font-medium text-inherit">
+            <div className="space-y-4 ">
+              <div className="space-y-2">
+                <h5 className="text-base font-normal text-inherit">
                   Decision History
                 </h5>
                 <p className="text-sm">{caseDocument.decision_history}</p>
               </div>
 
-              <div className="space-y-3">
-                <h5 className="text-base font-medium text-inherit">Judges</h5>
+              <div className="space-y-2">
+                <h5 className="text-base font-normal text-inherit">Judges</h5>
                 <ul className="text-inherit text-sm">
                   {caseDocument.judges.map(({ id, name }) => (
                     <li key={id}>
@@ -156,8 +156,8 @@ const CaseDetailsSidebarView = (props: {
                 </ul>
               </div>
 
-              <div className="space-y-3">
-                <h5 className="text-base font-medium text-inherit">Actions</h5>
+              <div className="space-y-2">
+                <h5 className="text-base font-normal text-inherit">Actions</h5>
 
                 <ul className="space-y-2">
                   {actions.map((btn, btx) => (
@@ -171,9 +171,9 @@ const CaseDetailsSidebarView = (props: {
                 </ul>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {/* <Root></Root> */}
-                <h5 className="text-base font-medium text-inherit">
+                <h5 className="text-base font-normal text-inherit">
                   Similar cases
                 </h5>
 

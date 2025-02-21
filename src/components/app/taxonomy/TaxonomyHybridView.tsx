@@ -77,7 +77,7 @@ const TaxonomyHybridView = ({ data }: { data: MappedTx[] }) => {
       {/* Main Content Area */}
       <div className="flex-1 flex overflow-y-hidden">
         {/* Left Panel: Areas of Law */}
-        <div className="w-72 border-r bg-white p-4 overflow-y-auto">
+        <div className="w-72 border-r bg-white p-4 overflow-y-auto scrollbar">
           <h3 className="text-base font-semibold mb-4">Areas of Law</h3>
           <div className="space-y-3 overflow-y-auto">
             {filteredAreas.map((area) => (
@@ -93,7 +93,7 @@ const TaxonomyHybridView = ({ data }: { data: MappedTx[] }) => {
 
         {/* Right Panel: Area Details */}
         <div className="flex-1 flex overflow-y-hidden">
-          <div className="flex-1 p-6 overflow-y-auto">
+          <div className="flex-1 p-6 overflow-y-auto scrollbar">
             {selectedAreaCard ? (
               <TaxonomyAreaSummary
                 taxonomy={filteredAreas.find((a) => a.id === selectedAreaCard)}
