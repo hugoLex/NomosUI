@@ -8,14 +8,19 @@ function AuthSideCover({ page }: { page: string }) {
       <div
         className={`relative font-inter  leading-[normal]  md:grid place-items-center h-full w-full`}
       >
-        {/* <Image
+        <div className="absolute   top-0 bottom-0 right-0 left-0 z-50 bg-[#002244]/70">
+          <h1 className="text-2xl text-white font-playfair font-semibold mt-[50%] text-center whitespace-nowrap">
+            Research. Draft. Collaborate
+          </h1>
+        </div>
+        <Image
           fill
           style={{ objectFit: "cover" }}
-          src={"/images/loginimg.png"}
+          src={"/images/signup.png"}
           alt="Man standing"
           className=""
-        /> */}
-        <div className="">
+        />
+        {/* <div className="">
           <div className="relative z-40 mt-auto mb-[.69rem] lg:mb-[.56rem] flex justify-center">
             <span className=" md:block text-[80px] p-4 pr-6 bg-white font-extrabold">
               <Link href="/">
@@ -36,7 +41,7 @@ function AuthSideCover({ page }: { page: string }) {
               Research. Draft. Collaborate - All in One Place.
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

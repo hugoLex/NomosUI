@@ -1,19 +1,17 @@
-"use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-// import Success from "./create/success";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-// import { useCreateNewPasswordMutation } from "@/redux/features/auth/authApiSlice";
 import AuthSideCover from "@app/components/app/authentication/AuthSideCover";
 import ErrorMessageServer from "@app/components/app/authentication/ErrorMessageServer";
 import SmallLoadingSpinner from "@app/components/app/authentication/smLoadingSpinner";
+import { useCreateNewPasswordMutation } from "@app/store/services/authenticationslice";
 const CreateNewPassword = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const VerificationToken = searchParams.get("token");
   console.log("token available", VerificationToken);
-  // const [createNewPassword, { isLoading }] = useCreateNewPasswordMutation();
+  const [createNewPassword, { isLoading }] = useCreateNewPasswordMutation();
   const [pwdInputType, setPwdInputType] = useState({
     password: false,
     password2: false,
@@ -60,24 +58,24 @@ const CreateNewPassword = () => {
   return (
     <section className="lg:h-svh  text-default2">
       <div className=" lg:grid h-full grid-cols-2 items-center relative bg-white">
-        <AuthSideCover page="create-new-password" />
         <div className="relative flex items-center z-0 h-full  pb-5">
           {/* <Success SuccesState={{ setSuccesMsg, succesMsg }} /> */}
 
-          <div className="max-w-[25.6875rem] mx-auto max-lg:pl-[2.88rem] max-lg:pr-[3.56rem] bg-white">
-            <div
-              className={`text-default2 max-lg:pl-[1.38rem] mb-[3.31rem] lg:mb-[6.06rem] ${
-                succesMsg ? "ml-[-25px]" : "ml-[-50px]"
-              } `}
-            >
-              <h3 className="text-[2rem] font-normal leading-[2.375rem]">
+          <div className=" max-w-[25.6875rem] md:w-[25.6875rem] mx-auto max-lg:pl-[2.51rem] max-lg:pr-[3.11rem] bg-white ">
+            <div className=" mb-[3.31rem] lg:mb-[3rem] ">
+              <h3 className="text-[1.74419rem] lg:text-[2.15rem] font-normal ">
                 Set new password
               </h3>
-              <p className="text-base mt-[1rem] mb-[1.81rem] max-w-[19.0625rem] font-normal leading-[1.25rem]">
-                Enter your new password below and check the hint while typing
-                it.
+              <p className="text-[0.87206rem] md:text-sm mt-[1rem] md:mt-[0.62rem] ">
+                Enter your new password in the field provided below.
               </p>
+              {/* {resmessage && (
+                <p className="text-[red] text-[0.87206rem] md:text- base max-w-[19.0625rem] mt-[1rem] md:mt-[0.62rem] font-normal leading-[normal">
+                  {resmessage}. Please check your mailbox.
+                </p>
+              )} */}
             </div>
+
             <Formik
               initialValues={{
                 password: "",
@@ -85,37 +83,26 @@ const CreateNewPassword = () => {
               }}
               validationSchema={Yup.object({
                 password: Yup.string().required("Required").min(8),
-                password2: Yup.string().oneOf(
-                  [Yup.ref("password"), null as unknown as string],
-                  "password must match"
-                ),
+                password2: Yup.string()
+                  .oneOf([Yup.ref("password")], "Passwords must match")
+                  .required("Required"),
               })}
               onSubmit={handleSubmit}
             >
               <Form>
                 {/* <Form onSubmit={handleSubmit}> */}
-                <div className="relative ">
-                  <div className="flex mb-[2.81rem] items-center px-[0.94rem] py-[0.5rem] rounded-[0.5rem] border border-solid border-secondary ">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="23"
-                      viewBox="0 0 20 23"
-                      fill="none"
-                    >
-                      <path
-                        d="M16.4847 10.9984L17.1678 10.96C18.1712 10.974 19 11.8326 19 12.817V19.9598C19 20.9853 18.1686 21.817 17.1429 21.817H2.85714C1.8314 21.817 1 20.9853 1 19.9598V12.817C1 11.7995 1.81776 10.9734 2.832 10.96L3.51527 10.9984L4.57143 11.0578V10V6.42857C4.57143 3.43577 7.00719 1 10 1C12.9928 1 15.4286 3.43577 15.4286 6.42857V10V11.0578L16.4847 10.9984ZM13.5714 11H14.5714V10V6.42857C14.5714 3.90648 12.5209 1.85714 10 1.85714C7.47913 1.85714 5.42857 3.90648 5.42857 6.42857V10V11H6.42857H13.5714Z"
-                        stroke="#8C7B8F"
-                        strokeWidth="2"
-                      />
-                    </svg>
+                <div className="pt-[40px] mb-[18px] relative  ">
+                  <span className="mb-[5px] text-[0.75rem] font-normal inline-block">
+                    New password
+                  </span>{" "}
+                  <div className="flex items-center px-[20px] py-[16px] rounded-[5px] border border-solid border-gray-black">
                     <Field
                       type={pwdInputType.password ? "password" : "text"}
                       name="password"
                       // value={formValue.password}
                       // onChange={handleChange}
                       placeholder="Password"
-                      className="focus:outline-0 bg-transparent ml-[0.19rem] block w-full mt-1 font-normal text-secondary text-[1.125rem]"
+                      className="focus:outline-0  block w-full  font-normal text-gray-authinput text-sm"
                     />
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -140,28 +127,18 @@ const CreateNewPassword = () => {
                     <ErrorMessage name="password" />
                   </span>
                 </div>
-                <div className="relative">
-                  <div className="flex items-center px-[0.94rem] py-[0.5rem] rounded-[0.5rem] border border-solid border-secondary ">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="23"
-                      viewBox="0 0 20 23"
-                      fill="none"
-                    >
-                      <path
-                        d="M16.4847 10.9984L17.1678 10.96C18.1712 10.974 19 11.8326 19 12.817V19.9598C19 20.9853 18.1686 21.817 17.1429 21.817H2.85714C1.8314 21.817 1 20.9853 1 19.9598V12.817C1 11.7995 1.81776 10.9734 2.832 10.96L3.51527 10.9984L4.57143 11.0578V10V6.42857C4.57143 3.43577 7.00719 1 10 1C12.9928 1 15.4286 3.43577 15.4286 6.42857V10V11.0578L16.4847 10.9984ZM13.5714 11H14.5714V10V6.42857C14.5714 3.90648 12.5209 1.85714 10 1.85714C7.47913 1.85714 5.42857 3.90648 5.42857 6.42857V10V11H6.42857H13.5714Z"
-                        stroke="#8C7B8F"
-                        strokeWidth="2"
-                      />
-                    </svg>
+                <div className=" mb-[18px] relative  ">
+                  <span className="mb-[5px] text-[0.75rem] font-normal inline-block">
+                    Confirm password
+                  </span>{" "}
+                  <div className="flex items-center px-[20px] py-[16px] rounded-[5px] border border-solid border-gray-black">
                     <Field
                       type={pwdInputType.password2 ? "password" : "text"}
                       name="password2"
                       // value={formValue.password2}
                       // onChange={handleChange}
                       placeholder="Confirm Password"
-                      className="focus:outline-0 bg-transparent ml-[0.19rem] block w-full mt-1 font-normal text-secondary text-[1.125rem]"
+                      className="focus:outline-0  block w-full  font-normal text-gray-authinput text-sm"
                     />
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -186,7 +163,6 @@ const CreateNewPassword = () => {
                     <ErrorMessage name="password2" />
                   </span>
                 </div>
-
                 <div className="relative flex items-center mt-[3.37rem]">
                   {/* {<AuthBtn btnProps={{ isLoading, action: "Submit" }} />} */}
                   {
@@ -201,16 +177,16 @@ const CreateNewPassword = () => {
                     type="submit"
                     // onClick={() => setSuccesMsg(true)}
                     disabled={VerificationToken ? false : true}
-                    className="mt-5 w-full h-[3.05231rem] md:h-[3.25rem] px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-primary shadow-[0_10px_15px_-3px_rgba(1,16,38,0.30),_0_4px_6px_-4px_rgba(1,16,38,0.30)] rounded-[0.5rem] lg:rounded-[0.25rem] focus:outline-none backdrop-blur-[5.5px]"
+                    className="mt-5 w-full h-[3.05231rem] md:h-[3.25rem] px-4 py-2 tracking-wide text-white  bg-blue_btn disabled:cursor-not-allowed rounded-[5px]  focus:outline-none relative"
                   >
-                    {true ? <SmallLoadingSpinner /> : "Submit password"}
-                    {/* {isLoading ? <LoadingSpinner /> : "Submit password"} */}
+                    {isLoading ? <SmallLoadingSpinner /> : "Submit password"}
                   </button>
                 </div>
               </Form>
             </Formik>
           </div>
         </div>
+        <AuthSideCover page="create-new-password" />
       </div>
     </section>
   );

@@ -35,6 +35,7 @@ const config = {
       },
       fontFamily: {
         rubik: ["var(--font-rubik)", ...fontFamily.sans],
+        playfair: ["var(--font-playfair)", ...fontFamily.serif],
         "dm-sans": ["var(--font-dm-sans)", ...fontFamily.sans],
         inter: ["var(--font-inter)", ...fontFamily.sans],
         roboto: ["var(--font-roboto)", ...fontFamily.sans],
@@ -43,6 +44,7 @@ const config = {
       colors: {
         primary: "#245b91",
         secondary: "#4F0072",
+        blue_btn: "rgb(18, 45, 101, 1)",
         dark,
         accent: "#6019800A",
         success: "#4BB543",

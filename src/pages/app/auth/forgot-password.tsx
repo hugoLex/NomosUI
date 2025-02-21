@@ -123,7 +123,7 @@ const Page = () => {
                     />
                   }
                   <Link href={"/auth/login"}>
-                    <button className="bg-[rgba(41,82,255,.1)] mt-[16px] w-full py-[16px] px-4 h-[56px]  tracking-wide text-primary transition-colors duration-200 shadow-[0_10px_15px_-3px_rgba(1,16,38,0.30),_0_4px_6px_-4px_rgba(1,16,38,0.30)] rounded-[5px]">
+                    <button className="bg-[rgba(41,82,255,.1)] mt-[16px] w-full py-[16px] px-4 h-[56px]  tracking-wide text-primary transition-colors duration-200 rounded-[5px]">
                       Back to Login
                     </button>
                   </Link>

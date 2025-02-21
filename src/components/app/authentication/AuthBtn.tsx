@@ -28,7 +28,7 @@ function AuthBtn({ btnProps, ...check }: AuthBtnProps) {
       type="submit"
       className={`w-full ${
         "checked" in check && !check?.checked && "disabled:cursor-not-allowed"
-      } py-[16px] px-4 h-[56px]  tracking-wide text-white transition-colors duration-200 bg-primary shadow-[0_10px_15px_-3px_rgba(1,16,38,0.30),_0_4px_6px_-4px_rgba(1,16,38,0.30)] rounded-[5px]`}
+      } py-[16px] px-4 h-[56px]  tracking-wide text-white transition-colors duration-200 bg-blue_btn rounded-[5px]`}
     >
       {/* <LoadingSpinner /> */}
       {isLoading ? <SmallLoadingSpinner /> : action}

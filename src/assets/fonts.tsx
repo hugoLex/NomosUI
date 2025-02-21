@@ -1,5 +1,5 @@
 import localFont from "next/font/local";
-import { Inter, Poppins, Rubik, Roboto } from "next/font/google";
+import { Inter, Poppins, Rubik, Roboto, Playfair } from "next/font/google";
 
 export const inter = Inter({
   variable: "--font-inter",
@@ -12,6 +12,13 @@ export const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700"],
+  display: "swap",
+  preload: true,
+});
+export const playfair = Playfair({
+  variable: "--font-playfair",
+  subsets: ["latin"],
+  weight: ["300", "400", "600", "700"],
   display: "swap",
   preload: true,
 });
@@ -34,4 +41,5 @@ export const fontMapper = {
   "font-rubik": rubik.variable,
   "font-inter": inter.variable,
   "font-poppins": poppins.variable,
+  "font-playfair": playfair.variable,
 };

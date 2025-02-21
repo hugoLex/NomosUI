@@ -16,8 +16,23 @@ import AuthBtn from "@app/components/app/authentication/AuthBtn";
 import { useLoginMutation } from "@app/store/services/authenticationslice";
 import Image from "next/image";
 import { logo } from "@app/assets";
-
+import CryptoJS from "crypto-js";
 const Login = () => {
+  const secretKey = "your-secret-key";
+
+  const encryptText = (text: string) => {
+    return CryptoJS.AES.encrypt(text, secretKey).toString();
+  };
+
+  const decryptText = (ciphertext: string) => {
+    const bytes = CryptoJS.AES.decrypt(ciphertext, secretKey);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  };
+
+  const encrypted = encryptText("Hello World");
+  console.log(encrypted);
+  console.log(decryptText(encrypted));
+
   // const token = useSelector(selectCurrentToken)
   // const accessToken = Cookies.get("accessToken");
   const [login, { isLoading }] = useLoginMutation();
@@ -132,9 +147,9 @@ const Login = () => {
                   className="mx-auto h-10 w-auto"
                 />
               </Link>
-              <p className="text-[1.5rem] mb-[1.81rem] text-black  font-semibold leading-[normal]">
+              {/* <p className="text-[1.5rem] mb-[1.81rem] text-black  font-semibold leading-[normal]">
                 Welcome back Admin
-              </p>
+              </p> */}
             </div>
 
             <form onSubmit={formik.handleSubmit}>
