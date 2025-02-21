@@ -4,7 +4,6 @@ import Head from "next/head";
 import { store } from "@app/store/store";
 import { NoSSR } from "@app/components/shared";
 import { AppPropsWithLayout } from "@app/types";
-
 import { inter, poppins, rubik, roboto } from "@app/assets/fonts";
 import "../assets/app.css";
 

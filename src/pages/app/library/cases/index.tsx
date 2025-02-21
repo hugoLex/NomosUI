@@ -77,7 +77,7 @@ const Page: NextPageWithLayout = () => {
     // Early return for loading state
     return (
       <Fragment>
-        <Navbar query={""} isTitle />
+        <Navbar query={""} isTitle isTitle2={false} />
         {/* Removed isTitle as it's always false*/}
         <div className="flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
           <Loader variant="classic" size={80} />
@@ -91,7 +91,7 @@ const Page: NextPageWithLayout = () => {
     return (
       <Fragment>
         <Head title={`Cases - ${title}`} />
-        <Navbar query={""} isTitle />
+        <Navbar query={""} isTitle isTitle2={false} />
         <ErrorView404
           caption="No matching legal resources found"
           desc="Check your search terms and try again, or explore our curated collection of legal resources to find what you need"
@@ -102,7 +102,7 @@ const Page: NextPageWithLayout = () => {
 
   return (
     <Fragment>
-      <Navbar query={""} isTitle />
+      <Navbar query={""} isTitle isTitle2={false} />
 
       {data && (
         <Container>

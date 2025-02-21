@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { IoClose } from "react-icons/io5";
 import SmallTextBtn from "../../../shared/SmallBtn";
 import { useQueryHandler, useVisibility } from "@app/hooks";
@@ -21,7 +22,6 @@ import {
   Navbar,
 } from "@app/components/shared/";
 import { AppLayoutContext } from "@app/components/layout";
-import Link from "next/link";
 
 const CounselDetailsView = () => {
   const { referrer } = useContext(AppLayoutContext);
@@ -80,6 +80,7 @@ const CounselDetailsView = () => {
       />
     </div>
   );
+
   const loadMore = () => {
     setCurrentPage((prevPage) => prevPage + 1); // Increment page number
   };
@@ -87,7 +88,12 @@ const CounselDetailsView = () => {
     <>
       <Head title={`Counsel - ${counselName}`} />
 
-      <Navbar query={profileName ?? "Counsel"} isTitle referrer={referrer} />
+      <Navbar
+        query={profileName ?? "Counsel"}
+        isTitle
+        referrer={referrer}
+        isTitle2={false}
+      />
       {(isFetching || isLoading) && (
         <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-screen">
           <Loader variant="classic" size={80} />
