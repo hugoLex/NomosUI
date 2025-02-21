@@ -12,6 +12,7 @@ import { ActionButtons } from "@app/components/shared";
 import { HiArrowUturnLeft } from "react-icons/hi2";
 import useQueryToggler from "@app/hooks/useQueryHandler";
 
+// What is the reason for adding  isTitle2
 type NavbarProps = PropsWithChildren & {
   query: string;
   isTitle: boolean;

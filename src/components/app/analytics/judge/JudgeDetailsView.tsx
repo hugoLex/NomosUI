@@ -64,6 +64,7 @@ const JudgeDetailsView = () => {
         query={profileName ?? "Justice"}
         isTitle={isH1Visible}
         referrer={referrer}
+        isTitle2={false}
       />
 
       {(isFetching || isLoading) && (

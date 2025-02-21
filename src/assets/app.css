@@ -141,6 +141,10 @@ h5 {
   .overlay {
     @apply block bg-overlay h-full w-full;
   }
+
+  .clipPath {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
 }
 
 @layer utilities {

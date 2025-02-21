@@ -45,7 +45,7 @@ const AllJudgesView = () => {
       <Fragment>
         <Head title={`Judges - List`} />
 
-        <Navbar query={""} isTitle />
+        <Navbar query={""} isTitle isTitle2={false} />
         {/* Removed isH1Visible as it's always false*/}
         <div className="flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-screen">
           <LoadingSpinner variant="big" />
@@ -60,7 +60,7 @@ const AllJudgesView = () => {
       <Fragment>
         <Head title={`Judges - List`} />
 
-        <Navbar query={""} isTitle />
+        <Navbar query={""} isTitle isTitle2={false} />
         <ErrorView404
           caption="No matching legal resources found"
           desc="Check your search terms and try again, or explore our curated collection of legal resources to find what you need"
@@ -73,7 +73,7 @@ const AllJudgesView = () => {
     <Fragment>
       <Head title={`Judges - List`} />
 
-      <Navbar query={""} isTitle />
+      <Navbar query={""} isTitle isTitle2={false} />
 
       {allData && (
         <Container className="">

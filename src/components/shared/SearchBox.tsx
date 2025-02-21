@@ -149,7 +149,7 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
           }
         })();
 
-        setIsSearchTags(false);
+        setIsSearchSuggestions(false);
       }
     };
 
@@ -212,7 +212,7 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
           onSubmit={onSearchSubmit}
           onKeyDown={handleKeyDown}
           className="relative flex flex-col gap-5 p-2.5 rounded-md mt-8 text-2xl duration-300
-            transition-all bg-stone-50 ring-1 ring-[#d5e1e4] focus-within:ring-2"
+            transition-all bg-stone-50 ring-1 ring-[#d5e1e4] focus-within:ring-2 z-20"
         >
           <ReactTextareaAutosize
             maxRows={10}
@@ -278,76 +278,78 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
           </div>
         </form>
 
-        <div
-          className={`relative w-full space-y-1 rounded-b-md transition-all
-         bg-stone-50 ring-1 ring-[#d5e1e4] focus-within:ring-2 p-3
+        <div className={`relative clippPath`}>
+          <div
+            className={`absolute w-full space-y-1 rounded-b-md transition-all 
+         bg-stone-50 ring-1 ring-[#d5e1e4] focus-within:ring-2 p-3 duration-200
             ${
               isSearchTags || isSearchSuggetions
-                ? "z-10 h-auto bottom-[5px] opacity-100 visible"
-                : "z-0 h-0 bottom-0 opacity-0 invisible"
+                ? "z-10 h-auto bottom-1 translate-y-full opacity-100 visible"
+                : "z-0 h-0 -bottom-10  translate-x-0 opacity-0 invisible"
             }
          `}
-        >
-          {isSearchTags && (
-            <ul className={`relative flex gap-3 w-full transition-all my-3`}>
-              {mentionsList.map((mention, i) => {
-                return (
-                  <li
-                    key={i}
-                    role="button"
-                    className={`flex gap-3 justify-between items-center text-base bg-[#EBF2FF] text-primary rounded  px-1 `}
-                    onClick={(e: MouseEvent<HTMLLIElement>) =>
-                      insertNameIntoInput(e, mention["name"])
-                    }
-                    data-mention={mention["name"]}
-                  >
-                    <p className="font-rubik text-inherit">
-                      <span>{symbol}</span>
-                      <span>{mention["name"]}</span>
-                    </p>
-                    <svg
-                      width="10"
-                      height="10"
-                      viewBox="0 0 10 10"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className=" text-primary"
+          >
+            {isSearchTags && (
+              <ul className={` flex gap-3 w-full transition-all my-3  `}>
+                {mentionsList.map((mention, i) => {
+                  return (
+                    <li
+                      key={i}
+                      role="button"
+                      className={`flex gap-3 justify-between items-center text-base bg-[#EBF2FF] text-primary rounded  px-1 `}
+                      onClick={(e: MouseEvent<HTMLLIElement>) =>
+                        insertNameIntoInput(e, mention["name"])
+                      }
+                      data-mention={mention["name"]}
                     >
-                      <path
-                        d="M1.28125 0.625C0.917578 0.625 0.625 0.917578 0.625 1.28125V7.84375C0.625 8.20742 0.917578 8.5 1.28125 8.5C1.64492 8.5 1.9375 8.20742 1.9375 7.84375V2.86445L8.25391 9.18359C8.51094 9.44062 8.92656 9.44062 9.18086 9.18359C9.43516 8.92656 9.43789 8.51094 9.18086 8.25664L2.86445 1.94023H7.84375C8.20742 1.94023 8.5 1.64766 8.5 1.28398C8.5 0.920312 8.20742 0.627734 7.84375 0.627734H1.28125V0.625Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
+                      <p className="font-rubik text-inherit">
+                        <span>{symbol}</span>
+                        <span>{mention["name"]}</span>
+                      </p>
+                      <svg
+                        width="10"
+                        height="10"
+                        viewBox="0 0 10 10"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className=" text-primary"
+                      >
+                        <path
+                          d="M1.28125 0.625C0.917578 0.625 0.625 0.917578 0.625 1.28125V7.84375C0.625 8.20742 0.917578 8.5 1.28125 8.5C1.64492 8.5 1.9375 8.20742 1.9375 7.84375V2.86445L8.25391 9.18359C8.51094 9.44062 8.92656 9.44062 9.18086 9.18359C9.43516 8.92656 9.43789 8.51094 9.18086 8.25664L2.86445 1.94023H7.84375C8.20742 1.94023 8.5 1.64766 8.5 1.28398C8.5 0.920312 8.20742 0.627734 7.84375 0.627734H1.28125V0.625Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
 
-          {data && (
-            <ul className="list-none">
-              {suggestionsList.map(({ id: sId, type, text }, sdx) => (
-                <li
-                  key={sdx}
-                  role="button"
-                  ref={(el) => (suggestionRefs.current[sdx] = el)}
-                  onClick={(evt) => insertSuggestionIntiInput(evt, text, sId)}
-                  className="flex justify-between items-center hover:bg-stone-200/80 p-1"
-                >
-                  <span>{text}</span>
-                  {type === "case_title" && (
-                    <Link
-                      href={`/library/cases/${sId}?title=${text}&tab=case`}
-                      className="px-0.5 inline-flex items-center bg-[#EBF2FF] text-primary rounded-sm "
-                    >
-                      view
-                      <GoArrowUpRight />
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
-          )}
+            {data && (
+              <ul className="list-none">
+                {suggestionsList.map(({ id: sId, type, text }, sdx) => (
+                  <li
+                    key={sdx}
+                    role="button"
+                    ref={(el) => (suggestionRefs.current[sdx] = el)}
+                    onClick={(evt) => insertSuggestionIntiInput(evt, text, sId)}
+                    className="flex justify-between items-center text-sm hover:bg-slate-200/50 hover:rounded-sm p-1"
+                  >
+                    <span>{text}</span>
+                    {type === "case_title" && (
+                      <Link
+                        href={`/library/cases/${sId}?title=${text}&tab=case`}
+                        className="px-1 py-0.5 inline-flex items-center bg-[#EBF2FF] text-primary rounded-sm "
+                      >
+                        view
+                        <GoArrowUpRight />
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
     );

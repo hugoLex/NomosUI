@@ -504,7 +504,7 @@ const Page: NextPageWithLayout = () => {
     <Fragment>
       <Head title={`Search Result - ${q}`} />
 
-      <Navbar query={query} isTitle={isTitle} />
+      <Navbar query={query} isTitle={isTitle} isTitle2={false} />
 
       {(isFetching || isLoading) && (
         <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
