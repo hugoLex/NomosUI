@@ -32,7 +32,6 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
             --font-rubik: ${rubik.style.fontFamily};
             --font-inter: ${inter.style.fontFamily};
             --font-poppins:${poppins.style.fontFamily};
-            
           }
         `}
           </style>
