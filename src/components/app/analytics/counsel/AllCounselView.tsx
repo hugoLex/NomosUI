@@ -51,7 +51,7 @@ const AllCounselView = () => {
     return (
       <Fragment>
         <Head title={`Counsel - ${"List"}`} />
-        <Navbar query={""} isTitle={false} isTitle2={false} />{" "}
+        <Navbar />
         <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-screen">
           <Loader variant="classic" size={80} />
         </div>
@@ -65,7 +65,7 @@ const AllCounselView = () => {
       <Fragment>
         <Head title={`Counsel - ${"List"}`} />
 
-        <Navbar query={""} isTitle isTitle2={false} />
+        <Navbar />
         <ErrorView404
           caption="No matching legal resources found"
           desc="Check your search terms and try again, or explore our curated collection of legal resources to find what you need"
@@ -78,7 +78,7 @@ const AllCounselView = () => {
     <Fragment>
       <Head title={`Counsel - ${"List"}`} />
 
-      <Navbar query={""} isTitle isTitle2={false} />
+      <Navbar />
       {allData && (
         <Container className="">
           <div className="flex py-6 w-full md:min-w-[980px]">

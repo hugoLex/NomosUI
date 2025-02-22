@@ -6,7 +6,7 @@ import { Taxonomy } from "@app/types";
 const TaxonomyView = ({ data }: { data: Taxonomy[] }) => {
   return (
     <Fragment>
-      <Navbar query="" isTitle isTitle2={false} />
+      <Navbar />
       <Container className="">
         <div className={`py-8 w-full md:min-w-[980px]`}>
           <div className="hiddenspace-y-3">
