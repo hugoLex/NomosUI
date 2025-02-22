@@ -1,34 +1,43 @@
-import React, {
-  Fragment,
-  PropsWithChildren,
-  RefObject,
-  useContext,
-} from "react";
+import React, { Fragment, PropsWithChildren } from "react";
 import { useRouter } from "next/router";
-
+import { HiArrowUturnLeft } from "react-icons/hi2";
 import { Header } from "@app/components/ui";
 import { ActionButtons } from "@app/components/shared";
 
-import { HiArrowUturnLeft } from "react-icons/hi2";
-import useQueryToggler from "@app/hooks/useQueryHandler";
-
-// What is the reason for adding  isTitle2
 type NavbarProps = PropsWithChildren & {
-  query: string;
-  isTitle: boolean;
-  isTitle2: boolean;
   referrer?: string;
 };
 
-const Navbar = ({
-  children,
-  query,
-  isTitle = false,
-  isTitle2,
-  referrer,
-}: NavbarProps) => {
-  const { UpdateUrlParams, searchParams } = useQueryToggler();
+type NavbarTitleProps = {
+  title?: string;
+  isTitle: boolean;
+  className?: string;
+};
 
+const NavbarTitle = ({
+  isTitle = false,
+  title,
+  className,
+}: NavbarTitleProps) => {
+  return (
+    <div
+      className={`flex-1 transition-all duration-300 ${
+        isTitle ? "opacity-1 visible" : "opacity-0 invisible"
+      }`}
+    >
+      <p
+        className={`font-medium text-center  text-primary 
+          ${title && title.length > 32 ? "truncate" : ""}
+          ${className ? className : ""}
+        `}
+      >
+        {title}
+      </p>
+    </div>
+  );
+};
+
+const Navbar = ({ children, referrer }: NavbarProps) => {
   const router = useRouter();
 
   const handleGoBack = () => {
@@ -42,15 +51,9 @@ const Navbar = ({
   return (
     <Fragment>
       <Header>
-        <div
-          className="border-b border-solid bg-stone-50 
-        border-stone-300 border-opacity-50 rounded-t-lg"
-        >
-          <div
-            className="flex gap-5 justify-between  
-          items-center px-4 md:px-8 py-2.5 w-full relative"
-          >
-            <div className="flex items-center w-[20%] pb-2 gap-2">
+        <div className="border-b border-solid bg-stone-50 border-stone-300 border-opacity-50 rounded-t-lg">
+          <div className="flex gap-5 justify-between items-center px-4 md:px-8  w-full relative">
+            <div className="flex items-center md:min-w-[10%] gap-2">
               {/* {referrer && ( */}
               <HiArrowUturnLeft
                 className="inline-block items-center align-middle cursor-pointer text-gray-400"
@@ -60,26 +63,12 @@ const Navbar = ({
               {/* )} */}
             </div>
 
-            <div
-              className={`flex-1 transition-all duration-300 ${
-                !isTitle2
-                  ? "opacity-1 visible"
-                  : !isTitle
-                  ? "opacity-1 visible"
-                  : "opacity-0 invisible"
-              }`}
-            >
-              <p
-                className={`font-medium text-center mx-auto max-w-[50%] text-primary ${
-                  query && query.length > 32 ? "truncate" : ""
-                }`}
-              >
-                {query}
-              </p>
-            </div>
-
-            {!children && <ActionButtons />}
-            {children && children}
+            {!children && (
+              <div className="flex-1 flex justify-end py-2.5">
+                <ActionButtons />
+              </div>
+            )}
+            {children && <div className="flex-1">{children}</div>}
           </div>
         </div>
       </Header>
@@ -87,4 +76,4 @@ const Navbar = ({
   );
 };
 
-export default Navbar;
+export { Navbar, NavbarTitle };

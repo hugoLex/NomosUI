@@ -5,8 +5,9 @@ import * as Accordion from "@radix-ui/react-accordion";
 
 import { DocumentInfo } from "@app/components/icons";
 import { useScrollspy } from "@app/hooks/useScrollspyHook";
-import { TCaseDocument } from "@app/types";
+import { LegalPersonnal, TCaseDocument } from "@app/types";
 import Link from "next/link";
+import LegalPersonnelWidget from "./LegalPersonnelWidget";
 
 type ContentOutline = "Judicial Panel" | "Decision history";
 // | "judgement"
@@ -32,6 +33,8 @@ const CaseDetailsSidebarView = (props: {
 }) => {
   const { sections, activeSection, caseDocument, scrollToSection } = props;
   const [tab, setTab] = useState<ContentOutline>("Judicial Panel");
+  const judges = caseDocument?.judges ? caseDocument.judges : [];
+  const counsels = caseDocument?.counsels ? caseDocument.counsels : [];
 
   return (
     <Fragment>
@@ -126,7 +129,7 @@ const CaseDetailsSidebarView = (props: {
             ))}
           </div>
 
-          <div className="space-y-4 text-dark-2 font-rubik">
+          <div className="absolute top-0 bottom-0 left-auto h-[calc(100vh-100px)] overflow-y-auto scrollbar space-y-4 text-dark-2 font-rubik pb-6">
             <h4 className="flex items-center gap-2 text-base font-normal  ">
               <DocumentInfo />
               Document Info
@@ -141,19 +144,10 @@ const CaseDetailsSidebarView = (props: {
               </div>
 
               <div className="space-y-2">
-                <h5 className="text-base font-normal text-inherit">Judges</h5>
-                <ul className="text-inherit text-sm">
-                  {caseDocument.judges.map(({ id, name }) => (
-                    <li key={id}>
-                      <Link
-                        href={`/analytics/judges?judgeId=${id}&judge=${name}`}
-                        className="text-primary"
-                      >
-                        {name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                <h5 className="text-base font-normal text-inherit">
+                  Legal Personnals
+                </h5>
+                <LegalPersonnelWidget data={{ judges, counsels }} />
               </div>
 
               <div className="space-y-2">
@@ -163,7 +157,7 @@ const CaseDetailsSidebarView = (props: {
                   {actions.map((btn, btx) => (
                     <li
                       key={btx}
-                      className="bg-[#EBF2FF] text-primary py-2 px-5 rounded"
+                      className="bg-[#EBF2FF] text-sm text-primary py-2 px-5 rounded"
                     >
                       {btn}
                     </li>
@@ -173,15 +167,13 @@ const CaseDetailsSidebarView = (props: {
 
               <div className="space-y-2">
                 {/* <Root></Root> */}
-                <h5 className="text-base font-normal text-inherit">
-                  Similar cases
-                </h5>
+                <h5 className="text-base font-normal text-">Similar cases</h5>
 
                 <ul className="space-y-2">
                   {cases.map((btn, btx) => (
                     <li
                       key={btx}
-                      className="bg-[#EBF2FF] text-primary py-2 px-5 rounded"
+                      className="bg-[#EBF2FF] text-primary text-sm py-2 px-5 rounded"
                     >
                       {btn}
                     </li>

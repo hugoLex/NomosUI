@@ -5,7 +5,13 @@ import { IoClose } from "react-icons/io5";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useVisibility, useQueryHandler } from "@app/hooks";
 import { Loader, Head } from "@app/components/ui";
-import { Container, LoadMoreBtn, Navbar } from "@app/components/shared/";
+import {
+  ActionButtons,
+  Container,
+  LoadMoreBtn,
+  Navbar,
+  NavbarTitle,
+} from "@app/components/shared/";
 import { AppLayoutContext } from "@app/components/layout";
 import { useGetJudgeAnalyticsQuery } from "@app/store/services/analyticsSlice";
 import JudgeCounselHeadings from "../JudgeCounselHeadings";
@@ -60,12 +66,15 @@ const JudgeDetailsView = () => {
     <>
       <Head title={`Judge - ${profileName}`} />
 
-      <Navbar
-        query={profileName ?? "Justice"}
-        isTitle={isH1Visible}
-        referrer={referrer}
-        isTitle2={false}
-      />
+      <Navbar referrer={referrer}>
+        <div className="flex justify-between py-2.5">
+          <NavbarTitle
+            isTitle={!isH1Visible}
+            title={profileName ?? "Justice"}
+          />
+          <ActionButtons />
+        </div>
+      </Navbar>
 
       {(isFetching || isLoading) && (
         <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-screen">

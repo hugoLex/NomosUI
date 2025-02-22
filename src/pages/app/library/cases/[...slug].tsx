@@ -7,6 +7,8 @@ import React, {
   useState,
 } from "react";
 import { useRouter } from "next/router";
+import axios from "axios";
+import matter from "gray-matter";
 import { Head, Loader, Tabs } from "@app/components/ui";
 import {
   CaseCounselView,
@@ -18,14 +20,9 @@ import { AppLayout, AppLayoutContext } from "@app/components/layout";
 import { dummyCaseDetails } from "@app/utils";
 import { getMarkdownRemoteStream } from "@app/utils/getMarkdown";
 import { NextPageWithLayout, TabItem, TCaseDocument } from "@app/types";
-import { ErrorView, Navbar } from "@app/components/shared";
-import { useVisibility } from "@app/hooks";
+import { ErrorView, Navbar, NavbarTitle } from "@app/components/shared";
+import { useVisibility, useQueryHandler } from "@app/hooks";
 import { useCaseQuery } from "@app/store/services/caseSlice";
-import axios from "axios";
-import matter from "gray-matter";
-import { isError } from "util";
-import { useSearchParams } from "next/navigation";
-import useQueryToggler from "@app/hooks/useQueryHandler";
 
 const tabItems: TabItem[] = [
   {
@@ -52,9 +49,9 @@ const tabItems: TabItem[] = [
 ];
 
 const Page: NextPageWithLayout = () => {
-  const { UpdateUrlParams, searchParams } = useQueryToggler();
+  const { UpdateUrlParams, searchParams } = useQueryHandler();
   const caseTitleName = searchParams.get("title");
-  const caseTitleNam = searchParams.get("tab");
+  const caseTab = searchParams.get("tab");
   const router = useRouter();
   const { referrer } = useContext(AppLayoutContext);
   const { slug, title, tab } = router.query;
@@ -170,15 +167,16 @@ const Page: NextPageWithLayout = () => {
     <Fragment>
       <Head title={`Case - ${caseTitle}`} />
 
-      <Navbar
-        query={caseTitle as string}
-        isTitle={isH1Visible}
-        isTitle2={isH2Visible}
-        referrer={referrer}
-      >
-        <div className="flex-1 flex justify-end">
+      <Navbar referrer={referrer}>
+        <div className="flex justify-evenly gap-x-4">
           <Tabs tabs={tabs} />
-          {/* <Tabs tabs={tabs} onClick={onTabsSelect} /> */}
+          <div className="py-2.5 md:min-w-[50%]">
+            <NavbarTitle
+              isTitle={!isH1Visible}
+              title={caseTitle as string}
+              className="text-start"
+            />
+          </div>
         </div>
       </Navbar>
 

@@ -11,3 +11,4 @@ import Tabs from "./Tabs";
 export { Button, Footer, Head, Header, Heading, Input, Modal, Switch, Tabs };
 
 export * from "./Loader";
+export * from "./Tooltip";

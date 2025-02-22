@@ -20,6 +20,8 @@ import {
   TextBox,
   Container,
   Navbar,
+  ActionButtons,
+  NavbarTitle,
 } from "@app/components/shared/";
 import { AppLayoutContext } from "@app/components/layout";
 
@@ -88,12 +90,16 @@ const CounselDetailsView = () => {
     <>
       <Head title={`Counsel - ${counselName}`} />
 
-      <Navbar
-        query={profileName ?? "Counsel"}
-        isTitle
-        referrer={referrer}
-        isTitle2={false}
-      />
+      <Navbar referrer={referrer}>
+        <div className="flex justify-between py-2.5">
+          <NavbarTitle
+            isTitle={!isH1Visible}
+            title={profileName ?? "Justice"}
+          />
+          <ActionButtons />
+        </div>
+      </Navbar>
+
       {(isFetching || isLoading) && (
         <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-screen">
           <Loader variant="classic" size={80} />
@@ -106,6 +112,7 @@ const CounselDetailsView = () => {
             desc="Check your search terms and try again, or explore our curated collection of legal resources to find what you need"
           />
         )} */}
+
       {!isFetching && !isError && data?.counsel_details && (
         <Fragment>
           <Container>

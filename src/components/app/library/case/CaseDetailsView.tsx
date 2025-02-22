@@ -54,10 +54,8 @@ const CaseView = ({
         <div className={`py-8  w-full md:min-w-[980px]`}>
           <div className="md:grid grid-cols-12 gap-8">
             <div className="col-span-4 self-baselane">
-              <div className="sticky top-[68px] space-y-2">
-                <div className="overflow-y-auto scrollbar">
-                  <CaseDetailsSidebarView {...caseSidebarProps} />
-                </div>
+              <div className="sticky top-[68px]">
+                <CaseDetailsSidebarView {...caseSidebarProps} />
               </div>
             </div>
             <div className="col-span-8 lg:flex gap-3 text-dark-2">

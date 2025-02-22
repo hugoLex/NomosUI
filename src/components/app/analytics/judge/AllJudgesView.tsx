@@ -9,6 +9,7 @@ import {
   LoadMoreBtn,
   Container,
   Navbar,
+  NavbarTitle,
 } from "@app/components/shared";
 import { AllJudgesListResponseT } from "@app/types/analytics";
 
@@ -43,9 +44,7 @@ const AllJudgesView = () => {
     // Early return for loading state
     return (
       <Fragment>
-        <Head title={`Judges - List`} />
-
-        <Navbar query={""} isTitle isTitle2={false} />
+        <Navbar />
         {/* Removed isH1Visible as it's always false*/}
         <div className="flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-screen">
           <LoadingSpinner variant="big" />
@@ -58,9 +57,7 @@ const AllJudgesView = () => {
     // Simplified error check
     return (
       <Fragment>
-        <Head title={`Judges - List`} />
-
-        <Navbar query={""} isTitle isTitle2={false} />
+        <Navbar />
         <ErrorView404
           caption="No matching legal resources found"
           desc="Check your search terms and try again, or explore our curated collection of legal resources to find what you need"
@@ -71,10 +68,7 @@ const AllJudgesView = () => {
 
   return (
     <Fragment>
-      <Head title={`Judges - List`} />
-
-      <Navbar query={""} isTitle isTitle2={false} />
-
+      <Navbar />
       {allData && (
         <Container className="">
           <div className="flex  py-4 w-full md:min-w-[980px]">

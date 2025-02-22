@@ -1,11 +1,4 @@
-import React, {
-  Fragment,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { Button, Head, Loader } from "@app/components/ui";
 import { AppLayout, AppLayoutContext } from "@app/components/layout";
@@ -32,7 +25,13 @@ import {
   searchOptions as defaultSearchOptions,
 } from "@app/utils/constants";
 import { useVisibility } from "@app/hooks";
-import { Container, ErrorView404, Navbar } from "@app/components/shared";
+import {
+  ActionButtons,
+  Container,
+  ErrorView404,
+  Navbar,
+  NavbarTitle,
+} from "@app/components/shared";
 import { paginateData } from "@app/utils";
 
 const Page: NextPageWithLayout = () => {
@@ -500,24 +499,43 @@ const Page: NextPageWithLayout = () => {
     }
   };
 
-  return (
-    <Fragment>
-      <Head title={`Search Result - ${q}`} />
-
-      <Navbar query={query} isTitle={isTitle} isTitle2={false} />
-
-      {(isFetching || isLoading) && (
+  if (isFetching || isLoading)
+    return (
+      <Fragment>
+        <Head title={`Search Result - ${q}`} />
+        <Navbar>
+          <ActionButtons />
+        </Navbar>
         <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
           <Loader variant="classic" size={80} />
         </div>
-      )}
+      </Fragment>
+    );
 
-      {isError && (
+  if (isError)
+    return (
+      <Fragment>
+        <Head title={`Search Result - ${q}`} />
+        <Navbar>
+          <ActionButtons />
+        </Navbar>
         <ErrorView404
           caption="No matching legal resources found"
           desc="Check your search terms and try again, or explore our curated collection of legal resources to find what you need"
         />
-      )}
+      </Fragment>
+    );
+
+  return (
+    <Fragment>
+      <Head title={`Search Result - ${q}`} />
+
+      <Navbar>
+        <div className="md:flex py-2.5">
+          <NavbarTitle isTitle={!isTitle} title={query} />
+          <ActionButtons />
+        </div>
+      </Navbar>
 
       {!isFetching && !isError && (
         <Container>

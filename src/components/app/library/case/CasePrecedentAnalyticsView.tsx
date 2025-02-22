@@ -52,6 +52,25 @@ const PrecedentView = ({
 
       {data && (
         <div className="py-6 md:grid grid-cols-12 gap-8">
+          <div className="col-span-4 self-baselane">
+            <div className="sticky top-[68px]  py-[2rem]">
+              {/* <div className="sticky top-[68px] bg-gray-100 p-[2rem]"> */}
+              {/* <div className="flex gap-2 items-center"> */}
+
+              <h5 className="relative flex gap-2 items-center pl- [8px] text-base text-[#171F46] font-midium font-rubik">
+                <FilterIcon2 />
+                Filter Treatments
+              </h5>
+              {/* </div> */}
+              {/* <div>
+            <p>Positive</p>
+            <p>Neutral</p>
+            <p>Negative</p>
+            <p>Cited by counsel</p>
+          </div> */}
+              <PrecedenceTreatment selectedTreatment={selectedTreatment} />
+            </div>
+          </div>
           <div className="col-span-8">
             <p className="hidden font-light uppercase text-[0.813rem] text-black/80  mt-2 pr-2.5 py-1 leading-[1.25rem]">
               Judicial insight
@@ -101,25 +120,6 @@ const PrecedentView = ({
                     </Fragment>
                   )
                 )}
-            </div>
-          </div>
-          <div className="col-span-4 self-baselane">
-            <div className="sticky top-[68px]  py-[2rem]">
-              {/* <div className="sticky top-[68px] bg-gray-100 p-[2rem]"> */}
-              {/* <div className="flex gap-2 items-center"> */}
-
-              <h5 className="relative flex gap-2 items-center pl- [8px] text-base text-[#171F46] font-midium font-rubik">
-                <FilterIcon2 />
-                Filter Treatments
-              </h5>
-              {/* </div> */}
-              {/* <div>
-            <p>Positive</p>
-            <p>Neutral</p>
-            <p>Negative</p>
-            <p>Cited by counsel</p>
-          </div> */}
-              <PrecedenceTreatment selectedTreatment={selectedTreatment} />
             </div>
           </div>
         </div>

@@ -31,8 +31,6 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
           :root {
             --font-rubik: ${rubik.style.fontFamily};
             --font-inter: ${inter.style.fontFamily};
-            --font-inter: ${roboto.style.fontFamily};
-            --font-inter: ${playfair.style.fontFamily};
             --font-poppins:${poppins.style.fontFamily};
             
           }

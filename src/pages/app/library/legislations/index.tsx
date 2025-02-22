@@ -70,7 +70,7 @@ const Page: NextPageWithLayout = () => {
     // Early return for loading state
     return (
       <Fragment>
-        <Navbar query={""} isTitle isTitle2={false} />
+        <Navbar />
         {/* Removed isTitle as it's always false*/}
         <div className="flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
           <Loader variant="classic" size={80} />
@@ -83,7 +83,7 @@ const Page: NextPageWithLayout = () => {
     // Simplified error check
     return (
       <Fragment>
-        <Navbar query={""} isTitle isTitle2={false} />
+        <Navbar />
         <ErrorView404
           caption="No matching legal resources found"
           desc="Check your search terms and try again, or explore our curated collection of legal resources to find what you need"
@@ -94,11 +94,28 @@ const Page: NextPageWithLayout = () => {
 
   return (
     <Fragment>
-      <Navbar query="" isTitle isTitle2={false} />
+      <Navbar />
       {data && (
         <Container>
           <div className={`py-8 w-full md:min-w-[980px]`}>
             <div className=" md:grid grid-cols-12 gap-8">
+              <div className="col-span-4">
+                <div className="sticky md:top-[68px]">
+                  <div className="space-y-3">
+                    <div className="inline-flex space-x-1">
+                      <FilterIcon2 />
+                      <h5>Filter</h5>
+                    </div>
+                    <div className="flex flex-col items-center p-4 bg-[#eaf0f2] space-y-4 rounded-md">
+                      <p className="text-sm">
+                        Find cases by legal classification
+                      </p>
+                      <Button label="Coming soon" className="primary" />
+                    </div>
+                    <div></div>
+                  </div>
+                </div>
+              </div>
               <div className="col-span-8">
                 <h1 className="text-xx font-normal mb-2">Library</h1>
                 <h5 className="text-base text-[#9ea7b4] mb-4">
@@ -154,24 +171,6 @@ const Page: NextPageWithLayout = () => {
                       isPageError ? "opacity-50 cursor-none" : "opacity-100"
                     }`}
                   />
-                </div>
-              </div>
-
-              <div className="col-span-4">
-                <div className="sticky md:top-[68px]">
-                  <div className="space-y-3">
-                    <div className="inline-flex space-x-1">
-                      <FilterIcon2 />
-                      <h5>Filter</h5>
-                    </div>
-                    <div className="flex flex-col items-center p-4 bg-[#eaf0f2] space-y-4 rounded-md">
-                      <p className="text-sm">
-                        Find cases by legal classification
-                      </p>
-                      <Button label="Coming soon" className="primary" />
-                    </div>
-                    <div></div>
-                  </div>
                 </div>
               </div>
             </div>

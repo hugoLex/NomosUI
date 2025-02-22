@@ -11,7 +11,7 @@ export type TCaseData = {
   ratio_decidendi: string[];
   judge_ids: number[];
   judges: { id: string; name: string }[];
-  counsels: string[];
+  counsels: { id: string; name: string }[];
   cause_of_action: string[];
   main_judgement_url: string | null;
   analysis_url: string | null;
@@ -42,4 +42,11 @@ export type SelectedTreatment = "all" | "positive" | "negative" | "neutral";
 
 export type TCaseDocument = Omit<TCaseData, "main_judgement_url"> & {
   judgement?: string | null;
+};
+
+export type LegalPersonnal = { id: string; name: string; title?: string };
+
+export type PersonnalData = {
+  judges: LegalPersonnal[];
+  counsels: LegalPersonnal[];
 };

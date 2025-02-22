@@ -12,6 +12,8 @@ import {
   ErrorView404,
   Container,
   Markdown,
+  NavbarTitle,
+  ActionButtons,
 } from "@app/components/shared";
 import { Head, Loader } from "@app/components/ui";
 import { useVisibility } from "@app/hooks";
@@ -71,7 +73,7 @@ const Page: NextPageWithLayout = () => {
     // Early return for loading state
     return (
       <Fragment>
-        <Navbar query={""} isTitle isTitle2={false} />
+        <Navbar />
         {/* Removed isTitle as it's always false*/}
         <div className="flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
           <Loader variant="classic" size={80} />
@@ -84,7 +86,7 @@ const Page: NextPageWithLayout = () => {
     // Simplified error check
     return (
       <Fragment>
-        <Navbar query={""} isTitle={isTitle} isTitle2={false} />
+        <Navbar />
         <ErrorView404
           caption="No matching legal resources found"
           desc="Check your search terms and try again, or explore our curated collection of legal resources to find what you need"
@@ -95,12 +97,12 @@ const Page: NextPageWithLayout = () => {
 
   return (
     <Fragment>
-      <Navbar
-        query={data.legislation_title}
-        isTitle={isTitle}
-        referrer={referrer}
-        isTitle2={false}
-      />
+      <Navbar referrer={referrer}>
+        <div className="flex justify-between py-2.5">
+          <NavbarTitle isTitle={!isTitle} title={data.legislation_title} />
+          <ActionButtons />
+        </div>
+      </Navbar>
 
       <Container>
         <div className="py-6 space-y-6 text-dark-2">
