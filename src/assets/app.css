@@ -176,11 +176,13 @@ h5 {
     @apply sm:pb-24 pb-12;
   }
 
-  .scrollbar-none::-webkit-scrollbar {
-    display: none; /* for Chrome, Safari and Opera */
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 
-  .scrollbar-none {
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
   }
@@ -191,13 +193,20 @@ h5 {
   }
 
   .scrollbar::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px #aaa;
+    box-shadow: inset 0 0 5px #676767;
+    /* box-shadow: inset 0 0 5px rgb(234 240 242 / 0.3); */
     border-radius: 10px;
   }
 
   .scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-[#eaf0f2]/30 rounded-xl;
+    background: #aaa;
+    /* background: rgb(242, 239, 234); */
+    border-radius: 10px;
   }
+}
+
+body {
+  @apply scrollbar;
 }
 
 .markdown > ol {
@@ -344,15 +353,4 @@ input:-webkit-autofill:active {
 /*Change text in autofill textbox*/
 input:-webkit-autofill {
   -webkit-text-fill-color: rgb(153 153 153) !important;
-}
-@layer utilities {
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  /* Hide scrollbar for IE, Edge and Firefox */
-  .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
 }

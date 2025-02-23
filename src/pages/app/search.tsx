@@ -503,9 +503,8 @@ const Page: NextPageWithLayout = () => {
     return (
       <Fragment>
         <Head title={`Search Result - ${q}`} />
-        <Navbar>
-          <ActionButtons />
-        </Navbar>
+        <Navbar />
+
         <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
           <Loader variant="classic" size={80} />
         </div>
@@ -516,9 +515,7 @@ const Page: NextPageWithLayout = () => {
     return (
       <Fragment>
         <Head title={`Search Result - ${q}`} />
-        <Navbar>
-          <ActionButtons />
-        </Navbar>
+        <Navbar />
         <ErrorView404
           caption="No matching legal resources found"
           desc="Check your search terms and try again, or explore our curated collection of legal resources to find what you need"

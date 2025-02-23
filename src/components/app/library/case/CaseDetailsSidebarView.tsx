@@ -129,7 +129,7 @@ const CaseDetailsSidebarView = (props: {
             ))}
           </div>
 
-          <div className="absolute top-0 bottom-0 left-auto h-[calc(100vh-100px)] overflow-y-auto scrollbar space-y-4 text-dark-2 font-rubik pb-6">
+          <div className="absolute top-0 bottom-0 left-auto h-[calc(100vh-100px)] overflow-y-auto scrollbar space-y-4 text-dark-2 font-rubik pb-6 pr-[0.875rem]">
             <h4 className="flex items-center gap-2 text-base font-normal  ">
               <DocumentInfo />
               Document Info

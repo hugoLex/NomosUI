@@ -142,9 +142,10 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
 
         (async () => {
           try {
-            await axios.post(`${baseURL}/query-assist/record-usage/${id}`, {
-              query: dataField,
-            });
+            await axios.post(
+              `${baseURL}/query-assist/record-usage/${id}?query=${dataField}`,
+              {}
+            );
           } catch (error) {
             console.log(error);
           }

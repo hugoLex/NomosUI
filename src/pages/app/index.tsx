@@ -8,6 +8,7 @@ import { AppLayout } from "@app/components/layout";
 import { logo2 } from "@app/assets";
 import { NextPageWithLayout } from "@app/types";
 import { useSearchTrendingQuery } from "@app/store/services/searchSlice";
+import { SearchTrendingWidget } from "@app/components/app/search";
 
 const Page: NextPageWithLayout = () => {
   const [trendingSearches, setTrendingSearches] = useState<any[]>([]);
@@ -35,9 +36,13 @@ const Page: NextPageWithLayout = () => {
         </Link>
         <SearchBox />
 
+        <SearchTrendingWidget trendingSearches={trendingSearches} />
+
+        {/* 
+
         {trendingSearches.length > 0 && (
           <div className="mt-4">
-            <h3 className="text-lg font-semibold">Trending Searches</h3>
+            <h3 className="text-lg font-medium">Trending Searches</h3>
             <div className="flex flex-wrap gap-2 mt-2">
               {trendingSearches.map((trend) => (
                 <button
@@ -54,6 +59,8 @@ const Page: NextPageWithLayout = () => {
             </div>
           </div>
         )}
+        
+        */}
 
         <Link
           href={"/signin"}
