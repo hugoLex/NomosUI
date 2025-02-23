@@ -193,14 +193,16 @@ h5 {
   }
 
   .scrollbar::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px #676767;
+    /* box-shadow: inset 0 0 5px #676767; */
     /* box-shadow: inset 0 0 5px rgb(234 240 242 / 0.3); */
+    box-shadow: inset 0 0 5px #eaf0f2;
     border-radius: 10px;
   }
 
   .scrollbar::-webkit-scrollbar-thumb {
-    background: #aaa;
+    /* background: #aaa; */
     /* background: rgb(242, 239, 234); */
+    background: #eaf0f2;
     border-radius: 10px;
   }
 }
