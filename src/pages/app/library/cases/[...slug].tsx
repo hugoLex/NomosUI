@@ -193,7 +193,11 @@ const Page: NextPageWithLayout = () => {
         <CaseJudgementAnalysisView data={analysisDocument} />
       )}
       {tabId === "precedent" && (
-        <CasePrecedentAnalyticsView innerRef={h2Ref} id={caseId} />
+        <CasePrecedentAnalyticsView
+          innerRef={h2Ref}
+          id={caseId}
+          case_title={caseTitle}
+        />
       )}
     </Fragment>
   );

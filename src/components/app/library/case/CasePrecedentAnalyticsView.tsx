@@ -15,10 +15,12 @@ import { dummyCaseDetails } from "@app/utils";
 import { SelectedTreatment, TPrecedentData } from "@app/types";
 
 const PrecedentView = ({
+  case_title,
   id,
   innerRef,
 }: {
   id: string;
+  case_title: string;
   innerRef: MutableRefObject<any>;
 }) => {
   const { precedentData } = dummyCaseDetails;
@@ -78,10 +80,14 @@ const PrecedentView = ({
             <h2
               ref={innerRef}
               id="Judicialinsight"
-              className="text-xx font-normal text-[#245b91] mb-6"
+              className="text-xx font-normal text-[#245b91] mb-2 "
             >
               Precedent analytics
             </h2>
+            <h4 className="text-base font-normal text-[#9ea7b4] mb-4 text-wrap">
+              These are cases referenced in
+              <span className="text-primary/60"> {case_title}</span>
+            </h4>
             <div className="space-y-4">
               {cases !== null &&
                 cases.map(

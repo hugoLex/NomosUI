@@ -538,6 +538,18 @@ const Page: NextPageWithLayout = () => {
         <Container>
           <div className={`py-8 w-full md:min-w-[980px]`}>
             <div className="md:grid grid-cols-12 gap-8">
+              {/* Search sidebar */}
+              <div className="col-span-4">
+                <div className="sticky md:top-[68px]">
+                  <SearchFilterSidebar
+                    data={searchOptions}
+                    handleSelection={handleSelection}
+                    handleSelectedSearchType={handleSelectedSearchType}
+                    defaultValue={searchType as string}
+                  />
+                </div>
+              </div>
+              {/* Search results */}
               <div className="col-span-8">
                 <h1
                   id="searchQuery"
@@ -624,18 +636,6 @@ const Page: NextPageWithLayout = () => {
                         </div>
                       </Fragment>
                     )}
-                </div>
-              </div>
-
-              {/* Search sidebar */}
-              <div className="col-span-4">
-                <div className="sticky md:top-[68px]">
-                  <SearchFilterSidebar
-                    data={searchOptions}
-                    handleSelection={handleSelection}
-                    handleSelectedSearchType={handleSelectedSearchType}
-                    defaultValue={searchType as string}
-                  />
                 </div>
               </div>
             </div>

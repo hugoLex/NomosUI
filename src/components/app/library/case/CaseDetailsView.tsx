@@ -89,20 +89,25 @@ const CaseView = ({
                   </span>
                 </div>
 
-                {caseDocument.subject_matter &&
-                  caseDocument.subject_matter.length > 0 && (
-                    <div className="flex items-center gap-2 flex-wrap mb-4">
-                      {caseDocument.subject_matter.map((subjectMatter) => (
-                        <span
-                          className={` px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium`}
-                          key={subjectMatter}
-                          title="Subject matter"
-                        >
-                          {subjectMatter}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                <div>
+                  <h4 className="font-normal text-base mb-2">
+                    Subject matters
+                  </h4>
+                  {caseDocument.subject_matter &&
+                    caseDocument.subject_matter.length > 0 && (
+                      <div className="flex items-center gap-2 flex-wrap mb-4">
+                        {caseDocument.subject_matter.map((subjectMatter) => (
+                          <span
+                            className={` px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium`}
+                            key={subjectMatter}
+                            title="Subject matter"
+                          >
+                            {subjectMatter}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                </div>
 
                 {caseDocument.case_summary && (
                   <div id="summary" ref={(el) => (sectionRefs.current[0] = el)}>
@@ -112,6 +117,7 @@ const CaseView = ({
                     />
                   </div>
                 )}
+
                 <hr className="my-8" />
                 {caseDocument.judgement && (
                   <div

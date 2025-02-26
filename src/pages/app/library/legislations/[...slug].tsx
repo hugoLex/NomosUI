@@ -21,6 +21,7 @@ import { useGetLegislationQuery } from "@app/store/services/librarySlice";
 import { NextPageWithLayout } from "@app/types";
 import axios from "axios";
 import matter from "gray-matter";
+import LegislativeSidebar from "@app/components/app/library/legislation/LegistlationSidebar";
 
 type Legislation = {
   document_id: string;
@@ -105,40 +106,51 @@ const Page: NextPageWithLayout = () => {
       </Navbar>
 
       <Container>
-        <div className="py-6 space-y-6 text-dark-2">
-          <h1
-            id="searchQuery"
-            ref={h1Ref}
-            className="text-xx font-normal mb-3 text-[#245b91]"
-          >
-            {data.legislation_title}
-          </h1>
-
-          <div className="flex items-center gap-2 flex-wrap mb-4">
-            <span
-              className={` px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium`}
-              title="Primary domain"
-            >
-              {data.primary_domain}
-            </span>
-
-            <span
-              className={` px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium`}
-              title="Primary domain"
-            >
-              {data.secondary_domain}
-            </span>
-          </div>
-
-          <p className="text-sm">{data.specific_legal_concept}</p>
-          {legislation && (
-            <div>
-              <Markdown
-                content={legislation}
-                className="wrapper text-wrap overflow-x-hidden"
-              />
+        <div className={`py-8 w-full md:min-w-[980px]`}>
+          <div className="md:grid grid-cols-12 gap-8">
+            <div className="col-span-4">
+              <div className="sticky top-[68px]">
+                <LegislativeSidebar />
+              </div>
             </div>
-          )}
+            <div className="col-span-8">
+              <div className="space-y-6 text-dark-2">
+                <h1
+                  id="searchQuery"
+                  ref={h1Ref}
+                  className="text-xx font-normal mb-3 text-[#245b91]"
+                >
+                  {data.legislation_title}
+                </h1>
+
+                <div className="flex items-center gap-2 flex-wrap mb-4">
+                  <span
+                    className={` px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium`}
+                    title="Primary domain"
+                  >
+                    {data.primary_domain}
+                  </span>
+
+                  <span
+                    className={` px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium`}
+                    title="Primary domain"
+                  >
+                    {data.secondary_domain}
+                  </span>
+                </div>
+
+                <p className="text-sm">{data.specific_legal_concept}</p>
+                {legislation && (
+                  <div>
+                    <Markdown
+                      content={legislation}
+                      className="wrapper text-wrap overflow-x-hidden"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </Container>
     </Fragment>

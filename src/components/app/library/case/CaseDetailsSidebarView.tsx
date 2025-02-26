@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { IoPeople } from "react-icons/io5";
 import { HiMiniListBullet, HiPlus } from "react-icons/hi2";
+import { LuChevronUp, LuChevronDown } from "react-icons/lu";
 import * as Accordion from "@radix-ui/react-accordion";
 
 import { DocumentInfo } from "@app/components/icons";
@@ -24,6 +25,54 @@ const contentOutline: ContentOutline[] = [
 
 const actions = ["Main Issues", "Issue for Cause of Action", "Ratio Decidendi"];
 const cases = ["By Subject Matter", "By Ratio Decidendi"];
+
+const DecisionHistoryCard = ({ content }: { content?: string }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  return (
+    <div className=" max-w-md rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+      {content ? (
+        <div>
+          <div
+            className={`relative text-sm text-[#4C4D50] font-rubik leading-6
+              ${!isExpanded ? "max-h-[4.5rem] overflow-hidden" : ""}`}
+          >
+            {content}
+
+            {!isExpanded && (
+              <div className="absolute bottom-0 left-0 h-8 w-full bg-gradient-to-t from-white to-transparent"></div>
+            )}
+          </div>
+
+          <button
+            onClick={toggleExpand}
+            className="mt-2 flex items-center justify-center w-full text-xs font-medium text-blue-600 hover:text-blue-800"
+          >
+            {isExpanded ? (
+              <>
+                <span>Show less</span>
+                <LuChevronUp size={16} className="ml-1" />
+              </>
+            ) : (
+              <>
+                <span>Show more</span>
+                <LuChevronDown size={16} className="ml-1" />
+              </>
+            )}
+          </button>
+        </div>
+      ) : (
+        <div className="flex h-16 items-center justify-center rounded-md bg-gray-50 text-sm text-[#4C4D50] font-['Rubik']">
+          No decision history available for this case
+        </div>
+      )}
+    </div>
+  );
+};
 
 const CaseDetailsSidebarView = (props: {
   sections: any;
@@ -136,20 +185,7 @@ const CaseDetailsSidebarView = (props: {
             </h4>
 
             <div className="space-y-4 ">
-              <div className="space-y-2">
-                <h5 className="text-base font-normal text-inherit">
-                  Decision History
-                </h5>
-                <p className="text-sm">{caseDocument.decision_history}</p>
-              </div>
-
-              <div className="space-y-2">
-                <h5 className="text-base font-normal text-inherit">
-                  Legal Personnals
-                </h5>
-                <LegalPersonnelWidget data={{ judges, counsels }} />
-              </div>
-
+              {/* Action */}
               <div className="space-y-2">
                 <h5 className="text-base font-normal text-inherit">Actions</h5>
 
@@ -164,7 +200,25 @@ const CaseDetailsSidebarView = (props: {
                   ))}
                 </ul>
               </div>
-
+              {/* Bench & Bar */}
+              <div className="space-y-2">
+                <h5 className="text-base font-normal text-inherit">
+                  Bench & Bar
+                </h5>
+                <LegalPersonnelWidget data={{ judges, counsels }} />
+              </div>
+              {/* Decision History */}
+              <div className="space-y-2">
+                <h5 className="text-base font-normal text-inherit">
+                  Decision History
+                </h5>
+                {caseDocument.decision_history && (
+                  <DecisionHistoryCard
+                    content={caseDocument.decision_history}
+                  />
+                )}
+              </div>
+              {/* Similar */}
               <div className="space-y-2">
                 {/* <Root></Root> */}
                 <h5 className="text-base font-normal text-">Similar cases</h5>
