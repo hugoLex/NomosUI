@@ -91,7 +91,7 @@ const CaseView = ({
 
                 <div>
                   <h4 className="font-normal text-base mb-2">
-                    Subject matters
+                    Subject matter:
                   </h4>
                   {caseDocument.subject_matter &&
                     caseDocument.subject_matter.length > 0 && (

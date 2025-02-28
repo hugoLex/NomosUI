@@ -1,4 +1,5 @@
 import TaxonomyHybridView from "./TaxonomyHybridView";
 import TaxonomyView from "./TaxonomyView";
+import TaxonomyMainView from "./TaxonomyMainView";
 
-export { TaxonomyHybridView, TaxonomyView };
+export { TaxonomyMainView, TaxonomyHybridView, TaxonomyView };

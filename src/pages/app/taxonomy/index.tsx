@@ -1,9 +1,10 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { AppLayout } from "@app/components/layout";
-import { ErrorView404, Navbar } from "@app/components/shared";
+import { Container, ErrorView404, Navbar } from "@app/components/shared";
 import { Head, Loader } from "@app/components/ui";
 import {
   TaxonomyHybridView,
+  TaxonomyMainView,
   TaxonomyView,
 } from "@app/components/app/taxonomy/";
 import { useGetTaxonomyStructureQuery } from "@app/store/services/taxnomySlice";
@@ -70,7 +71,18 @@ const Page: NextPageWithLayout = () => {
     );
   }
 
-  return <TaxonomyHybridView data={mappedTx} />;
+  return (
+    <Container>
+      <div className="py-8">
+        <h1 className="text-xx font-normal mb-2">Taxonomy</h1>
+        <h5 className="text-base text-[#9ea7b4] mb-4">
+          Find cases by legal domain or subject matter.
+        </h5>
+        <TaxonomyMainView data={mappedTx} />
+        {/* <TaxonomyHybridView data={mappedTx} /> */}
+      </div>
+    </Container>
+  );
 };
 
 Page.getLayout = (page) => {

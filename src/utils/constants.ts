@@ -886,3 +886,74 @@ export const conceptDocuments = {
     },
   ],
 };
+
+// Data structure for the taxonomy
+export const taxonomyData = {
+  categories: [
+    { id: "contract-law", name: "Contract Law" },
+    { id: "property-law", name: "Property Law" },
+    { id: "civil-procedure", name: "Civil Procedure" },
+    { id: "customary-law", name: "Customary Law" },
+    { id: "criminal-law", name: "Criminal Law" },
+    { id: "electoral-law", name: "Electoral Law" },
+    { id: "constitutional-law", name: "Constitutional Law" },
+    { id: "inheritance-law", name: "Inheritance Law" },
+    { id: "criminal-procedure", name: "Criminal Procedure" },
+  ],
+  subcategories: {
+    "Contract Law": [
+      { id: "contract-law-general", name: "Contract Law" },
+      { id: "debt-recovery", name: "Debt recovery" },
+      { id: "summary-judgment", name: "Summary judgment" },
+      { id: "banking-contracts", name: "Banking Contracts" },
+      { id: "notice-account-closure", name: "Notice of Account Closure" },
+      { id: "defamation-claims", name: "Defamation Claims" },
+      {
+        id: "jurisdiction-contractual-disputes",
+        name: "Jurisdiction in contractual disputes",
+      },
+      {
+        id: "federal-high-court-jurisdiction",
+        name: "Federal High Court jurisdiction",
+      },
+    ],
+    "Property Law": [
+      { id: "property-rights", name: "Property Rights" },
+      { id: "land-tenure", name: "Land Tenure" },
+      { id: "easements", name: "Easements" },
+    ],
+    "Civil Procedure": [
+      { id: "civil-litigation", name: "Civil Litigation" },
+      { id: "pre-action-protocol", name: "Pre-action Protocol" },
+    ],
+    // Other subcategories would be defined similarly
+  },
+  documents: {
+    "Contract Law": [
+      {
+        id: "dec-oil-gas",
+        name: "DEC Oil & Gas Limited v. Shell Nigeria Gas Limited",
+        court: "Supreme Court of Nigeria",
+        citation1: "LEX(2020)-SC.333/2010",
+        citation2: "2019",
+      },
+      {
+        id: "contract-doc-2",
+        name: "Sample Contract Document 2",
+        court: "Court of Appeal",
+        citation1: "LEX(2019)-CA.222/2009",
+        citation2: "2018",
+      },
+    ],
+    "Debt recovery": [
+      {
+        id: "debt-doc-1",
+        name: "Bank of Industry v. Global Manufacturing Ltd",
+        court: "Federal High Court",
+        citation1: "LEX(2021)-FHC.111/2015",
+        citation2: "2020",
+      },
+    ],
+    // Other documents would be defined similarly
+  },
+};

@@ -12,6 +12,7 @@ import { usePrecedenCitedQuery } from "@app/store/services/caseSlice";
 import { Container, ErrorView } from "@app/components/shared";
 import { Loader } from "@app/components/ui";
 import { dummyCaseDetails } from "@app/utils";
+import FeedbackWidget from "./FeedbackWidget";
 import { SelectedTreatment, TPrecedentData } from "@app/types";
 
 const PrecedentView = ({
@@ -123,6 +124,8 @@ const PrecedentView = ({
                         </div>
                         <hr className="mt-3 mb-6" />
                       </div>
+
+                      <FeedbackWidget />
                     </Fragment>
                   )
                 )}

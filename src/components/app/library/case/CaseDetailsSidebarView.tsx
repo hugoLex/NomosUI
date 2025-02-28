@@ -34,7 +34,7 @@ const DecisionHistoryCard = ({ content }: { content?: string }) => {
   };
 
   return (
-    <div className=" max-w-md rounded-lg border border-gray-200 bg-white p-5 shadow-sm">
+    <div className=" max-w-md bg-transparent py-4 shadow-sm">
       {content ? (
         <div>
           <div
