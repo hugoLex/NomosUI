@@ -1,6 +1,6 @@
 import { GenericObject, MappedTx } from "@app/types";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import {
   LuChevronRight,
   LuSearch,
@@ -10,6 +10,7 @@ import {
 } from "react-icons/lu";
 
 import { taxonomyData } from "@app/utils";
+import { DocumentLinks } from "./RenderComponents";
 
 const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
   const [isSearching, setIsSearching] = useState<boolean>(false);
@@ -17,6 +18,7 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [activeCategory, setActiveCategory] = useState<any>(null);
   const [activeSubcategory, setActiveSubcategory] = useState<any>(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState<any>(null);
   const [filteredCategories, setFilteredCategories] =
     useState<GenericObject[]>(data);
   const [filteredSubcategories, setFilteredSubcategories] = useState<
@@ -26,9 +28,9 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
 
   // Function to count documents for a subject matter
   const getDocumentCount = (subjectMatter: string) => {
-    const docs =
-      data.find(({ name }) => name === subjectMatter)?.children || [];
-    const count = docs.length;
+    const count =
+      filteredSubcategories.find(({ name }) => name === subjectMatter)
+        ?.total_documents || 0;
 
     if (count === 0) {
       return ""; // Return empty string for zero documents
@@ -43,14 +45,11 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
 
   // Handle search functionality
   useEffect(() => {
-    const categories =
-      data.map(({ id, name, children }) => ({ id, name, children })) || [];
     if (searchTerm === "") {
-      setFilteredCategories(categories);
+      setFilteredCategories(data);
       setFilteredSubcategories(
         activeCategory
-          ? categories.find(({ name }) => name === activeCategory)?.children ||
-              []
+          ? data.find(({ name }) => name === activeCategory)?.children || []
           : []
       );
       setIsSearching(false);
@@ -61,23 +60,19 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
 
     if (searchLocation === "domain") {
       // Search in legal domains
-      const results = categories.filter((category) =>
+      const results = data.filter((category) =>
         category.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
 
       setFilteredCategories(results);
 
       // If there's a result, auto-select it
-      if (
-        results.length > 0 &&
-        !categories.find((c) => c.name === activeCategory)
-      ) {
+      if (results.length > 0 && !data.find((c) => c.name === activeCategory)) {
         setActiveCategory(results[0].name);
 
         // Find a matching subcategory
         const subcategories =
-          categories.find(({ name }) => name === activeCategory)?.children ||
-          [];
+          data.find(({ name }) => name === activeCategory)?.children || [];
         if (subcategories.length > 0) {
           setActiveSubcategory(subcategories[0].name);
         }
@@ -86,7 +81,7 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
       // Update filtered subcategories based on active category
       if (activeCategory) {
         setFilteredSubcategories(
-          categories.find(({ name }) => name === activeCategory)?.children || []
+          data.find(({ name }) => name === activeCategory)?.children || []
         );
       }
     } else {
@@ -94,10 +89,10 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
       let foundSubcategories: any[] = [];
 
       // Keep all categories visible when searching in subject matters
-      setFilteredCategories(categories);
+      setFilteredCategories(data);
 
       // Search in all subcategories
-      for (const category in categories) {
+      for (const category in data) {
         const matchingSubcategories = data[category].children.filter(
           (subcategory) =>
             subcategory.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -112,22 +107,22 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
       }
 
       // If searching in subject matters, filter the subcategories of active category
-      if (activeCategory) {
-        foundSubcategories = foundSubcategories.filter((subcategory) =>
-          categories
-            .find(activeCategory)
-            ?.children.some((s) => s.id === subcategory.id)
-        );
-      }
+      // if (activeCategory) {
+      //   foundSubcategories = foundSubcategories.filter((subcategory) =>
+      //     data
+      //       .find(activeCategory)
+      //       ?.children.some((s) => s.id === subcategory.id)
+      //   );
+      // }
 
       setFilteredSubcategories(foundSubcategories);
 
       // If no active category but found subcategories, try to determine the category
       if (!activeCategory && foundSubcategories.length > 0) {
         // Find which category this subcategory belongs to
-        for (const category in categories) {
+        for (const category in data) {
           if (
-            categories
+            data
               .find(({ name }) => name === category)
               ?.children.some((s) => s.id === foundSubcategories[0].id)
           ) {
@@ -142,11 +137,9 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
 
   // Update filtered subcategories when active category changes
   useEffect(() => {
-    const categories =
-      data.map(({ id, name, children }) => ({ id, name, children })) || [];
     if (activeCategory) {
       const subcategories =
-        categories.find(({ name }) => name === activeCategory)?.children || [];
+        data.find(({ name }) => name === activeCategory)?.children || [];
       if (searchTerm && searchLocation === "subject") {
         setFilteredSubcategories(
           subcategories.filter((subcategory) =>
@@ -176,14 +169,15 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
 
   const handleSubcategoryClick = (subcategoryName: string) => {
     setActiveSubcategory(subcategoryName);
+    setSelectedSubcategory(
+      filteredSubcategories.find(({ name }) => name === subcategoryName) || {}
+    );
   };
 
   const handleSearchLocationChange = (location: string) => {
     setSearchLocation(location);
     setShowDropdown(false);
   };
-
-  console.log(data);
 
   return (
     <div className="w-full font-rubik">
@@ -277,7 +271,7 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
           {/* Legal Domain Column (renamed from Areas of Law) */}
           <div className="w-1/3 pr-4 relative">
             {/* Card header with dark blue background - fixed */}
-            <div className="bg-primary text-white py-2 px-4 rounded-t-md mb-2 sticky top-0 z-10">
+            <div className="bg-primary text-white py-2 px-4 rounded-t-md mb-2 sticky top-0">
               <h2 className="text-base font-normal text-inherit">
                 Legal domain
               </h2>
@@ -314,7 +308,7 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
           {/* Subject Matter Column (renamed from Subcategories) */}
           <div className="w-1/3 px-4 relative">
             {/* Card header with dark blue background - fixed */}
-            <div className="bg-primary text-white py-2 px-4 rounded-t-md mb-2 sticky top-0 z-10">
+            <div className="bg-primary text-white py-2 px-4 rounded-t-md mb-2 sticky top-0">
               <h2 className="text-base font-normal text-inherit">
                 Subject matter
               </h2>
@@ -365,96 +359,107 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
           {/* Related Documents Column */}
           <div className="w-1/3 pl-4">
             {/* Card header with dark blue background - fixed */}
-            <div className="bg-primary text-white py-2 px-4 rounded-t-md mb-2 sticky top-0 z-10">
+            <div className="bg-primary text-white py-2 px-4 rounded-t-md mb-2 sticky top-0 ">
               <h2 className="text-base text-inherit font-normal">
                 Related Documents
               </h2>
             </div>
-            {activeSubcategory ? (
-              <div className="space-y-3 max-h-[calc(100vh-300px)] overflow-y-auto pr-2 scrollbar">
-                {filteredSubcategories[activeSubcategory]?.map(
-                  (document: GenericObject) => (
-                    <Link
-                      key={document.id}
-                      href={`/documents/${document.id}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-3 rounded-md border border-gray-100 hover:border-blue-200 hover:shadow-sm transition-all duration-200 bg-white block"
-                    >
-                      <div className="flex items-start">
-                        <div className="mr-3 mt-1 flex-shrink-0">
-                          <LuBook className="h-5 w-5 text-blue-600" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          {" "}
-                          {/* min-w-0 prevents overflow */}
-                          <div className="flex items-center">
-                            <h3
-                              className="font-medium text-blue-600 truncate mr-2 text-sm"
-                              style={{ fontSize: "14px" }}
-                              title={document.name}
-                            >
-                              {document.name}
-                            </h3>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="text-gray-400 flex-shrink-0 ml-auto"
-                            >
-                              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                              <polyline points="15 3 21 3 21 9"></polyline>
-                              <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                          </div>
-                          <div className="mt-2 flex flex-col space-y-1 text-xs">
-                            <p
-                              className="text-gray-700 truncate"
-                              style={{ fontSize: "13.5px" }}
-                            >
-                              {document.court}
-                            </p>
-                            <p
-                              className="text-gray-700"
-                              style={{ fontSize: "13.5px" }}
-                            >
-                              {document.citation1}
-                            </p>
-                            <p
-                              className="text-gray-700"
-                              style={{ fontSize: "13.5px" }}
-                            >
-                              {document.citation2}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  )
-                )}
 
-                {(!filteredCategories[activeSubcategory] ||
-                  filteredCategories[activeSubcategory].length === 0) && (
-                  <div className="flex flex-col items-center justify-center py-12 text-center px-4">
-                    <div className="rounded-full bg-gray-100 p-4">
-                      <LuBook className="h-6 w-6 text-gray-400" />
+            {activeSubcategory && (
+              <Fragment>
+                <DocumentLinks
+                  docId={selectedSubcategory.id}
+                  onClose={function (): void {
+                    throw new Error("Function not implemented.");
+                  }}
+                />
+                <div className="hidden space-y-3 max-h-[calc(100vh-300px)] overflow-y-auto pr-2 scrollbar">
+                  {filteredSubcategories[activeSubcategory]?.map(
+                    (document: GenericObject) => (
+                      <Link
+                        key={document.id}
+                        href={`/documents/${document.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-3 rounded-md border border-gray-100 hover:border-blue-200 hover:shadow-sm transition-all duration-200 bg-white block"
+                      >
+                        <div className="flex items-start">
+                          <div className="mr-3 mt-1 flex-shrink-0">
+                            <LuBook className="h-5 w-5 text-blue-600" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            {" "}
+                            {/* min-w-0 prevents overflow */}
+                            <div className="flex items-center">
+                              <h3
+                                className="font-medium text-blue-600 truncate mr-2 text-sm"
+                                style={{ fontSize: "14px" }}
+                                title={document.name}
+                              >
+                                {document.name}
+                              </h3>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="text-gray-400 flex-shrink-0 ml-auto"
+                              >
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                              </svg>
+                            </div>
+                            <div className="mt-2 flex flex-col space-y-1 text-xs">
+                              <p
+                                className="text-gray-700 truncate"
+                                style={{ fontSize: "13.5px" }}
+                              >
+                                {document.court}
+                              </p>
+                              <p
+                                className="text-gray-700"
+                                style={{ fontSize: "13.5px" }}
+                              >
+                                {document.citation1}
+                              </p>
+                              <p
+                                className="text-gray-700"
+                                style={{ fontSize: "13.5px" }}
+                              >
+                                {document.citation2}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </Link>
+                    )
+                  )}
+
+                  {(!filteredCategories[activeSubcategory] ||
+                    filteredCategories[activeSubcategory].length === 0) && (
+                    <div className="flex flex-col items-center justify-center py-12 text-center px-4">
+                      <div className="rounded-full bg-gray-100 p-4">
+                        <LuBook className="h-6 w-6 text-gray-400" />
+                      </div>
+                      <h3 className="mt-3 text-sm font-medium text-gray-700">
+                        No documents available
+                      </h3>
+                      <p className="mt-1 text-xs text-gray-500">
+                        There are no documents in this category yet.
+                      </p>
                     </div>
-                    <h3 className="mt-3 text-sm font-medium text-gray-700">
-                      No documents available
-                    </h3>
-                    <p className="mt-1 text-xs text-gray-500">
-                      There are no documents in this category yet.
-                    </p>
-                  </div>
-                )}
-              </div>
-            ) : (
+                  )}
+                </div>
+              </Fragment>
+            )}
+
+            {!activeSubcategory && (
               <div className="flex flex-col items-center justify-center h-60 text-center px-4">
                 <div className="rounded-full bg-gray-100 p-4">
                   <LuBook className="h-6 w-6 text-gray-400" />

@@ -11,7 +11,6 @@ import { topLevelAreas as _topDocs } from "@app/utils/constants";
 
 // Main Component
 const TaxonomyHybridView = ({ data }: { data: MappedTx[] }) => {
-  console.log(data);
   // State declarations
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDocType, setSelectedDocType] = useState("all");

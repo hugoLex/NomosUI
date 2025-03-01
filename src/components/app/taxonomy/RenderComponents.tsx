@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from "react";
 import type { SetStateAction } from "react";
+import Link from "next/link";
 import {
   LuChevronRight,
   LuBriefcase,
@@ -11,7 +12,126 @@ import { useTaxonomyData } from "@app/hooks/useTaxonomyData";
 import { useGetTaxonomyDocumentQuery } from "@app/store/services/taxnomySlice";
 import { Loader } from "@app/components/ui";
 import { conceptDocuments as _docs } from "@app/utils/constants";
-import { MappedTx, TaxonomyDocuments } from "@app/types";
+import { GenericObject, MappedTx, TaxonomyDocuments } from "@app/types";
+
+export const DocumentLinks = ({
+  docId,
+  onClose,
+}: {
+  docId: string | number;
+  onClose: () => void;
+}) => {
+  const { data, isLoading, isFetching, isError } = useGetTaxonomyDocumentQuery(
+    docId as string
+  );
+
+  if (isLoading || isFetching) {
+    return (
+      <div className="flex justify-center items-center h-full w-ful">
+        <Loader variant="classic" size={16} />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 text-center px-4">
+        <div className="rounded-full bg-gray-100 p-4">
+          <LuBook className="h-6 w-6 text-gray-400" />
+        </div>
+        <h3 className="mt-3 text-sm font-medium text-gray-700">
+          No documents available
+        </h3>
+        <p className="mt-1 text-xs text-gray-500">
+          There are no documents in this category yet.
+        </p>
+      </div>
+    );
+  }
+
+  const { documents } = data as TaxonomyDocuments;
+
+  const getLinkType = (type: any, id: string, title: string) => {
+    console.log(type);
+    switch (type) {
+      case "case":
+        return `/library/cases/${id}?title=${title}&tab=case`;
+      case "legislation":
+        return `/library/legislations/${id}?title=${title}`;
+      case "article":
+        return `/library/articles/${id}?title=${title}`;
+      default:
+        return "";
+    }
+  };
+
+  const getSourceData = (data: string | GenericObject) => {
+    const doc = typeof data === "string" ? JSON.parse(data) : data;
+
+    return (
+      <Fragment>
+        <div className="mt-2 flex flex-col space-y-1 text-xs">
+          <p className="text-gray-700 " style={{ fontSize: "13.5px" }}>
+            <span>{doc.court}</span>
+            <span> {doc.year}</span>
+          </p>
+          <p className="text-gray-700 truncate" style={{ fontSize: "13.5px" }}>
+            {doc.citation}
+          </p>
+        </div>
+      </Fragment>
+    );
+  };
+
+  return documents.map((document: GenericObject) => (
+    <Link
+      key={document.id}
+      href={`${getLinkType(
+        document.doc_type,
+        document.document_id,
+        document.title
+      )}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="p-3 rounded-md border border-gray-100 hover:border-blue-200 hover:shadow-sm transition-all duration-200  block"
+    >
+      <div className="flex items-start">
+        <div className="mr-3 flex-shrink-0">
+          <LuFileText className="h-5 w-5 text-blue-600" />
+        </div>
+        <div className="min-w-0 flex-1">
+          {/* min-w-0 prevents overflow */}
+          <div className="flex items-center">
+            <h3
+              className="font-medium text-blue-600 truncate mr-2 text-sm"
+              style={{ fontSize: "14px" }}
+              title={document.title}
+            >
+              {document.title}
+            </h3>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-gray-400 flex-shrink-0 ml-auto"
+            >
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </div>
+          {getSourceData(document.source_data)}
+        </div>
+      </div>
+    </Link>
+  ));
+};
 
 // Document Panel Component
 export const DocumentPanel = ({
