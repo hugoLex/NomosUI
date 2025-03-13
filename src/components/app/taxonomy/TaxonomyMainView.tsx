@@ -178,7 +178,6 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
     setSearchLocation(location);
     setShowDropdown(false);
   };
-
   return (
     <div className="w-full font-rubik">
       {/* Centered Container with Title and Content */}
@@ -267,9 +266,9 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
         <div className="hidden h-25" style={{ height: "25px" }}></div>
 
         {/* Taxonomy Container */}
-        <div className="flex w-full">
+        <div className="grid grid-cols-3 w-full">
           {/* Legal Domain Column (renamed from Areas of Law) */}
-          <div className="w-1/3 pr-4 relative">
+          <div className=" pr-4 relative ">
             {/* Card header with dark blue background - fixed */}
             <div className="bg-primary text-white py-2 px-4 rounded-t-md mb-2 sticky top-0">
               <h2 className="text-base font-normal text-inherit">
@@ -306,7 +305,7 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
           </div>
 
           {/* Subject Matter Column (renamed from Subcategories) */}
-          <div className="w-1/3 px-4 relative">
+          <div className=" px-4 relative ">
             {/* Card header with dark blue background - fixed */}
             <div className="bg-primary text-white py-2 px-4 rounded-t-md mb-2 sticky top-0">
               <h2 className="text-base font-normal text-inherit">
@@ -320,7 +319,12 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
                   <div
                     key={subcategory.id}
                     onClick={() => handleSubcategoryClick(subcategory.name)}
-                    className={`px-3 py-2 rounded-md cursor-pointer transition-all duration-200 flex justify-between items-center
+                    // the first name is always repeating the name of the legal domain hence this logic
+                    // if this is fixed then remove this logic
+                    className={` 
+                      ${
+                        subcategory.document_breakdown !== null && "hidden"
+                      } px-3 py-2 rounded-md cursor-pointer transition-all duration-200 flex justify-between items-center
                       ${
                         activeSubcategory === subcategory.name
                           ? "bg-blue-50 text-blue-700 font-medium"
@@ -343,7 +347,7 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
                   <LuChevronRight className="h-6 w-6 text-gray-400" />
                 </div>
                 <h3 className="mt-3 text-sm font-medium text-gray-700">
-                  No category selected
+                  No legal domain selected
                 </h3>
                 <p className="mt-1 text-xs text-gray-500">
                   Please select a legal domain from the first column to view
@@ -357,7 +361,7 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
           </div>
 
           {/* Related Documents Column */}
-          <div className="w-1/3 pl-4">
+          <div className=" pl-4 ">
             {/* Card header with dark blue background - fixed */}
             <div className="bg-primary text-white py-2 px-4 rounded-t-md mb-2 sticky top-0 ">
               <h2 className="text-base text-inherit font-normal">
@@ -381,13 +385,13 @@ const TaxonomyMainView = ({ data = [] }: { data: MappedTx[] }) => {
                         href={`/documents/${document.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-3 rounded-md border border-gray-100 hover:border-blue-200 hover:shadow-sm transition-all duration-200 bg-white block"
+                        className=" p-3 rounded-md border border-gray-100 hover:border-blue-200 hover:shadow-sm transition-all duration-200 bg-white block"
                       >
                         <div className="flex items-start">
                           <div className="mr-3 mt-1 flex-shrink-0">
                             <LuBook className="h-5 w-5 text-blue-600" />
                           </div>
-                          <div className="min-w-0 flex-1">
+                          <div className="min-w-0 flex-1 flex-shrink-0">
                             {" "}
                             {/* min-w-0 prevents overflow */}
                             <div className="flex items-center">
