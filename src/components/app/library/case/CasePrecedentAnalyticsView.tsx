@@ -14,18 +14,23 @@ import { Loader } from "@app/components/ui";
 import { dummyCaseDetails } from "@app/utils";
 import FeedbackWidget from "./FeedbackWidget";
 import { SelectedTreatment, TPrecedentData } from "@app/types";
+import useQueryToggler from "@app/hooks/useQueryHandler";
 
 const PrecedentView = ({
   case_title,
   id,
+  setClickedQuote,
   innerRef,
 }: {
   id: string;
   case_title: string;
+  // to set quote on the full judgement to get it highlighted
+  setClickedQuote: React.Dispatch<React.SetStateAction<string>>;
   innerRef: MutableRefObject<any>;
 }) => {
   const { precedentData } = dummyCaseDetails;
-
+  // to update the url params
+  const { UpdateUrlParams } = useQueryToggler();
   const [cases, setCases] = useState<TPrecedentData[]>([]);
   const [selectedTreatment, setSelectedTreatment] =
     useState<SelectedTreatment>("all");
@@ -113,7 +118,16 @@ const PrecedentView = ({
                           {treatment_type}
                         </span> */}
                         </div>
-                        <p className="text-[0.875rem] gray-200 ">{context}</p>
+                        <p
+                          // set the quote to highlight state and navigate to the full judgement page
+                          onClick={() => {
+                            setClickedQuote(context);
+                            UpdateUrlParams("tab", "case");
+                          }}
+                          className="text-[0.875rem] gray-200 "
+                        >
+                          {context}
+                        </p>
                       </div>
 
                       <div className="hidden">

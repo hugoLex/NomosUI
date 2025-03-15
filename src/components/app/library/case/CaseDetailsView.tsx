@@ -31,15 +31,15 @@ const sections = [
 const CaseView = ({
   caseDocument,
   innerRef,
+  quoteToHighlight,
 }: {
   caseDocument: TCaseDocument;
   innerRef: MutableRefObject<any>;
+  quoteToHighlight: string;
 }) => {
   const { activeSection, sectionRefs, scrollToSection } = useScrollspy({
     sections,
   });
-  // const { createQueryString, router, pathname, urlSearchParamsString } =
-  //   UseQueryToggler();
 
   const caseSidebarProps = {
     activeSection,
@@ -47,7 +47,45 @@ const CaseView = ({
     sections,
     caseDocument,
   };
+  useEffect(() => {
+    // After judgment loads, scroll to the highlighted section
+    setTimeout(() => {
+      const targetElement = document.getElementById("highlighted-quote");
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }, 300);
+  }, [quoteToHighlight]);
+  const ProcessJudgmentContent: React.FC<{ content: string }> = ({
+    content,
+  }) => {
+    // test with AIMS Foods Limited v. Olufemi Fadeyi
+    // let quoteToHighlight =
+    //   "Ordinarily, a breach or non-compliance with or contravention of the Constitution or any of its provisions by a Court of law in the conduct of its judicial proceedings, would render the proceedings and any bye-product or outcome thereof, legally null and void for being unconstitutional.";
+    if (!content || !quoteToHighlight || !content.includes(quoteToHighlight)) {
+      return <Markdown content={content} />;
+    }
+    // Split the content at the quote
+    const parts = content.split(quoteToHighlight);
 
+    return (
+      <>
+        {/* Render first part */}
+        {parts[0] && <Markdown content={parts[0]} />}
+
+        {/* Render highlighted quote */}
+        <div
+          id="highlighted-quote"
+          className="bg-yellow-200 p-4 border-l-4 border-yellow-500 mb-4"
+        >
+          <Markdown content={quoteToHighlight} />
+        </div>
+
+        {/* Render remaining content */}
+        {parts[1] && <Markdown content={parts[1]} />}
+      </>
+    );
+  };
   return (
     caseDocument && (
       <Container>
@@ -129,10 +167,10 @@ const CaseView = ({
                       <PiGavelThin size={19} className="hidden " />
                       Judgement
                     </h4>
-                    <Markdown
-                      content={caseDocument.judgement}
-                      className="wrapper "
-                    />
+                    {/* Render the full judgement with highlighted quoted part */}
+                    <ProcessJudgmentContent content={caseDocument.judgement} />
+                    {/* <Markdown
+                      content={caseDocument.judgement}/> */}
                   </div>
                 )}
                 <hr className="my-8" />

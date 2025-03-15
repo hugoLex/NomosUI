@@ -78,11 +78,12 @@ const Page: NextPageWithLayout = () => {
   });
 
   const [tabs, setTabs] = useState(tabItems);
-
+  // This is to set the hightlighted part of the judgement from precedent analytics
+  const [clickedQuote, setClickedQuote] = useState<string>("");
   const { isError, isLoading, data } = useCaseQuery(caseId);
   const [caseDocument, setCaseDocument] = useState<TCaseDocument | null>(null);
   const [analysisDocument, setAnalysisDocument] = useState<any>(undefined);
-
+  // console.log("case full judgement", )
   useEffect(() => {
     if (data) {
       const { case_data } = data;
@@ -183,7 +184,11 @@ const Page: NextPageWithLayout = () => {
       {tabId === "case" && (
         <Fragment>
           {caseDocument && (
-            <CaseDetailsView caseDocument={caseDocument} innerRef={h1Ref} />
+            <CaseDetailsView
+              quoteToHighlight={clickedQuote}
+              caseDocument={caseDocument}
+              innerRef={h1Ref}
+            />
           )}
           {caseDocument === null && isError && <ErrorView />}
         </Fragment>
@@ -196,6 +201,7 @@ const Page: NextPageWithLayout = () => {
         <CasePrecedentAnalyticsView
           innerRef={h2Ref}
           id={caseId}
+          setClickedQuote={setClickedQuote}
           case_title={caseTitle}
         />
       )}
