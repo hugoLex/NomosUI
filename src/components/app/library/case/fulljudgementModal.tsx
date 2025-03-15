@@ -7,13 +7,11 @@ function FulljudgementModal({
   setClickedQuote,
 }: {
   //   id: string;
-  //   case_title: string;
+  case_title: string;
   quoteToHighlight: string;
   full_judgement?: string | null;
-  case_title: string;
   // to set quote on the full judgement to get it highlighted
   setClickedQuote: React.Dispatch<React.SetStateAction<string | null>>;
-  //   innerRef: MutableRefObject<any>;
 }) {
   useEffect(() => {
     // After judgment loads, scroll to the highlighted section
@@ -59,12 +57,11 @@ function FulljudgementModal({
   return (
     <>
       {quoteToHighlight && (
-        <div className="fixed inset-0 bg-white bg-opacity-[0.9] z-[1] flex items-center justify-center p-4">
+        <div className="fixed inset-0 visible ease-out duration-300  opacity-100 delay-100 transition-opacity bg-[#ccdcf9]/50 bg-opacity-[0.9] z-[1] flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl h-[90%] flex flex-col">
             <div className="p-4 border-b border-gray-200 flex justify-between items-center">
               <h3 className="font-bold text-lg">
                 {case_title ? case_title : "Loading..."}
-                {/* Adebayo V. The State (2014) LPELR-22988 (SC) */}
               </h3>
               <button
                 onClick={() => setClickedQuote(null)}
