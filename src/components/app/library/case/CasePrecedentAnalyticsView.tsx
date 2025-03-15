@@ -19,13 +19,15 @@ import useQueryToggler from "@app/hooks/useQueryHandler";
 const PrecedentView = ({
   case_title,
   id,
+  full_judgement,
   setClickedQuote,
   innerRef,
 }: {
   id: string;
   case_title: string;
+  full_judgement?: string | null;
   // to set quote on the full judgement to get it highlighted
-  setClickedQuote: React.Dispatch<React.SetStateAction<string>>;
+  setClickedQuote: React.Dispatch<React.SetStateAction<string | null>>;
   innerRef: MutableRefObject<any>;
 }) => {
   const { precedentData } = dummyCaseDetails;
@@ -103,7 +105,15 @@ const PrecedentView = ({
                         <div className="flex gap-3">
                           <span className="text-gray-500">{idx + 1}.</span>
                           {/* make the text to be first letter capital letter and others small */}
-                          <h5 className="text-base capitalize">{citation}</h5>
+                          <h5
+                            onClick={() => {
+                              setClickedQuote(context);
+                              // UpdateUrlParams("tab", "case");
+                            }}
+                            className="text-base capitalize cursor-pointer hover:underline "
+                          >
+                            {citation}
+                          </h5>
                         </div>
 
                         <div className="flex flex-wrap text-xs">
@@ -122,7 +132,7 @@ const PrecedentView = ({
                           // set the quote to highlight state and navigate to the full judgement page
                           onClick={() => {
                             setClickedQuote(context);
-                            UpdateUrlParams("tab", "case");
+                            // UpdateUrlParams("tab", "case");
                           }}
                           className="text-[0.875rem] gray-200 "
                         >

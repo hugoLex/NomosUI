@@ -23,6 +23,7 @@ import { NextPageWithLayout, TabItem, TCaseDocument } from "@app/types";
 import { ErrorView, Navbar, NavbarTitle } from "@app/components/shared";
 import { useVisibility, useQueryHandler } from "@app/hooks";
 import { useCaseQuery } from "@app/store/services/caseSlice";
+import FulljudgementModal from "@app/components/app/library/case/fulljudgementModal";
 
 const tabItems: TabItem[] = [
   {
@@ -79,7 +80,7 @@ const Page: NextPageWithLayout = () => {
 
   const [tabs, setTabs] = useState(tabItems);
   // This is to set the hightlighted part of the judgement from precedent analytics
-  const [clickedQuote, setClickedQuote] = useState<string>("");
+  const [clickedQuote, setClickedQuote] = useState<string | null>(null);
   const { isError, isLoading, data } = useCaseQuery(caseId);
   const [caseDocument, setCaseDocument] = useState<TCaseDocument | null>(null);
   const [analysisDocument, setAnalysisDocument] = useState<any>(undefined);
@@ -185,7 +186,7 @@ const Page: NextPageWithLayout = () => {
         <Fragment>
           {caseDocument && (
             <CaseDetailsView
-              quoteToHighlight={clickedQuote}
+              // quoteToHighlight={clickedQuote}
               caseDocument={caseDocument}
               innerRef={h1Ref}
             />
@@ -203,6 +204,17 @@ const Page: NextPageWithLayout = () => {
           id={caseId}
           setClickedQuote={setClickedQuote}
           case_title={caseTitle}
+          full_judgement={caseDocument?.judgement}
+        />
+      )}
+      {tabId === "precedent" && clickedQuote && (
+        <FulljudgementModal
+          // innerRef={h2Ref}
+          // id={caseId}
+          setClickedQuote={setClickedQuote}
+          case_title={caseTitle}
+          quoteToHighlight={clickedQuote}
+          full_judgement={caseDocument?.judgement}
         />
       )}
     </Fragment>
