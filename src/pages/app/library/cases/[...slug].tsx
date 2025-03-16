@@ -80,7 +80,11 @@ const Page: NextPageWithLayout = () => {
 
   const [tabs, setTabs] = useState(tabItems);
   // This is to set the hightlighted part of the judgement from precedent analytics
-  const [clickedQuote, setClickedQuote] = useState<string | null>(null);
+  const [clickedQuote, setClickedQuote] = useState<{
+    quote: string;
+    citation: string;
+    treatment_type: string;
+  } | null>(null);
   const { isError, isLoading, data } = useCaseQuery(caseId);
   const [caseDocument, setCaseDocument] = useState<TCaseDocument | null>(null);
   const [analysisDocument, setAnalysisDocument] = useState<any>(undefined);
@@ -204,7 +208,7 @@ const Page: NextPageWithLayout = () => {
           id={caseId}
           setClickedQuote={setClickedQuote}
           case_title={caseTitle}
-          full_judgement={caseDocument?.judgement}
+          // full_judgement={caseDocument?.judgement}
         />
       )}
       {tabId === "precedent" && clickedQuote && (

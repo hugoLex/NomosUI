@@ -19,20 +19,24 @@ import useQueryToggler from "@app/hooks/useQueryHandler";
 const PrecedentView = ({
   case_title,
   id,
-  full_judgement,
   setClickedQuote,
   innerRef,
 }: {
   id: string;
   case_title: string;
-  full_judgement?: string | null;
   // to set quote on the full judgement to get it highlighted
-  setClickedQuote: React.Dispatch<React.SetStateAction<string | null>>;
+  setClickedQuote: React.Dispatch<
+    React.SetStateAction<{
+      quote: string;
+      citation: string;
+      treatment_type: string;
+    } | null>
+  >;
   innerRef: MutableRefObject<any>;
 }) => {
   const { precedentData } = dummyCaseDetails;
   // to update the url params
-  const { UpdateUrlParams } = useQueryToggler();
+  // const { UpdateUrlParams } = useQueryToggler();
   const [cases, setCases] = useState<TPrecedentData[]>([]);
   const [selectedTreatment, setSelectedTreatment] =
     useState<SelectedTreatment>("all");
@@ -107,7 +111,11 @@ const PrecedentView = ({
                           {/* make the text to be first letter capital letter and others small */}
                           <h5
                             onClick={() => {
-                              setClickedQuote(context);
+                              setClickedQuote({
+                                quote: context,
+                                citation: citation,
+                                treatment_type: treatment_type,
+                              });
                               // UpdateUrlParams("tab", "case");
                             }}
                             className="text-base capitalize cursor-pointer hover:underline "
@@ -131,7 +139,11 @@ const PrecedentView = ({
                         <p
                           // set the quote to highlight state and navigate to the full judgement page
                           onClick={() => {
-                            setClickedQuote(context);
+                            setClickedQuote({
+                              quote: context,
+                              citation: citation,
+                              treatment_type: treatment_type,
+                            });
                             // UpdateUrlParams("tab", "case");
                           }}
                           className="text-[0.875rem] gray-200 "
