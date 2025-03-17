@@ -126,6 +126,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                 <div className="flex justify-center my-6 px-4 max-md:px-5">
                   <div
                     role="button"
+                    title="Start new search"
                     onClick={() => {
                       setIsSearchModal(true);
                     }}

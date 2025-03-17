@@ -556,7 +556,7 @@ const Page: NextPageWithLayout = () => {
                   ref={h1Ref}
                   className="text-xx font-normal mb-6"
                 >
-                  Legal findings:
+                  Relevant sources for:
                   <span className="text-[#245b91]"> {q}</span>
                 </h1>
 

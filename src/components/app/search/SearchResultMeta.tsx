@@ -117,9 +117,21 @@ export const SearchResultMeta = (prop: {
   const { occurrences, metadata } = data;
   let _link: string = "what is law";
   let _metadata: any;
+  console.log("Content and contex", metadata);
 
-  const { close, searchParams } = useQueryHandler();
+  const { close, searchParams, router } = useQueryHandler();
   const showCaseSummary = searchParams.get("showCaseSummary");
+  const handleHighlightFullJudgement = (
+    Text_highlighted: string,
+    course_id: string
+  ) => {
+    localStorage.setItem("caseData", JSON.stringify(Text_highlighted));
+    router.push(
+      `/library/cases/${
+        course_id ? course_id : _link.replace(/\s/g, "-")
+      }?title=${metadata.case_title}&tab=case`
+    );
+  };
   const mappedAlphabets: { [key: number]: string } = {
     0: "a",
     1: "b",
@@ -128,31 +140,67 @@ export const SearchResultMeta = (prop: {
   };
   const Occurrences = () =>
     occurrences.map(({ content, context }, ptx: number) => {
-      let fmtTxt: string = content.trim();
-      // if (typeof context === "string") {
+      // let fmtTxt: string = content.trim();
+      // // if (typeof context === "string") {
+      // console.log("full context", context);
+      // fmtTxt = fmtTxt.replace(
+      //   RegExp(escapeRegExp(`${context.trim()}`), "gi"),
+      //   `<span class="bg-[#FFE89E]" onClick="${
+      //     handleHighlightFullJudgement(  "hello world",
+      //       "123456789")
 
-      fmtTxt = fmtTxt.replace(
-        RegExp(escapeRegExp(`${context.trim()}`), "gi"),
-        `<span class=\"bg-[#FFE89E]\">${context.trim()}<sup class=\"hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]\">${
-          mappedAlphabets[ptx]
-        }</sup></span>`
-      );
+      //   }">${context.trim()}<sup class="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]">${
+      //     mappedAlphabets[ptx]
+      //   }</sup></span>`
+      // );
 
-      // } else {
-      //   context.forEach((txt, idx) => {
-      //     fmtTxt = fmtTxt.replace(
-      //       RegExp(escapeRegExp(`${txt}`), "gi"),
-      //       `<span class=\"bg-[#FFE89E]\">${txt}</span>`
-      //     );
-      //   });
-      // }
+      // Split the content at the quote
+      const parts = content.trim().split(context.trim());
+
       return (
-        <p
-          key={ptx}
-          dangerouslySetInnerHTML={{ __html: fmtTxt }}
-          className="text-sm mb-6"
-        />
+        <p className="text-sm mb-6" key={ptx}>
+          {/* Render first part */}
+          {parts[0] && <span>{parts[0]} </span>}
+
+          {/* Render highlighted quote */}
+          <mark id="" className="bg-[#FFECB3]">
+            {context}
+          </mark>
+
+          {/* Render remaining content */}
+          {parts[1] && <span>{parts[1]} </span>}
+          <sup
+            onClick={() =>
+              handleHighlightFullJudgement(
+                content.trim(),
+                metadata?.document_id
+              )
+            }
+            className="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]"
+          >
+            {mappedAlphabets[ptx]}
+          </sup>
+        </p>
       );
+      // return (
+      //   <p
+      //     key={ptx}
+      //     // dangerouslySetInnerHTML={{ __html: fmtTxt }}
+      //     className="text-sm mb-6"
+      //   >
+      //     {
+      //       <span
+      //         className="bg-[#FFE89E]"
+      //         onClick={handleHighlightFullJudgement}
+      //       >
+      //         {context.trim()}
+      //         <sup className="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]">
+      //           {mappedAlphabets[ptx]}
+      //         </sup>
+      //       </span>
+      //     }
+      //   </p>
+      // );
     });
 
   return (
@@ -232,13 +280,16 @@ export const SearchResultMeta = (prop: {
         {/* <p dangerouslySetInnerHTML={{ __html: fmtTxt }} className="text-sm" /> */}
         {/* when i wrote this logic, I understood it, as you read it God help you to understand it in your attempt to change it */}
         {/* God help us all 🤣🤣🤣? */}
-        {index == "1" && showCaseSummary !== null && showCaseSummary !== "1" ? (
-          <HiOutlineDocumentText
-            title="Case summary"
-            onClick={() => close("showCaseSummary", index as string)}
-            className="text-gray-500 my-5 cursor-pointer  mr-auto"
-            size={19}
-          />
+        {/* {index == "1" && showCaseSummary !== null && showCaseSummary !== "1" ? (
+          <>
+            <HiOutlineDocumentText
+              title="Case summary"
+              onClick={() => close("showCaseSummary", index as string)}
+              className="text-gray-500 my-5 cursor-pointer  mr-auto"
+              size={19}
+            />
+            Summary
+          </>
         ) : index !== "1" && showCaseSummary !== index ? (
           <HiOutlineDocumentText
             title="Case summary"
@@ -246,7 +297,7 @@ export const SearchResultMeta = (prop: {
             className="text-gray-500 my-5 cursor-pointer  mr-auto"
             size={19}
           />
-        ) : null}
+        ) : null} */}
       </div>
 
       {type === "cases" && (

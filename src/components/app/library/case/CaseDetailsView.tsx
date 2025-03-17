@@ -27,8 +27,6 @@ const sections = [
     label: "Ratio",
   },
 ];
-// let quoteToHighlight =
-//   "Ordinarily, a breach or non-compliance with or contravention of the Constitution or any of its provisions by a Court of law in the conduct of its judicial proceedings, would render the proceedings and any bye-product or outcome thereof, legally null and void for being unconstitutional.";
 
 const CaseView = ({
   caseDocument,
@@ -51,44 +49,48 @@ const CaseView = ({
   };
   // please do not delete, this is the logic for highlighting on the main judgement page
   // Will remove if the other logic for highlighting is approved
+  const [quoteToHighlight, setQuoteToHighlight] = useState(null);
 
-  // useEffect(() => {
-  //   // After judgment loads, scroll to the highlighted section
-  //   setTimeout(() => {
-  //     const targetElement = document.getElementById("highlighted-quote");
-  //     if (targetElement) {
-  //       targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
-  //     }
-  //   }, 300);
-  // }, [quoteToHighlight]);
-  // const ProcessJudgmentContent: React.FC<{ content: string }> = ({
-  //   content,
-  // }) => {
-  //   // test with AIMS Foods Limited v. Olufemi Fadeyi
-  //   if (!content || !quoteToHighlight || !content.includes(quoteToHighlight)) {
-  //     return <Markdown content={content} />;
-  //   }
-  //   // Split the content at the quote
-  //   const parts = content.split(quoteToHighlight);
+  useEffect(() => {
+    const data = localStorage.getItem("caseData");
+    if (data) {
+      setQuoteToHighlight(JSON.parse(data));
+      // Optionally clear data after use
+      localStorage.removeItem("caseData");
+    }
+    // After judgment loads, scroll to the highlighted section
+    setTimeout(() => {
+      const targetElement = document.getElementById("highlighted-quote");
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }, 300);
+  }, [quoteToHighlight]);
+  const ProcessJudgmentContent: React.FC<{ content: string }> = ({
+    content,
+  }) => {
+    // test with Citi Bank Nigeria Limited v. Mr. Martins Ikediashi
+    if (!content || !quoteToHighlight || !content.includes(quoteToHighlight)) {
+      return <Markdown content={content} />;
+    }
+    // Split the content at the quote
+    const parts = content.split(quoteToHighlight);
 
-  //   return (
-  //     <>
-  //       {/* Render first part */}
-  //       {parts[0] && <Markdown content={parts[0]} />}
+    return (
+      <>
+        {/* Render first part */}
+        {parts[0] && <Markdown content={parts[0]} />}
 
-  //       {/* Render highlighted quote */}
-  //       <div
-  //         id="highlighted-quote"
-  //         className="bg-yellow-200 p-4 border-l-4 border-yellow-500 mb-4"
-  //       >
-  //         <Markdown content={quoteToHighlight} />
-  //       </div>
+        {/* Render highlighted quote */}
+        <div id="highlighted-quote" className="bg-[#FFECB3]">
+          <Markdown content={quoteToHighlight} />
+        </div>
 
-  //       {/* Render remaining content */}
-  //       {parts[1] && <Markdown content={parts[1]} />}
-  //     </>
-  //   );
-  // };
+        {/* Render remaining content */}
+        {parts[1] && <Markdown content={parts[1]} />}
+      </>
+    );
+  };
   return (
     caseDocument && (
       <Container>
@@ -171,8 +173,8 @@ const CaseView = ({
                       Judgement
                     </h4>
                     {/* Render the full judgement with highlighted quoted part */}
-                    {/* <ProcessJudgmentContent content={caseDocument.judgement} /> */}
-                    <Markdown content={caseDocument.judgement} />
+                    <ProcessJudgmentContent content={caseDocument.judgement} />
+                    {/* <Markdown content={caseDocument.judgement} /> */}
                   </div>
                 )}
                 <hr className="my-8" />

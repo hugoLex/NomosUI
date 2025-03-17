@@ -92,11 +92,11 @@ const FeedbackWidget = () => {
   return (
     <div className="w-full max-w-lg font-rubik mb-8">
       <div className="flex flex-col">
-        <h2 className="text-sm font-medium text-gray-700 mb-3">
-          Do you agree with this Relationship treatment?
-        </h2>
+        <p className="text-sm font-medium text-[#9ea7b4] mb-3">
+          Do you agree with this treatment?
+        </p>
 
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 mb-[10px]">
           <button
             onClick={() => handleVote("like")}
             className={`flex items-center justify-center rounded-full transition-all duration-300 hover:bg-gray-100 p-2
