@@ -96,7 +96,7 @@ const Page: NextPageWithLayout = () => {
       // refetchOnMountOrArgChange: true,
     }
   );
-
+  // console.log("query data", data);
   // Initial data load
   useEffect(() => {
     setReferrer(router.asPath);

@@ -120,15 +120,22 @@ export const SearchResultMeta = (prop: {
 
   const { close, searchParams } = useQueryHandler();
   const showCaseSummary = searchParams.get("showCaseSummary");
-
+  const mappedAlphabets: { [key: number]: string } = {
+    0: "a",
+    1: "b",
+    2: "c",
+    3: "d",
+  };
   const Occurrences = () =>
-    occurrences.map(({ content, context }, ptx) => {
+    occurrences.map(({ content, context }, ptx: number) => {
       let fmtTxt: string = content.trim();
       // if (typeof context === "string") {
 
       fmtTxt = fmtTxt.replace(
         RegExp(escapeRegExp(`${context.trim()}`), "gi"),
-        `<span class=\"bg-[#FFE89E]\">${context.trim()}</span>`
+        `<span class=\"bg-[#FFE89E]\">${context.trim()}<sup class=\"hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]\">${
+          mappedAlphabets[ptx]
+        }</sup></span>`
       );
 
       // } else {
@@ -163,7 +170,7 @@ export const SearchResultMeta = (prop: {
           }?title=${metadata.case_title}&tab=case`}
           className="text-[#245b91]"
         >
-          <span className="text-gray-500">{index}. </span>
+          <span className="text-gray-500 ">{index}. </span>
           {type === "articles" && (metadata as ArticleMetadata).article_title}
           {type === "cases" && (metadata as CaseMetadata).case_title}
           {type === "legislations" &&
