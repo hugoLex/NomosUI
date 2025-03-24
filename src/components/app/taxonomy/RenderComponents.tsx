@@ -93,7 +93,7 @@ export const DocumentLinks = ({
       )}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="p-3 rounded-md border border-gray-100 hover:border-blue-200 hover:shadow-sm transition-all duration-200  block"
+      className="w-full p-3 rounded-md border border-gray-100 hover:border-blue-200 hover:shadow-sm transition-all duration-200  block"
     >
       <div className="flex items-start">
         <div className="mr-3 flex-shrink-0">
