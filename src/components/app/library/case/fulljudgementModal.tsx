@@ -7,10 +7,10 @@ function FulljudgementModal({
   setClickedQuote,
 }: {
   //   id: string;
-  case_title: string;
+  case_title?: string;
   quoteToHighlight: {
     quote: string;
-    citation: string;
+    citation: string | null;
     treatment_type: string;
   };
   full_judgement?: string | null;
@@ -18,7 +18,7 @@ function FulljudgementModal({
   setClickedQuote: React.Dispatch<
     React.SetStateAction<{
       quote: string;
-      citation: string;
+      citation: string | null;
       treatment_type: string;
     } | null>
   >;
@@ -76,25 +76,30 @@ function FulljudgementModal({
             <div className=" p-4 border-b border-gray-200 flex justify-between items-center">
               <div>
                 <h3
-                  title={case_title}
+                  title={case_title ? case_title : "Loading..."}
                   className="font-medium text-primary text-base truncate max-w-[690px]"
                 >
                   {case_title ? case_title : "Loading..."}
                 </h3>
-                <h3 className="mt-3 font-medium text-[#AB1111] text-base uppercase">
-                  Highlighted passage citation :
-                </h3>
-                <h3
-                  title={quoteToHighlight?.citation}
-                  className="font-medium text-primary/60 text-base truncate max-w-[690px]"
-                >
-                  {quoteToHighlight?.citation
-                    ? quoteToHighlight?.citation
-                    : "Loading..."}{" "}
-                  <span className="text-[#008E00] bg-[#008E00]/10 px-3 py-1 rounded text-sm">
-                    {quoteToHighlight?.treatment_type}
-                  </span>
-                </h3>
+                {quoteToHighlight?.citation && (
+                  <>
+                    <h3 className="mt-3 font-medium text-[#AB1111] text-base uppercase">
+                      Highlighted passage citation :
+                    </h3>
+
+                    <h3
+                      title={quoteToHighlight?.citation}
+                      className="font-medium text-primary/60 text-base truncate max-w-[690px]"
+                    >
+                      {quoteToHighlight?.citation
+                        ? quoteToHighlight?.citation
+                        : "Loading..."}{" "}
+                      <span className="text-[#008E00] bg-[#008E00]/10 px-3 py-1 rounded text-sm">
+                        {quoteToHighlight?.treatment_type}
+                      </span>
+                    </h3>
+                  </>
+                )}
               </div>
               <button
                 onClick={() => setClickedQuote(null)}

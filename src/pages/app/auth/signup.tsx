@@ -15,22 +15,32 @@ export type SignUpInitialStateT = {
   phone: string;
   // professional: string;
   role: string;
-  // student: string;
+  // areas: string[];
   organization: string;
   password: string;
   confirm_password: string;
   remember: boolean;
   full_name: string;
   [key: string]: string | boolean;
+  // [key: string]: string | boolean|string[];
 };
 const Signup = () => {
   const [signup, { isLoading }] = useSignupMutation();
-
+  // {
+  //   "email": "sopewenike@gmail.com",
+  //   "full_name": "Chibuike Ewenike",
+  //   "password": "@Sopnikes112",
+  //   "areas": [
+  //    7
+  //   ],
+  //   "role": "STUDENT",
+  //   "confirm_password": "@Sopnikes112"
+  // }
   const InitiaState: SignUpInitialStateT = {
     email: "",
-    phone: "",
     full_name: "",
-    // professional: "",
+    phone: "",
+    // areas: [],
     organization: "",
     role: "PROFESSIONAL",
     // student: "",
@@ -66,12 +76,23 @@ const Signup = () => {
     values: SignUpInitialStateT,
     { resetForm }: { resetForm: any }
   ) {
-    console.log("Attempting to signup", values);
-
+    // {
+    //   "email": "sopewenike@gmail.com",
+    //   "full_name": "Chibuike Ewenike",
+    //   "password": "@Sopnikes112",
+    //   "areas": [
+    //    7
+    //   ],
+    //   "role": "STUDENT",
+    //   "confirm_password": "@Sopnikes112"
+    // }
+    const { remember, email, ...rest } = values;
+    console.log("Attempting to signup", { email, ...rest });
     try {
       const res = await signup({
-        ...values,
-        email: values?.email.toLowerCase(),
+        ...rest,
+        email: email.toLowerCase(),
+        // areas: [7], //remove this before production
       }).unwrap();
 
       resetForm();
@@ -110,7 +131,7 @@ const Signup = () => {
                   Already have an account ?{" "}
                   <Link
                     className="text-[0.75rem] text-primary cursor-pointer"
-                    href="/auth/signup"
+                    href="/auth/login"
                   >
                     Login
                   </Link>

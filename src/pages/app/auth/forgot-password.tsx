@@ -36,10 +36,11 @@ const Page = () => {
       const res = await forgotPassword({
         email: values.email.toLowerCase(),
       }).unwrap();
-      setResmessage(res?.message);
+
+      setResmessage(res);
       console.log("Response from forgot password page", res);
 
-      resetForm();
+      // resetForm();
       // if (res) router.push("/auth/login");
     } catch (error) {
       // if (!error) return "No server response";
@@ -75,7 +76,7 @@ const Page = () => {
                 We will email you a link to reset your password.
               </p>
               {resmessage && (
-                <p className="text-[red] text-[0.87206rem] md:text- base max-w-[19.0625rem] mt-[1rem] md:mt-[0.62rem] font-normal leading-[normal">
+                <p className="text-[green] text-[0.87206rem] md:text- base max-w-[19.0625rem] mt-[1rem] md:mt-[0.62rem] font-normal leading-[normal">
                   {resmessage}. Please check your mailbox.
                 </p>
               )}

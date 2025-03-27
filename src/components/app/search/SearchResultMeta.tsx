@@ -14,6 +14,10 @@ import { HiOutlineDocumentText } from "react-icons/hi2";
 import { LLMResult } from "@app/types";
 import { SummaryComponent, SummaryPreview } from "@app/components/shared";
 import { useQueryHandler } from "@app/hooks";
+import FulljudgementModal from "../library/case/fulljudgementModal";
+import { useCaseQuery } from "@app/store/services/caseSlice";
+import { skipToken } from "@reduxjs/toolkit/query";
+import useFetchFullJudgementData from "@app/hooks/useFetchFullJudgementData";
 
 export const SearchAIMetaResult: FC<LLMResult> = (prop) => {
   const { detail, message, llm, retriever } = prop;
@@ -117,21 +121,33 @@ export const SearchResultMeta = (prop: {
   const { occurrences, metadata } = data;
   let _link: string = "what is law";
   let _metadata: any;
-  console.log("Content and contex", metadata);
 
+  // console.log("Content and contex", metadata);
+  // This is the logic for highlighting the full judgement
+  const [quoteToHighlight, setQuoteToHighlight] = useState<{
+    quote: string;
+    citation: string | null;
+    treatment_type: string;
+  } | null>(null);
+  // search using the case id or skip it
+  // const { isError, isLoading, data:fullJudgement } = useCaseQuery(metadata.document_id??skipToken)
+  // This is a hook to get the fullcase of any valid id
+  const { fullJudgement } = useFetchFullJudgementData(metadata.document_id);
+  // console.log("full judgement", fullJudgement);
   const { close, searchParams, router } = useQueryHandler();
   const showCaseSummary = searchParams.get("showCaseSummary");
-  const handleHighlightFullJudgement = (
-    Text_highlighted: string,
-    course_id: string
-  ) => {
-    localStorage.setItem("caseData", JSON.stringify(Text_highlighted));
-    router.push(
-      `/library/cases/${
-        course_id ? course_id : _link.replace(/\s/g, "-")
-      }?title=${metadata.case_title}&tab=case`
-    );
-  };
+  //  this opens the full case page and scrolls and highlights a portion of the case
+  // const handleHighlightFullJudgement = (
+  //   Text_highlighted: string,
+  //   course_id: string
+  // ) => {
+  //   localStorage.setItem("caseData", JSON.stringify(Text_highlighted));
+  //   router.push(
+  //     `/library/cases/${
+  //       course_id ? course_id : _link.replace(/\s/g, "-")
+  //     }?title=${metadata.case_title}&tab=case`
+  //   );
+  // };
   const mappedAlphabets: { [key: number]: string } = {
     0: "a",
     1: "b",
@@ -139,7 +155,14 @@ export const SearchResultMeta = (prop: {
     3: "d",
   };
   const Occurrences = () =>
-    occurrences.map(({ content, context }, ptx: number) => {
+    (
+      occurrences as {
+        content: string;
+        context: string;
+        // keywords was added please update your type definition
+        keywords: string[];
+      }[]
+    ).map(({ content, context, keywords }, ptx: number) => {
       // let fmtTxt: string = content.trim();
       // // if (typeof context === "string") {
       // console.log("full context", context);
@@ -155,7 +178,30 @@ export const SearchResultMeta = (prop: {
       // );
 
       // Split the content at the quote
-      const parts = content.trim().split(context.trim());
+
+      // Create a regex pattern dynamically from the boldWords array
+      const boldWords = keywords;
+      const regexPattern = new RegExp(`\\b(${boldWords.join("|")})\\b`, "gi");
+
+      // const renderTextWithBold = content
+      //   .split(regexPattern)
+      //   .map((word, index) =>
+      //     boldWords.includes(word) ? <b key={index}>{word}</b> : word
+      //   );
+      // console.log(keywords);
+      const contextResolved = context
+        .trim()
+        .replaceAll("[...] ", "")
+        .replaceAll("[...]", "")
+        .replaceAll("...", "");
+      const parts = content.trim().split(contextResolved);
+      // console.log(
+      //   "this is it",
+      //   parts[0],
+      //   "context starts here",
+      //   parts[1],
+      //   "end of it"
+      // );
 
       return (
         <p className="text-sm mb-6" key={ptx}>
@@ -164,17 +210,31 @@ export const SearchResultMeta = (prop: {
 
           {/* Render highlighted quote */}
           <mark id="" className="bg-[#FFECB3]">
-            {context}
+            {contextResolved.split(regexPattern).map((word, index) =>
+              boldWords.includes(word) ? (
+                <b className="text-primary font-bold" key={index}>
+                  {word}
+                </b>
+              ) : (
+                word
+              )
+            )}
           </mark>
 
           {/* Render remaining content */}
           {parts[1] && <span>{parts[1]} </span>}
           <sup
-            onClick={() =>
-              handleHighlightFullJudgement(
-                content.trim(),
-                metadata?.document_id
-              )
+            onClick={
+              () =>
+                setQuoteToHighlight({
+                  citation: null,
+                  quote: content.trim(),
+                  treatment_type: "",
+                })
+              // handleHighlightFullJudgement(
+              //   content.trim(),
+              //   metadata?.document_id
+              // )
             }
             className="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]"
           >
@@ -202,9 +262,20 @@ export const SearchResultMeta = (prop: {
       //   </p>
       // );
     });
-
+  console.log("Occurences updated", occurrences);
   return (
     <div className="mb-8 space-y-3">
+      {/* This is a modal to display the fullcase and highlighted area  */}
+      {quoteToHighlight && fullJudgement && (
+        <FulljudgementModal
+          // innerRef={h2Ref}
+          // id={caseId}
+          setClickedQuote={setQuoteToHighlight}
+          case_title={metadata.case_title}
+          quoteToHighlight={quoteToHighlight}
+          full_judgement={fullJudgement?.judgement}
+        />
+      )}
       <span className="text-[#008E00] bg-[#008E00]/10 text-xs px-3 py-1 rounded">
         {metadata.document_type}
       </span>

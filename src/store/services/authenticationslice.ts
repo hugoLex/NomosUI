@@ -1,18 +1,19 @@
 
 import { endpoints, injectEndpoints } from "./endpoints";
-
+const developmentBaseURL = "http://127.0.0.1:8000/api/v1/auth"
 export const authApiSlice = injectEndpoints({
     endpoints: (builder) => ({
         signup: builder.mutation({
             query: (credentials) => ({
-                url: credentials.id ? `/signup/${credentials.id}` : "/signup",
+                url: `${developmentBaseURL}/sign-up`,
+                // url: credentials.id ? `/signup/${credentials.id}` : "/signup",
                 method: "POST",
-                body: { ...credentials.info },
+                body: { ...credentials },
             }),
         }),
         login: builder.mutation({
             query: (credentials) => ({
-                url: "/signin",
+                url: `${developmentBaseURL}/login`,
                 method: "POST",
                 body: { ...credentials },
             }),
@@ -28,7 +29,7 @@ export const authApiSlice = injectEndpoints({
 
         forgotPassword: builder.mutation({
             query: (credentials) => ({
-                url: "/forgot-password",
+                url: `${developmentBaseURL}/password-reset/initiate`,
                 method: "POST",
                 body: { ...credentials },
             }),

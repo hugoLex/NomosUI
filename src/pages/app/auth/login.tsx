@@ -18,20 +18,17 @@ import Image from "next/image";
 import { logo } from "@app/assets";
 import CryptoJS from "crypto-js";
 const Login = () => {
-  const secretKey = "your-secret-key";
-
+  // const secretKey = "your-secret-key";
+  const secretKey = process.env.NEXT_PUBLIC_SETUP_LOGIN_SECRET_KEY;
+  console.log("Secret key", secretKey);
   const encryptText = (text: string) => {
-    return CryptoJS.AES.encrypt(text, secretKey).toString();
+    return CryptoJS.AES.encrypt(text, secretKey as string).toString();
   };
 
   const decryptText = (ciphertext: string) => {
-    const bytes = CryptoJS.AES.decrypt(ciphertext, secretKey);
+    const bytes = CryptoJS.AES.decrypt(ciphertext, secretKey as string);
     return bytes.toString(CryptoJS.enc.Utf8);
   };
-
-  const encrypted = encryptText("Hello World");
-  console.log(encrypted);
-  console.log(decryptText(encrypted));
 
   // const token = useSelector(selectCurrentToken)
   // const accessToken = Cookies.get("accessToken");
@@ -49,7 +46,7 @@ const Login = () => {
   const InitiaState: InitiaStateT = {
     email: "",
     password: "",
-    remember: true,
+    remember: false,
   };
 
   const [pwdInputType, setPwdInputType] = useState(true);
@@ -66,12 +63,20 @@ const Login = () => {
 
   useEffect(() => {
     const user = Cookies.get("user");
-
+    const saveUser = Cookies.get("saveUser");
+    // console.log("From login cookie", user);
     if (user) {
       try {
-        const userparsed = JSON.parse(user);
-        formik.setValues({ ...userparsed });
+        const userDecrypted = decryptText(user);
+        const userparsed = JSON.parse(userDecrypted);
         // console.log(userparsed); // Log the parsed object for debugging
+        if (saveUser === "true") {
+          formik.setValues((prev) => ({
+            ...prev,
+            ...userparsed,
+            remember: true,
+          }));
+        }
       } catch (error) {
         console.error("Failed to parse user data:", error);
       }
@@ -81,13 +86,13 @@ const Login = () => {
 
     // accessToken && token && router.push("/");
     // accessToken && token && router.back();
-  }, [formik.values.remember]);
+  }, []);
 
   async function handleSubmit(
     values: InitiaStateT,
     { resetForm }: { resetForm: any }
   ) {
-    console.log("Attempting to Login");
+    console.log("Attempting to Login", values);
 
     try {
       const res = await login({
@@ -95,7 +100,15 @@ const Login = () => {
         email: values?.email.toLowerCase(),
       }).unwrap();
       if (res) {
-        Cookies.set("accessToken", res.access_token);
+        Cookies.set("accessToken", res.access);
+        if (values?.remember) {
+          const encrypted = encryptText(
+            JSON.stringify({ email: values?.email, password: values?.password })
+          );
+          Cookies.set("user", encrypted);
+        } else {
+          Cookies.remove("user");
+        }
         // dispatch(
         //   setCredentials({
         //     accessToken: res.access_token,
@@ -250,29 +263,21 @@ const Login = () => {
                   <input
                     checked={formik.values.remember}
                     onChange={() => {
-                      formik.setValues({
-                        email: formik.values.remember
-                          ? "sopewenike@gmail.com"
-                          : "",
-                        password: formik.values.remember
-                          ? "@lexanalytics1"
-                          : "",
-                        remember: formik.values.remember ? false : true,
-                      });
-                      Cookies.set(
-                        "user",
-                        JSON.stringify({
-                          email: formik.values.remember
-                            ? ""
-                            : "sopewenike@gmail.com",
-                          password: formik.values.remember
-                            ? ""
-                            : "@lexanalytics1",
-                          remember: formik.values.remember ? false : true,
-                        })
-                      );
+                      // formik.values.remember &&
+                      //   Cookies.set("rememberuser", "true");
+                      // formik.setValues((prev) => ({
+                      //   ...prev,
+                      //   remember: formik.values.remember ? false : true,
+                      // }));
                     }}
-                    // onClick={}
+                    onClick={() => {
+                      // formik.values.remember &&
+                      Cookies.set("saveUser", "true");
+                      formik.setValues((prev) => ({
+                        ...prev,
+                        remember: formik.values.remember ? false : true,
+                      }));
+                    }}
                     type="checkbox"
                     className="rounded-[0.3125rem] h-[1.25rem] w-[1.25rem]  accent-primary "
                   />

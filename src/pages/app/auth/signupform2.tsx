@@ -43,7 +43,7 @@ const SignupForm2: React.FC<ChildProps> = ({
           />
         </svg> */}
           <input
-            type="email"
+            type="text"
             name="full_name"
             value={formik.values.full_name}
             onBlur={() => {
@@ -57,8 +57,8 @@ const SignupForm2: React.FC<ChildProps> = ({
         </div>
 
         <ErrorMessageCtn>
-          {formik.touched.email && formik.errors.email
-            ? formik.errors.email
+          {formik.touched.full_name && formik.errors.full_name
+            ? formik.errors.full_name
             : null}
         </ErrorMessageCtn>
       </div>
@@ -234,14 +234,25 @@ const SignupForm2: React.FC<ChildProps> = ({
         {errorMessage && (
           <ErrorMessageServer>{errorMessage}</ErrorMessageServer>
         )}
-        <button
-          disabled={formik.isValid === true}
-          onClick={() => setActiveForm("form1")}
-          type="button"
-          className={`w-full disabled:cursor-not-allowed py-[16px] px-4 h-[56px]  tracking-wide text-white transition-colors duration-200 bg-blue_btn rounded-[5px]`}
-        >
-          Continue
-        </button>
+        {formik.isValid ? (
+          <button
+            // disabled={formik.isValid === false}
+            // onClick={() => setActiveForm("form1")}
+            type="submit"
+            className={`w-full  py-[16px] px-4 h-[56px]  tracking-wide text-white transition-colors duration-200 bg-blue_btn rounded-[5px]`}
+          >
+            Submit
+          </button>
+        ) : (
+          <button
+            // disabled={formik.isValid === false}
+            onClick={() => setActiveForm("form1")}
+            type="button"
+            className={`w-full  py-[16px] px-4 h-[56px]  tracking-wide text-white transition-colors duration-200 bg-blue_btn rounded-[5px]`}
+          >
+            Continue
+          </button>
+        )}
       </div>
     </div>
   );

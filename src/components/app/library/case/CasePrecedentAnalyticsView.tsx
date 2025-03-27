@@ -15,6 +15,7 @@ import { dummyCaseDetails } from "@app/utils";
 import FeedbackWidget from "./FeedbackWidget";
 import { SelectedTreatment, TPrecedentData } from "@app/types";
 import useQueryToggler from "@app/hooks/useQueryHandler";
+import { QuoteHighlighterData } from "@app/pages/app/library/cases/[...slug]";
 
 const PrecedentView = ({
   case_title,
@@ -26,11 +27,7 @@ const PrecedentView = ({
   case_title: string;
   // to set quote on the full judgement to get it highlighted
   setClickedQuote: React.Dispatch<
-    React.SetStateAction<{
-      quote: string;
-      citation: string;
-      treatment_type: string;
-    } | null>
+    React.SetStateAction<QuoteHighlighterData | null>
   >;
   innerRef: MutableRefObject<any>;
 }) => {

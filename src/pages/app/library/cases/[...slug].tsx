@@ -48,7 +48,11 @@ const tabItems: TabItem[] = [
   //   label: "Counsel analysis",
   // },
 ];
-
+export type QuoteHighlighterData = {
+  quote: string;
+  citation: string | null;
+  treatment_type: string;
+};
 const Page: NextPageWithLayout = () => {
   const { UpdateUrlParams, searchParams } = useQueryHandler();
   const caseTitleName = searchParams.get("title");
@@ -80,11 +84,9 @@ const Page: NextPageWithLayout = () => {
 
   const [tabs, setTabs] = useState(tabItems);
   // This is to set the hightlighted part of the judgement from precedent analytics
-  const [clickedQuote, setClickedQuote] = useState<{
-    quote: string;
-    citation: string;
-    treatment_type: string;
-  } | null>(null);
+  const [clickedQuote, setClickedQuote] = useState<QuoteHighlighterData | null>(
+    null
+  );
   const { isError, isLoading, data } = useCaseQuery(caseId);
   const [caseDocument, setCaseDocument] = useState<TCaseDocument | null>(null);
   const [analysisDocument, setAnalysisDocument] = useState<any>(undefined);

@@ -47,8 +47,7 @@ const CaseView = ({
     sections,
     caseDocument,
   };
-  // please do not delete, this is the logic for highlighting on the main judgement page
-  // Will remove if the other logic for highlighting is approved
+  // This is the logic for highlighting on the main judgement page
   const [quoteToHighlight, setQuoteToHighlight] = useState(null);
 
   useEffect(() => {
