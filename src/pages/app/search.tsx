@@ -40,7 +40,7 @@ const Page: NextPageWithLayout = () => {
   const { q, page, type } = router.query;
   const query = String(q);
   const pageNumber = page ? Number(page) : undefined;
-  const isPrev = pageNumber && pageNumber !== 1 ? false : true;
+  // const isPrev = pageNumber && pageNumber !== 1 ? false : true;
 
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
 
