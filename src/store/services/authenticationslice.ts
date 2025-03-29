@@ -1,6 +1,7 @@
 
 import { endpoints, injectEndpoints } from "./endpoints";
-const developmentBaseURL = "http://127.0.0.1:8000/api/v1/auth"
+const developmentBaseURL = "https://webapp.lexanalytics.ai/api/v1/auth"
+// const developmentBaseURL = "http://127.0.0.1:8000/api/v1/auth"
 export const authApiSlice = injectEndpoints({
     endpoints: (builder) => ({
         signup: builder.mutation({

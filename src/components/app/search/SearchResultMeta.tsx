@@ -182,6 +182,15 @@ export const SearchResultMeta = (prop: {
       // Create a regex pattern dynamically from the boldWords array
       const boldWords = keywords;
       const regexPattern = new RegExp(`\\b(${boldWords.join("|")})\\b`, "gi");
+      const contextResolved = context
+        .trim()
+        .replaceAll("[...] ", "")
+        .replaceAll("[...]", "")
+        .replaceAll("...", "");
+      const regexPatternHighlight = new RegExp(
+        `\\b(${contextResolved.split(" ").join("|")})\\b`,
+        "gi"
+      );
 
       // const renderTextWithBold = content
       //   .split(regexPattern)
@@ -189,11 +198,7 @@ export const SearchResultMeta = (prop: {
       //     boldWords.includes(word) ? <b key={index}>{word}</b> : word
       //   );
       // console.log(keywords);
-      const contextResolved = context
-        .trim()
-        .replaceAll("[...] ", "")
-        .replaceAll("[...]", "")
-        .replaceAll("...", "");
+
       const parts = content.trim().split(contextResolved);
       // console.log(
       //   "this is it",
@@ -206,23 +211,26 @@ export const SearchResultMeta = (prop: {
       return (
         <p className="text-sm mb-6" key={ptx}>
           {/* Render first part */}
-          {parts[0] && <span>{parts[0]} </span>}
+          {/* {parts[0] && <span>{parts[0]} </span>} */}
 
           {/* Render highlighted quote */}
-          <mark id="" className="bg-[#FFECB3]">
-            {contextResolved.split(regexPattern).map((word, index) =>
-              boldWords.includes(word) ? (
-                <b className="text-primary font-bold" key={index}>
-                  {word}
-                </b>
-              ) : (
-                word
-              )
-            )}
+          <mark id="" className="bg-white [#FFECB3]">
+            {content
+              .trim()
+              .split(regexPatternHighlight)
+              .map((word, index) =>
+                contextResolved.split(" ").includes(word) ? (
+                  <b className="text-primary font-bold" key={index}>
+                    {word}
+                  </b>
+                ) : (
+                  word
+                )
+              )}
           </mark>
 
           {/* Render remaining content */}
-          {parts[1] && <span>{parts[1]} </span>}
+          {/* {parts[1] && <span>{parts[1]} </span>} */}
           <sup
             onClick={
               () =>
@@ -241,6 +249,43 @@ export const SearchResultMeta = (prop: {
             {mappedAlphabets[ptx]}
           </sup>
         </p>
+        // <p className="text-sm mb-6" key={ptx}>
+        //   {/* Render first part */}
+        //   {parts[0] && <span>{parts[0]} </span>}
+
+        //   {/* Render highlighted quote */}
+        //   <mark id="" className="bg-[#FFECB3]">
+        //     {contextResolved.split(regexPattern).map((word, index) =>
+        //       boldWords.includes(word) ? (
+        //         <b className="text-primary font-bold" key={index}>
+        //           {word}
+        //         </b>
+        //       ) : (
+        //         word
+        //       )
+        //     )}
+        //   </mark>
+
+        //   {/* Render remaining content */}
+        //   {parts[1] && <span>{parts[1]} </span>}
+        //   <sup
+        //     onClick={
+        //       () =>
+        //         setQuoteToHighlight({
+        //           citation: null,
+        //           quote: content.trim(),
+        //           treatment_type: "",
+        //         })
+        //       // handleHighlightFullJudgement(
+        //       //   content.trim(),
+        //       //   metadata?.document_id
+        //       // )
+        //     }
+        //     className="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]"
+        //   >
+        //     {mappedAlphabets[ptx]}
+        //   </sup>
+        // </p>
       );
       // return (
       //   <p
