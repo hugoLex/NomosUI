@@ -3,6 +3,7 @@ import { FormikProps } from "formik";
 import ErrorMessageCtn from "@app/components/app/authentication/ErrorMessage";
 import ErrorMessageServer from "@app/components/app/authentication/ErrorMessageServer";
 import { SignUpInitialStateT } from "./signup";
+import SmallLoadingSpinner from "@app/components/app/authentication/smLoadingSpinner";
 
 interface ChildProps {
   formik: FormikProps<SignUpInitialStateT>;
@@ -241,7 +242,7 @@ const SignupForm2: React.FC<ChildProps> = ({
             type="submit"
             className={`w-full  py-[16px] px-4 h-[56px]  tracking-wide text-white transition-colors duration-200 bg-blue_btn rounded-[5px]`}
           >
-            Submit
+            {isLoading ? <SmallLoadingSpinner /> : "Submit"}
           </button>
         ) : (
           <button

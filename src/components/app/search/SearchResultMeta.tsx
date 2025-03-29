@@ -177,60 +177,50 @@ export const SearchResultMeta = (prop: {
       //   }</sup></span>`
       // );
 
-      // Split the content at the quote
-
-      // Create a regex pattern dynamically from the boldWords array
       const boldWords = keywords;
-      const regexPattern = new RegExp(`\\b(${boldWords.join("|")})\\b`, "gi");
-      const contextResolved = context
-        .trim()
-        .replaceAll("[...] ", "")
-        .replaceAll("[...]", "")
-        .replaceAll("...", "");
-      const regexPatternHighlight = new RegExp(
-        `\\b(${contextResolved.split(" ").join("|")})\\b`,
-        "gi"
-      );
+      // Create a regex pattern dynamically from the boldWords array
+      // const regexPattern = new RegExp(`\\b(${boldWords.join("|")})\\b`, "gi");
+      const contextResolved = context.trim().split(" ");
+      const contextLength = contextResolved.length;
 
       // const renderTextWithBold = content
       //   .split(regexPattern)
       //   .map((word, index) =>
       //     boldWords.includes(word) ? <b key={index}>{word}</b> : word
       //   );
-      // console.log(keywords);
-
-      const parts = content.trim().split(contextResolved);
-      // console.log(
-      //   "this is it",
-      //   parts[0],
-      //   "context starts here",
-      //   parts[1],
-      //   "end of it"
-      // );
 
       return (
         <p className="text-sm mb-6" key={ptx}>
-          {/* Render first part */}
-          {/* {parts[0] && <span>{parts[0]} </span>} */}
-
           {/* Render highlighted quote */}
           <mark id="" className="bg-white [#FFECB3]">
             {content
               .trim()
-              .split(regexPatternHighlight)
-              .map((word, index) =>
-                contextResolved.split(" ").includes(word) ? (
-                  <b className="text-primary font-bold" key={index}>
+              .split(" ")
+              // .split(regexPatternHighlight)
+              .map((word, index) => {
+                return contextResolved.includes(word) ? (
+                  // && index < contextLength
+                  <span
+                    className={`text-primary ${
+                      boldWords.includes(word) ? "font-bold" : ""
+                    } `}
+                    key={index}
+                  >
+                    {" "}
                     {word}
-                  </b>
+                  </span>
                 ) : (
-                  word
-                )
-              )}
+                  <span
+                    className={`${boldWords.includes(word) ? "font-bold" : ""}`}
+                    key={index}
+                  >
+                    {" "}
+                    {word}
+                  </span>
+                );
+              })}
           </mark>
 
-          {/* Render remaining content */}
-          {/* {parts[1] && <span>{parts[1]} </span>} */}
           <sup
             onClick={
               () =>
@@ -239,6 +229,7 @@ export const SearchResultMeta = (prop: {
                   quote: content.trim(),
                   treatment_type: "",
                 })
+              // This opens the full judgement page and highlights the content
               // handleHighlightFullJudgement(
               //   content.trim(),
               //   metadata?.document_id

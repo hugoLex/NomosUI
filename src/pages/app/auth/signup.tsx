@@ -92,7 +92,7 @@ const Signup = () => {
       const res = await signup({
         ...rest,
         email: email.toLowerCase(),
-        // areas: [7], //remove this before production
+        areas: [7], //remove this before production
       }).unwrap();
 
       resetForm();
