@@ -88,7 +88,7 @@ const Page: NextPageWithLayout = () => {
 
   const { isError, isFetching, isLoading, data } = useSearchQuery(
     {
-      query,
+      query: `question=${query}&format=markdown`,
       pageNumber,
       searchType: type as SearchResultDocumentMetaDocType | undefined,
     },
@@ -592,16 +592,7 @@ const Page: NextPageWithLayout = () => {
                 {/* LLM result */}
                 <Fragment>
                   {llmData === null && <Fragment />}
-                  {llmData !== null && (
-                    <SearchAIMetaResult
-                      detail={llmData.detail}
-                      llm={{
-                        replies: llmData.llm.replies,
-                      }}
-                      message={llmData.message}
-                      retriever={llmData.retriever}
-                    />
-                  )}
+                  {llmData !== null && <SearchAIMetaResult data={llmData} />}
                 </Fragment>
 
                 {/* Search result */}

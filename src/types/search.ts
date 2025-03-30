@@ -1,3 +1,5 @@
+import { GenericObject } from ".";
+
 export type SearchResultMeta = {
   area_of_law?: string[];
   year?: string | number | string[] | number[];
@@ -112,14 +114,7 @@ export type AIResultMeta = {
   year: string | number;
 };
 
-export type LLMData = {
-  llm: { replies: string[] };
-  retriever?: { documents: { id: string; meta: AIResultMeta }[] };
-};
-
-export type LLMError = { detail: string; message?: string };
-
-export type LLMResult = LLMData & LLMError;
+export type LLMResult = GenericObject | string;
 
 export type AIResult = {
   llm: { replies: string[] };
