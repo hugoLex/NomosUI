@@ -8,7 +8,7 @@ import AuthBtn from "@app/components/app/authentication/AuthBtn";
 import ErrorMessageServer from "@app/components/app/authentication/ErrorMessageServer";
 import ErrorMessageCtn from "@app/components/app/authentication/ErrorMessage";
 import AuthSideCover from "@app/components/app/authentication/AuthSideCover";
-import { errorRTK, LLMError } from "@app/types";
+import { errorRTK } from "@app/types";
 import { useForgotPasswordMutation } from "@app/store/services/authenticationslice";
 import Link from "next/link";
 

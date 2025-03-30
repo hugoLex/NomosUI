@@ -8,7 +8,7 @@ import * as Yup from "yup";
 import Cookies from "js-cookie";
 // import { toast } from "react-toastify";
 
-import { LLMError } from "@app/types";
+import { Error } from "@app/types";
 import AuthSideCover from "@app/components/app/authentication/AuthSideCover";
 import ErrorMessageCtn from "@app/components/app/authentication/ErrorMessage";
 import ErrorMessageServer from "@app/components/app/authentication/ErrorMessageServer";
@@ -122,8 +122,8 @@ const Login = () => {
       });
     } catch (error) {
       if (error) console.log("Login page error", error);
-      if ((error as LLMError)?.message) {
-        setErrorMsg((error as LLMError)?.detail);
+      if ((error as Error)?.message) {
+        setErrorMsg((error as Error)?.detail);
         // toast.error((error as errorRtk)?.data?.detail);
       }
 
