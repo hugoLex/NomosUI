@@ -240,7 +240,7 @@ const SignupForm2: React.FC<ChildProps> = ({
             // disabled={formik.isValid === false}
             // onClick={() => setActiveForm("form1")}
             type="submit"
-            className={`w-full  py-[16px] px-4 h-[56px]  tracking-wide text-white transition-colors duration-200 bg-blue_btn rounded-[5px]`}
+            className={`w-full mt-[10px]  py-[16px] px-4 h-[56px]  tracking-wide text-white transition-colors duration-200 bg-blue_btn rounded-[5px]`}
           >
             {isLoading ? <SmallLoadingSpinner /> : "Submit"}
           </button>

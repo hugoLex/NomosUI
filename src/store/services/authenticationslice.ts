@@ -1,12 +1,13 @@
 
 import { endpoints, injectEndpoints } from "./endpoints";
-const developmentBaseURL = "https://webapp.lexanalytics.ai/api/v1/auth"
+// const developmentBaseURL = "https://webapp.lexanalytics.ai/api/v1/auth"
 // const developmentBaseURL = "http://127.0.0.1:8000/api/v1/auth"
 export const authApiSlice = injectEndpoints({
     endpoints: (builder) => ({
         signup: builder.mutation({
             query: (credentials) => ({
-                url: `${developmentBaseURL}/sign-up`,
+                url: `/sign-up`,
+                // url: `${developmentBaseURL}/sign-up`,
                 // url: credentials.id ? `/signup/${credentials.id}` : "/signup",
                 method: "POST",
                 body: { ...credentials },
@@ -14,7 +15,8 @@ export const authApiSlice = injectEndpoints({
         }),
         login: builder.mutation({
             query: (credentials) => ({
-                url: `${developmentBaseURL}/login`,
+                url: `/login`,
+                // url: `${developmentBaseURL}/login`,
                 method: "POST",
                 body: { ...credentials },
             }),
@@ -22,7 +24,7 @@ export const authApiSlice = injectEndpoints({
 
         veriyEmail: builder.mutation({
             query: (credentials) => ({
-                url: "/verify-email",
+                url: "/confirm-account",
                 method: "POST",
                 body: { ...credentials },
             }),
@@ -30,7 +32,8 @@ export const authApiSlice = injectEndpoints({
 
         forgotPassword: builder.mutation({
             query: (credentials) => ({
-                url: `${developmentBaseURL}/password-reset/initiate`,
+                url: `/password-reset/initiate`,
+                // url: `${developmentBaseURL}/password-reset/initiate`,
                 method: "POST",
                 body: { ...credentials },
             }),

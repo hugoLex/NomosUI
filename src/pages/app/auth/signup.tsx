@@ -86,26 +86,54 @@ const Signup = () => {
     //   "role": "STUDENT",
     //   "confirm_password": "@Sopnikes112"
     // }
+    setErrorMsg(null);
     const { remember, email, ...rest } = values;
     console.log("Attempting to signup", { email, ...rest });
     try {
       const res = await signup({
         ...rest,
         email: email.toLowerCase(),
-        areas: [7], //remove this before production
+        areas: [
+          "Due diligence",
+          "Legal research",
+          "Legal writing",
+          "Mediation",
+        ], //remove this before production
       }).unwrap();
 
-      resetForm();
+      // resetForm();
       // router.push("/auth/login");
 
       console.log("Response from signup page,saving!!", {
         res,
       });
     } catch (error) {
-      if (error) console.log("signup page error", error);
+      // if (error) console.log("signup page error", error);
       if ((error as LLMError)?.message) {
         setErrorMsg((error as LLMError)?.detail);
         // toast.error((error as errorRtk)?.data?.detail);
+      }
+      if (
+        (error as { data: { non_field_errors: string[] } })?.data
+          .non_field_errors
+      ) {
+        setErrorMsg(
+          (error as { data: { non_field_errors: string[] } })?.data
+            ?.non_field_errors[0]
+        );
+        console.error(
+          (error as { data: { non_field_errors: string[] } })?.data
+            ?.non_field_errors[0]
+        );
+        // toast.error((error as errorRtk)?.data?.detail);
+      }
+      if ((error as { data: { email: string[] } }).data.email) {
+        setErrorMsg((error as { data: { email: string[] } }).data.email[0]);
+      }
+      if ((error as { data: { phone: string[] } }).data.phone) {
+        setErrorMsg(
+          `Phone: ${(error as { data: { phone: string[] } }).data.phone[0]}`
+        );
       }
 
       console.log("signup failed!!!", error);
