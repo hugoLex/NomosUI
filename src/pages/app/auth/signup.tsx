@@ -2,7 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { LLMError } from "@app/types";
+import { Error } from "@app/types";
 import AuthSideCover from "@app/components/app/authentication/AuthSideCover";
 import { useSignupMutation } from "@app/store/services/authenticationslice";
 import Image from "next/image";
@@ -108,9 +108,9 @@ const Signup = () => {
         res,
       });
     } catch (error) {
-      // if (error) console.log("signup page error", error);
-      if ((error as LLMError)?.message) {
-        setErrorMsg((error as LLMError)?.detail);
+      if (error) console.log("signup page error", error);
+      if ((error as Error)?.message) {
+        setErrorMsg((error as Error)?.detail);
         // toast.error((error as errorRtk)?.data?.detail);
       }
       if (

@@ -40,7 +40,7 @@ const Page: NextPageWithLayout = () => {
   const { q, page, type } = router.query;
   const query = String(q);
   const pageNumber = page ? Number(page) : undefined;
-  const isPrev = pageNumber && pageNumber !== 1 ? false : true;
+  // const isPrev = pageNumber && pageNumber !== 1 ? false : true;
 
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
 
@@ -88,7 +88,7 @@ const Page: NextPageWithLayout = () => {
 
   const { isError, isFetching, isLoading, data } = useSearchQuery(
     {
-      query,
+      query: `question=${query}&format=markdown`,
       pageNumber,
       searchType: type as SearchResultDocumentMetaDocType | undefined,
     },
@@ -592,16 +592,7 @@ const Page: NextPageWithLayout = () => {
                 {/* LLM result */}
                 <Fragment>
                   {llmData === null && <Fragment />}
-                  {llmData !== null && (
-                    <SearchAIMetaResult
-                      detail={llmData.detail}
-                      llm={{
-                        replies: llmData.llm.replies,
-                      }}
-                      message={llmData.message}
-                      retriever={llmData.retriever}
-                    />
-                  )}
+                  {llmData !== null && <SearchAIMetaResult data={llmData} />}
                 </Fragment>
 
                 {/* Search result */}

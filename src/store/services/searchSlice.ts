@@ -11,6 +11,7 @@ import {
   SearchSuggestion,
   TSearchResultData,
 } from "@app/types";
+import { baseURL } from "@app/utils";
 
 type SearchQuery = {
   query: string;
@@ -45,8 +46,8 @@ export const searchQueryAPI = injectEndpoints({
         >[] = [];
         const { query, pageNumber, searchType } = _arg;
 
-        const defaultResults = await Promise.all([
-          _baseQuery(`/ask?question=${query}`),
+        const [llm, search] = await Promise.all([
+          fetch(`${baseURL}/ask?${query}`),
           _baseQuery(
             `/semantic/search?query=${query}${
               searchType ? `&document_type=${searchType}` : ""
@@ -54,7 +55,7 @@ export const searchQueryAPI = injectEndpoints({
           ),
         ]);
 
-        results.push(...defaultResults);
+        results.push(search);
 
         try {
           const arrOfResults = handlePromiseResults(results);
@@ -88,6 +89,10 @@ export const searchQueryAPI = injectEndpoints({
 
             return { ...acc, [key]: data };
           }, {}) as TSearchResultData;
+
+          if (llm.ok) {
+            data.llmResult = (await llm.text()) ?? llm.json();
+          }
 
           return { data };
         } catch (e: any) {

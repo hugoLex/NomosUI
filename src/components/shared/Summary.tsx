@@ -3,6 +3,8 @@ import { RiCloseLine } from "react-icons/ri";
 import { CaretDown, CaretUp } from "../icons";
 import SmallTextBtn from "./SmallBtn";
 import { useQueryHandler } from "@app/hooks";
+import { LuChevronUp, LuChevronDown } from "react-icons/lu";
+import Markdown from "./Markdown";
 
 {
   /* <div
@@ -181,6 +183,54 @@ export const SummaryPreview = ({ text }: { text: string }) => {
           </span>
         </div>
       )}
+    </div>
+  );
+};
+
+export const PreviewCard = ({ content }: { content?: string }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  return content ? (
+    <div className="bg-transparent py-4 shadow-sm">
+      <div>
+        <div
+          className={`relative text-sm text-[#4C4D50] font-rubik leading-6
+              ${!isExpanded ? "max-h-[4.5rem] overflow-hidden" : ""}`}
+        >
+          <Markdown
+            content={content}
+            className="wrapper text-wrap overflow-x-hidden"
+          />
+          {!isExpanded && (
+            <div className="absolute bottom-0 left-0 h-8 w-full bg-gradient-to-t from-white to-transparent"></div>
+          )}
+        </div>
+
+        <button
+          onClick={toggleExpand}
+          className="mt-2 flex items-center justify-center w-full text-xs font-medium text-blue-600 hover:text-blue-800"
+        >
+          {isExpanded ? (
+            <>
+              <span>Show less</span>
+              <LuChevronUp size={16} className="ml-1" />
+            </>
+          ) : (
+            <>
+              <span>Show more</span>
+              <LuChevronDown size={16} className="ml-1" />
+            </>
+          )}
+        </button>
+      </div>
+    </div>
+  ) : (
+    <div className="flex h-16 items-center justify-center rounded-md bg-gray-50 text-sm text-[#4C4D50] font-['Rubik']">
+      No decision history available for this case
     </div>
   );
 };

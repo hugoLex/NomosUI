@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { IoPeople } from "react-icons/io5";
 import { HiMiniListBullet, HiPlus } from "react-icons/hi2";
-import { LuChevronUp, LuChevronDown } from "react-icons/lu";
 import * as Accordion from "@radix-ui/react-accordion";
 
 import { DocumentInfo } from "@app/components/icons";
@@ -9,6 +8,7 @@ import { useScrollspy } from "@app/hooks/useScrollspyHook";
 import { LegalPersonnal, TCaseDocument } from "@app/types";
 import Link from "next/link";
 import LegalPersonnelWidget from "./LegalPersonnelWidget";
+import { PreviewCard } from "@app/components/shared";
 
 type ContentOutline = "Judicial Panel" | "Decision history";
 // | "judgement"
@@ -25,54 +25,6 @@ const contentOutline: ContentOutline[] = [
 
 const actions = ["Main Issues", "Issue for Cause of Action", "Ratio Decidendi"];
 const cases = ["By Subject Matter", "By Ratio Decidendi"];
-
-const DecisionHistoryCard = ({ content }: { content?: string }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  const toggleExpand = () => {
-    setIsExpanded(!isExpanded);
-  };
-
-  return (
-    <div className=" max-w-md bg-transparent py-4 shadow-sm">
-      {content ? (
-        <div>
-          <div
-            className={`relative text-sm text-[#4C4D50] font-rubik leading-6
-              ${!isExpanded ? "max-h-[4.5rem] overflow-hidden" : ""}`}
-          >
-            {content}
-
-            {!isExpanded && (
-              <div className="absolute bottom-0 left-0 h-8 w-full bg-gradient-to-t from-white to-transparent"></div>
-            )}
-          </div>
-
-          <button
-            onClick={toggleExpand}
-            className="mt-2 flex items-center justify-center w-full text-xs font-medium text-blue-600 hover:text-blue-800"
-          >
-            {isExpanded ? (
-              <>
-                <span>Show less</span>
-                <LuChevronUp size={16} className="ml-1" />
-              </>
-            ) : (
-              <>
-                <span>Show more</span>
-                <LuChevronDown size={16} className="ml-1" />
-              </>
-            )}
-          </button>
-        </div>
-      ) : (
-        <div className="flex h-16 items-center justify-center rounded-md bg-gray-50 text-sm text-[#4C4D50] font-['Rubik']">
-          No decision history available for this case
-        </div>
-      )}
-    </div>
-  );
-};
 
 const CaseDetailsSidebarView = (props: {
   sections: any;
@@ -213,9 +165,7 @@ const CaseDetailsSidebarView = (props: {
                   Decision History
                 </h5>
                 {caseDocument.decision_history && (
-                  <DecisionHistoryCard
-                    content={caseDocument.decision_history}
-                  />
+                  <PreviewCard content={caseDocument.decision_history} />
                 )}
               </div>
               {/* Similar */}
