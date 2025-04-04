@@ -7,9 +7,10 @@ import {
 } from "./services/endpoints";
 import appReducer from "./slices/appSlice";
 import generalMessageReducer from "./slices/messagesSlice";
-
+import authReducerPath from "./slices/authSlice"
 export const store = configureStore({
   reducer: {
+    auth: authReducerPath,
     app: appReducer,
     generalMessage: generalMessageReducer,
     [searchPath]: searchReducer,

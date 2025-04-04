@@ -1,22 +1,26 @@
 
+import { baseURL } from "@app/utils";
 import { endpoints, injectEndpoints } from "./endpoints";
-// const developmentBaseURL = "https://webapp.lexanalytics.ai/api/v1/auth"
-// const developmentBaseURL = "http://127.0.0.1:8000/api/v1/auth"
+
+// Some services are not running locally hence the discrepancy in logic
+//  for api for dev and prod
+const BaseURL = {
+    production: `${baseURL}/v1/auth`, test: `${baseURL}/v1/auth`,
+    development: "http://127.0.0.1:8000/api/v1/auth"
+}[process.env.NODE_ENV]
 export const authApiSlice = injectEndpoints({
     endpoints: (builder) => ({
         signup: builder.mutation({
             query: (credentials) => ({
-                url: `/sign-up`,
-                // url: `${developmentBaseURL}/sign-up`,
-                // url: credentials.id ? `/signup/${credentials.id}` : "/signup",
+                url: `${BaseURL}/sign-up`,
                 method: "POST",
                 body: { ...credentials },
             }),
         }),
         login: builder.mutation({
             query: (credentials) => ({
-                url: `/login`,
-                // url: `${developmentBaseURL}/login`,
+                // url: `/login`,
+                url: `${BaseURL}/login`,
                 method: "POST",
                 body: { ...credentials },
             }),
@@ -24,7 +28,7 @@ export const authApiSlice = injectEndpoints({
 
         veriyEmail: builder.mutation({
             query: (credentials) => ({
-                url: "/confirm-account",
+                url: `${BaseURL}/confirm-account`,
                 method: "POST",
                 body: { ...credentials },
             }),
@@ -32,22 +36,21 @@ export const authApiSlice = injectEndpoints({
 
         forgotPassword: builder.mutation({
             query: (credentials) => ({
-                url: `/password-reset/initiate`,
-                // url: `${developmentBaseURL}/password-reset/initiate`,
+                url: `${BaseURL}/password-reset/initiate`,
                 method: "POST",
                 body: { ...credentials },
             }),
         }),
         resendVerificationCode: builder.mutation({
             query: (credentials) => ({
-                url: "/resend-verification-code",
+                url: `${BaseURL}/resend-verification-code`,
                 method: "POST",
                 body: credentials,
             }),
         }),
         createNewPassword: builder.mutation({
             query: (credentials) => ({
-                url: `/reset-password/${credentials.id}`,
+                url: `${BaseURL}/reset-password/${credentials.id}`,
                 method: "POST",
                 body: { newPassword: credentials.pwd },
             }),

@@ -108,7 +108,6 @@ const Signup = () => {
         res,
       });
     } catch (error) {
-      if (error) console.log("signup page error", error);
       if ((error as Error)?.message) {
         setErrorMsg((error as Error)?.detail);
         // toast.error((error as errorRtk)?.data?.detail);
@@ -139,10 +138,6 @@ const Signup = () => {
       console.log("signup failed!!!", error);
     }
   }
-  // function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-  //   const { name, value } = e.target;
-  //   formik.setValues((prev) => ({ ...prev, [name]: value }));
-  // }
 
   const capitalizeFirstLetter = (word: string) =>
     word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();

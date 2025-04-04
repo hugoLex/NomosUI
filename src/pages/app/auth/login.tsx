@@ -20,7 +20,7 @@ import CryptoJS from "crypto-js";
 const Login = () => {
   // const secretKey = "your-secret-key";
   const secretKey = process.env.NEXT_PUBLIC_SETUP_LOGIN_SECRET_KEY;
-  console.log("Secret key", secretKey);
+  // console.log("Secret key", secretKey);
   const encryptText = (text: string) => {
     return CryptoJS.AES.encrypt(text, secretKey as string).toString();
   };
@@ -31,7 +31,7 @@ const Login = () => {
   };
 
   // const token = useSelector(selectCurrentToken)
-  // const accessToken = Cookies.get("accessToken");
+  // const access_token = Cookies.get("access_token");
   const [login, { isLoading }] = useLoginMutation();
   const router = useRouter();
   // useParamsToggler
@@ -84,8 +84,8 @@ const Login = () => {
       console.warn("No user data found in cookies.");
     }
 
-    // accessToken && token && router.push("/");
-    // accessToken && token && router.back();
+    // access_token && token && router.push("/");
+    // access_token && token && router.back();
   }, []);
 
   async function handleSubmit(
@@ -100,18 +100,20 @@ const Login = () => {
         email: values?.email.toLowerCase(),
       }).unwrap();
       if (res) {
-        Cookies.set("accessToken", res.access);
+        Cookies.set("refresh_token", res.refresh);
+        Cookies.set("access_token", res.access);
         if (values?.remember) {
           const encrypted = encryptText(
             JSON.stringify({ email: values?.email, password: values?.password })
           );
           Cookies.set("user", encrypted);
+          router.push("/");
         } else {
           Cookies.remove("user");
         }
         // dispatch(
         //   setCredentials({
-        //     accessToken: res.access_token,
+        //     access_token: res.access_token,
         //   })
         // );
         resetForm();
