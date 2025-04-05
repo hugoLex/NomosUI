@@ -4,9 +4,9 @@ import Head from "next/head";
 import { store } from "@app/store/store";
 import { NoSSR } from "@app/components/shared";
 import { AppPropsWithLayout } from "@app/types";
-
 import { inter, poppins, rubik } from "@app/assets/fonts";
 import "../assets/app.css";
+import { Toaster } from "@app/components/ui/sonner";
 
 function App({ Component, pageProps }: AppPropsWithLayout) {
   // Use the layout defined at the page level, if available
@@ -25,6 +25,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
       </Head>
 
       <Provider store={store}>
+        <Toaster />
         <NoSSR>
           <style>
             {`

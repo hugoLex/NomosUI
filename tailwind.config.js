@@ -14,6 +14,7 @@ const dark = {
 };
 
 const config = {
+  darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     fontSize: {
@@ -42,11 +43,21 @@ const config = {
         poppins: ["var(--font-poppins)", ...fontFamily.sans],
       },
       colors: {
-        primary: "#245b91",
-        secondary: "#4F0072",
+        "dark-1": "#333333", // Replace with your actual color
+        "dark-2": "#666666", // Replace with your actual color
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
         blue_btn: "rgb(18, 45, 101, 1)",
-        dark,
-        accent: "#6019800A",
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
         success: "#4BB543",
         "coral-red": "#FF6452",
         "slate-gray": "#6D6D6D",
@@ -57,11 +68,38 @@ const config = {
         overlay: "rgba(36, 91, 145, 0.72)",
         "gray-black": "rgb(230, 230, 230)",
         "gray-authinput": "rgb(153 153 153)",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        chart: {
+          1: "hsl(var(--chart-1))",
+          2: "hsl(var(--chart-2))",
+          3: "hsl(var(--chart-3))",
+          4: "hsl(var(--chart-4))",
+          5: "hsl(var(--chart-5))",
+        },
       },
       boxShadow: {
         "3xl": "0 10px 40px rgba(0, 0, 0, 0.1)",
       },
-
       screens: {
         wide: "1440px",
       },
@@ -78,11 +116,14 @@ const config = {
       backgroundPosition: {
         "right-top-lg": "right  top 230px",
         "right-top-md": "right  top 130px",
-
         "center-right": "right center",
       },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
     },
-
     animation: {
       "slideIn-left": "slideIn-left .6s ease-in-out forwards var(--delay, 0s)",
       "slide-in-fwd-center":
@@ -103,7 +144,6 @@ const config = {
       "wobble-left": " wobble-left 1.8s  infinite both var(--delay, 0.3s)",
       fade: "fade var(--duration, 2s) cubic-bezier(0.4, 0, 0.6, 1) infinite var(--delay, 0.3s)",
     },
-
     keyframes: {
       fade: {
         "0%, 100%": {
@@ -163,24 +203,47 @@ const config = {
         },
       },
       "slideIn-left": {
-        "0%": { opacity: 0, transform: "translateX(-100%)" },
-        "100%": { opacity: 1, transform: "translateX(0)" },
+        "0%": {
+          opacity: 0,
+          transform: "translateX(-100%)",
+        },
+        "100%": {
+          opacity: 1,
+          transform: "translateX(0)",
+        },
       },
       "slideIn-top": {
-        "0%": { opacity: 0, transform: "translateY(-100%)" },
-        "100%": { opacity: 1, transform: "translateY(0)" },
+        "0%": {
+          opacity: 0,
+          transform: "translateY(-100%)",
+        },
+        "100%": {
+          opacity: 1,
+          transform: "translateY(0)",
+        },
       },
       scaleIn: {
-        "0%": { opacity: 0.5, transform: "scale(0.5)" },
-        "100%": { opacity: 1, transform: "scale(1)" },
+        "0%": {
+          opacity: 0.5,
+          transform: "scale(0.5)",
+        },
+        "100%": {
+          opacity: 1,
+          transform: "scale(1)",
+        },
       },
       "spin-right": {
-        "100%": { transform: "rotate(360deg)" },
+        "100%": {
+          transform: "rotate(360deg)",
+        },
       },
-
       wiggle: {
-        "0%, 100%": { transform: "rotate(-3deg)" },
-        "50%": { transform: "rotate(3deg)" },
+        "0%, 100%": {
+          transform: "rotate(-3deg)",
+        },
+        "50%": {
+          transform: "rotate(3deg)",
+        },
       },
       "shake-vertical": {
         "0%,100%": {
@@ -223,7 +286,6 @@ const config = {
       "wobble-left": {
         "0%,100%": {
           transform: "translateY(0) rotate(0)",
-
           "transform-origin": "50% 50%",
         },
         "15%": {
@@ -244,7 +306,7 @@ const config = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };
 
 export default config;

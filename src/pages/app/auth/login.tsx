@@ -17,6 +17,9 @@ import { useLoginMutation } from "@app/store/services/authenticationslice";
 import Image from "next/image";
 import { logo } from "@app/assets";
 import CryptoJS from "crypto-js";
+import { toast } from "sonner";
+import { AuthErrorT } from "@app/types/auth";
+
 const Login = () => {
   // const secretKey = "your-secret-key";
   const secretKey = process.env.NEXT_PUBLIC_SETUP_LOGIN_SECRET_KEY;
@@ -93,7 +96,7 @@ const Login = () => {
     { resetForm }: { resetForm: any }
   ) {
     console.log("Attempting to Login", values);
-
+    setErrorMsg(null);
     try {
       const res = await login({
         ...values,
@@ -102,6 +105,8 @@ const Login = () => {
       if (res) {
         Cookies.set("refresh_token", res.refresh);
         Cookies.set("access_token", res.access);
+        toast("Sign in successful");
+
         if (values?.remember) {
           const encrypted = encryptText(
             JSON.stringify({ email: values?.email, password: values?.password })
@@ -123,10 +128,10 @@ const Login = () => {
         res,
       });
     } catch (error) {
-      if (error) console.log("Login page error", error);
-      if ((error as Error)?.message) {
-        setErrorMsg((error as Error)?.detail);
-        // toast.error((error as errorRtk)?.data?.detail);
+      if ((error as AuthErrorT).data.detail) {
+        toast((error as AuthErrorT)?.data.detail);
+
+        // setErrorMsg((error as AuthErrorT)?.data.detail);
       }
 
       console.log("Login failed!!!", error);

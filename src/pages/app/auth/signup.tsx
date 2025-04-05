@@ -9,6 +9,8 @@ import Image from "next/image";
 import { logo } from "@app/assets";
 import SignupForm1 from "./signup1";
 import SignupForm2 from "./signupform2";
+import { toast } from "sonner";
+import { AuthErrorT } from "@app/types/auth";
 
 export type SignUpInitialStateT = {
   email: string;
@@ -109,13 +111,22 @@ const Signup = () => {
       });
     } catch (error) {
       if ((error as Error)?.message) {
+        toast((error as Error)?.message);
+
         setErrorMsg((error as Error)?.detail);
         // toast.error((error as errorRtk)?.data?.detail);
+      }
+      if ((error as AuthErrorT).data.detail) {
+        toast((error as AuthErrorT).data.detail);
       }
       if (
         (error as { data: { non_field_errors: string[] } })?.data
           .non_field_errors
       ) {
+        toast(
+          (error as { data: { non_field_errors: string[] } })?.data
+            ?.non_field_errors[0]
+        );
         setErrorMsg(
           (error as { data: { non_field_errors: string[] } })?.data
             ?.non_field_errors[0]
@@ -127,12 +138,16 @@ const Signup = () => {
         // toast.error((error as errorRtk)?.data?.detail);
       }
       if ((error as { data: { email: string[] } }).data.email) {
-        setErrorMsg((error as { data: { email: string[] } }).data.email[0]);
+        toast((error as { data: { email: string[] } }).data.email[0]);
+        // setErrorMsg((error as { data: { email: string[] } }).data.email[0]);
       }
       if ((error as { data: { phone: string[] } }).data.phone) {
-        setErrorMsg(
+        toast(
           `Phone: ${(error as { data: { phone: string[] } }).data.phone[0]}`
         );
+        // setErrorMsg(
+        //   `Phone: ${(error as { data: { phone: string[] } }).data.phone[0]}`
+        // );
       }
 
       console.log("signup failed!!!", error);
