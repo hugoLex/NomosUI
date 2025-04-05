@@ -129,7 +129,7 @@ const Page = () => {
                       <AuthBtn
                         btnProps={{
                           isLoading,
-                          action: errorMessage ? "Try again" : "Submit",
+                          action: errorMessage ? "Try Again" : "Submit",
                         }}
                       />
                     }
