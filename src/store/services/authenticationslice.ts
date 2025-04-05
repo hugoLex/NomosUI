@@ -34,7 +34,7 @@ export const authApiSlice = injectEndpoints({
             }),
         }),
 
-        forgotPassword: builder.mutation({
+        forgot_password_initiate: builder.mutation({
             query: (credentials) => ({
                 url: `${BaseURL}/password-reset/initiate`,
                 method: "POST",
@@ -50,9 +50,10 @@ export const authApiSlice = injectEndpoints({
         }),
         createNewPassword: builder.mutation({
             query: (credentials) => ({
-                url: `${BaseURL}/reset-password/${credentials.id}`,
+                url: `${BaseURL}/password-reset/complete`,
+                // url: `${BaseURL}/reset-password/${credentials.id}`,
                 method: "POST",
-                body: { newPassword: credentials.pwd },
+                body: { ...credentials },
             }),
         }),
         // this is for the signup referral id
@@ -84,7 +85,7 @@ export const {
     useSignupMutation,
     useVeriyEmailMutation,
     useResendVerificationCodeMutation,
-    useForgotPasswordMutation,
+    useForgot_password_initiateMutation,
     useCreateNewPasswordMutation,
     useFetchUserQuery,
     useFetchAllUserInfoQuery,

@@ -26,7 +26,7 @@ function AuthBtn({ btnProps, ...check }: AuthBtnProps) {
     <button
       disabled={"checked" in check && !check?.checked}
       type="submit"
-      className={`w-full ${
+      className={`relative w-full ${
         "checked" in check && !check?.checked && "disabled:cursor-not-allowed"
       } py-[16px] px-4 h-[56px]  tracking-wide text-white transition-colors duration-200 bg-blue_btn rounded-[5px]`}
     >

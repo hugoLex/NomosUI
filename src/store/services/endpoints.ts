@@ -47,7 +47,7 @@ const baseQueryWithReauth: BaseQueryFn<
   let result = await baseQuery(args, api, extraOptions);
 
   // if (true) {
-  if (result.error && result?.error?.status === 428) {
+  if (result.error && result?.error?.status === 401) {
     console.log("Requesting a refresh token", result.error);
     //  Use refresh token to get access token
     const refresh_token = Cookies.get("refresh_token")
