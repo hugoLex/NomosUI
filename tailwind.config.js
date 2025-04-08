@@ -43,8 +43,8 @@ const config = {
         poppins: ["var(--font-poppins)", ...fontFamily.sans],
       },
       colors: {
-        "dark-1": "#333333", // Replace with your actual color
-        "dark-2": "#666666", // Replace with your actual color
+        "dark-1": "rgb(42, 42, 42)",
+        "dark-2": "rgb(42, 42, 42)",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

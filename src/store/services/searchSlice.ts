@@ -49,13 +49,12 @@ export const searchQueryAPI = injectEndpoints({
         const [llm, search] = await Promise.all([
           fetch(`${baseURL}/ask?${query}`),
           _baseQuery(
-            `/semantic/search?query=${query}${
-              searchType ? `&document_type=${searchType}` : ""
+            `/semantic/search?query=${query}${searchType ? `&document_type=${searchType}` : ""
             }`
           ),
         ]);
 
-        results.push(search);
+        results.push(search as QueryReturnValue<unknown, FetchBaseQueryError, FetchBaseQueryMeta>);
 
         try {
           const arrOfResults = handlePromiseResults(results);
