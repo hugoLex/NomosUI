@@ -119,7 +119,6 @@ const MenuItem: React.FC<MenuItemProps> = ({
         Cookies.remove("access_token");
         Cookies.remove("refresh_token");
         //   api.dispatch(logOut());
-        // console.log("access and refresh tokens cleared and user logged out")
         window.location.href = "/auth/login";
       }}
       className={`w-full text-left px-4 py-2 text-sm ${
