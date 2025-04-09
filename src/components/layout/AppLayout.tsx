@@ -4,6 +4,7 @@ import { SearchBoxModal, Sidebar } from "../shared";
 import { menuList } from "@app/utils";
 import { CloseIcon } from "../icons";
 import { Modal } from "../ui";
+import { DropdownMenuDemo } from "../app/authentication/auth_and_profile";
 
 export const AppLayoutContext = createContext<LayoutContextProp>({
   isSearchModal: false,
@@ -32,6 +33,13 @@ export const AppLayout: FC<ComponentProps> = ({ children }) => {
           id="mainWrapper"
           className="relative grow lg:pr-2 lg:py-2 min-h-full"
         >
+          <div
+            className={`max-md:hidden absolute top-[20px]  
+                            ${"right-[25px]"}
+                           w-[50%] z-[999999] bg -red-600`}
+          >
+            <DropdownMenuDemo />
+          </div>
           <div className="relative flex flex-col w-full rounded-lg shadow-sm bg-stone-50 min-h-full ">
             {children}
           </div>
