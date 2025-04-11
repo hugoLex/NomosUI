@@ -1,9 +1,12 @@
 
 import { baseURL } from "@app/utils";
-import { endpoints, injectEndpoints } from "./endpoints";
+import { injectEndpoints } from "./endpoints";
 
 // Some services are not running locally hence the discrepancy in logic
 //  for api for dev and prod
+// Helper function to create headers with auth token if available
+
+
 const BaseURL = {
     production: `${baseURL}/v1/auth`, test: `${baseURL}/v1/auth`,
     development: "http://127.0.0.1:8000/api/v1/auth"
@@ -32,6 +35,17 @@ export const authApiSlice = injectEndpoints({
                 url: `${BaseURL}/confirm-account`,
                 method: "POST",
                 body: { ...credentials },
+            }),
+        }),
+        veriy_SC_no: builder.mutation({
+            query: (user_data: {
+                SC_NO: number | string;
+                email: string
+            }) => ({
+                url: `${BaseURL}/lawyers/${user_data.SC_NO}/verify`,
+                method: "POST",
+                body: { email: user_data.email },
+                // headers: createHeaders()
             }),
         }),
 
@@ -68,7 +82,13 @@ export const authApiSlice = injectEndpoints({
         }),
         // this fetches the user info for profile page
         fetchUserInfo: builder.query({
-            query: (id) => `${BaseURL}/users/${id}`,
+            query: (id) => ({
+
+                url: `${BaseURL}/users/${id}`,
+                // headers: createHeaders(),
+                // credentials: "include"
+            }),
+
             providesTags: ["User"],
         }),
         updateProfile: builder.mutation({
@@ -93,6 +113,7 @@ export const {
     useLoginMutation,
     useSignupMutation,
     useVeriyEmailMutation,
+    useVeriy_SC_noMutation,
     useResendVerificationCodeMutation,
     useForgot_password_initiateMutation,
     useCreateNewPasswordMutation,

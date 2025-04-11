@@ -38,7 +38,7 @@ export const AppLayout: FC<ComponentProps> = ({ children }) => {
             onClick={openCloseMenu}
             // ${isMenuOpen ? null : ""}
             className={`max-md:hidden  absolute top-[20px] right-[25px] 
-                           h-full ${
+                           h-[90%] ${
                              isMenuOpen ? "z-[99999] w-[100%] " : "z-[1]"
                            } bg- red-600`}
           >

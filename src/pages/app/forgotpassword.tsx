@@ -59,7 +59,7 @@ const Page: NextPageWithLayout = () => {
           </p>
 
           <p className="text-center text-[#7E858E]">
-            &copy;2024, All Rights Reserved. LexAnalytics®
+            &copy;2025, All Rights Reserved. LexAnalytics®
           </p>
         </footer>
       </Layout>

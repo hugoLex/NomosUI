@@ -17,8 +17,9 @@ export function DropdownMenuDemo() {
   // const
   const user_id = Cookies.get("user_id");
   const refresh_token = Cookies.get("refresh_token");
-  const { data } = useFetchUserInfoQuery(user_id ?? skipToken);
+  const { data, isError, error } = useFetchUserInfoQuery(user_id ?? skipToken);
   console.log("User info", data);
+
   const [subMenuOpen, setSubMenuOpen] = useState<boolean>(false);
   const { openCloseMenu, isMenuOpen: isOpen } = useQueryToggler();
   return (
@@ -60,13 +61,13 @@ export function DropdownMenuDemo() {
 
             {/* Group 1 */}
             <div className="space-y-1">
-              <MenuItem label="Profile" shortcut="⇧⌘P" />
-              <MenuItem label="Billing" shortcut="⌘B" />
-              <MenuItem label="Settings" shortcut="⌘S" />
+              <MenuItem label="Profile" shortcut="" />
+              <MenuItem label="Billing" shortcut="" />
+              <MenuItem label="Settings" shortcut="" />
               {/* <MenuItem label="Keyboard shortcuts" shortcut="⌘K" /> */}
             </div>
 
-            <div className="border-t border-gray-200"></div>
+            {/* <div className="border-t border-gray-200"></div> */}
 
             {/* Group 2 */}
             <div className="space-y-1">
@@ -109,7 +110,7 @@ export function DropdownMenuDemo() {
               {/* <MenuItem label="New Team" shortcut="⌘+T" /> */}
             </div>
 
-            <div className="border-t border-gray-200"></div>
+            {/* <div className="border-t border-gray-200"></div> */}
 
             {/* Remaining Items */}
             {/* <MenuItem label="GitHub" /> */}
@@ -119,7 +120,7 @@ export function DropdownMenuDemo() {
             <div className="border-t border-gray-200"></div>
 
             {refresh_token ? (
-              <MenuItem label="Log out" shortcut="⇧⌘Q" />
+              <MenuItem label="Log out" shortcut="" />
             ) : (
               <Link
                 className={`w-full text-left px-4 py-2 text-sm ${"text-gray-700 hover:bg-gray-100"} flex justify-between items-center`}
@@ -145,11 +146,13 @@ const MenuItem: React.FC<MenuItemProps> = ({
     <button
       disabled={disabled}
       onClick={() => {
-        Cookies.remove("access_token");
-        Cookies.remove("refresh_token");
-        Cookies.remove("user_id");
-        //   api.dispatch(logOut());
-        window.location.href = "/auth/login";
+        if (label === "Log out") {
+          Cookies.remove("access_token");
+          Cookies.remove("refresh_token");
+          Cookies.remove("user_id");
+          //   api.dispatch(logOut());
+          window.location.href = "/auth/login";
+        }
       }}
       className={`w-full text-left px-4 py-2 text-sm ${
         disabled ? "text-gray-400" : "text-gray-700 hover:bg-gray-100"

@@ -85,7 +85,7 @@ export default function OnboardingFormA() {
     useOnboard_accountMutation();
   const params = useSearchParams();
   const email = params.get("email") || "No user Email found";
-  console.log(email);
+  // console.log(email);
   // const [email, setEmail] = useState("sopewenike@gmail.com");
   const [categories, setCategories] = useState<OnboardingCategory[]>([
     {

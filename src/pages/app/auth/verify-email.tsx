@@ -35,7 +35,7 @@ const VerifyEmailPage = () => {
       const res = await veriyEmail({ token }).unwrap();
       if (res) {
         console.log("Response from verify email", res);
-        // router.push(`/auth/login?plan=${"subPlan"}`);
+        router.push(`/auth/sc-verification?email=${email}`);
       }
     } catch (error) {
       console.log("Error from verify email", error);
@@ -60,7 +60,8 @@ const VerifyEmailPage = () => {
       const res = await veriyEmail({ token }).unwrap();
       if (res) {
         console.log(res);
-        // router.push(`/auth/login?plan=${"subPlan"}`);
+
+        router.push(`/auth/sc-verification?email=${email}`);
       }
     } catch (error) {
       console.log(error);
