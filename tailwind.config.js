@@ -58,7 +58,13 @@ const config = {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
+        primary: "#245b91",
+        secondary: "#4F0072",
+        blue_btn: "rgb(18, 45, 101, 1)",
+        dark,
+        accent: "#6019800A",
         success: "#4BB543",
+
         "coral-red": "#FF6452",
         "slate-gray": "#6D6D6D",
         "pale-blue": "#F5F6FF",
