@@ -127,6 +127,7 @@ const baseAPI = createApi({
     "Analytics",
     "Judge",
     "Counsel",
+    "User"
   ],
   endpoints: () => ({}),
 });

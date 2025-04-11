@@ -105,6 +105,7 @@ const Login = () => {
         console.log(res);
         Cookies.set("refresh_token", res.refresh);
         Cookies.set("access_token", res.access);
+        Cookies.set("user_id", res.user_id);
         toast("Sign in successful");
 
         if (values?.remember) {

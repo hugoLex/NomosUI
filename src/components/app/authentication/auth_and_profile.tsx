@@ -9,8 +9,16 @@ type MenuItemProps = {
 import Image from "next/image";
 import Cookies from "js-cookie";
 import useQueryToggler from "@app/hooks/useQueryHandler";
+import { useFetchUserInfoQuery } from "@app/store/services/authenticationslice";
+import { skipToken } from "@reduxjs/toolkit/query";
+import Link from "next/link";
 export function DropdownMenuDemo() {
   // const [isOpen, setIsOpen] = useState<boolean>(false);
+  // const
+  const user_id = Cookies.get("user_id");
+  const refresh_token = Cookies.get("refresh_token");
+  const { data } = useFetchUserInfoQuery(user_id ?? skipToken);
+  console.log("User info", data);
   const [subMenuOpen, setSubMenuOpen] = useState<boolean>(false);
   const { openCloseMenu, isMenuOpen: isOpen } = useQueryToggler();
   return (
@@ -45,8 +53,8 @@ export function DropdownMenuDemo() {
         <div className="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
           <div className="py-1">
             {/* My Account */}
-            <div className="px-4 py-2 text-sm font-medium text-gray-700">
-              My Account
+            <div className="px-4 py-2 text-sm truncate font-medium text-gray-700">
+              {data && data.full_name}
             </div>
             <div className="border-t border-gray-200"></div>
 
@@ -110,7 +118,16 @@ export function DropdownMenuDemo() {
 
             <div className="border-t border-gray-200"></div>
 
-            <MenuItem label="Log out" shortcut="⇧⌘Q" />
+            {refresh_token ? (
+              <MenuItem label="Log out" shortcut="⇧⌘Q" />
+            ) : (
+              <Link
+                className={`w-full text-left px-4 py-2 text-sm ${"text-gray-700 hover:bg-gray-100"} flex justify-between items-center`}
+                href={"/auth/login"}
+              >
+                Login
+              </Link>
+            )}
           </div>
         </div>
       )}
@@ -130,6 +147,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
       onClick={() => {
         Cookies.remove("access_token");
         Cookies.remove("refresh_token");
+        Cookies.remove("user_id");
         //   api.dispatch(logOut());
         window.location.href = "/auth/login";
       }}

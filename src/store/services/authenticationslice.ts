@@ -68,8 +68,8 @@ export const authApiSlice = injectEndpoints({
         }),
         // this fetches the user info for profile page
         fetchUserInfo: builder.query({
-            query: (id) => `/rtp/${id}`,
-            // providesTags: ["User"],
+            query: (id) => `${BaseURL}/users/${id}`,
+            providesTags: ["User"],
         }),
         updateProfile: builder.mutation({
             query: (credentials) => ({
@@ -98,6 +98,7 @@ export const {
     useCreateNewPasswordMutation,
     useFetchUserQuery,
     useFetchAllUserInfoQuery,
-    useFetchUserInfoQuery, useOnboard_accountMutation,
+    useFetchUserInfoQuery,
+    useOnboard_accountMutation,
     useUpdateProfileMutation,
 } = authApiSlice;
