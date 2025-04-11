@@ -22,7 +22,7 @@ export const AppLayout: FC<ComponentProps> = ({ children }) => {
   const searchRef = useRef<HTMLTextAreaElement | null>(null);
 
   const props = { isSearchModal, setIsSearchModal, referrer, setReferrer };
-  // const { openCloseMenu, isMenuOpen } = useQueryToggler();
+  const { openCloseMenu, isMenuOpen } = useQueryToggler();
   return (
     <AppLayoutContext.Provider value={props}>
       <div
@@ -35,10 +35,12 @@ export const AppLayout: FC<ComponentProps> = ({ children }) => {
           className="relative grow lg:pr-2 lg:py-2 min-h-full"
         >
           <div
-            // onClick={openCloseMenu}
+            onClick={openCloseMenu}
             // ${isMenuOpen ? null : ""}
             className={`max-md:hidden  absolute top-[20px] right-[25px] 
-                           w-[100%] h-full z-[999999] bg-red-600`}
+                           h-full ${
+                             isMenuOpen ? "z-[99999] w-[100%] " : "z-[1]"
+                           } bg- red-600`}
           >
             <DropdownMenuDemo />
           </div>

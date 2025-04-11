@@ -1,6 +1,7 @@
 import AuthSideCover from "@app/components/app/authentication/AuthSideCover";
 import SuccessUI from "@app/components/app/authentication/success_ui";
 import { useOnboard_accountMutation } from "@app/store/services/authenticationslice";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -246,9 +247,15 @@ export default function OnboardingFormA() {
             // </div>
             <form
               onSubmit={handleSubmit}
-              className="space-y-6 px-[24px] pt-[100px] w-full"
+              className="space-y-6 px-[24px] pt-[50px] w-full"
             >
               {/* Email Field */}
+              <Link
+                className="text-2xl text-center block  font-bold text-primary mb-6"
+                href={"/"}
+              >
+                Lexanalytics
+              </Link>
               <h1 className="text-xl font-bold text-gray-800 mb-6">
                 Complete Your Professional Profile
               </h1>

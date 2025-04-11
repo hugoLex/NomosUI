@@ -102,6 +102,7 @@ const Login = () => {
         email: values?.email.toLowerCase(),
       }).unwrap();
       if (res) {
+        console.log(res);
         Cookies.set("refresh_token", res.refresh);
         Cookies.set("access_token", res.access);
         toast("Sign in successful");
