@@ -52,7 +52,7 @@ export function DropdownMenuDemo() {
       {/* Dropdown Menu */}
       {isOpen == "true" && (
         <div className="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
-          <div className="py-1">
+          <div className="py-1 relative z-[999999]">
             {/* My Account */}
             <div className="px-4 py-2 text-sm truncate font-medium text-gray-700">
               {data && data.full_name}
@@ -123,6 +123,9 @@ export function DropdownMenuDemo() {
               <MenuItem label="Log out" shortcut="" />
             ) : (
               <Link
+                onClick={(event: React.MouseEvent<HTMLAnchorElement>) => {
+                  event.stopPropagation();
+                }}
                 className={`w-full text-left px-4 py-2 text-sm ${"text-gray-700 hover:bg-gray-100"} flex justify-between items-center`}
                 href={"/auth/login"}
               >
