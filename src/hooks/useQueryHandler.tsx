@@ -46,6 +46,16 @@ const useQueryToggler = () => {
   };
 
   const mobileView = searchParams.get("open");
+  const isMenuOpen = searchParams.get("menu");
+
+  function openCloseMenu() {
+    if (isMenuOpen === "true") {
+      removeQueryParam("menu");
+    }
+    if (!isMenuOpen) {
+      UpdateUrlParams("menu", "true");
+    }
+  }
 
   return {
     createQueryString,
@@ -57,6 +67,8 @@ const useQueryToggler = () => {
     urlSearchParamsString,
     close,
     removeQueryParam,
+    openCloseMenu,
+    isMenuOpen,
   };
 };
 

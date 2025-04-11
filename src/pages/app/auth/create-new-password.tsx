@@ -15,6 +15,7 @@ const CreateNewPassword = () => {
   console.log("token available", VerificationToken);
   const [createNewPassword, { isLoading, isError, isSuccess }] =
     useCreateNewPasswordMutation();
+  // const isSuccess = true;
   const [pwdInputType, setPwdInputType] = useState({
     password: false,
     password2: false,

@@ -8,16 +8,28 @@ type MenuItemProps = {
 
 import Image from "next/image";
 import Cookies from "js-cookie";
+import useQueryToggler from "@app/hooks/useQueryHandler";
 export function DropdownMenuDemo() {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  // const [isOpen, setIsOpen] = useState<boolean>(false);
   const [subMenuOpen, setSubMenuOpen] = useState<boolean>(false);
-
+  const { openCloseMenu, isMenuOpen: isOpen } = useQueryToggler();
   return (
     <div className="relative inline-bl ock text-right pb-[8px]">
       {/* Trigger Button */}
       <div
-        onClick={() => setIsOpen(!isOpen)}
-        className="relative w-[40px] h-[40px] ml-auto overflow-clip rounded-full cursor-pointer"
+        // onClick={() => setIsOpen(!isOpen)}
+        onClick={
+          openCloseMenu
+          //   () => {
+          //   if (isOpen === "true") {
+          //     removeQueryParam("menu");
+          //   }
+          //   if (!isOpen) {
+          //     UpdateUrlParams("menu", "true");
+          //   }
+          // }
+        }
+        className="relative w-[20px] h-[20px] ml-auto overflow-clip rounded-full cursor-pointer"
       >
         <Image fill src="/images/auth_pixel.jpeg" alt="@shadcn" />
       </div>
@@ -29,7 +41,7 @@ export function DropdownMenuDemo() {
       </button> */}
 
       {/* Dropdown Menu */}
-      {isOpen && (
+      {isOpen == "true" && (
         <div className="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
           <div className="py-1">
             {/* My Account */}
@@ -43,18 +55,18 @@ export function DropdownMenuDemo() {
               <MenuItem label="Profile" shortcut="⇧⌘P" />
               <MenuItem label="Billing" shortcut="⌘B" />
               <MenuItem label="Settings" shortcut="⌘S" />
-              <MenuItem label="Keyboard shortcuts" shortcut="⌘K" />
+              {/* <MenuItem label="Keyboard shortcuts" shortcut="⌘K" /> */}
             </div>
 
             <div className="border-t border-gray-200"></div>
 
             {/* Group 2 */}
             <div className="space-y-1">
-              <MenuItem label="Team" />
+              {/* <MenuItem label="Team" /> */}
 
               {/* Submenu */}
               <div className="relative">
-                <button
+                {/* <button
                   onClick={() => setSubMenuOpen(!subMenuOpen)}
                   className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-between items-center"
                 >
@@ -72,7 +84,7 @@ export function DropdownMenuDemo() {
                       d="M9 5l7 7-7 7"
                     />
                   </svg>
-                </button>
+                </button> */}
 
                 {subMenuOpen && (
                   <div className="absolute right-full top-0 ml-1 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 z-50">
@@ -86,15 +98,15 @@ export function DropdownMenuDemo() {
                 )}
               </div>
 
-              <MenuItem label="New Team" shortcut="⌘+T" />
+              {/* <MenuItem label="New Team" shortcut="⌘+T" /> */}
             </div>
 
             <div className="border-t border-gray-200"></div>
 
             {/* Remaining Items */}
-            <MenuItem label="GitHub" />
+            {/* <MenuItem label="GitHub" /> */}
             <MenuItem label="Support" />
-            <MenuItem label="API" disabled />
+            {/* <MenuItem label="API" disabled /> */}
 
             <div className="border-t border-gray-200"></div>
 

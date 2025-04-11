@@ -5,6 +5,7 @@ import { menuList } from "@app/utils";
 import { CloseIcon } from "../icons";
 import { Modal } from "../ui";
 import { DropdownMenuDemo } from "../app/authentication/auth_and_profile";
+import useQueryToggler from "@app/hooks/useQueryHandler";
 
 export const AppLayoutContext = createContext<LayoutContextProp>({
   isSearchModal: false,
@@ -21,7 +22,7 @@ export const AppLayout: FC<ComponentProps> = ({ children }) => {
   const searchRef = useRef<HTMLTextAreaElement | null>(null);
 
   const props = { isSearchModal, setIsSearchModal, referrer, setReferrer };
-
+  // const { openCloseMenu, isMenuOpen } = useQueryToggler();
   return (
     <AppLayoutContext.Provider value={props}>
       <div
@@ -34,9 +35,10 @@ export const AppLayout: FC<ComponentProps> = ({ children }) => {
           className="relative grow lg:pr-2 lg:py-2 min-h-full"
         >
           <div
-            className={`max-md:hidden absolute top-[20px]  
-                            ${"right-[25px]"}
-                           w-[50%] z-[999999] bg -red-600`}
+            // onClick={openCloseMenu}
+            // ${isMenuOpen ? null : ""}
+            className={`max-md:hidden  absolute top-[20px] right-[25px] 
+                           w-[100%] h-full z-[999999] bg-red-600`}
           >
             <DropdownMenuDemo />
           </div>

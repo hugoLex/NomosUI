@@ -11,6 +11,7 @@ import SignupForm1 from "./signup1";
 import SignupForm2 from "./signupform2";
 import { toast } from "sonner";
 import { AuthErrorT } from "@app/types/auth";
+import useQueryToggler from "@app/hooks/useQueryHandler";
 
 export type SignUpInitialStateT = {
   email: string;
@@ -27,6 +28,7 @@ export type SignUpInitialStateT = {
   // [key: string]: string | boolean|string[];
 };
 const Signup = () => {
+  const { router } = useQueryToggler();
   const [signup, { isLoading }] = useSignupMutation();
   // {
   //   "email": "sopewenike@gmail.com",
@@ -104,11 +106,11 @@ const Signup = () => {
       }).unwrap();
 
       // resetForm();
-      // router.push("/auth/login");
 
       console.log("Response from signup page,saving!!", {
         res,
       });
+      router.push(`/auth/onboard?email=${email.toLowerCase()}`);
     } catch (error) {
       if ((error as Error)?.message) {
         toast((error as Error)?.message);

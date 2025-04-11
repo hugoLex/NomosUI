@@ -27,7 +27,6 @@ const Login = () => {
   const encryptText = (text: string) => {
     return CryptoJS.AES.encrypt(text, secretKey as string).toString();
   };
-
   const decryptText = (ciphertext: string) => {
     const bytes = CryptoJS.AES.decrypt(ciphertext, secretKey as string);
     return bytes.toString(CryptoJS.enc.Utf8);
@@ -95,7 +94,7 @@ const Login = () => {
     values: InitiaStateT,
     { resetForm }: { resetForm: any }
   ) {
-    console.log("Attempting to Login", values);
+    // console.log("Attempting to Login", values);
     setErrorMsg(null);
     try {
       const res = await login({

@@ -16,6 +16,7 @@ let currentOTPIndex = 0;
 const VerifyEmailPage = () => {
   const [veriyEmail, { isLoading, isError, isSuccess }] =
     useVeriyEmailMutation();
+  // const isSuccess = true;
   const [resendVerificationCode, { isSuccess: resendSuccess }] =
     useResendVerificationCodeMutation();
   const router = useRouter();
@@ -101,7 +102,7 @@ const VerifyEmailPage = () => {
             <div>
               <form onSubmit={handleSubmit}>
                 <div className="flex justify-center text-center pt-2">
-                  {isError && (
+                  {isError && !isSuccess && (
                     <h2 className="text-sm text-estateRed text-red-500">
                       {errorMessage}
                     </h2>

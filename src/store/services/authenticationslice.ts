@@ -20,7 +20,7 @@ export const authApiSlice = injectEndpoints({
         login: builder.mutation({
             query: (credentials) => ({
                 // url: `/login`,
-                url: `${BaseURL}/login`,
+                url: `${"http://127.0.0.1:8000/api/v1/auth"}/login`,
                 method: "POST",
                 body: { ...credentials },
             }),
@@ -78,6 +78,14 @@ export const authApiSlice = injectEndpoints({
             }),
             // invalidatesTags: ["User"],
         }),
+        onboard_account: builder.mutation({
+            query: (credentials) => ({
+                url: `${BaseURL}/onboard-account`,
+                method: "POST",
+                body: { ...credentials },
+            }),
+            // invalidatesTags: ["User"],
+        }),
     }),
 });
 export const {
@@ -89,6 +97,6 @@ export const {
     useCreateNewPasswordMutation,
     useFetchUserQuery,
     useFetchAllUserInfoQuery,
-    useFetchUserInfoQuery,
+    useFetchUserInfoQuery, useOnboard_accountMutation,
     useUpdateProfileMutation,
 } = authApiSlice;
