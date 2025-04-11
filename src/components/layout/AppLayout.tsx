@@ -6,6 +6,9 @@ import { CloseIcon } from "../icons";
 import { Modal } from "../ui";
 import { DropdownMenuDemo } from "../app/authentication/auth_and_profile";
 import useQueryToggler from "@app/hooks/useQueryHandler";
+import Image from "next/image";
+import Avatarbtn from "../shared/avatarbtn";
+import BgClosebtn from "../shared/bgClosebtn";
 
 export const AppLayoutContext = createContext<LayoutContextProp>({
   isSearchModal: false,
@@ -22,7 +25,7 @@ export const AppLayout: FC<ComponentProps> = ({ children }) => {
   const searchRef = useRef<HTMLTextAreaElement | null>(null);
 
   const props = { isSearchModal, setIsSearchModal, referrer, setReferrer };
-  const { openCloseMenu, isMenuOpen } = useQueryToggler();
+  const { openCloseMenu, isMenuOpen, pathname } = useQueryToggler();
   return (
     <AppLayoutContext.Provider value={props}>
       <div
@@ -34,7 +37,15 @@ export const AppLayout: FC<ComponentProps> = ({ children }) => {
           id="mainWrapper"
           className="relative grow lg:pr-2 lg:py-2 min-h-full"
         >
-          <div
+          <BgClosebtn classname={`${pathname !== "/" && "hidden"}`}>
+            <Avatarbtn
+            // classname={`${pathname !== "/" && "hidden"}`}
+            />
+            <DropdownMenuDemo
+            // classname={`${pathname !== "/" && "hidden"}`}
+            />
+          </BgClosebtn>
+          {/* <div
             onClick={openCloseMenu}
             // ${isMenuOpen ? null : ""}
             className={`max-md:hidden  absolute top-[20px] right-[25px] 
@@ -42,8 +53,8 @@ export const AppLayout: FC<ComponentProps> = ({ children }) => {
                              isMenuOpen ? "z-[99999] w-[100%] " : "z-[1]"
                            } bg- red-600`}
           >
-            <DropdownMenuDemo />
-          </div>
+           
+          </div> */}
           <div className="relative flex flex-col w-full rounded-lg shadow-sm bg-stone-50 min-h-full ">
             {children}
           </div>

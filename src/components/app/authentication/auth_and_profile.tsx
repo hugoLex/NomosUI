@@ -12,7 +12,7 @@ import useQueryToggler from "@app/hooks/useQueryHandler";
 import { useFetchUserInfoQuery } from "@app/store/services/authenticationslice";
 import { skipToken } from "@reduxjs/toolkit/query";
 import Link from "next/link";
-export function DropdownMenuDemo() {
+export function DropdownMenuDemo({ classname }: { classname?: string }) {
   // const [isOpen, setIsOpen] = useState<boolean>(false);
   // const
   const user_id = Cookies.get("user_id");
@@ -21,37 +21,15 @@ export function DropdownMenuDemo() {
   console.log("User info", data);
 
   const [subMenuOpen, setSubMenuOpen] = useState<boolean>(false);
-  const { openCloseMenu, isMenuOpen: isOpen } = useQueryToggler();
+  const { openCloseMenu, isMenuOpen: isOpen, pathname } = useQueryToggler();
+  // console.log("The current path is ", pathname);
   return (
-    <div className="relative inline-bl ock text-right pb-[8px]">
-      {/* Trigger Button */}
-      <div
-        // onClick={() => setIsOpen(!isOpen)}
-        onClick={
-          openCloseMenu
-          //   () => {
-          //   if (isOpen === "true") {
-          //     removeQueryParam("menu");
-          //   }
-          //   if (!isOpen) {
-          //     UpdateUrlParams("menu", "true");
-          //   }
-          // }
-        }
-        className="relative w-[20px] h-[20px] ml-auto overflow-clip rounded-full cursor-pointer"
-      >
-        <Image fill src="/images/auth_pixel.jpeg" alt="@shadcn" />
-      </div>
-      {/* <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-md transition-colors w-[100px] "
-      >
-      
-      </button> */}
-
+    <div className={` ${classname} relative inline-bl ock text-right pb-[8px]`}>
       {/* Dropdown Menu */}
       {isOpen == "true" && (
-        <div className="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
+        <div
+          className={`  absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50`}
+        >
           <div className="py-1 relative z-[999999]">
             {/* My Account */}
             <div className="px-4 py-2 text-sm truncate font-medium text-gray-700">
