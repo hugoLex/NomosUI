@@ -20,13 +20,14 @@ const NavbarTitle = ({
   className,
 }: NavbarTitleProps) => {
   return (
+    // added flex, items-center justify-center to perfectly align the text vertically and horizontally
     <div
-      className={`flex-1 transition-all duration-300 ${
+      className={` flex flex-1 items-center justify-center transition-all duration-300 ${
         isTitle ? "opacity-1 visible" : "opacity-0 invisible"
       }`}
     >
       <p
-        className={`font-medium text-center  text-primary 
+        className={`font-medium text-center   text-primary 
           ${title && title.length > 32 ? "truncate" : ""}
           ${className ? className : ""}
         `}

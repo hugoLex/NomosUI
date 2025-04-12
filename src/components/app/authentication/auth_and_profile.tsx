@@ -24,7 +24,7 @@ export function DropdownMenuDemo({ classname }: { classname?: string }) {
   const { openCloseMenu, isMenuOpen: isOpen, pathname } = useQueryToggler();
   // console.log("The current path is ", pathname);
   return (
-    <div className={` ${classname} relative inline-bl ock text-right pb-[8px]`}>
+    <div className={` ${classname} relative text-right pb- [8px]`}>
       {/* Dropdown Menu */}
       {isOpen == "true" && (
         <div

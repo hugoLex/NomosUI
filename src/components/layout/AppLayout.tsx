@@ -37,12 +37,25 @@ export const AppLayout: FC<ComponentProps> = ({ children }) => {
           id="mainWrapper"
           className="relative grow lg:pr-2 lg:py-2 min-h-full"
         >
+          {/* The trinity components, Avatarbtn, DropdownMenuDemo and BgClosebtn must be used together to get the present ux, to ensure flexibility in the use of the components
+    it is separated, hence you can position the component any where and still get the functionality.
+    by including pathname === "<add the path where you want the component to work or not work in>" you can control whether it appears or not in a page
+    e.g pathname === "/" && "hidden", the component will not appear in home*/}
+          {/* BgClosebtn is a background that covers the full screen, 
+      hence when you click outside the DropdownMenuDemo, 
+      it closes DropdownMenuDemo. 
+      You can add DropdownMenuDemo and Avatarbtn in BgClosebtn as it's children, 
+      how ever you can add an element when you place them outside BgClosebtn*/}
           <BgClosebtn classname={`${pathname !== "/" && "hidden"}`}>
+            {/* Avatarbtn toggles DropdownMenuDemo to open and close */}
             <Avatarbtn
             // classname={`${pathname !== "/" && "hidden"}`}
             />
+            {/* DropdownMenuDemo is the main component with menu buttons  */}
             <DropdownMenuDemo
-            // classname={`${pathname !== "/" && "hidden"}`}
+              classname={` [&>div]:right-[-16px] ${
+                pathname !== "/" && "hidden"
+              }`}
             />
           </BgClosebtn>
           {/* <div
