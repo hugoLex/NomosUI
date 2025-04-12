@@ -97,12 +97,12 @@ const Signup = () => {
       const res = await signup({
         ...rest,
         email: email.toLowerCase(),
-        areas: [
-          "Due diligence",
-          "Legal research",
-          "Legal writing",
-          "Mediation",
-        ], //remove this before production
+        // areas: [
+        //   "Due diligence",
+        //   "Legal research",
+        //   "Legal writing",
+        //   "Mediation",
+        // ], //remove this before production
       }).unwrap();
 
       // resetForm();
@@ -110,7 +110,7 @@ const Signup = () => {
       console.log("Response from signup page,saving!!", {
         res,
       });
-      router.push(`/auth/onboard?email=${email.toLowerCase()}`);
+      // router.push(`/auth/onboard?email=${email.toLowerCase()}`);
     } catch (error) {
       if ((error as Error)?.message) {
         toast((error as Error)?.message);

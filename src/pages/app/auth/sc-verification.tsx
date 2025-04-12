@@ -25,8 +25,8 @@ const SCverificationPage = () => {
   const [veriy_SC_no, { isLoading, isSuccess }] = useVeriy_SC_noMutation();
 
   type InitiaStateT = {
-    // email: string;
-    SC_NO: "";
+    email: string;
+    SC_NO: string;
   };
   const [resmessage, setResmessage] = useState(null);
 
@@ -36,22 +36,33 @@ const SCverificationPage = () => {
     values: InitiaStateT,
     { resetForm }: { resetForm: any }
   ) => {
-    // console.log("handling forgot password query", values.email.toLowerCase());
-    setResmessage(null);
+    console.log(
+      "handling supreme court number verification query",
+      values,
+      email
+    );
+    // setResmessage(null);
     setErrorMsg(null);
     try {
-      if (!email) {
-        return;
-      }
+      //   if (!email) {
+      //     return;
+      //   }
       const res = await veriy_SC_no({
-        SC_NO: values.SC_NO,
-        email: email.toLowerCase(),
+        scn: values.SC_NO,
+        email: email ? email.toLowerCase() : values.email.toLowerCase(),
       }).unwrap();
       if (res) {
-        router.push(`/auth/onboard?email=${email.toLowerCase()}`);
+        router.push(
+          `/auth/onboard?email=${
+            email ? email.toLowerCase() : values.email.toLowerCase()
+          }`
+        );
       }
       console.log("Response from supreme court verification page", res);
-      setResmessage(res.message);
+      if (res.message) {
+        toast(res.message);
+      }
+      //   setResmessage(res.message);
 
       // resetForm();
       // if (res) router.push("/auth/login");
@@ -61,6 +72,11 @@ const SCverificationPage = () => {
       if ((error as errorRTK)?.data.detail) {
         // setErrorMsg();
         toast((error as errorRTK)?.data.detail);
+        // toast.error((error as errorRtk)?.data?.detail);
+      }
+      if ((error as { data: { errors: string[] } })?.data.errors) {
+        // setErrorMsg();
+        toast((error as { data: { errors: string[] } })?.data.errors[0]);
         // toast.error((error as errorRtk)?.data?.detail);
       }
       if (
@@ -83,7 +99,10 @@ const SCverificationPage = () => {
         );
       }
 
-      console.log("error message from forgot password", error);
+      console.log(
+        "error message from handling supreme court number verification",
+        error
+      );
     }
   };
 
@@ -98,7 +117,7 @@ const SCverificationPage = () => {
           {isSuccess ? (
             <SuccessUI
               action="Continue"
-              heading="Password Reset Initiated"
+              heading="Supreme Court number verification confirmed"
               subheading="You're now fully verified and can access PRO features"
               link="/auth/onboard"
             />
@@ -112,17 +131,17 @@ const SCverificationPage = () => {
                   Please enter the Supreme court number associated with your
                   account
                 </p>
-                {resmessage && (
+                {/* {resmessage && (
                   <p className="text-[green] text-[0.87206rem] md:text- base max-w-[19.0625rem] mt-[1rem] md:mt-[0.62rem] font-normal leading-[normal">
-                    {resmessage}.{/* Please check your mailbox. */}
+                    {resmessage}.
                   </p>
-                )}
+                )} */}
               </div>
 
               <Formik
                 initialValues={{
                   SC_NO: "",
-                  // email: ""
+                  email: "",
                 }}
                 validationSchema={Yup.object({
                   //   email: Yup.string().email().required("Required"),
@@ -131,6 +150,23 @@ const SCverificationPage = () => {
                 onSubmit={handleSubmit}
               >
                 <Form>
+                  {!email && (
+                    <div className="relative mb-[0.8rem]">
+                      <div className="flex items-center px-[20px] py-[16px] rounded-[5px] border border-solid border-gray-black ">
+                        <Field
+                          type="text"
+                          name="email"
+                          // value={formValue.email}
+                          // onChange={handleChange}
+                          placeholder="email"
+                          className="focus:outline-0  w-full font-normal text-gray-authinput text-sm"
+                        />
+                      </div>
+                      <ErrorMessageCtn>
+                        <ErrorMessage name="email" />
+                      </ErrorMessageCtn>
+                    </div>
+                  )}
                   <div className="relative mb-[0.8rem]">
                     <div className="flex items-center px-[20px] py-[16px] rounded-[5px] border border-solid border-gray-black ">
                       <Field
@@ -138,7 +174,7 @@ const SCverificationPage = () => {
                         name="SC_NO"
                         // value={formValue.email}
                         // onChange={handleChange}
-                        placeholder="SC_NO"
+                        placeholder="SC NO."
                         className="focus:outline-0  w-full font-normal text-gray-authinput text-sm"
                       />
                     </div>

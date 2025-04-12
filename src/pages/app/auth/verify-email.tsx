@@ -60,6 +60,7 @@ const VerifyEmailPage = () => {
       const res = await veriyEmail({ token }).unwrap();
       if (res) {
         console.log(res);
+        // router.push(`/auth/onboard?email=${email.toLowerCase()}`);
 
         router.push(`/auth/sc-verification?email=${email}`);
       }

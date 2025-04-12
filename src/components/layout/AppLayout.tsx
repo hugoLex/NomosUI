@@ -9,6 +9,7 @@ import useQueryToggler from "@app/hooks/useQueryHandler";
 import Image from "next/image";
 import Avatarbtn from "../shared/avatarbtn";
 import BgClosebtn from "../shared/bgClosebtn";
+import useAuthChecker from "@app/hooks/auth_checker";
 
 export const AppLayoutContext = createContext<LayoutContextProp>({
   isSearchModal: false,
@@ -18,6 +19,8 @@ export const AppLayoutContext = createContext<LayoutContextProp>({
 });
 
 export const AppLayout: FC<ComponentProps> = ({ children }) => {
+  //  checks if the user still has a refresh and access token else cookies cleared and pushed to login page
+  useAuthChecker();
   const [isSearchModal, setIsSearchModal] = useState<boolean>(false);
   const [isAuthModal, setIsAuthModal] = useState<boolean>(false);
   const [referrer, setReferrer] = useState<string | undefined>(undefined);

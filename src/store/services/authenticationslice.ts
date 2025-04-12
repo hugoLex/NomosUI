@@ -39,10 +39,10 @@ export const authApiSlice = injectEndpoints({
         }),
         veriy_SC_no: builder.mutation({
             query: (user_data: {
-                SC_NO: number | string;
+                scn: number | string;
                 email: string
             }) => ({
-                url: `${BaseURL}/lawyers/${user_data.SC_NO}/verify`,
+                url: `${BaseURL}/lawyers/${user_data.scn}/verify`,
                 method: "POST",
                 body: { email: user_data.email },
                 // headers: createHeaders()
