@@ -10,6 +10,7 @@ import AuthSideCover from "@app/components/app/authentication/AuthSideCover";
 import AuthBtn from "@app/components/app/authentication/AuthBtn";
 import Link from "next/link";
 import SmallLoadingSpinner from "@app/components/app/authentication/smLoadingSpinner";
+import { toast } from "sonner";
 
 let currentOTPIndex = 0;
 
@@ -35,11 +36,19 @@ const VerifyEmailPage = () => {
       const res = await veriyEmail({ token }).unwrap();
       if (res) {
         console.log("Response from verify email", res);
+        if (!email) {
+          return router.push(`/auth/sc-verification`);
+        }
         router.push(`/auth/sc-verification?email=${email}`);
       }
     } catch (error) {
       console.log("Error from verify email", error);
-      setErrorMsg((error as { data: { token: string } }).data.token);
+      if ((error as { data: { errors: string[] } }).data.errors) {
+        toast((error as { data: { errors: string[] } }).data.errors[0]);
+        setErrorMsg((error as { data: { errors: string[] } }).data.errors[0]);
+      }
+      if ((error as { data: { token: string } }).data.token)
+        setErrorMsg((error as { data: { token: string } }).data.token);
       // throw error;
     }
   }

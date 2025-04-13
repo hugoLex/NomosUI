@@ -12,6 +12,7 @@ import SignupForm2 from "./signupform2";
 import { toast } from "sonner";
 import { AuthErrorT } from "@app/types/auth";
 import useQueryToggler from "@app/hooks/useQueryHandler";
+import SuccessUI from "@app/components/app/authentication/success_ui";
 
 export type SignUpInitialStateT = {
   email: string;
@@ -29,7 +30,7 @@ export type SignUpInitialStateT = {
 };
 const Signup = () => {
   const { router } = useQueryToggler();
-  const [signup, { isLoading }] = useSignupMutation();
+  const [signup, { isLoading, isSuccess }] = useSignupMutation();
   // {
   //   "email": "sopewenike@gmail.com",
   //   "full_name": "Chibuike Ewenike",
@@ -105,7 +106,7 @@ const Signup = () => {
         // ], //remove this before production
       }).unwrap();
 
-      // resetForm();
+      resetForm();
 
       console.log("Response from signup page,saving!!", {
         res,
@@ -164,56 +165,65 @@ const Signup = () => {
       <div className=" lg:grid h-full grid-cols-2 items-center relative bg-white ">
         {/* add to all auth, relative h-full grid place-content-center */}
         <div className="lg:overflow-y-scroll no-scrollbar absolute max-lg:bottom-[50%] max-lg:translate-y-[50%] max-lg:w-full  lg:relative lg:pt-[65px] justify-between lg:items-center flex max-md:flex-col lg:h-screen  ">
-          <div className="lg:pt-[300px] lg:pb-[50px] max-w-[25.6875rem] md:w-[25.6875rem] mx-auto max-lg:pl-[2.51rem] max-lg:pr-[3.11rem] bg-white ">
-            <div className="text-center ">
-              {activeForm === "form2" && (
-                <p className="text-sm font-normal ">
-                  Already have an account ?{" "}
-                  <Link
-                    className="text-[0.75rem] text-primary cursor-pointer"
-                    href="/auth/login"
-                  >
-                    Login
-                  </Link>
+          {isSuccess ? (
+            <SuccessUI
+              action="Home"
+              heading="Sign up successful"
+              subheading="Please check your mail box for the email verification link"
+              link="/"
+            />
+          ) : (
+            <div className="lg:pt-[300px] lg:pb-[50px] max-w-[25.6875rem] md:w-[25.6875rem] mx-auto max-lg:pl-[2.51rem] max-lg:pr-[3.11rem] bg-white ">
+              <div className="text-center ">
+                {activeForm === "form2" && (
+                  <p className="text-sm font-normal ">
+                    Already have an account ?{" "}
+                    <Link
+                      className="text-[0.75rem] text-primary cursor-pointer"
+                      href="/auth/login"
+                    >
+                      Login
+                    </Link>
+                  </p>
+                )}
+                <Link
+                  className="mt-[35px] mb-[20px] flex justify-center"
+                  href={"/"}
+                >
+                  <Image
+                    src={logo}
+                    alt="Lex Logo"
+                    className="mx-auto h-10 w-auto"
+                  />
+                </Link>
+                <p className="text-[1.5rem] mb-[1.81rem] text-black  leading-[normal]">
+                  {activeForm === "form1"
+                    ? // ? ""
+                      "Signup"
+                    : `${capitalizeFirstLetter(formik.values.role)} Account`}
                 </p>
-              )}
-              <Link
-                className="mt-[35px] mb-[20px] flex justify-center"
-                href={"/"}
-              >
-                <Image
-                  src={logo}
-                  alt="Lex Logo"
-                  className="mx-auto h-10 w-auto"
-                />
-              </Link>
-              <p className="text-[1.5rem] mb-[1.81rem] text-black  leading-[normal]">
-                {activeForm === "form1"
-                  ? // ? ""
-                    "Signup"
-                  : `${capitalizeFirstLetter(formik.values.role)} Account`}
-              </p>
-            </div>
+              </div>
 
-            <form onSubmit={formik.handleSubmit}>
-              {activeForm === "form1" && (
-                <SignupForm1
-                  formik={formik}
-                  errorMessage={errorMessage}
-                  isLoading={isLoading}
-                  setActiveForm={setActiveForm}
-                />
-              )}{" "}
-              {activeForm === "form2" && (
-                <SignupForm2
-                  formik={formik}
-                  errorMessage={errorMessage}
-                  isLoading={isLoading}
-                  setActiveForm={setActiveForm}
-                />
-              )}
-            </form>
-          </div>
+              <form onSubmit={formik.handleSubmit}>
+                {activeForm === "form1" && (
+                  <SignupForm1
+                    formik={formik}
+                    errorMessage={errorMessage}
+                    isLoading={isLoading}
+                    setActiveForm={setActiveForm}
+                  />
+                )}{" "}
+                {activeForm === "form2" && (
+                  <SignupForm2
+                    formik={formik}
+                    errorMessage={errorMessage}
+                    isLoading={isLoading}
+                    setActiveForm={setActiveForm}
+                  />
+                )}
+              </form>
+            </div>
+          )}
         </div>
         <AuthSideCover page="signup" />
       </div>
