@@ -33,6 +33,8 @@ import {
   NavbarTitle,
 } from "@app/components/shared";
 import { paginateData } from "@app/utils";
+import useQueryToggler from "@app/hooks/useQueryHandler";
+import BgClosebtn from "@app/components/shared/bgClosebtn";
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
@@ -41,7 +43,16 @@ const Page: NextPageWithLayout = () => {
   const query = String(q);
   const pageNumber = page ? Number(page) : undefined;
   // const isPrev = pageNumber && pageNumber !== 1 ? false : true;
-
+  const {
+    searchParams,
+    UpdateUrlParams,
+    pathname,
+    createQueryString,
+    removeQueryParam,
+  } = useQueryToggler();
+  const activeTab_query_type = searchParams.get("query_type");
+  const BgClosebtn_State = searchParams.get("menu");
+  const right_cover_menu = searchParams.get("right_cover_menu");
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
 
   const [isFilterDrawer, setIsFilterDrawer] = useState<boolean>(false);
@@ -556,7 +567,7 @@ const Page: NextPageWithLayout = () => {
                   ref={h1Ref}
                   className="text-xx font-normal mb-6"
                 >
-                  Relevant sources for:
+                  {/* Relevant sources for: */}
                   <span className="text-[#245b91]"> {q}</span>
                 </h1>
 
@@ -591,43 +602,148 @@ const Page: NextPageWithLayout = () => {
 
                 {/* LLM result */}
                 <Fragment>
+                  <div className="mb-6">
+                    <div className="flex gap-[32px] items-center border-b border-gray-200">
+                      <button
+                        className={`py-2 px- 4 font-medium ${
+                          activeTab_query_type === "sematic_s"
+                            ? "text-blue-600 border-b-2 border-blue-600"
+                            : "text-gray-500 hover:text-gray-700"
+                        }`}
+                        onClick={() =>
+                          UpdateUrlParams("query_type", "sematic_s")
+                        }
+                      >
+                        Search
+                      </button>
+                      {llmData ? (
+                        <button
+                          className={`py-2 px- 4 font-medium ${
+                            activeTab_query_type === "llm_s"
+                              ? "text-blue-600 border-b-2 border-blue-600"
+                              : "text-gray-500 hover:text-gray-700"
+                          }`}
+                          onClick={() => UpdateUrlParams("query_type", "llm_s")}
+                        >
+                          Deep Analysis
+                        </button>
+                      ) : (
+                        <button
+                          className={`py-2 px- 4 font-medium text-gray-500 opacity-0
+                          `}
+                        >
+                          Deep Analysis
+                        </button>
+                      )}
+                      <button
+                        className="ml-auto w-[73.41px] h-[32px] flex gap-1 items-center"
+                        onClick={() => {
+                          UpdateUrlParams("right_cover_menu", "true");
+                        }}
+                        // onClick={() => UpdateUrlParams("menu", "true")}
+                        type="button"
+                      >
+                        <span className="flex-shrink-0">2 tasks</span>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.7142857142857142"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="tabler-icon tabler-icon-arrow-up-right duration-150"
+                        >
+                          <path d="M17 7l-10 10"></path>
+                          <path d="M8 7l9 0l0 9"></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
                   {llmData === null && <Fragment />}
-                  {llmData !== null && <SearchAIMetaResult data={llmData} />}
+                  {llmData !== null && activeTab_query_type === "llm_s" && (
+                    <SearchAIMetaResult data={llmData} />
+                  )}
+                  {right_cover_menu && (
+                    <div
+                      onClick={() => removeQueryParam("right_cover_menu")}
+                      className={` bg-red- 500 max-md:h idden fixed top-[20px] right-[25px] h-[90%] z-[99999] w-[99%]
+                      `}
+                    >
+                      <div className="bg-white ml-auto border border-blue-500 min-w-[500px] w-[40vw] h-screen shadow-overlay top-0 right-0 fixed  animate-in slide-in-from-right ">
+                        <div className="min-h-[64px] justify-between flex items-center p-3.5 bg-purple- 500 border-b border-b-black\50  ">
+                          <span>Tasks</span>
+                          <svg
+                            onClick={() => removeQueryParam("right_cover_menu")}
+                            className="ml-auto cursor-pointer"
+                            width="16"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <line
+                              x1="4"
+                              y1="4"
+                              x2="20"
+                              y2="20"
+                              stroke="black"
+                              strokeWidth="2"
+                            />
+                            <line
+                              x1="20"
+                              y1="4"
+                              x2="4"
+                              y2="20"
+                              stroke="black"
+                              strokeWidth="2"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {/* <BgClosebtn classname={`${activeTab_query_type === "right_cover_menu"    && "hidden"}`}><></></BgClosebtn> */}
                 </Fragment>
 
                 {/* Search result */}
-                <div className="my-6">
-                  {allFilters.length === 0 && (
-                    <Fragment>
-                      {searchDocuments &&
-                        searchDocuments.documents?.map((data, idx) => (
-                          <SearchResultMeta
-                            key={`${data.metadata.document_id}-${idx}`}
-                            index={String(idx + 1)}
-                            data={data}
-                            type={searchType}
-                          />
-                        ))}
-                    </Fragment>
-                  )}
-
-                  {allFilters.length > 0 &&
-                    filterData &&
-                    filterData.length > 0 && (
+                {(activeTab_query_type === "sematic_s" ||
+                  activeTab_query_type !== "llm_s") && (
+                  <div className="my-6 ">
+                    {allFilters.length === 0 && (
                       <Fragment>
-                        <div>
-                          {filterData?.map((data, idx) => (
+                        {searchDocuments &&
+                          searchDocuments.documents?.map((data, idx) => (
                             <SearchResultMeta
-                              key={data.metadata.document_id}
+                              key={`${data.metadata.document_id}-${idx}`}
                               index={String(idx + 1)}
                               data={data}
                               type={searchType}
                             />
                           ))}
-                        </div>
                       </Fragment>
                     )}
-                </div>
+
+                    {allFilters.length > 0 &&
+                      filterData &&
+                      filterData.length > 0 && (
+                        <Fragment>
+                          <div>
+                            {filterData?.map((data, idx) => (
+                              <SearchResultMeta
+                                key={data.metadata.document_id}
+                                index={String(idx + 1)}
+                                data={data}
+                                type={searchType}
+                              />
+                            ))}
+                          </div>
+                        </Fragment>
+                      )}
+                  </div>
+                )}
               </div>
             </div>
 

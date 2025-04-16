@@ -19,7 +19,7 @@ export const AppLayoutContext = createContext<LayoutContextProp>({
 });
 
 export const AppLayout: FC<ComponentProps> = ({ children }) => {
-  //  checks if the user still has a refresh and access token else cookies cleared and pushed to login page
+  //  checks if the user still has a refresh and access token else cookies will cleared and pushed to login page
   useAuthChecker();
   const [isSearchModal, setIsSearchModal] = useState<boolean>(false);
   const [isAuthModal, setIsAuthModal] = useState<boolean>(false);

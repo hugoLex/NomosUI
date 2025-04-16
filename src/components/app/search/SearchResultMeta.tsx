@@ -194,7 +194,7 @@ export const SearchResultMeta = (prop: {
       //   );
 
       return (
-        <p className="text-sm mb-6" key={ptx}>
+        <p className="text-sm mb-6 border-b border-b-primary/10 pb-5" key={ptx}>
           {/* Render highlighted quote */}
           <mark id="" className="bg-white [#FFECB3]">
             {content
