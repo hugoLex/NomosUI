@@ -7,7 +7,8 @@ function useAuthChecker() {
     // const [authenticated, setAuthenticated] = useState(false);
     const refresh_token = Cookies.get("refresh_token")
     const access_token = Cookies.get("access_token")
-    console.log(`Checking authentication: ${access_token} refresh token: ${refresh_token}`)
+    // console.log(`Checking authentication: ${access_token} refresh token: ${refresh_token}`)
+    console.log(`Checking authentication: ${access_token ? "Access token available" : "Access token not available"} refresh token: ${refresh_token ? "Available" : "Not available"}`)
     // useEffect(() => {
     // const timer = setTimeout(() => {},  500);
     if (pathname && !refresh_token || !access_token) {

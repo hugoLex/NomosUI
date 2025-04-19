@@ -18,7 +18,7 @@ export function DropdownMenuDemo({ classname }: { classname?: string }) {
   const user_id = Cookies.get("user_id");
   const refresh_token = Cookies.get("refresh_token");
   const { data, isError, error } = useFetchUserInfoQuery(user_id ?? skipToken);
-  console.log("User info", data);
+  // console.log("User info", data);
 
   const [subMenuOpen, setSubMenuOpen] = useState<boolean>(false);
   const { openCloseMenu, isMenuOpen: isOpen, pathname } = useQueryToggler();
@@ -28,13 +28,13 @@ export function DropdownMenuDemo({ classname }: { classname?: string }) {
       {/* Dropdown Menu */}
       {isOpen == "true" && (
         <div
-          className={`  absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-50`}
+          className={`  absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-[99999]`}
         >
           <div className="py-1 relative z-[999999]">
             {/* My Account */}
-            <div className="px-4 py-2 text-sm truncate font-medium text-gray-700">
+            <h1 className="px-4  text-left py-2 text-sm truncate font-medium text-gray-700">
               {data && data.full_name}
-            </div>
+            </h1>
             <div className="border-t border-gray-200"></div>
 
             {/* Group 1 */}

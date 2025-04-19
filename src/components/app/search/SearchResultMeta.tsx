@@ -31,7 +31,7 @@ export const SearchAIMetaResult: FC<{ data: LLMResult }> = (prop) => {
   if (typeof data === "string") {
     return <PreviewCard content={data} />;
   }
-
+  console.log("Ai search is returning 2");
   return (
     <Fragment>
       <div className="space-y-4 mb-4">
@@ -194,7 +194,7 @@ export const SearchResultMeta = (prop: {
       //   );
 
       return (
-        <p className="text-sm mb-6 border-b border-b-primary/10 pb-5" key={ptx}>
+        <p className="text-sm mb-6 " key={ptx}>
           {/* Render highlighted quote */}
           <mark id="" className="bg-white [#FFECB3]">
             {content
@@ -304,7 +304,7 @@ export const SearchResultMeta = (prop: {
     });
   // console.log("Occurences updated", occurrences);
   return (
-    <div className="mb-8 space-y-3">
+    <div className="mb-8 space-y-3 border-b border-b-primary/10 pb-5">
       {/* This is a modal to display the fullcase and highlighted area  */}
       {quoteToHighlight && fullJudgement && (
         <FulljudgementModal
@@ -411,7 +411,7 @@ export const SearchResultMeta = (prop: {
         ) : null} */}
       </div>
 
-      {type === "cases" && (
+      {/* {type === "cases" && (
         <Fragment>
           {showCaseSummary !== null && showCaseSummary === index && (
             <SummaryComponent summary={metadata.summary} isCollapsible />
@@ -421,7 +421,7 @@ export const SearchResultMeta = (prop: {
             <SummaryComponent summary={metadata.summary} isCollapsible />
           )}
         </Fragment>
-      )}
+      )} */}
     </div>
   );
 };

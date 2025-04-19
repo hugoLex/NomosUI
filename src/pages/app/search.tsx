@@ -112,13 +112,13 @@ const Page: NextPageWithLayout = () => {
       // refetchOnMountOrArgChange: true,
     }
   );
-  if (query) {
-    const result = useSemanticSearch(query);
-    console.log(result);
-  }
+  // if (query) {
+  //   const result = useSemanticSearch(query);
+  //   console.log(result);
+  // }
 
-  const { data: sementic_data } = useSearch_end_testerQuery(query ?? skipToken);
-  console.log("New query endpoint being tested for data: ", sementic_data);
+  // const { data: sementic_data } = useSearch_end_testerQuery(query ?? skipToken);
+  // console.log("New query endpoint being tested for data: ", sementic_data);
   // Initial data load
   useEffect(() => {
     setReferrer(router.asPath);
@@ -550,7 +550,7 @@ const Page: NextPageWithLayout = () => {
       <Head title={`Search Result - ${q}`} />
 
       <Navbar>
-        <div className="md:flex py-2.5">
+        <div className="md:flex justify-between py-2.5">
           <NavbarTitle isTitle={!isTitle} title={query} />
           <ActionButtons />
         </div>
@@ -559,9 +559,10 @@ const Page: NextPageWithLayout = () => {
       {!isFetching && !isError && (
         <Container>
           <div className={`py-8 w-full md:min-w-[980px]`}>
-            <div className="md:grid grid-cols-12 gap-8">
+            <div className="md:grid justify-center ">
+              {/* <div className="md:grid justify-center grid-cols-12 gap-8"> */}
               {/* Search sidebar */}
-              <div className="col-span-4">
+              {/* <div className="col-span-4">
                 <div className="sticky md:top-[68px]">
                   <SearchFilterSidebar
                     data={searchOptions}
@@ -570,9 +571,11 @@ const Page: NextPageWithLayout = () => {
                     defaultValue={searchType as string}
                   />
                 </div>
-              </div>
+              </div> */}
               {/* Search results */}
-              <div className="col-span-8">
+              <div className="">
+                {/* was 8 with the sidebar  */}
+                {/* <div className="col-span-8"> */}
                 <h1
                   id="searchQuery"
                   ref={h1Ref}

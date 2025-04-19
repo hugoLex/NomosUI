@@ -14,7 +14,7 @@ function BgClosebtn({ children, classname }: BgClosebtnProps) {
     <div
       onClick={openCloseMenu}
       className={` ${classname} max-md:hidden fixed top-[20px] right-[25px] h-[90%] ${
-        isMenuOpen ? "z-[99999] w-[100%]" : "z-[1]"
+        isMenuOpen ? "z-[9999] w-[100%]" : "z-[1]"
       } bg-red- 600`}
     >
       {/* Render the children */}
