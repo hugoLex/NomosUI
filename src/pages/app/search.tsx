@@ -18,7 +18,10 @@ import {
   TSearchData,
   TSearchResultDocument,
 } from "@app/types";
-import { useSearchQuery } from "@app/store/services/searchSlice";
+import {
+  useSearch_end_testerQuery,
+  useSearchQuery,
+} from "@app/store/services/searchSlice";
 import { flattenFilters } from "@app/utils/helpers";
 import {
   searchURL,
@@ -35,6 +38,8 @@ import {
 import { paginateData } from "@app/utils";
 import useQueryToggler from "@app/hooks/useQueryHandler";
 import BgClosebtn from "@app/components/shared/bgClosebtn";
+import { skipToken } from "@reduxjs/toolkit/query";
+import { useSemanticSearch } from "@app/hooks/axios";
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
@@ -50,7 +55,7 @@ const Page: NextPageWithLayout = () => {
     createQueryString,
     removeQueryParam,
   } = useQueryToggler();
-  const activeTab_query_type = searchParams.get("query_type");
+  const activeTab_query_type = searchParams.get("query_type") || "sematic_s";
   const BgClosebtn_State = searchParams.get("menu");
   const right_cover_menu = searchParams.get("right_cover_menu");
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
@@ -107,7 +112,13 @@ const Page: NextPageWithLayout = () => {
       // refetchOnMountOrArgChange: true,
     }
   );
-  // console.log("query data", data);
+  if (query) {
+    const result = useSemanticSearch(query);
+    console.log(result);
+  }
+
+  const { data: sementic_data } = useSearch_end_testerQuery(query ?? skipToken);
+  console.log("New query endpoint being tested for data: ", sementic_data);
   // Initial data load
   useEffect(() => {
     setReferrer(router.asPath);

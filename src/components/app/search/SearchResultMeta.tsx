@@ -302,7 +302,7 @@ export const SearchResultMeta = (prop: {
       //   </p>
       // );
     });
-  console.log("Occurences updated", occurrences);
+  // console.log("Occurences updated", occurrences);
   return (
     <div className="mb-8 space-y-3">
       {/* This is a modal to display the fullcase and highlighted area  */}

@@ -16,7 +16,8 @@ import { logOut, setCredentials } from "../slices/authSlice";
 
 const base_url_determined = {
   production: baseUrl, test: baseUrl,
-  development: "http://127.0.0.1:8000/api"
+  development: baseUrl
+  // development: "http://127.0.0.1:8000/api"
 }[process.env.NODE_ENV]
 interface RefreshTokenData {
   access: string;

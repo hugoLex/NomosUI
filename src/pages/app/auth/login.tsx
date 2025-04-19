@@ -113,7 +113,10 @@ const Login = () => {
             JSON.stringify({ email: values?.email, password: values?.password })
           );
           Cookies.set("user", encrypted);
-          router.push("/");
+          console.log("Response from login page,saving!!", {
+            res,
+          });
+          return router.push("/");
         } else {
           Cookies.remove("user");
         }
@@ -128,6 +131,7 @@ const Login = () => {
       console.log("Response from login page,saving!!", {
         res,
       });
+      router.push("/");
     } catch (error) {
       if ((error as AuthErrorT).data.detail) {
         toast((error as AuthErrorT)?.data.detail);

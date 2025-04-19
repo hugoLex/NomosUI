@@ -18,6 +18,27 @@ type SearchQuery = {
   pageNumber?: number | string;
   searchType?: SearchResultDocumentMetaDocType;
 };
+interface ApiResponse {
+  // Replace with your actual response data structure
+  id: number;
+  name: string;
+  // other fields...
+}
+// interface TransformedResponse<T> {
+//   data: T;
+//   headers: {
+//     contentType: string | null;
+//     customHeader: string | null;
+//     // Add other header types as needed
+//     [key: string]: string | null;
+//   };
+// }
+
+// Define the transformed response that includes all headers
+interface TransformedResponse<T> {
+  data: T;
+  headers: Record<string, string>;
+}
 
 const handlePromiseResults = (results: GenericObject[]) => {
   const errors = results.filter(({ error }) => error).map(({ error }) => error);
@@ -127,6 +148,37 @@ export const searchQueryAPI = injectEndpoints({
     searchTrending: builder.query<any, any>({
       query: () => `/query-assist/trending?limit=7`,
     }),
+    search_end_tester: builder.query({
+      query: (query) => `/semantic/search?query=${query}`,
+      transformResponse: (responseData: ApiResponse, meta: FetchBaseQueryMeta | undefined) => {
+        // const headers = meta?.response?.headers;
+
+        // Initialize empty headers object
+        const headersObj: Record<string, string> = {};
+
+        // Convert all headers to an object if meta.response exists
+        if (meta?.response?.headers) {
+          // Headers object is an iterable
+          meta.response.headers.forEach((value, key) => {
+            headersObj[key] = value;
+          });
+        }
+        console.log("headers from fetch", headersObj)
+        // Create the transformed response with headers
+        const transformedResponse: TransformedResponse<ApiResponse> = {
+          data: responseData,
+          headers: {
+            ...headersObj
+            // contentType: headers?.get('content-type') ?? null,
+            // customHeader: headers?.get('x-custom-header') ?? null,
+            // Add any other headers you need
+          }
+        };
+
+        return transformedResponse;
+      },
+      // query: (query) => `/semantic/search?query=${`question=${query}&format=markdown}`}`,
+    }),
   }),
   overrideExisting: true,
 });
@@ -137,4 +189,5 @@ export const {
   useSearchQuery,
   useSearchTrendingQuery,
   usePrefetch,
+  useSearch_end_testerQuery,
 } = searchQueryAPI;
