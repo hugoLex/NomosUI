@@ -598,10 +598,12 @@ const Page: NextPageWithLayout = () => {
                 <h1
                   id="searchQuery"
                   ref={h1Ref}
-                  className="text-xx font-normal mb-6"
+                  className={`${
+                    q && q?.length > 73 ? "text-lg" : "text-xx"
+                  } font-normal mb-6`}
                 >
                   {/* Relevant sources for: */}
-                  <span className="text-[#245b91]"> {q}</span>
+                  <span className={` text-[#245b91]`}>{q}</span>
                 </h1>
 
                 {/* Filter  {resultData.llm =List */}
@@ -635,8 +637,8 @@ const Page: NextPageWithLayout = () => {
 
                 {/* LLM result */}
                 <Fragment>
-                  <div className="mb-6">
-                    <div className="flex gap-[32px] items-center border-b border-gray-200">
+                  <div className="mb-6  sticky z-[1] top-[55px] bg-[rgb(250,250,249)] ">
+                    <div className=" flex gap-[32px] items-center border-b border-gray-200">
                       {search_classifier?.classification === "semantic" && (
                         <button
                           className={`py-2 px- 4 font-medium ${

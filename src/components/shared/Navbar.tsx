@@ -19,7 +19,7 @@ const NavbarTitle = ({
   title,
   className,
 }: NavbarTitleProps) => {
-  title = `The third issue is whether the respective sums awarded to the respondent by the lower Court as damages for breach of contract and for`;
+  // title = `The third issue is whether the respective sums awarded to the respondent by the lower Court as damages for breach of contract and for`;
   // title = "Breach of contract";
   return (
     // added flex, items-center justify-center to perfectly align the text vertically and horizontally
