@@ -128,7 +128,9 @@ const baseAPI = createApi({
     "Analytics",
     "Judge",
     "Counsel",
-    "User"
+    "User",
+    "LlmSearch",
+    "SemanticSearch",
   ],
   endpoints: () => ({}),
 });

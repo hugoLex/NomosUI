@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useState } from "react";
+import React, { FC, Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import {
   ArticleMetadata,
@@ -24,14 +24,65 @@ import FulljudgementModal from "../library/case/fulljudgementModal";
 import { useCaseQuery } from "@app/store/services/caseSlice";
 import { skipToken } from "@reduxjs/toolkit/query";
 import useFetchFullJudgementData from "@app/hooks/useFetchFullJudgementData";
+import {
+  // useLlm_searchMutation,
+  useLlm_searchQuery,
+  useQuery_route_classifierQuery,
+} from "@app/store/services/searchSlice";
+import useQueryToggler from "@app/hooks/useQueryHandler";
+import { Loader } from "@app/components/ui";
+type TclasifierResult = {
+  query: string;
+  classification: string;
+  user_message: string;
+};
+export const SearchAIMetaResult = () => {
+  // export const SearchAIMetaResult: FC<{ data: LLMResult }> = (prop) => {
+  const { searchParams } = useQueryToggler();
+  const query = searchParams.get("q");
+  const {
+    data: search_classifier,
+    isError: isError_clas,
+    isFetching: isFetching_clas,
+    isLoading: Isloading_clas,
+  } = useQuery_route_classifierQuery(query ? query : skipToken);
+  // const [llm_search, { data: llm_search_data, error, isLoading: llm_loading }] =
+  //   useLlm_searchMutation();
+  // console.log(search_classifier);
+  const {
+    data: llm_search_data,
+    error,
+    isLoading: llm_loading,
+  } = useLlm_searchQuery(
+    search_classifier?.classification === "decomposition" && query
+      ? query
+      : skipToken
+  );
+  // console.log("llm data returend", error, llm_loading);
 
-export const SearchAIMetaResult: FC<{ data: LLMResult }> = (prop) => {
-  const { data } = prop;
-
-  if (typeof data === "string") {
-    return <PreviewCard content={data} />;
+  if (
+    search_classifier?.classification === "decomposition" &&
+    (search_classifier as TclasifierResult)?.user_message &&
+    llm_loading
+  ) {
+    return (
+      <div className="flex items-center justify-center min-h-[500px] bg-gray-100">
+        <div className="flex flex-col items-center space-y-4 bg-white p-6 rounded-2xl shadow-xl">
+          <p className="text-gray-700 text-lg text-center max-w-md">
+            {(search_classifier as TclasifierResult)?.user_message
+              ? (search_classifier as TclasifierResult)?.user_message
+              : "Analyzing your legal question to provide a comprehensive response....."}
+          </p>
+          <div className="flex items-center justify-center">
+            <Loader variant="classic" size={20} />
+          </div>
+        </div>
+      </div>
+    );
   }
-  console.log("Ai search is returning 2");
+  if (typeof llm_search_data === "string") {
+    return <PreviewCard content={llm_search_data} />;
+  }
   return (
     <Fragment>
       <div className="space-y-4 mb-4">
@@ -98,23 +149,26 @@ export const SearchAIMetaResult: FC<{ data: LLMResult }> = (prop) => {
               </div>
             </div>
             <div className="my-1 border w-full border-gray-200 mb-3" />
-            {data.document_metadata.map((itx: GenericObject, idx: number) => {
-              return (
-                <Fragment key={`id-${idx}`}>
-                  {/* <SummaryPreview text={itx} /> */}
-                  {/* <p
-                  className="text-black/80 text-sm leading-6 font-normal whitespace-preWrap"
-                  dangerouslySetInnerHTML={{ __html: itx.trim().split("\n") }}
-                /> */}
-                </Fragment>
-              );
-            })}
           </div>
         </div>
       </div>
     </Fragment>
   );
 };
+
+// {(llm_search_data?.document_metadata).map(
+//   (itx: GenericObject, idx: number) => {
+//     return (
+//       <Fragment key={`id-${idx}`}>
+//         {/* <SummaryPreview text={itx} /> */}
+//         {/* <p
+//       className="text-black/80 text-sm leading-6 font-normal whitespace-preWrap"
+//       dangerouslySetInnerHTML={{ __html: itx.trim().split("\n") }}
+//     /> */}
+//       </Fragment>
+//     );
+//   }
+// )}
 
 export const SearchResultMeta = (prop: {
   index: string | number;

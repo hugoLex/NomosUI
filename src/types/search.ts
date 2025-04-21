@@ -168,6 +168,17 @@ export type TSearchResultDocumentsFilter = {
   principle?: PrinciplesFilter;
 };
 
+export type TSearchResultClassifier = {
+  classification: string;
+  confidence: number;
+  is_complex: boolean;
+  query: string;
+  session_id: string;
+  user_message: string;
+};
+
+
+
 export type TSearchResultDocuments = {
   searchID: string;
   query: string;

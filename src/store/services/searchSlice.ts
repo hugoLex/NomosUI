@@ -6,10 +6,13 @@ import type {
 import {
   GenericObject,
   ListResponse,
+  LLMResult,
   QueryReturnValue,
   SearchResultDocumentMetaDocType,
   SearchSuggestion,
+  TSearchResultClassifier,
   TSearchResultData,
+  TSearchResultDocuments,
 } from "@app/types";
 import { baseURL } from "@app/utils";
 
@@ -18,27 +21,7 @@ type SearchQuery = {
   pageNumber?: number | string;
   searchType?: SearchResultDocumentMetaDocType;
 };
-interface ApiResponse {
-  // Replace with your actual response data structure
-  id: number;
-  name: string;
-  // other fields...
-}
-// interface TransformedResponse<T> {
-//   data: T;
-//   headers: {
-//     contentType: string | null;
-//     customHeader: string | null;
-//     // Add other header types as needed
-//     [key: string]: string | null;
-//   };
-// }
 
-// Define the transformed response that includes all headers
-interface TransformedResponse<T> {
-  data: T;
-  headers: Record<string, string>;
-}
 
 const handlePromiseResults = (results: GenericObject[]) => {
   const errors = results.filter(({ error }) => error).map(({ error }) => error);
@@ -55,6 +38,7 @@ const handlePromiseResults = (results: GenericObject[]) => {
 
   return results.map(({ data, error }) => ({ data, error }));
 };
+
 
 export const searchQueryAPI = injectEndpoints({
   endpoints: (builder) => ({
@@ -148,36 +132,61 @@ export const searchQueryAPI = injectEndpoints({
     searchTrending: builder.query<any, any>({
       query: () => `/query-assist/trending?limit=7`,
     }),
-    search_end_tester: builder.query({
-      query: (query) => `/semantic/search?query=${query}`,
-      transformResponse: (responseData: ApiResponse, meta: FetchBaseQueryMeta | undefined) => {
-        // const headers = meta?.response?.headers;
+    semantic_search: builder.query<TSearchResultDocuments | TSearchResultClassifier, string>({
+      query: (query) => `/semantic/search?query=${query}&format=markdown`,
+      // providesTags: (result, error, arg) => [{ type: 'SemanticSearch', id: arg }],
+      providesTags: (result) =>
+        result
+          ? [
+            { type: "SemanticSearch", id: "LIST" },
+            ...Object.entries(result)?.map((item, idx) => ({ type: "SemanticSearch" as const, id: `SemanticSearch${idx}` })),
+          ]
+          : [{ type: "SemanticSearch", id: "LIST" }],
 
-        // Initialize empty headers object
-        const headersObj: Record<string, string> = {};
+    }),
 
-        // Convert all headers to an object if meta.response exists
-        if (meta?.response?.headers) {
-          // Headers object is an iterable
-          meta.response.headers.forEach((value, key) => {
-            headersObj[key] = value;
-          });
-        }
-        console.log("headers from fetch", headersObj)
-        // Create the transformed response with headers
-        const transformedResponse: TransformedResponse<ApiResponse> = {
-          data: responseData,
-          headers: {
-            ...headersObj
-            // contentType: headers?.get('content-type') ?? null,
-            // customHeader: headers?.get('x-custom-header') ?? null,
-            // Add any other headers you need
+    llm_search: builder.query<string, string>({
+      queryFn: async (question, _api, _extraOptions, _baseQuery) => {
+        try {
+          const response = await fetch(
+            `${baseURL}/ask?question=${encodeURIComponent(
+              question
+            )}&format=markdown`
+          );
+
+          if (!response.ok) {
+            return {
+              error: {
+                status: response.status,
+                data: await response.text(),
+              },
+            };
           }
-        };
 
-        return transformedResponse;
+          const markdown = await response.text();
+          return { data: markdown };
+        } catch (err: any) {
+          return {
+            error: {
+              status: 'FETCH_ERROR',
+              data: undefined,
+              error: err.message ?? 'Network error',
+            },
+          };
+        }
       },
-      // query: (query) => `/semantic/search?query=${`question=${query}&format=markdown}`}`,
+      providesTags: (result, error, arg) => [{ type: 'LlmSearch', id: arg }],
+
+    }),
+    query_route_classifier: builder.query<{
+      query: string,
+      classification: string
+    }, string>({
+      query: (query) => (
+        `/query_routing?query=${query}`
+
+      ),
+
     }),
   }),
   overrideExisting: true,
@@ -189,5 +198,10 @@ export const {
   useSearchQuery,
   useSearchTrendingQuery,
   usePrefetch,
-  useSearch_end_testerQuery,
+  useSemantic_searchQuery,
+  useLlm_searchQuery,
+  // useLlm_searchMutation,
+  useQuery_route_classifierQuery,
+  util: searchQueryUtil
+  // useLlm_searchQuery
 } = searchQueryAPI;
