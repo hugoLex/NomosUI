@@ -45,7 +45,6 @@ import { paginateData } from "@app/utils";
 import useQueryToggler from "@app/hooks/useQueryHandler";
 import BgClosebtn from "@app/components/shared/bgClosebtn";
 import { skipToken } from "@reduxjs/toolkit/query";
-import { useSemanticSearch } from "@app/pages/app/testingground/axios";
 import { useDispatch } from "react-redux";
 
 const Page: NextPageWithLayout = () => {
