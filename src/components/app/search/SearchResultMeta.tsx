@@ -81,7 +81,7 @@ export const SearchAIMetaResult = () => {
     );
   }
   if ( llm_search_data) {
-    return <PreviewCard content={llm_search_data?.markdown} />;
+    return <PreviewCard content={llm_search_data} />;
   }
   return (
     <Fragment>
