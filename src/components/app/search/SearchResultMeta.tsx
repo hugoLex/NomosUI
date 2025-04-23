@@ -85,7 +85,7 @@ if((llm_search_data as {markdown:string})?.markdown){
 return <PreviewCard content={llm_search_data?.markdown}/>
 }
   if ( llm_search_data) {
-    return <PreviewCard content={llm_search_data as string} />;
+    return <PreviewCard content={llm_search_data?.markdown as string} />;
   }
   return (
     <Fragment>
