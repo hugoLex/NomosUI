@@ -146,35 +146,12 @@ export const searchQueryAPI = injectEndpoints({
     }),
 
     llm_search: builder.query< { markdown:string},string>({
-      queryFn: async (question, _api, _extraOptions, _baseQuery) => {
-        try {
-          const response = await fetch(
-            `${baseURL}/ask?question=${encodeURIComponent(
+            query: (query) => (
+                    `${baseURL}/ask?question=${encodeURIComponent(
               question
             )}&format=markdown`
-          );
 
-          if (!response.ok) {
-            return {
-              error: {
-                status: response.status,
-                data: await response.json(),
-              },
-            };
-          }
-
-          const markdown = await response.json;
-          return { data: markdown as {markdown: string}};
-        } catch (err: any) {
-          return {
-            error: {
-              status: 'FETCH_ERROR',
-              data: undefined,
-              error: err.message ?? 'Network error',
-            },
-          };
-        }
-      },
+      ),
       providesTags: (result, error, arg) => [{ type: 'LlmSearch', id: arg }],
 
     }),
