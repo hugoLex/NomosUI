@@ -145,7 +145,7 @@ export const searchQueryAPI = injectEndpoints({
 
     }),
 
-    llm_search: builder.query<string, string>({
+    llm_search: builder.query<string, { markdown:string}>({
       queryFn: async (question, _api, _extraOptions, _baseQuery) => {
         try {
           const response = await fetch(
@@ -164,7 +164,7 @@ export const searchQueryAPI = injectEndpoints({
           }
 
           const markdown = await response.json;
-          return { data: (markdown as {markdown: string})?.markdown};
+          return { data: markdown as {markdown: string}};
         } catch (err: any) {
           return {
             error: {
