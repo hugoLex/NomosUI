@@ -80,8 +80,8 @@ export const SearchAIMetaResult = () => {
       </div>
     );
   }
-  if (typeof llm_search_data === "string") {
-    return <PreviewCard content={llm_search_data} />;
+  if ( llm_search_data) {
+    return <PreviewCard content={llm_search_data?.markdown} />;
   }
   return (
     <Fragment>
