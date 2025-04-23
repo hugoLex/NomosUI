@@ -146,7 +146,7 @@ export const searchQueryAPI = injectEndpoints({
     }),
 
     llm_search: builder.query< { markdown:string},string>({
-            query: (query) => (
+            query: (question) => (
                     `${baseURL}/ask?question=${encodeURIComponent(
               question
             )}&format=markdown`
