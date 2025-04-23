@@ -145,7 +145,7 @@ export const searchQueryAPI = injectEndpoints({
 
     }),
 
-    llm_search: builder.query<string, {markdown:string}>({
+    llm_search: builder.query<string, string>({
       queryFn: async (question, _api, _extraOptions, _baseQuery) => {
         try {
           const response = await fetch(
