@@ -81,12 +81,20 @@ export const SearchAIMetaResult = () => {
     );
   }
 
-if((llm_search_data as {markdown:string})?.markdown){
-return <PreviewCard content={llm_search_data?.markdown}/>
-}
-  if ( llm_search_data) {
-    return <PreviewCard content={llm_search_data?.markdown as string} />;
+
+if (llm_search_data) {
+    // Check if llm_search_data is an object with a markdown property
+    const markdownContent = typeof llm_search_data === 'object' && llm_search_data !== null
+      ? llm_search_data.markdown || ''
+      : typeof llm_search_data === 'string'
+        ? llm_search_data
+        : '';
+        
+    if (markdownContent) {
+      return <PreviewCard content={markdownContent} />;
+    }
   }
+
   return (
     <Fragment>
       <div className="space-y-4 mb-4">
