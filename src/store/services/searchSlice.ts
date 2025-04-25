@@ -145,49 +145,50 @@ export const searchQueryAPI = injectEndpoints({
 
     }),
 
-    llm_search: builder.query<string, string>({
-      queryFn: async (question, _api, _extraOptions, _baseQuery) => {
-        try {
-          const response = await fetch(
-            `${baseURL}/ask?question=${encodeURIComponent(
-              question
-            )}&format=markdown`
-          );
-
-          if (!response.ok) {
-            return {
-              error: {
-                status: response.status,
-                data: await response.text(),
-              },
-            };
-          }
-
-          const markdown = await response.text();
-          return { data: markdown };
-        } catch (err: any) {
-          return {
-            error: {
-              status: 'FETCH_ERROR',
-              data: undefined,
-              error: err.message ?? 'Network error',
-            },
-          };
-        }
-      },
-      providesTags: (result, error, arg) => [{ type: 'LlmSearch', id: arg }],
-
-    }),
     // llm_search: builder.query<string, string>({
-    //   query: (question) => (
-    //     `${baseURL}/ask?question=${encodeURIComponent(
-    //       question
-    //     )}&format=markdown`
+    //   queryFn: async (question, _api, _extraOptions, _baseQuery) => {
+    //     try {
+    //       const response = await fetch(
+    //         `${baseURL}/ask?question=${encodeURIComponent(
+    //           question
+    //         )}&format=markdown`
+    //       );
 
-    //   ),
+    //       if (!response.ok) {
+    //         return {
+    //           error: {
+    //             status: response.status,
+    //             data: await response.text(),
+    //           },
+    //         };
+    //       }
+
+    //       const markdown = await response.text();
+    //       return { data: markdown };
+    //     } catch (err: any) {
+    //       return {
+    //         error: {
+    //           status: 'FETCH_ERROR',
+    //           data: undefined,
+    //           error: err.message ?? 'Network error',
+    //         },
+    //       };
+    //     }
+    //   },
     //   providesTags: (result, error, arg) => [{ type: 'LlmSearch', id: arg }],
 
     // }),
+
+    llm_search: builder.query<{ markdown: string } | string, string>({
+      query: (question) => (
+        `${baseURL}/ask?question=${encodeURIComponent(
+          question
+        )}&format=markdown`
+
+      ),
+      providesTags: (result, error, arg) => [{ type: 'LlmSearch', id: arg }],
+
+    }),
     query_route_classifier: builder.query<{
       query: string,
       classification: string

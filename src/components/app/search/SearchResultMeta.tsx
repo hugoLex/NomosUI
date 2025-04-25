@@ -100,7 +100,7 @@ export const SearchAIMetaResult = () => {
         : "";
 
     if (markdownContent) {
-      return <PreviewCard content={llm_search_data} />;
+      return <PreviewCard content={markdownContent} />;
     }
   }
 
