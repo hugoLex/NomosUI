@@ -178,6 +178,16 @@ export const searchQueryAPI = injectEndpoints({
       providesTags: (result, error, arg) => [{ type: 'LlmSearch', id: arg }],
 
     }),
+    // llm_search: builder.query<string, string>({
+    //   query: (question) => (
+    //     `${baseURL}/ask?question=${encodeURIComponent(
+    //       question
+    //     )}&format=markdown`
+
+    //   ),
+    //   providesTags: (result, error, arg) => [{ type: 'LlmSearch', id: arg }],
+
+    // }),
     query_route_classifier: builder.query<{
       query: string,
       classification: string

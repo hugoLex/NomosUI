@@ -17,7 +17,7 @@ import {
   Markdown,
   PreviewCard,
   SummaryComponent,
-  SummaryPreview,
+  // SummaryPreview,
 } from "@app/components/shared";
 import { useQueryHandler } from "@app/hooks";
 import FulljudgementModal from "../library/case/fulljudgementModal";
@@ -40,6 +40,7 @@ export const SearchAIMetaResult = () => {
   // export const SearchAIMetaResult: FC<{ data: LLMResult }> = (prop) => {
   const { searchParams } = useQueryToggler();
   const query = searchParams.get("q");
+  console.log("query from llm page", query);
   const {
     data: search_classifier,
     isError: isError_clas,
@@ -48,7 +49,7 @@ export const SearchAIMetaResult = () => {
   } = useQuery_route_classifierQuery(query ? query : skipToken);
   // const [llm_search, { data: llm_search_data, error, isLoading: llm_loading }] =
   //   useLlm_searchMutation();
-  // console.log(search_classifier);
+  console.log("what i am seeing", search_classifier);
   const {
     data: llm_search_data,
     error,
@@ -58,7 +59,7 @@ export const SearchAIMetaResult = () => {
       ? query
       : skipToken
   );
-  // console.log("llm data returend", error, llm_loading);
+  console.log("returned from llm", llm_search_data, llm_loading, error);
 
   if (
     search_classifier?.classification === "decomposition" &&
@@ -80,8 +81,9 @@ export const SearchAIMetaResult = () => {
       </div>
     );
   }
-  if (typeof llm_search_data === "string") {
-    return <PreviewCard content={llm_search_data} />;
+  llm_search_data && console.log(typeof llm_search_data, error);
+  if (llm_search_data && typeof llm_search_data === "string") {
+    return <PreviewCard content={llm_search_data?.slice(13).slice(0, -3)} />;
   }
   return (
     <Fragment>

@@ -128,89 +128,90 @@ export const SummaryComponent = ({
   );
 };
 
-export const SummaryPreview = ({ text }: { text: string }) => {
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
-  const isShow = text.length > 100 ? true : false;
+// export const SummaryPreview = ({ text }: { text: string }) => {
+//   const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
+//   const isShow = text.length > 100 ? true : false;
 
-  return (
-    <div className={`summary preview pb-5 relative overflow-y -hidden`}>
-      <p
-        className={`text overflow-hidden transition-all duration-500 ${
-          isShow && isCollapsed ? "h-[5rem]" : "h-auto"
-        }`}
-      >
-        {text
-          .trim()
-          .split("\n")
-          .map((txt, _key) => (
-            <Fragment key={_key}>
-              <span
-                className={`text-black/80 text-sm leading-6 
-                          font-normal whitespace-pre-wrap mb-2
-                         `}
-                dangerouslySetInnerHTML={{ __html: txt.trim() }}
-              />
-            </Fragment>
-          ))}
-      </p>
-      {isShow && (
-        <div
-          className={`text-end pt-6 pb-4 ${
-            isCollapsed
-              ? "inline-flex items-end blurred justify-center absolute z-50 transition duration-75 bottom-0  h-[65px] w-full"
-              : ""
-          }`}
-        >
-          <span
-            role="button"
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className={`inline-flex gap-2 items-center text-sm transition-all px-3 py-1.5 rounded ${
-              isCollapsed
-                ? "bg-neutral-200/80 hover:bg-neutral-200"
-                : "bg-neutral-200 hover:bg-neutral-200/50"
-            }`}
-          >
-            {isCollapsed && (
-              <Fragment>
-                Expand <CaretDown />
-              </Fragment>
-            )}
-            {!isCollapsed && (
-              <Fragment>
-                Collapse <CaretUp />
-              </Fragment>
-            )}
-          </span>
-        </div>
-      )}
-    </div>
-  );
-};
+//   return (
+//     <div className={`summary preview pb-5 relative overflow-y -hidden`}>
+//       <p
+//         className={`text overflow-hidden transition-all duration-500 ${
+//           isShow && isCollapsed ? "h-[5rem]" : "h-auto"
+//         }`}
+//       >
+//         {text
+//           .trim()
+//           .split("\n")
+//           .map((txt, _key) => (
+//             <Fragment key={_key}>
+//               <span
+//                 className={`text-black/80 text-sm leading-6
+//                           font-normal whitespace-pre-wrap mb-2
+//                          `}
+//                 dangerouslySetInnerHTML={{ __html: txt.trim() }}
+//               />
+//             </Fragment>
+//           ))}
+//       </p>
+//       {isShow && (
+//         <div
+//           className={`text-end pt-6 pb-4 ${
+//             isCollapsed
+//               ? "inline-flex items-end blurred justify-center absolute z-50 transition duration-75 bottom-0  h-[65px] w-full"
+//               : ""
+//           }`}
+//         >
+//           <span
+//             role="button"
+//             onClick={() => setIsCollapsed(!isCollapsed)}
+//             className={`inline-flex gap-2 items-center text-sm transition-all px-3 py-1.5 rounded ${
+//               isCollapsed
+//                 ? "bg-neutral-200/80 hover:bg-neutral-200"
+//                 : "bg-neutral-200 hover:bg-neutral-200/50"
+//             }`}
+//           >
+//             {isCollapsed && (
+//               <Fragment>
+//                 Expand <CaretDown />
+//               </Fragment>
+//             )}
+//             {!isCollapsed && (
+//               <Fragment>
+//                 Collapse <CaretUp />
+//               </Fragment>
+//             )}
+//           </span>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
 
 export const PreviewCard = ({ content }: { content?: string }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  // const [isExpanded, setIsExpanded] = useState(false);
 
-  const toggleExpand = () => {
-    setIsExpanded(!isExpanded);
-  };
+  // const toggleExpand = () => {
+  //   setIsExpanded(!isExpanded);
+  // };
 
   return content ? (
     <div className="bg-transparent py-4 shadow-sm">
       <div>
         <div
           className={`relative text-sm text-[#4C4D50] font-rubik leading-6
-              ${!isExpanded ? "max-h-[4.5rem] overflow-hidden" : ""}`}
+            `}
         >
+          {/* ${!isExpanded ? "max-h-[4.5rem] overflow-hidden" : ""} */}
           <Markdown
             content={content}
             className="wrapper text-wrap overflow-x-hidden"
           />
-          {!isExpanded && (
-            <div className="absolute bottom-0 left-0 h-8 w-full bg-gradient-to-t from-white to-transparent"></div>
-          )}
+          {/* {!isExpanded && ( */}
+          <div className="absolute bottom-0 left-0 h-8 w-full bg-gradient-to-t from-white to-transparent"></div>
+          {/* )} */}
         </div>
 
-        <button
+        {/* <button
           onClick={toggleExpand}
           className="mt-2 flex items-center justify-center w-full text-xs font-medium text-blue-600 hover:text-blue-800"
         >
@@ -225,7 +226,7 @@ export const PreviewCard = ({ content }: { content?: string }) => {
               <LuChevronDown size={16} className="ml-1" />
             </>
           )}
-        </button>
+        </button> */}
       </div>
     </div>
   ) : (
