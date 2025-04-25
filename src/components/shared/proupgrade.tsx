@@ -40,7 +40,7 @@ const ProLimitAlert = () => {
         className="flex items-center space-x-2"
       >
         <button className="bg-[#007b83] text-white px-3 py-1.5 text-sm rounded-md hover:bg-[#00656c] transition-colors">
-          Deeper Analysis
+          Deep Analysis
         </button>
         <button className="text-gray-500 hover:text-gray-700">
           <X size={18} />

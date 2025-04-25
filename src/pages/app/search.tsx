@@ -137,6 +137,13 @@ const Page: NextPageWithLayout = () => {
   } = useSemantic_searchQuery(
     search_classifier?.classification === "semantic" ? query : skipToken
   );
+  const [llm_data, setLlm_data] = useState<
+    | string
+    | {
+        markdown: string;
+      }
+    | undefined
+  >();
   console.log("search_classifier", search_classifier?.classification);
   useEffect(() => {
     if (search_classifier?.classification === "decomposition") {
@@ -647,15 +654,16 @@ const Page: NextPageWithLayout = () => {
                   }
                   <div
                     className={`mb-6 ${
-                      !isTitle ? "pt-[30px] pb-[20px]" : null
+                      !isTitle ? "pt-[30px] pb- [20px]" : null
                     }  sticky z-[1] top-[55px] bg-[rgb(250,250,249)] `}
                   >
                     <div className=" flex gap-[32px] items-center border-b border-gray-200">
-                      {search_classifier?.classification === "semantic" && (
+                      {(search_classifier?.classification === "semantic" ||
+                        sementic_data) && (
                         <button
-                          className={`py-2 px- 4 font-medium ${
+                          className={`pt-2 px- 4 pb-[20px] font-medium ${
                             activeTab_query_type === "sematic_s"
-                              ? "text-blue-600 border-b-2 border-blue-600"
+                              ? "text-blue-600 border-b-2 border-blue-600 "
                               : "text-gray-500 hover:text-gray-700"
                           }`}
                           onClick={() =>
@@ -665,11 +673,12 @@ const Page: NextPageWithLayout = () => {
                           Search
                         </button>
                       )}
-                      {search_classifier?.classification === "decomposition" ? (
+                      {search_classifier?.classification === "decomposition" ||
+                      llm_data ? (
                         <button
-                          className={`py-2 px- 4 font-medium ${
+                          className={`pt-2 pb-[20px] px- 4 font-medium ${
                             activeTab_query_type === "llm_s"
-                              ? "text-blue-600 border-b-2 border-blue-600"
+                              ? "text-blue-600 border-b-2 border-blue-600 pb-[20px]"
                               : "text-gray-500 hover:text-gray-700"
                           }`}
                           onClick={() => UpdateUrlParams("query_type", "llm_s")}
@@ -714,7 +723,7 @@ const Page: NextPageWithLayout = () => {
                   {!search_classifier?.classification && <Fragment />}
                   {activeTab_query_type === "llm_s" && (
                     //   {llm_search_data && activeTab_query_type === "llm_s" && (
-                    <SearchAIMetaResult />
+                    <SearchAIMetaResult setLlm_data={setLlm_data} />
                     // <SearchAIMetaResult data={llm_search_data} />
                   )}
                   {right_cover_menu && (

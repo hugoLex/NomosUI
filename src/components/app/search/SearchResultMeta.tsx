@@ -1,4 +1,11 @@
-import React, { FC, Fragment, useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  FC,
+  Fragment,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import Link from "next/link";
 import {
   ArticleMetadata,
@@ -36,7 +43,19 @@ type TclasifierResult = {
   classification: string;
   user_message: string;
 };
-export const SearchAIMetaResult = () => {
+export const SearchAIMetaResult = ({
+  setLlm_data,
+}: {
+  setLlm_data: Dispatch<
+    SetStateAction<
+      | string
+      | {
+          markdown: string;
+        }
+      | undefined
+    >
+  >;
+}) => {
   // export const SearchAIMetaResult: FC<{ data: LLMResult }> = (prop) => {
   const { searchParams } = useQueryToggler();
   const query = searchParams.get("q");
@@ -62,6 +81,9 @@ export const SearchAIMetaResult = () => {
       ? query
       : skipToken
   );
+  useEffect(() => {
+    llm_search_data && setLlm_data(llm_search_data);
+  }, [llm_search_data]);
   console.log("returned from llm", llm_search_data, llm_loading, error);
 
   if (
