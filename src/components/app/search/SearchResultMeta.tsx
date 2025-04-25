@@ -82,9 +82,24 @@ export const SearchAIMetaResult = () => {
     );
   }
   llm_search_data && console.log(typeof llm_search_data, error);
-  if (llm_search_data && typeof llm_search_data === "string") {
-    return <PreviewCard content={llm_search_data?.slice(13).slice(0, -3)} />;
+  // if (llm_search_data && typeof llm_search_data === "string") {
+  //   return <PreviewCard content={llm_search_data?.slice(13).slice(0, -3)} />;
+  // }
+
+  if (llm_search_data) {
+    // Check if llm_search_data is an object with a markdown property
+    const markdownContent =
+      typeof llm_search_data === "object" && llm_search_data !== null
+        ? (llm_search_data as { markdown: string }).markdown || ""
+        : typeof llm_search_data === "string"
+        ? llm_search_data
+        : "";
+
+    if (markdownContent) {
+      return <PreviewCard content={llm_search_data?.slice(13).slice(0, -3)} />;
+    }
   }
+
   return (
     <Fragment>
       <div className="space-y-4 mb-4">

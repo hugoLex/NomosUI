@@ -711,7 +711,7 @@ const Page: NextPageWithLayout = () => {
                       className={` bg-red- 500 max-md:h idden fixed top-[20px] right-[25px] h-[90%] z-[99999] w-[99%]
                       `}
                     >
-                      <div className="bg-white ml-auto border border-blue-500 min-w-[500px] w-[40vw] h-screen shadow-overlay top-0 right-0 fixed  animate-in slide-in-from-right ">
+                      <div className="bg-white ml-auto  min-w-[500px] w-[40vw] h-screen shadow-overlay top-0 right-0 fixed  animate-in slide-in-from-right ">
                         <div className="min-h-[64px] justify-between flex items-center p-3.5 bg-purple- 500 border-b border-b-black\50  ">
                           <span>Tasks</span>
                           <svg
