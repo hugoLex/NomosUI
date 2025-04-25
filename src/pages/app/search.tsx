@@ -46,6 +46,7 @@ import useQueryToggler from "@app/hooks/useQueryHandler";
 import BgClosebtn from "@app/components/shared/bgClosebtn";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useDispatch } from "react-redux";
+import ProLimitAlert from "@app/components/shared/proupgrade";
 
 const Page: NextPageWithLayout = () => {
   const dispatch = useDispatch();
@@ -637,7 +638,18 @@ const Page: NextPageWithLayout = () => {
 
                 {/* LLM result */}
                 <Fragment>
-                  <div className="mb-6  sticky z-[1] top-[55px] bg-[rgb(250,250,249)] ">
+                  {
+                    isTitle && (
+                      // search_classifier?.classification === "semantic" && (
+                      <ProLimitAlert />
+                    )
+                    // )
+                  }
+                  <div
+                    className={`mb-6 ${
+                      !isTitle ? "pt-[30px] pb-[20px]" : null
+                    }  sticky z-[1] top-[55px] bg-[rgb(250,250,249)] `}
+                  >
                     <div className=" flex gap-[32px] items-center border-b border-gray-200">
                       {search_classifier?.classification === "semantic" && (
                         <button

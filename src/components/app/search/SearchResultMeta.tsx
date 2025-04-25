@@ -40,6 +40,7 @@ export const SearchAIMetaResult = () => {
   // export const SearchAIMetaResult: FC<{ data: LLMResult }> = (prop) => {
   const { searchParams } = useQueryToggler();
   const query = searchParams.get("q");
+  const query_type = searchParams.get("query_type");
   console.log("query from llm page", query);
   const {
     data: search_classifier,
@@ -55,15 +56,18 @@ export const SearchAIMetaResult = () => {
     error,
     isLoading: llm_loading,
   } = useLlm_searchQuery(
-    search_classifier?.classification === "decomposition" && query
+    (search_classifier?.classification === "decomposition" ||
+      query_type === "llm_s") &&
+      query
       ? query
       : skipToken
   );
   console.log("returned from llm", llm_search_data, llm_loading, error);
 
   if (
-    search_classifier?.classification === "decomposition" &&
-    (search_classifier as TclasifierResult)?.user_message &&
+    (search_classifier?.classification === "decomposition" ||
+      query_type === "llm_s") &&
+    // (search_classifier as TclasifierResult)?.user_message &&
     llm_loading
   ) {
     return (
@@ -92,11 +96,11 @@ export const SearchAIMetaResult = () => {
       typeof llm_search_data === "object" && llm_search_data !== null
         ? (llm_search_data as { markdown: string }).markdown || ""
         : typeof llm_search_data === "string"
-        ? llm_search_data
+        ? llm_search_data?.slice(13).slice(0, -3)
         : "";
 
     if (markdownContent) {
-      return <PreviewCard content={llm_search_data?.slice(13).slice(0, -3)} />;
+      return <PreviewCard content={llm_search_data} />;
     }
   }
 
