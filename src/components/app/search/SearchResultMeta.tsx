@@ -293,7 +293,7 @@ export const SearchResultMeta = (prop: {
       return (
         <p className="text-sm mb-6 " key={ptx}>
           {/* Render highlighted quote */}
-          <mark id="" className="bg-white [#FFECB3]">
+          <mark id="" className="bg-transparent white [#FFECB3]">
             {content
               .trim()
               .split(" ")

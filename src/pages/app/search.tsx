@@ -571,7 +571,7 @@ const Page: NextPageWithLayout = () => {
         />
       </Fragment>
     );
-
+  // console.log("semantic data", sementic_data);
   return (
     <Fragment>
       <Head title={`Search Result - ${q}`} />
@@ -670,7 +670,19 @@ const Page: NextPageWithLayout = () => {
                             UpdateUrlParams("query_type", "sematic_s")
                           }
                         >
-                          Search
+                          Cases
+                          {sementic_data && (
+                            <button className="p-1 py-[2px] text-black text-[10px] bg-gray-black rounded-md ml-[2px]">
+                              {
+                                (
+                                  sementic_data as TSearchResultDocuments & {
+                                    total_results: number;
+                                  }
+                                )?.total_results
+                              }
+                            </button>
+                          )}
+                          {/* Search */}
                         </button>
                       )}
                       {search_classifier?.classification === "decomposition" ||
