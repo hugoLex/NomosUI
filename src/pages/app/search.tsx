@@ -589,7 +589,9 @@ const Page: NextPageWithLayout = () => {
                   } font-normal mb-6`}
                 >
                   {/* Relevant sources for: */}
-                  <span className={` text-[#245b91]`}>{q}</span>
+                  <span className={` text-[#245b91] font-gilda_Display`}>
+                    {q}
+                  </span>
                 </h1>
 
                 {/* Filter  {resultData.llm =List */}
