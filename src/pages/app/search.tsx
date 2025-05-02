@@ -78,12 +78,12 @@ const Page: NextPageWithLayout = () => {
   const [filterData, setFilterData] = useState<TSearchResultDocument[] | null>(
     null
   );
-  const {
-    data: search_classifier,
-    isError: isError_clas,
-    isFetching: isFetching_clas,
-    isLoading: Isloading_clas,
-  } = useQuery_route_classifierQuery(query ? query : skipToken);
+  // const {
+  //   data: search_classifier,
+  //   isError: isError_clas,
+  //   isFetching: isFetching_clas,
+  //   isLoading: Isloading_clas,
+  // } = useQuery_route_classifierQuery(query ? query : skipToken);
   const [
     {
       searchID,
@@ -135,7 +135,8 @@ const Page: NextPageWithLayout = () => {
     isError: sem_error,
     refetch,
   } = useSemantic_searchQuery(
-    search_classifier?.classification === "semantic" ? query : skipToken
+    query ? query : skipToken
+    // search_classifier?.classification === "semantic" ? query : skipToken
   );
   const [llm_data, setLlm_data] = useState<
     | string
@@ -144,30 +145,7 @@ const Page: NextPageWithLayout = () => {
       }
     | undefined
   >();
-  console.log("search_classifier", search_classifier?.classification);
-  useEffect(() => {
-    if (search_classifier?.classification === "decomposition") {
-      //   check if there is data in semantic_search endpoint and clear it
-      //   if (sementic_data && typeof refetch === "function") {
-      //     refetch();
-      //   }
 
-      dispatch(
-        searchQueryUtil.invalidateTags([{ type: "SemanticSearch", id: "LIST" }])
-      );
-      UpdateUrlParams("query_type", "llm_s");
-    }
-    if (search_classifier?.classification === "semantic") {
-      UpdateUrlParams("query_type", "sematic_s");
-    }
-  }, [
-    search_classifier?.classification,
-    isFetching_clas,
-    Isloading_clas,
-    // llm_search_data,
-    // sem_loading,
-    // llm_loading,
-  ]);
   // Initial data load
   useEffect(() => {
     setReferrer(router.asPath);
@@ -178,7 +156,7 @@ const Page: NextPageWithLayout = () => {
       setSearchType("cases");
     }
     // console.log("search result test", sementic_data);
-    if (sementic_data && search_classifier?.classification === "semantic") {
+    if (sementic_data) {
       if ((sementic_data as TSearchResultDocuments)?.searchID) {
         const searchOptionList: FilterOption[] = [];
         const searchtype: string[] = [];
@@ -318,7 +296,7 @@ const Page: NextPageWithLayout = () => {
     return () => {};
   }, [
     // sem_loading,
-    search_classifier?.classification,
+    // search_classifier?.classification,
     // sem_fetching,
     sementic_data,
     setReferrer,
@@ -548,7 +526,7 @@ const Page: NextPageWithLayout = () => {
     }
   };
 
-  if (sem_fetching || sem_loading || isFetching_clas || Isloading_clas)
+  if (sem_fetching || sem_loading)
     return (
       <Fragment>
         <Head title={`Search Result - ${q}`} />
@@ -560,7 +538,7 @@ const Page: NextPageWithLayout = () => {
       </Fragment>
     );
 
-  if (sem_error || isError_clas)
+  if (sem_error)
     return (
       <Fragment>
         <Head title={`Search Result - ${q}`} />
@@ -655,11 +633,10 @@ const Page: NextPageWithLayout = () => {
                   <div
                     className={`mb-6 ${
                       !isTitle ? "pt-[30px] pb- [20px]" : null
-                    }  sticky z-[1] top-[55px] bg-[rgb(250,250,249)] `}
+                    }  sticky z-[1] top-[55px] bg-white [rgb(250,250,249)] `}
                   >
                     <div className=" flex gap-[32px] items-center border-b border-gray-200">
-                      {(search_classifier?.classification === "semantic" ||
-                        sementic_data) && (
+                      {sementic_data && (
                         <button
                           className={`pt-2 px- 4 pb-[20px] font-medium ${
                             activeTab_query_type === "sematic_s"
@@ -685,8 +662,7 @@ const Page: NextPageWithLayout = () => {
                           {/* Search */}
                         </button>
                       )}
-                      {search_classifier?.classification === "decomposition" ||
-                      llm_data ? (
+                      {llm_data ? (
                         <button
                           className={`pt-2 pb-[20px] px- 4 font-medium ${
                             activeTab_query_type === "llm_s"
@@ -713,7 +689,7 @@ const Page: NextPageWithLayout = () => {
                         // onClick={() => UpdateUrlParams("menu", "true")}
                         type="button"
                       >
-                        <span className="flex-shrink-0">2 tasks</span>
+                        <span className="flex-shrink-0">Filters</span>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="14"
@@ -732,7 +708,7 @@ const Page: NextPageWithLayout = () => {
                       </button>
                     </div>
                   </div>
-                  {!search_classifier?.classification && <Fragment />}
+                  {!searchDocuments?.documents && <Fragment />}
                   {activeTab_query_type === "llm_s" && (
                     //   {llm_search_data && activeTab_query_type === "llm_s" && (
                     <SearchAIMetaResult setLlm_data={setLlm_data} />
@@ -858,6 +834,7 @@ const Page: NextPageWithLayout = () => {
               )} */}
 
             {searchDocuments &&
+              activeTab_query_type === "sematic_s" &&
               searchDocuments.documents.length < searchDocuments.total && (
                 <div className="flex justify-center py-2.5">
                   <Button

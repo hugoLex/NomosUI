@@ -32,8 +32,8 @@ export const AppLayout: FC<ComponentProps> = ({ children }) => {
   return (
     <AppLayoutContext.Provider value={props}>
       <div
-        className="flex min-h-screen
-       bg-[linear-gradient(0deg,#eaf0f2_0%,#eaf0f2_100%,#FFF)]"
+        className="flex min-h-screen bg-white"
+        //  bg-[linear-gradient(0deg,#eaf0f2_0%,#eaf0f2_100%,#FFF)]"
       >
         <Sidebar links={menuList} />
         <main
@@ -71,14 +71,14 @@ export const AppLayout: FC<ComponentProps> = ({ children }) => {
           >
            
           </div> */}
-          <div className="relative flex flex-col w-full rounded-lg shadow-sm bg-stone-50 min-h-full ">
+          <div className="relative flex flex-col w-full rounded-lg shadow-sm bg-white stone-50 min-h-full ">
             {children}
           </div>
         </main>
       </div>
       <SearchBoxModal innerRef={searchRef} />
       <Modal show={isAuthModal} toogleModal={() => setIsAuthModal(false)}>
-        <div className="rounded-lg shadow-md  py-4 bg-stone-50 max-w-[600px]">
+        <div className="rounded-lg shadow-md  py-4 bg-white stone-50 max-w-[600px]">
           <div className="flex justify-end px-4">
             <span role="button" onClick={() => setIsAuthModal(false)}>
               <CloseIcon />

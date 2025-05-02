@@ -69,26 +69,19 @@ export const SearchAIMetaResult = ({
   } = useQuery_route_classifierQuery(query ? query : skipToken);
   // const [llm_search, { data: llm_search_data, error, isLoading: llm_loading }] =
   //   useLlm_searchMutation();
-  console.log("what i am seeing", search_classifier);
+  console.log("what i am seeing");
   const {
     data: llm_search_data,
     error,
     isLoading: llm_loading,
-  } = useLlm_searchQuery(
-    (search_classifier?.classification === "decomposition" ||
-      query_type === "llm_s") &&
-      query
-      ? query
-      : skipToken
-  );
+  } = useLlm_searchQuery(query_type === "llm_s" && query ? query : skipToken);
   useEffect(() => {
     llm_search_data && setLlm_data(llm_search_data);
   }, [llm_search_data]);
   console.log("returned from llm", llm_search_data, llm_loading, error);
 
   if (
-    (search_classifier?.classification === "decomposition" ||
-      query_type === "llm_s") &&
+    query_type === "llm_s" &&
     // (search_classifier as TclasifierResult)?.user_message &&
     llm_loading
   ) {

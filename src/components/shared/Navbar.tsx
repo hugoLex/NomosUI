@@ -54,7 +54,7 @@ const Navbar = ({ children, referrer }: NavbarProps) => {
   return (
     <Fragment>
       <Header>
-        <div className="min-h-[44px] border-b border-solid bg-stone-50 border-stone-300 border-opacity-50 rounded-t-lg">
+        <div className="min-h-[44px] border-b border-solid bg-white stone-50 border-stone-300 border-opacity-50 rounded-t-lg">
           <div className="flex max-2xl:max-w-[1350px] gap-5 justify-between items-center px-4 md:px-8  w-full relative">
             <div className="flex items-center md:min-w-[10%] gap-2">
               {/* {referrer && ( */}

@@ -41,6 +41,8 @@ const config = {
         inter: ["var(--font-inter)", ...fontFamily.sans],
         roboto: ["var(--font-roboto)", ...fontFamily.sans],
         poppins: ["var(--font-poppins)", ...fontFamily.sans],
+        gilda_Display: ["var(--font-gilda_Display)", ...fontFamily.sans],
+        cabin: ["var(--font-cabin)", ...fontFamily.sans],
       },
       colors: {
         "dark-1": "rgb(42, 42, 42)",
