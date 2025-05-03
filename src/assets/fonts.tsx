@@ -24,7 +24,7 @@ export const cabin = Cabin({
 });
 
 export const gilda_Display = Gilda_Display({
-  variable: "--font-poppins",
+  variable: "--font-gilda_Display",
   subsets: ["latin"],
   weight: ["400"],
   display: "swap",
@@ -63,5 +63,6 @@ export const fontMapper = {
   "font-rubik": rubik.variable,
   "font-inter": inter.variable,
   "font-poppins": poppins.variable,
+  "font-gilda_Display": gilda_Display.variable,
   "font-playfair": playfair.variable,
 };
