@@ -643,7 +643,7 @@ const Page: NextPageWithLayout = () => {
                           className={`pt-2 px- 4 pb-[20px] font-medium ${
                             activeTab_query_type === "sematic_s"
                               ? "text-blue-600 border-b-2 border-blue-600 "
-                              : "text-gray-500 hover:text-gray-700"
+                              : "text-gray-500 hover:text-gray-700 "
                           }`}
                           onClick={() =>
                             UpdateUrlParams("query_type", "sematic_s")

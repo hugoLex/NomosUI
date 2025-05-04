@@ -104,7 +104,39 @@ export const SearchAIMetaResult = ({
   // if (llm_search_data && typeof llm_search_data === "string") {
   //   return <PreviewCard content={llm_search_data?.slice(13).slice(0, -3)} />;
   // }
-
+  const exportIcon = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7999999999999998"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className=" "
+    >
+      <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+      <path d="M11.5 21h-4.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v5m-5 6h7m-3 -3l3 3l-3 3"></path>
+    </svg>
+  );
+  const shareIcon = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7999999999999998"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className=" "
+    >
+      <path d="M13 4v4c-6.575 1.028 -9.02 6.788 -10 12c-.037 .206 5.384 -5.962 10 -6v4l8 -7l-8 -7z"></path>
+    </svg>
+  );
   if (llm_search_data) {
     // Check if llm_search_data is an object with a markdown property
     const markdownContent =
@@ -115,7 +147,30 @@ export const SearchAIMetaResult = ({
         : "";
 
     if (markdownContent) {
-      return <PreviewCard content={markdownContent} />;
+      return (
+        <>
+          <PreviewCard content={markdownContent} />
+          {[
+            [shareIcon, "Share"],
+            [exportIcon, "Export"],
+          ].map(([icon, name]) => (
+            <button
+              key={name as string}
+              type="button"
+              className=" focus:outline-none outline-none outline-transparent transition duration-300 ease-out font-sans  select-none  relative group/button  justify-center text-center items-center rounded-full cursor-pointer active:scale-[0.97] active:duration-150  origin-center whitespace-nowrap inline-flex text-sm h-8 pl-2.5 pr-3"
+            >
+              <div className="flex items-center min-w-0 font-medium gap-1.5 justify-center">
+                <div className="flex shrink-0 items-center justify-center size-4">
+                  {icon}
+                </div>
+                <div className="text-align-center relative truncate leading-loose -mb-px">
+                  {name}
+                </div>
+              </div>
+            </button>
+          ))}
+        </>
+      );
     }
   }
 
@@ -426,6 +481,7 @@ export const SearchResultMeta = (prop: {
             (metadata as LegislationMetadata).document_title}
           {type === "principles" && (metadata as PrinciplesMetadata).case_title}
         </Link>
+        {/* {button} */}
       </h3>
 
       {type === "articles" && (

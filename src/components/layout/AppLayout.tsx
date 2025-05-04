@@ -86,7 +86,7 @@ export const AppLayout: FC<ComponentProps> = ({ children }) => {
           </div>
           <div className="flex flex-col self-stretch ">
             <div className="flex flex-col px-4 w-full max-md:max-w-full">
-              <h4 className="text-2xl font-thin text-center text-cyan-700  ">
+              <h4 className="text-2xl font-thin text-center text-cyan-700 font-gilda_Display">
                 Welcome
               </h4>
               <div className="flex flex-col px-20 pt-2 text-base text-cyan-950 max-md:px-5 max-md:max-w-full">
