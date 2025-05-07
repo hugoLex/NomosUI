@@ -100,7 +100,7 @@ export const SearchAIMetaResult = ({
       </div>
     );
   }
-  llm_search_data && console.log(typeof llm_search_data, error);
+  llm_search_data && console.log(llm_search_data, error);
   // if (llm_search_data && typeof llm_search_data === "string") {
   //   return <PreviewCard content={llm_search_data?.slice(13).slice(0, -3)} />;
   // }
@@ -302,6 +302,13 @@ export const SearchResultMeta = (prop: {
     1: "b",
     2: "c",
     3: "d",
+    4: "e",
+    5: "f",
+    6: "g",
+    7: "h",
+    8: "i",
+    9: "j",
+    10: "k",
   };
   const Occurrences = () =>
     (
@@ -339,9 +346,9 @@ export const SearchResultMeta = (prop: {
       //   );
 
       return (
-        <p className="text-sm mb-6 " key={ptx}>
+        <p className="text-sm mb-6 text- primary" key={ptx}>
           {/* Render highlighted quote */}
-          <mark id="" className="bg-transparent white [#FFECB3]">
+          <mark id="" className="bg-transparent text-primary">
             {content
               .trim()
               .split(" ")
@@ -350,7 +357,7 @@ export const SearchResultMeta = (prop: {
                 return contextResolved.includes(word) ? (
                   // && index < contextLength
                   <span
-                    className={`text-primary ${
+                    className={`text -primary ${
                       boldWords.includes(word) ? "font-bold" : ""
                     } `}
                     key={index}

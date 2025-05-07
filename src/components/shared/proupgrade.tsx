@@ -1,7 +1,7 @@
 import useQueryToggler from "@app/hooks/useQueryHandler";
 import { X } from "lucide-react";
 
-const ProLimitAlert = () => {
+const StartLlmSearch = () => {
   const { searchParams, UpdateUrlParams } = useQueryToggler();
   const query_type = searchParams.get("query_type");
   return (
@@ -50,4 +50,4 @@ const ProLimitAlert = () => {
   );
 };
 
-export default ProLimitAlert;
+export default StartLlmSearch;
