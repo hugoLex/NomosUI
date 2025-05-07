@@ -1,5 +1,4 @@
 import useQueryToggler from "@app/hooks/useQueryHandler";
-import { X } from "lucide-react";
 
 const StartLlmSearch = () => {
   const { searchParams, UpdateUrlParams } = useQueryToggler();
@@ -7,7 +6,8 @@ const StartLlmSearch = () => {
   return (
     <div
       className={` ${
-        query_type !== "sematic_s" && "hidden"
+        query_type == "llm_s" && "hidden"
+        // query_type == "sematic_s" && "hidden"
       } mb-[20px] flex items-center justify-between bg-[#f5f5f2] border border-gray-300 px-4 py-2 rounded-md max-w -xl shadow-sm`}
     >
       <div className="flex items-center space-x-2">
