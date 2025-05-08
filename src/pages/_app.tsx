@@ -4,7 +4,7 @@ import Head from "next/head";
 import { store } from "@app/store/store";
 import { NoSSR } from "@app/components/shared";
 import { AppPropsWithLayout } from "@app/types";
-import { inter, poppins, rubik, gilda_Display } from "@app/assets/fonts";
+import { inter, poppins, rubik, gilda_Display, cabin } from "@app/assets/fonts";
 import "../assets/app.css";
 import { Toaster } from "@app/components/ui/sonner";
 
@@ -34,6 +34,7 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
             --font-inter: ${inter.style.fontFamily};
             --font-poppins:${poppins.style.fontFamily};
             --font-gilda_Display:${gilda_Display.style.fontFamily};
+            --font-cabin:${cabin.style.fontFamily};
           }
         `}
           </style>

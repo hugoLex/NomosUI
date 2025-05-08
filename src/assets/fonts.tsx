@@ -17,7 +17,7 @@ export const inter = Inter({
 });
 export const cabin = Cabin({
   variable: "--font-cabin",
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   display: "swap",
   preload: true,
@@ -62,6 +62,7 @@ export const rubik = Rubik({
 export const fontMapper = {
   "font-rubik": rubik.variable,
   "font-inter": inter.variable,
+  "font-cabin": cabin.variable,
   "font-poppins": poppins.variable,
   "font-gilda_Display": gilda_Display.variable,
   "font-playfair": playfair.variable,

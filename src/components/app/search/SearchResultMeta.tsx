@@ -348,7 +348,7 @@ export const SearchResultMeta = (prop: {
       return (
         <p className="text-sm mb-6 text- primary" key={ptx}>
           {/* Render highlighted quote */}
-          <mark id="" className="bg-transparent text-primary">
+          <mark id="" className="bg-transparent text-primary font-cabin">
             {content
               .trim()
               .split(" ")
@@ -468,11 +468,11 @@ export const SearchResultMeta = (prop: {
           full_judgement={fullJudgement?.judgement}
         />
       )}
-      <span className="text-[#008E00] bg-[#008E00]/10 text-xs px-3 py-1 rounded">
+      <span className="text-[#008E00] bg-[#008E00]/10 text-xs px-3 py-1 rounded font-gilda_Display">
         {metadata.document_type}
       </span>
 
-      <h3 className="text-base font-medium">
+      <h3 className="text-base font-medium font-gilda_Display">
         <Link
           href={`/library/cases/${
             metadata.document_id
@@ -503,7 +503,7 @@ export const SearchResultMeta = (prop: {
       )}
 
       {type === "cases" && (
-        <p className="flex gap-x-4">
+        <p className="flex gap-x-4 font-gilda_Display">
           <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
             {(metadata as CaseMetadata).court}
           </span>
@@ -530,7 +530,7 @@ export const SearchResultMeta = (prop: {
 
       {type === "principles" && (
         <p className="flex gap-x-4">
-          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-gilda_Display font-medium">
             {(metadata as PrinciplesMetadata).court}
           </span>
           {/* <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">

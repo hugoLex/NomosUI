@@ -640,7 +640,7 @@ const Page: NextPageWithLayout = () => {
                   >
                     {" "}
                     <StartLlmSearch />
-                    <div className=" flex gap-[32px] items-center border-b border-gray-200">
+                    <div className=" flex gap-[32px] items-center border-b border-gray-200 font-gilda_Display">
                       {sementic_data && (
                         <button
                           className={`pt-2 px- 4 pb-[20px] font-medium ${
