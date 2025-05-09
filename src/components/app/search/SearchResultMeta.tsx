@@ -504,14 +504,14 @@ export const SearchResultMeta = (prop: {
 
       {type === "cases" && (
         <p className="flex gap-x-4 font-gilda_Display">
-          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-teal-900 text-sm font-medium">
             {(metadata as CaseMetadata).court}
           </span>
-          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-teal-900 text-sm font-medium">
             {(metadata as CaseMetadata).year}
           </span>
 
-          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-teal-900 text-sm font-medium">
             {(metadata as CaseMetadata).suit_number}
           </span>
         </p>

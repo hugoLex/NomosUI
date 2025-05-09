@@ -9,7 +9,7 @@ const StartLlmSearch = () => {
       className={` ${
         query_type == "llm_s" && "hidden"
         // query_type == "sematic_s" && "hidden"
-      } mb-[20px] flex items-center justify-between bg-[#f5f5f2] border border-gray-300 px-4 py-2 rounded-md max-w -xl shadow-sm`}
+      } mb-[20px] flex items-center justify-between bg-[#eaf0f2] bor der border-gray-300 px-4 py-2 rounded-md max-w -xl shadow-sm`}
     >
       <div className="flex items-center space-x-2">
         <Image
@@ -32,11 +32,11 @@ const StartLlmSearch = () => {
             d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"
           />
         </svg> */}
-        <div className="font-gilda_Display">
-          <p className="text-[10px] md:text-sm font-medium text-gray-800">
+        <div className="font- gilda_Display font-poppins ">
+          <p className="text-[10px] md:text-sm font-medium text-[#245b91] -gray-800">
             Need a deeper analysis of your question ?
           </p>
-          <p className=" text-[10px] md:text-sm text-gray-600">
+          <p className=" text-[10px] md:text-sm text-[#245b91] gray-600">
             Click the button to get a deeper analysis of your question
           </p>
         </div>
@@ -47,7 +47,7 @@ const StartLlmSearch = () => {
         }}
         className="flex items-center space-x-2"
       >
-        <button className="bg-[#007b83] font-gilda_Display text-white px-3 py-1.5 text-[10px] whitespace-nowrap md:text-sm rounded-md hover:bg-[#00656c] transition-colors">
+        <button className="bg-[#245b91] font-gilda_Display text-white px-3 py-1.5 text-[10px] whitespace-nowrap md:text-sm rounded-md hover:bg-[#00656c] transition-colors">
           Deep Analysis
         </button>
         {/* <button className="text-gray-500 hover:text-gray-700">

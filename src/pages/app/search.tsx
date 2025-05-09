@@ -643,7 +643,7 @@ const Page: NextPageWithLayout = () => {
                     <div className=" flex gap-[32px] items-center border-b border-gray-200 font-gilda_Display">
                       {sementic_data && (
                         <button
-                          className={`pt-2 px- 4 pb-[20px] font-medium ${
+                          className={`pt-2 px- 4 pb-[20px] font-medium flex items-center ${
                             activeTab_query_type === "sematic_s"
                               ? "text-blue-600 border-b-2 border-blue-600 "
                               : "text-gray-500 hover:text-gray-700 "
@@ -652,7 +652,7 @@ const Page: NextPageWithLayout = () => {
                             UpdateUrlParams("query_type", "sematic_s")
                           }
                         >
-                          Cases
+                          CASES
                           {sementic_data && (
                             <button className="p-1 py-[2px] text-black text-[10px] bg-gray-black rounded-md ml-[2px]">
                               {
