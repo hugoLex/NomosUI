@@ -73,7 +73,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
   return (
     <Fragment>
       <aside
-        className={`relative hidden md:block bg-stone-50 transparent 
+        className={`relative hidden md:block  transparent 
           h-screen overflow-y-auto transition-all duration-500
          ease-in-out z-10 `}
       >

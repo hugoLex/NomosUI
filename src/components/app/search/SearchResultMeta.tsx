@@ -348,7 +348,7 @@ export const SearchResultMeta = (prop: {
       return (
         <p className="text-sm mb-6 text- primary" key={ptx}>
           {/* Render highlighted quote */}
-          <mark id="" className="bg-transparent text-primary font-cabin">
+          <mark id="" className="bg-transparent text-primary font -poppins">
             {content
               .trim()
               .split(" ")

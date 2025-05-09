@@ -32,7 +32,7 @@ export const AppLayout: FC<ComponentProps> = ({ children }) => {
   return (
     <AppLayoutContext.Provider value={props}>
       <div
-        className="flex min-h-screen bg-white"
+        className="flex min-h-screen bg-[#eaf0f2]"
         //  bg-[linear-gradient(0deg,#eaf0f2_0%,#eaf0f2_100%,#FFF)]"
       >
         <Sidebar links={menuList} />

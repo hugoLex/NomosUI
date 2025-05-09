@@ -590,7 +590,7 @@ const Page: NextPageWithLayout = () => {
                 >
                   {/* Relevant sources for: */}
                   <span
-                    className={` text-[#245b91] font-gilda_Display capitalize`}
+                    className={` text-[#245b91] font-gilda_Display capitalize font-bold`}
                   >
                     {q}
                   </span>

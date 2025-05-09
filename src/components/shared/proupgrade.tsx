@@ -1,4 +1,5 @@
 import useQueryToggler from "@app/hooks/useQueryHandler";
+import Image from "next/image";
 
 const StartLlmSearch = () => {
   const { searchParams, UpdateUrlParams } = useQueryToggler();
@@ -11,7 +12,14 @@ const StartLlmSearch = () => {
       } mb-[20px] flex items-center justify-between bg-[#f5f5f2] border border-gray-300 px-4 py-2 rounded-md max-w -xl shadow-sm`}
     >
       <div className="flex items-center space-x-2">
-        <svg
+        <Image
+          height={30}
+          width={30}
+          src={"/images/ai-search-02-stroke-rounded.svg"}
+          // src={"../icons/ai-search-02-stroke-rounded.svg"}
+          alt="search"
+        />
+        {/* <svg
           className="w-5 h-5 text-gray-700"
           fill="none"
           stroke="currentColor"
@@ -23,7 +31,7 @@ const StartLlmSearch = () => {
             strokeWidth="2"
             d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"
           />
-        </svg>
+        </svg> */}
         <div className="font-gilda_Display">
           <p className="text-[10px] md:text-sm font-medium text-gray-800">
             Need a deeper analysis of your question ?
