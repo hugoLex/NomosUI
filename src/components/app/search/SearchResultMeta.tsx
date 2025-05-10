@@ -472,7 +472,7 @@ export const SearchResultMeta = (prop: {
         {metadata.document_type}
       </span>
 
-      <h3 className="text-base font-medium font-gilda_Display">
+      <h3 className="text-base font-semibold font-gilda_Display">
         <Link
           href={`/library/cases/${
             metadata.document_id
@@ -503,7 +503,7 @@ export const SearchResultMeta = (prop: {
       )}
 
       {type === "cases" && (
-        <p className="flex gap-x-4 font-gilda_Display">
+        <p className="flex gap-x-4 font-poppins">
           <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-teal-900 text-sm font-medium">
             {(metadata as CaseMetadata).court}
           </span>

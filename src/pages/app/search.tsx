@@ -46,7 +46,7 @@ import useQueryToggler from "@app/hooks/useQueryHandler";
 import BgClosebtn from "@app/components/shared/bgClosebtn";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useDispatch } from "react-redux";
-import StartLlmSearch from "@app/components/shared/proupgrade";
+import StartLlmSearch from "@app/components/shared/llsearchTriger";
 
 const Page: NextPageWithLayout = () => {
   const dispatch = useDispatch();
@@ -640,7 +640,7 @@ const Page: NextPageWithLayout = () => {
                   >
                     {" "}
                     <StartLlmSearch />
-                    <div className=" flex gap-[32px] items-center border-b border-gray-200 font-gilda_Display">
+                    <div className=" flex gap-[32px] items-center border-b border-gray-200 font-poppins">
                       {sementic_data && (
                         <button
                           className={`pt-2 px- 4 pb-[20px] font-medium flex items-center ${
