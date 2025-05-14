@@ -175,21 +175,21 @@ export const SearchAIMetaResult = ({
         idx === 4 ? (
           <p
             key={"replaced" + idx}
-            className={`relative text-sm text-primary font-poppins 
+            className={`relative  
                 `}
           >
             <Markdown
               content={text}
-              className="wrapper text-wrap overflow-x-hidden"
+              className="wrapper text-wrap overflow-x-hidden text-sm text-primary font-poppins"
             />
           </p>
         ) : headingsToHighlight.includes(text) ? (
           <h3
             key={"replaced" + idx}
-            className={`text-primary ${
+            className={` ${
               text === "## Answer"
-                ? "text-lg font-semibold"
-                : "text-xx font-bold"
+                ? "text-lg font-bold"
+                : "text-base font-semibold text-primary"
             }  font-gilda_Display `}
           >
             {text.replaceAll("#", "")}
@@ -197,12 +197,12 @@ export const SearchAIMetaResult = ({
         ) : (
           <div
             key={"replaced" + idx}
-            className={`relative text-sm text-[#4C4D50] font-rubik leading-6
+            className={`relative 
                       `}
           >
             <Markdown
               content={text}
-              className="wrapper text-wrap overflow-x-hidden"
+              className="wrapper text-wrap overflow-x-hidden text-sm text-[#4C4D50] font-rubik leading-6"
             />
           </div>
           // <PreviewCard key={"replaced" + idx} content={text} />

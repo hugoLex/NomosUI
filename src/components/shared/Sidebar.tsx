@@ -54,7 +54,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
 
   const isHome = router.asPath === "/";
   const sidebarWidth = isCollapsed ? "md:w-[90px]" : "md:w-[220px]";
-
+  // console.log("pathhhhh", `${router.asPath.split("?")[0]}`);
   useEffect(() => {
     const isSidebar = getCookie("isSidebar");
 
@@ -253,7 +253,9 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                           )}
 
                           {isCollapsed &&
-                            (path === router.asPath ||
+                            ((path === "/" &&
+                              `${router.asPath.split("?")[0]}` === "/search") ||
+                              path === router.asPath ||
                               // I added this logic to implement activate state for the rest of the tabs. Since you wrote the original logic, you can change it to what works best
                               path === `/${router.asPath.split("/")[1]}`) && (
                               <div className="absolute rounded-l-sm w-[3px] h-full right-0 top-0 bg-primary" />
