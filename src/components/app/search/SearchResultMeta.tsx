@@ -69,7 +69,7 @@ export const SearchAIMetaResult = ({
   } = useQuery_route_classifierQuery(query ? query : skipToken);
   // const [llm_search, { data: llm_search_data, error, isLoading: llm_loading }] =
   //   useLlm_searchMutation();
-  console.log("what i am seeing");
+  // console.log("what i am seeing");
   const {
     data: llm_search_data,
     error,
@@ -78,7 +78,7 @@ export const SearchAIMetaResult = ({
   useEffect(() => {
     llm_search_data && setLlm_data(llm_search_data);
   }, [llm_search_data]);
-  console.log("returned from llm", llm_search_data, llm_loading, error);
+  // console.log("returned from llm", llm_search_data, llm_loading, error);
 
   if (
     query_type === "llm_s" &&
@@ -137,6 +137,21 @@ export const SearchAIMetaResult = ({
       <path d="M13 4v4c-6.575 1.028 -9.02 6.788 -10 12c-.037 .206 5.384 -5.962 10 -6v4l8 -7l-8 -7z"></path>
     </svg>
   );
+  function splitWithDelimiter(text: string, delimiters: string[]) {
+    // Escape special regex characters in the delimiters
+    // const escapedDelimiters = delimiters.map((d) =>
+    //   d.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    // );
+
+    // Join the escaped delimiters with | for alternation
+    const pattern = `(${delimiters.join("|")})`;
+
+    // Create the regex with the capture group
+    const regex = new RegExp(pattern, "g");
+
+    // Split while keeping the delimiters as separate elements
+    return text.split(regex).filter((item) => item !== "");
+  }
   if (llm_search_data) {
     // Check if llm_search_data is an object with a markdown property
     const markdownContent =
@@ -147,9 +162,60 @@ export const SearchAIMetaResult = ({
         : "";
 
     if (markdownContent) {
+      // Example usage
+      const headingsToHighlight = [
+        "## Answer",
+        "## Legal Framework",
+        "## Introduction",
+        "## Analysis",
+        "## Conclusion",
+      ];
+      const result = splitWithDelimiter(markdownContent, headingsToHighlight);
+      const replacedText = result.map((text, idx) =>
+        idx === 4 ? (
+          <p
+            key={"replaced" + idx}
+            className={`relative text-sm text-primary font-poppins 
+                `}
+          >
+            <Markdown
+              content={text}
+              className="wrapper text-wrap overflow-x-hidden"
+            />
+          </p>
+        ) : headingsToHighlight.includes(text) ? (
+          <h3
+            key={"replaced" + idx}
+            className={`text-primary ${
+              text === "## Answer"
+                ? "text-lg font-semibold"
+                : "text-xx font-bold"
+            }  font-gilda_Display `}
+          >
+            {text.replaceAll("#", "")}
+          </h3>
+        ) : (
+          <div
+            key={"replaced" + idx}
+            className={`relative text-sm text-[#4C4D50] font-rubik leading-6
+                      `}
+          >
+            <Markdown
+              content={text}
+              className="wrapper text-wrap overflow-x-hidden"
+            />
+          </div>
+          // <PreviewCard key={"replaced" + idx} content={text} />
+          // <h3 key={"replaced" + idx}>{text}</h3>
+        )
+      );
+      console.log(replacedText);
+      // const displayText = markdownContent.split("## Answer");
+      // console.log(displayText);
       return (
         <>
-          <PreviewCard content={markdownContent} />
+          {replacedText}
+          {/* <PreviewCard content={markdownContent} /> */}
           {[
             [shareIcon, "Share"],
             [exportIcon, "Export"],

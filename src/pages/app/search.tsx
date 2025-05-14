@@ -645,7 +645,7 @@ const Page: NextPageWithLayout = () => {
                         <button
                           className={`pt-2 px- 4 pb-[20px] font-medium flex items-center ${
                             activeTab_query_type === "sematic_s"
-                              ? "text-blue-600 border-b-2 border-blue-600 "
+                              ? "text-primary border-b-2 border-primary "
                               : "text-gray-500 hover:text-gray-700 "
                           }`}
                           onClick={() =>
@@ -669,9 +669,9 @@ const Page: NextPageWithLayout = () => {
                       )}
                       {llm_data ? (
                         <button
-                          className={`pt-2 pb-[20px] px- 4 font-medium ${
+                          className={`pt-2 pb-[20px] uppercase px- 4 font-medium ${
                             activeTab_query_type === "llm_s"
-                              ? "text-blue-600 border-b-2 border-blue-600 pb-[20px]"
+                              ? "text-primary border-b-2 border-primary pb-[20px]"
                               : "text-gray-500 hover:text-gray-700"
                           }`}
                           onClick={() => UpdateUrlParams("query_type", "llm_s")}
@@ -683,7 +683,7 @@ const Page: NextPageWithLayout = () => {
                           className={`py-2 px- 4 font-medium text-gray-500 opacity-0
                           `}
                         >
-                          Deep Analysis
+                          DEEP ANALYSIS
                         </button>
                       )}
                       <button
