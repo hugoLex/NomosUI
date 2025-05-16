@@ -12,6 +12,7 @@ import { CloseIcon } from "@app/components/icons";
 import {
   FilterOption,
   GenericObject,
+  LegalAnalysisLLMResponse,
   LLMResult,
   NextPageWithLayout,
   SearchResultDocumentMetaDocType,
@@ -140,9 +141,10 @@ const Page: NextPageWithLayout = () => {
   );
   const [llm_data, setLlm_data] = useState<
     | string
-    | {
-        markdown: string;
-      }
+    | LegalAnalysisLLMResponse
+    // {
+    //     markdown: string;
+    //   }
     | undefined
   >();
 
@@ -676,7 +678,7 @@ const Page: NextPageWithLayout = () => {
                           }`}
                           onClick={() => UpdateUrlParams("query_type", "llm_s")}
                         >
-                          Deep Analysis
+                          Analysis
                         </button>
                       ) : (
                         <button

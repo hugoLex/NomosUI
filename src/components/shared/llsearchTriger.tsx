@@ -48,7 +48,7 @@ const StartLlmSearch = () => {
         className="flex items-center space-x-2"
       >
         <button className="bg-[#245b91] font-poppins text-white px-3 py-1.5 text-[10px] whitespace-nowrap md:text-sm rounded-md hover:bg-[#00656c] transition-colors">
-          Deep Analysis
+          Analysis
         </button>
         {/* <button className="text-gray-500 hover:text-gray-700">
           <X size={18} />

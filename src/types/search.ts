@@ -220,3 +220,24 @@ export type SearchSuggestion = {
   suggestions: Suggestion[];
   user_id: string;
 };
+
+
+
+interface DocumentMetadata {
+  id: string;
+  score: number;
+  document_id: string;
+  case_title: string;
+}
+
+interface DecomposedQuestion {
+  question: string;
+  answer: string;
+}
+
+export interface LegalAnalysisLLMResponse {
+  original_question: string;
+  decomposed_questions: DecomposedQuestion[];
+  final_answer: string;
+  document_metadata: DocumentMetadata[];
+}

@@ -11,13 +11,14 @@ import {
   ArticleMetadata,
   CaseMetadata,
   GenericObject,
+  LegalAnalysisLLMResponse,
   LegislationMetadata,
   PrinciplesMetadata,
   SearchType,
   TSearchResultDocument,
 } from "@app/types";
 import { escapeRegExp } from "@app/utils";
-import { HiOutlineDocumentText } from "react-icons/hi2";
+import { HiMinus, HiOutlineDocumentText } from "react-icons/hi2";
 
 import { LLMResult } from "@app/types";
 import {
@@ -32,12 +33,14 @@ import { useCaseQuery } from "@app/store/services/caseSlice";
 import { skipToken } from "@reduxjs/toolkit/query";
 import useFetchFullJudgementData from "@app/hooks/useFetchFullJudgementData";
 import {
+  searchQueryUtil,
   // useLlm_searchMutation,
   useLlm_searchQuery,
   useQuery_route_classifierQuery,
 } from "@app/store/services/searchSlice";
 import useQueryToggler from "@app/hooks/useQueryHandler";
 import { Loader } from "@app/components/ui";
+import { useDispatch } from "react-redux";
 type TclasifierResult = {
   query: string;
   classification: string;
@@ -49,9 +52,10 @@ export const SearchAIMetaResult = ({
   setLlm_data: Dispatch<
     SetStateAction<
       | string
-      | {
-          markdown: string;
-        }
+      | LegalAnalysisLLMResponse
+      //  {
+      //     markdown: string;
+      //   }
       | undefined
     >
   >;
@@ -78,7 +82,7 @@ export const SearchAIMetaResult = ({
   useEffect(() => {
     llm_search_data && setLlm_data(llm_search_data);
   }, [llm_search_data]);
-  // console.log("returned from llm", llm_search_data, llm_loading, error);
+  console.log("returned from llm", llm_search_data, llm_loading, error);
 
   if (
     query_type === "llm_s" &&
@@ -156,23 +160,24 @@ export const SearchAIMetaResult = ({
     // Check if llm_search_data is an object with a markdown property
     const markdownContent =
       typeof llm_search_data === "object" && llm_search_data !== null
-        ? (llm_search_data as { markdown: string }).markdown || ""
-        : typeof llm_search_data === "string"
-        ? llm_search_data?.slice(13).slice(0, -3)
+        ? (llm_search_data as LegalAnalysisLLMResponse).final_answer || ""
+        : // ? (llm_search_data as { markdown: string }).markdown || ""
+        typeof llm_search_data === "string"
+        ? llm_search_data
         : "";
 
     if (markdownContent) {
       // Example usage
       const headingsToHighlight = [
-        "## Answer",
-        "## Legal Framework",
-        "## Introduction",
-        "## Analysis",
-        "## Conclusion",
+        "## Answer:",
+        "## Legal Framework:",
+        "## Introduction:",
+        "## Analysis:",
+        "## Conclusion:",
       ];
       const result = splitWithDelimiter(markdownContent, headingsToHighlight);
       const replacedText = result.map((text, idx) =>
-        idx === 4 ? (
+        idx === 2 ? (
           <p
             key={"replaced" + idx}
             className={`relative  
@@ -215,6 +220,52 @@ export const SearchAIMetaResult = ({
       return (
         <>
           {replacedText}
+          <div className=" relative   ">
+            {llm_search_data.decomposed_questions?.map(
+              ({ question, answer }, index) => (
+                <details
+                  key={`QandA-${index}`}
+                  className=" group md:rounded-[0.5rem] py-[.5rem] text-primary "
+                >
+                  <summary className="flex items- center justify-between text-[0.65406rem] md:text-[1rem] font-bold md:font-normal  list-none">
+                    {question}
+                    <button className="h-[20px] cursor-pointer pointer-events-none">
+                      {/* <svg
+                        className="pointer-events-none cursor-pointer rotate-[360deg] group-open:rotate-[-90deg] fill-current opacity-75 w-4 h-4 mr-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        >
+                        <path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z" />
+                      </svg> */}
+
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.7333333333333334"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className=" cursor-pointer  group-open:hidden fill-current opacity-75  "
+                      >
+                        <path d="M12 5l0 14"></path>
+                        <path d="M5 12l14 0"></path>
+                      </svg>
+                      <HiMinus className="hidden group-open:inline-block cursor-pointer  fill-current opacity-75" />
+                    </button>
+                  </summary>
+                  <p className="pt-[1rem] text-[0.54506rem] md:text-sm ml-2 ">
+                    <Markdown
+                      content={answer}
+                      className="wrapper text-wrap overflow-x-hidden text-[#4C4D50] font-rubik leading-6"
+                    />
+                  </p>
+                </details>
+              )
+            )}
+          </div>
           {/* <PreviewCard content={markdownContent} /> */}
           {[
             [shareIcon, "Share"],
@@ -332,11 +383,17 @@ export const SearchResultMeta = (prop: {
   data: TSearchResultDocument;
   type: SearchType;
 }) => {
+  const { searchParams } = useQueryToggler();
+  const query = searchParams.get("q");
   const { index, data, type } = prop;
   const { occurrences, metadata } = data;
   let _link: string = "what is law";
   let _metadata: any;
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log("usestate for llm invalidate tags ran");
+    dispatch(searchQueryUtil.invalidateTags(["LlmSearch"]));
+  }, [query]);
   // console.log("Content and contex", metadata);
   // This is the logic for highlighting the full judgement
   const [quoteToHighlight, setQuoteToHighlight] = useState<{
@@ -349,8 +406,8 @@ export const SearchResultMeta = (prop: {
   // This is a hook to get the fullcase of any valid id
   const { fullJudgement } = useFetchFullJudgementData(metadata.document_id);
   // console.log("full judgement", fullJudgement);
-  const { close, searchParams, router } = useQueryHandler();
-  const showCaseSummary = searchParams.get("showCaseSummary");
+  // const { close, searchParams, router } = useQueryHandler();
+  // const showCaseSummary = searchParams.get("showCaseSummary");
   //  this opens the full case page and scrolls and highlights a portion of the case
   // const handleHighlightFullJudgement = (
   //   Text_highlighted: string,
@@ -414,7 +471,7 @@ export const SearchResultMeta = (prop: {
       return (
         <p className="text-sm mb-6 text- primary" key={ptx}>
           {/* Render highlighted quote */}
-          <mark id="" className="bg-transparent text-primary font -poppins">
+          <mark id="" className="bg-transparent text-[#0E3165] font -poppins">
             {content
               .trim()
               .split(" ")
@@ -538,7 +595,7 @@ export const SearchResultMeta = (prop: {
         {metadata.document_type}
       </span>
 
-      <h3 className="text-base font-semibold font-gilda_Display">
+      <h3 className="text-[1.1rem] font-semibold font-gilda_Display">
         <Link
           href={`/library/cases/${
             metadata.document_id

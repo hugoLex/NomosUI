@@ -5,6 +5,7 @@ import type {
 } from "@reduxjs/toolkit/query";
 import {
   GenericObject,
+  LegalAnalysisLLMResponse,
   ListResponse,
   LLMResult,
   QueryReturnValue,
@@ -134,15 +135,16 @@ export const searchQueryAPI = injectEndpoints({
     }),
     semantic_search: builder.query<TSearchResultDocuments | TSearchResultClassifier, string>({
       query: (query) => `/semantic/search?query=${query}&format=markdown`,
-      // providesTags: (result, error, arg) => [{ type: 'SemanticSearch', id: arg }],
-      providesTags: (result) =>
-        result
-          ? [
-            { type: "SemanticSearch", id: "LIST" },
-            ...Object.entries(result)?.map((item, idx) => ({ type: "SemanticSearch" as const, id: `SemanticSearch${idx}` })),
-          ]
-          : [{ type: "SemanticSearch", id: "LIST" }],
+      providesTags: (result, error, arg) => [{ type: 'SemanticSearch', id: arg }],
+      // providesTags: (result) =>
+      //   result
+      //     ? [
+      //       { type: "SemanticSearch", id: "LIST" },
+      //       ...Object.entries(result)?.map((item, idx) => ({ type: "SemanticSearch" as const, id: `SemanticSearch${idx}` })),
+      //     ]
+      //     : [{ type: "SemanticSearch", id: "LIST" }],
 
+      // invalidatesTags:["LlmSearch"]
     }),
 
     // llm_search: builder.query<string, string>({
@@ -179,11 +181,13 @@ export const searchQueryAPI = injectEndpoints({
 
     // }),
 
-    llm_search: builder.query<{ markdown: string } | string, string>({
+    llm_search: builder.query<LegalAnalysisLLMResponse, string>({
+      // llm_search: builder.query<{ markdown: string } | string, string>({
       query: (question) => (
         `${baseURL}/ask?question=${encodeURIComponent(
           question
-        )}&format=markdown`
+        )}`
+        // &format=markdown`
 
       ),
       providesTags: (result, error, arg) => [{ type: 'LlmSearch', id: arg }],
