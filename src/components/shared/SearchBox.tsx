@@ -292,7 +292,7 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
             autoFocus
             ref={inputRef}
             id={id}
-            wrap="off"
+            // wrap="off"
             onKeyUp={handleKeyUp}
           />
 
