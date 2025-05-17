@@ -61,6 +61,8 @@ const config = {
           foreground: "hsl(var(--accent-foreground))",
         },
         primary: "#245b91",
+        lexblue: "#0E3165",
+        powder_blue: "#567C8A ",
         secondary: "#4F0072",
         blue_btn: "rgb(18, 45, 101, 1)",
         dark,

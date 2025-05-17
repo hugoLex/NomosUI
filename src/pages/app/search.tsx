@@ -480,7 +480,7 @@ const Page: NextPageWithLayout = () => {
     if (searchDocuments) {
       const offset =
         searchDocuments.documents.length > 0
-          ? searchDocuments.documents.length + 1
+          ? searchDocuments.documents.length
           : 0;
       let docs: TSearchResultDocument[] = [];
 
@@ -551,7 +551,7 @@ const Page: NextPageWithLayout = () => {
         />
       </Fragment>
     );
-  // console.log("semantic data", sementic_data);
+  console.log("semantic data", sementic_data);
   return (
     <Fragment>
       <Head title={`Search Result - ${q}`} />
@@ -592,7 +592,7 @@ const Page: NextPageWithLayout = () => {
                 >
                   {/* Relevant sources for: */}
                   <span
-                    className={` text-[#245b91] font-gilda_Display capitalize font-bold`}
+                    className={` text-lexblue font-gilda_Display capitalize font-bold`}
                   >
                     {q}
                   </span>
@@ -645,7 +645,7 @@ const Page: NextPageWithLayout = () => {
                     <div className=" flex gap-[32px] items-center border-b border-gray-200 font-poppins">
                       {sementic_data && (
                         <button
-                          className={`pt-2 px- 4 pb-[20px] font-medium flex items-center ${
+                          className={`pt-2 px- 4 pb-[14px] font-medium flex items-center ${
                             activeTab_query_type === "sematic_s"
                               ? "text-primary border-b-2 border-primary "
                               : "text-gray-500 hover:text-gray-700 "
@@ -671,9 +671,9 @@ const Page: NextPageWithLayout = () => {
                       )}
                       {llm_data ? (
                         <button
-                          className={`pt-2 pb-[20px] uppercase px- 4 font-medium ${
+                          className={`pt-2 pb-[14px] uppercase px- 4 font-medium ${
                             activeTab_query_type === "llm_s"
-                              ? "text-primary border-b-2 border-primary pb-[20px]"
+                              ? "text-primary border-b-2 border-primary pb-[14px]"
                               : "text-gray-500 hover:text-gray-700"
                           }`}
                           onClick={() => UpdateUrlParams("query_type", "llm_s")}
@@ -696,7 +696,9 @@ const Page: NextPageWithLayout = () => {
                         // onClick={() => UpdateUrlParams("menu", "true")}
                         type="button"
                       >
-                        <span className="flex-shrink-0">Filters</span>
+                        <span className="flex-shrink-0 text-powder_blue">
+                          Filters
+                        </span>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="14"
@@ -707,7 +709,7 @@ const Page: NextPageWithLayout = () => {
                           strokeWidth="1.7142857142857142"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          className="tabler-icon tabler-icon-arrow-up-right duration-150"
+                          className="tabler-icon stroke-powder_blue tabler-icon-arrow-up-right duration-150"
                         >
                           <path d="M17 7l-10 10"></path>
                           <path d="M8 7l9 0l0 9"></path>
@@ -842,12 +844,13 @@ const Page: NextPageWithLayout = () => {
 
             {searchDocuments &&
               activeTab_query_type === "sematic_s" &&
-              searchDocuments.documents.length < searchDocuments.total && (
-                <div className="flex justify-center py-2.5">
+              (searchDocuments.documents.length == searchDocuments.total ||
+                searchDocuments.documents.length < searchDocuments.total) && (
+                <div className="flex justify-center py-2.5 ">
                   <Button
                     label={"load more"}
                     onClick={loadMoreDocs}
-                    className="primary"
+                    className="bg-lexblue text-white"
                   />
                 </div>
               )}

@@ -29,7 +29,7 @@ const NavbarTitle = ({
       }`}
     >
       <p
-        className={`font- medium text-center w-full max-w-[500px] capitalize font-gilda_Display font-semibold  truncate   text-primary 
+        className={`font- medium text-center w-full max-w-[500px] capitalize font-gilda_Display font-semibold  truncate   text-lexblue 
         
           ${className ? className : ""}
         `}

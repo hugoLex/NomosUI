@@ -25,7 +25,7 @@ const Button: FC<ButtonProps> = ({
     <Fragment>
       {!icon && (
         <button
-          className={`btn ${className ? className : ""}`}
+          className={`btn ${className ? className : ""} `}
           disabled={disabled}
           onClick={onClick}
           type={type}

@@ -9,7 +9,7 @@ const StartLlmSearch = () => {
       className={` ${
         query_type == "llm_s" && "hidden"
         // query_type == "sematic_s" && "hidden"
-      } mb-[20px] flex items-center justify-between bg-[#eaf0f2] bor der border-gray-300 px-4 py-2 rounded-md max-w -xl shadow-sm`}
+      } mb-[20px] flex items-center justify-between bg-[#eaf0f2] bor der border-gray-300 px-4 py-2 rounded-[.20rem] max-w -xl shadow-sm`}
     >
       <div className="flex items-center space-x-2">
         <Image
@@ -34,10 +34,10 @@ const StartLlmSearch = () => {
         </svg> */}
         <div className="font- gilda_Display font-poppins ">
           <p className="text-[10px] md:text-sm font-medium text-[#245b91] -gray-800">
-            Need a deeper analysis of your question ?
+            Need more comprehensive legal insights?
           </p>
           <p className=" text-[10px] md:text-sm text-[#245b91] gray-600">
-            Click the button to get a deeper analysis of your question
+            Click for an in-depth analysis of your query
           </p>
         </div>
       </div>
@@ -47,7 +47,7 @@ const StartLlmSearch = () => {
         }}
         className="flex items-center space-x-2"
       >
-        <button className="bg-[#245b91] font-poppins text-white px-3 py-1.5 text-[10px] whitespace-nowrap md:text-sm rounded-md hover:bg-[#00656c] transition-colors">
+        <button className="bg-lexblue font-poppins text-white px-3 py-1.5 text-[10px] whitespace-nowrap md:text-sm rounded-[.20rem] hover:bg-[#00656c] transition-colors">
           Analysis
         </button>
         {/* <button className="text-gray-500 hover:text-gray-700">

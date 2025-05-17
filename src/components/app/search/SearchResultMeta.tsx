@@ -176,6 +176,7 @@ export const SearchAIMetaResult = ({
         "## Conclusion:",
       ];
       const result = splitWithDelimiter(markdownContent, headingsToHighlight);
+      console.log("split text ready for mapping", result);
       const replacedText = result.map((text, idx) =>
         idx === 2 ? (
           <p
@@ -185,16 +186,16 @@ export const SearchAIMetaResult = ({
           >
             <Markdown
               content={text}
-              className="wrapper text-wrap overflow-x-hidden text-sm text-primary font-poppins"
+              className="wrapper text-wrap overflow-x-hidden text-sm text-lexblue font-poppins"
             />
           </p>
         ) : headingsToHighlight.includes(text) ? (
           <h3
             key={"replaced" + idx}
-            className={` ${
+            className={`  ${
               text === "## Answer"
                 ? "text-lg font-bold"
-                : "text-base font-semibold text-primary"
+                : "text-[1.1rem] font-semibold text-powder_blue"
             }  font-gilda_Display `}
           >
             {text.replaceAll("#", "")}
@@ -202,7 +203,7 @@ export const SearchAIMetaResult = ({
         ) : (
           <div
             key={"replaced" + idx}
-            className={`relative 
+            className={`relative  ${idx == 0 && "hidden"}
                       `}
           >
             <Markdown
@@ -220,6 +221,26 @@ export const SearchAIMetaResult = ({
       return (
         <>
           {replacedText}
+          {[
+            [shareIcon, "Share"],
+            [exportIcon, "Export"],
+          ].map(([icon, name]) => (
+            <button
+              key={name as string}
+              type="button"
+              className=" focus:outline-none outline-none outline-transparent transition duration-300 ease-out font-sans  select-none  relative group/button  justify-center text-center items-center rounded-full cursor-pointer active:scale-[0.97] active:duration-150  origin-center whitespace-nowrap inline-flex text-sm h-8 pl-2.5 pr-3"
+            >
+              <div className="flex items-center min-w-0 font-medium gap-1.5 justify-center">
+                <div className="flex shrink-0 items-center justify-center size-4">
+                  {icon}
+                </div>
+                <div className="text-align-center relative truncate leading-loose -mb-px">
+                  {name}
+                </div>
+              </div>
+            </button>
+          ))}
+          <div className="mb-8 space-y-3 border-b border-b-primary/10 pb-5"></div>
           <div className=" relative   ">
             {llm_search_data.decomposed_questions?.map(
               ({ question, answer }, index) => (
@@ -267,25 +288,6 @@ export const SearchAIMetaResult = ({
             )}
           </div>
           {/* <PreviewCard content={markdownContent} /> */}
-          {[
-            [shareIcon, "Share"],
-            [exportIcon, "Export"],
-          ].map(([icon, name]) => (
-            <button
-              key={name as string}
-              type="button"
-              className=" focus:outline-none outline-none outline-transparent transition duration-300 ease-out font-sans  select-none  relative group/button  justify-center text-center items-center rounded-full cursor-pointer active:scale-[0.97] active:duration-150  origin-center whitespace-nowrap inline-flex text-sm h-8 pl-2.5 pr-3"
-            >
-              <div className="flex items-center min-w-0 font-medium gap-1.5 justify-center">
-                <div className="flex shrink-0 items-center justify-center size-4">
-                  {icon}
-                </div>
-                <div className="text-align-center relative truncate leading-loose -mb-px">
-                  {name}
-                </div>
-              </div>
-            </button>
-          ))}
         </>
       );
     }
@@ -591,7 +593,7 @@ export const SearchResultMeta = (prop: {
           full_judgement={fullJudgement?.judgement}
         />
       )}
-      <span className="text-[#008E00] bg-[#008E00]/10 text-xs px-3 py-1 rounded font-gilda_Display">
+      <span className="text-powder_blue bg-[#008E00]/10 text-xs px-3 py-1 rounded font-gilda_Display">
         {metadata.document_type}
       </span>
 
@@ -602,7 +604,7 @@ export const SearchResultMeta = (prop: {
               ? metadata.document_id
               : _link.replace(/\s/g, "-")
           }?title=${metadata.case_title}&tab=case`}
-          className="text-[#245b91]"
+          className="text-powder_blue"
         >
           <span className="text-gray-500 ">{index}. </span>
           {type === "articles" && (metadata as ArticleMetadata).article_title}
