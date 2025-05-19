@@ -58,9 +58,9 @@ h5 {
     @apply text-base md:text-lg lg:text-xl  font-semibold;
   }
 
-  p {
+  /* p {
     @apply text-sm md:text-base text-dark-2 font-normal;
-  }
+  } */
 
   select {
     @apply appearance-none bg-transparent;

@@ -41,6 +41,7 @@ import {
 import useQueryToggler from "@app/hooks/useQueryHandler";
 import { Loader } from "@app/components/ui";
 import { useDispatch } from "react-redux";
+import Image from "next/image";
 type TclasifierResult = {
   query: string;
   classification: string;
@@ -64,7 +65,7 @@ export const SearchAIMetaResult = ({
   const { searchParams } = useQueryToggler();
   const query = searchParams.get("q");
   const query_type = searchParams.get("query_type");
-  console.log("query from llm page", query);
+  // console.log("query from llm page", query);
   const {
     data: search_classifier,
     isError: isError_clas,
@@ -108,39 +109,7 @@ export const SearchAIMetaResult = ({
   // if (llm_search_data && typeof llm_search_data === "string") {
   //   return <PreviewCard content={llm_search_data?.slice(13).slice(0, -3)} />;
   // }
-  const exportIcon = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.7999999999999998"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className=" "
-    >
-      <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-      <path d="M11.5 21h-4.5a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v5m-5 6h7m-3 -3l3 3l-3 3"></path>
-    </svg>
-  );
-  const shareIcon = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.7999999999999998"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className=" "
-    >
-      <path d="M13 4v4c-6.575 1.028 -9.02 6.788 -10 12c-.037 .206 5.384 -5.962 10 -6v4l8 -7l-8 -7z"></path>
-    </svg>
-  );
+
   function splitWithDelimiter(text: string, delimiters: string[]) {
     // Escape special regex characters in the delimiters
     // const escapedDelimiters = delimiters.map((d) =>
@@ -178,18 +147,7 @@ export const SearchAIMetaResult = ({
       const result = splitWithDelimiter(markdownContent, headingsToHighlight);
       console.log("split text ready for mapping", result);
       const replacedText = result.map((text, idx) =>
-        idx === 2 ? (
-          <p
-            key={"replaced" + idx}
-            className={`relative  
-                `}
-          >
-            <Markdown
-              content={text}
-              className="wrapper text-wrap overflow-x-hidden text-sm text-lexblue font-poppins"
-            />
-          </p>
-        ) : headingsToHighlight.includes(text) ? (
+        headingsToHighlight.includes(text) ? (
           <h3
             key={"replaced" + idx}
             className={`  ${
@@ -201,43 +159,84 @@ export const SearchAIMetaResult = ({
             {text.replaceAll("#", "")}
           </h3>
         ) : (
-          <div
+          <p
             key={"replaced" + idx}
-            className={`relative  ${idx == 0 && "hidden"}
-                      `}
+            className={`relative ${idx == 0 && "hidden"} 
+              `}
           >
             <Markdown
               content={text}
-              className="wrapper text-wrap overflow-x-hidden text-sm text-[#4C4D50] font-rubik leading-6"
+              className="wrapper text-wrap overflow-x-hidden text-sm text-lexblue font-poppins"
             />
-          </div>
-          // <PreviewCard key={"replaced" + idx} content={text} />
-          // <h3 key={"replaced" + idx}>{text}</h3>
+          </p>
         )
       );
-      console.log(replacedText);
+      // console.log(replacedText);
       // const displayText = markdownContent.split("## Answer");
       // console.log(displayText);
       return (
         <>
-          {replacedText}
+          <div id="Llmanswer" className="">
+            {replacedText}
+          </div>
           {[
-            [shareIcon, "Share"],
-            [exportIcon, "Export"],
+            ["share-knowledge-stroke-rounded.svg", "Share"],
+            ["file-download-stroke-rounded.svg", "Download"],
           ].map(([icon, name]) => (
             <button
               key={name as string}
               type="button"
               className=" focus:outline-none outline-none outline-transparent transition duration-300 ease-out font-sans  select-none  relative group/button  justify-center text-center items-center rounded-full cursor-pointer active:scale-[0.97] active:duration-150  origin-center whitespace-nowrap inline-flex text-sm h-8 pl-2.5 pr-3"
             >
-              <div className="flex items-center min-w-0 font-medium gap-1.5 justify-center">
-                <div className="flex shrink-0 items-center justify-center size-4">
-                  {icon}
+              {name === "Download" ? (
+                <a
+                  href={
+                    name === "Download"
+                      ? `https://webapp.lexanalytics.ai/api/ask/pdf?question=${encodeURIComponent(
+                          query ?? ""
+                        )}`
+                      : "#Llmanswer"
+                  }
+                  download
+                  className="flex items-center min-w-0 font-medium gap-1.5 justify-center"
+                >
+                  <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
+                    <Image
+                      width={16}
+                      height={16}
+                      src={`/images/icons/${icon}`}
+                      alt={name}
+                    />
+                  </div>
+                  <div className="text-align-center relative truncate leading-loose -mb-px text-powder_blue">
+                    {name}
+                  </div>
+                </a>
+              ) : (
+                <div
+                  // href={
+                  //   name === "Download"
+                  //     ? `https://webapp.lexanalytics.ai/api/ask/pdf?question=${encodeURIComponent(
+                  //         query ?? ""
+                  //       )}`
+                  //     : "#Llmanswer"
+                  // }
+                  // download
+                  className="flex items-center min-w-0 font-medium gap-1.5 justify-center"
+                >
+                  <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
+                    <Image
+                      width={16}
+                      height={16}
+                      src={`/images/icons/${icon}`}
+                      alt={name}
+                    />
+                  </div>
+                  <div className="text-align-center relative truncate leading-loose -mb-px text-powder_blue">
+                    {name}
+                  </div>
                 </div>
-                <div className="text-align-center relative truncate leading-loose -mb-px">
-                  {name}
-                </div>
-              </div>
+              )}
             </button>
           ))}
           <div className="mb-8 space-y-3 border-b border-b-primary/10 pb-5"></div>
@@ -246,9 +245,9 @@ export const SearchAIMetaResult = ({
               ({ question, answer }, index) => (
                 <details
                   key={`QandA-${index}`}
-                  className=" group md:rounded-[0.5rem] py-[.5rem] text-primary "
+                  className=" group md:rounded-[0.5rem] py-[.5rem] "
                 >
-                  <summary className="flex items- center justify-between text-[0.65406rem] md:text-[1rem] font-bold md:font-normal  list-none">
+                  <summary className="flex justify-between text-[0.65406rem] md:text-[1.1rem] text-powder_blue font-bold md:font-normal  list-none">
                     {question}
                     <button className="h-[20px] cursor-pointer pointer-events-none">
                       {/* <svg
@@ -280,7 +279,7 @@ export const SearchAIMetaResult = ({
                   <p className="pt-[1rem] text-[0.54506rem] md:text-sm ml-2 ">
                     <Markdown
                       content={answer}
-                      className="wrapper text-wrap overflow-x-hidden text-[#4C4D50] font-rubik leading-6"
+                      className="wrapper text-wrap overflow-x-hidden text-lexblue font-poppins leading-6"
                     />
                   </p>
                 </details>

@@ -84,7 +84,9 @@ const AllCounselView = () => {
           <div className="flex py-6 w-full md:min-w-[980px]">
             <div className="flex-1 self-stretch grow">
               <div className="my-8">
-                <h1 className="text-xx font-normal my-2">Counsel</h1>
+                <h1 className="text-xx text-lexblue font-gilda_Display capitalize font-bold my-2">
+                  Counsel
+                </h1>
                 <h5 className="text-base text-[#9ea7b4] ">All counsel</h5>
                 <div className="mt-8 grid max-lg:grid-rows-2 lg:grid-cols-2 lg:justify-center gap-5">
                   <div className="flex gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] ">
@@ -130,7 +132,7 @@ const AllCounselView = () => {
                         <div>
                           <Link
                             href={`/analytics/counsels?counselId=${counsel.counsel_id}&counsel=${counsel.counsel_name}`}
-                            className="text-base [1.125rem] font-normal leading- [28px] font-poppins"
+                            className="text-[1.1rem] text-powder_blue font-semibold  font-gilda_Display"
                           >
                             {counsel.counsel_name}
                           </Link>
@@ -139,7 +141,7 @@ const AllCounselView = () => {
                           </h3>
                         </div>
                       </div>
-                      <p className="text-sm text-[#4C4D50] [#64645F]">
+                      <p className="text-sm text-lexblue [#64645F] font-poppins">
                         President of the Queen&apos;s Bench Division. Former
                         Lady Justice of Appeal. Specialist in Media Law and
                         Public Law. Education: Bristol University.
@@ -147,7 +149,11 @@ const AllCounselView = () => {
                     </div>
                   </div>
                 ))}
-                <LoadMoreBtn isFetching={isFetching} loadMore={loadMore} />
+                <LoadMoreBtn
+                  className="min-w-[109.67px] mx-auto"
+                  isFetching={isFetching}
+                  loadMore={loadMore}
+                />
               </div>
             </div>
           </div>
