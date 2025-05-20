@@ -557,7 +557,8 @@ const Page: NextPageWithLayout = () => {
       <Head title={`Search Result - ${q}`} />
 
       <Navbar>
-        <div className="md:flex justify-between py-2.5">
+        <div className="flex justify-between py-2.5">
+          {/* <div className="md:flex justify-between py-2.5"> */}
           <NavbarTitle isTitle={!isTitle} title={query} />
           <ActionButtons />
         </div>

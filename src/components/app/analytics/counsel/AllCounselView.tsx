@@ -81,14 +81,15 @@ const AllCounselView = () => {
       <Navbar />
       {allData && (
         <Container className="">
-          <div className="flex py-6 w-full md:min-w-[980px]">
+          <div className="flex py-6 w-full md:max-w-[772px] mx-auto">
+            {/* <div className="flex py-6 w-full md:min-w-[980px]"> */}
             <div className="flex-1 self-stretch grow">
               <div className="my-8">
                 <h1 className="text-xx text-lexblue font-gilda_Display capitalize font-bold my-2">
                   Counsel
                 </h1>
                 <h5 className="text-base text-[#9ea7b4] ">All counsel</h5>
-                <div className="mt-8 grid max-lg:grid-rows-2 lg:grid-cols-2 lg:justify-center gap-5">
+                {/* <div className="mt-8 grid max-lg:grid-rows-2 lg:grid-cols-2 lg:justify-center gap-5">
                   <div className="flex gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] ">
                     <svg
                       width="16"
@@ -111,7 +112,7 @@ const AllCounselView = () => {
                     <span>Page</span>
                     <HiMiniPlus className="ml-auto" />
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="mb-8 space-y-4">
                 {allData?.map((counsel, index) => (

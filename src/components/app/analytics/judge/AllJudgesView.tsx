@@ -71,7 +71,8 @@ const AllJudgesView = () => {
       <Navbar />
       {allData && (
         <Container className="">
-          <div className="flex  py-4 w-full md:min-w-[980px]">
+          <div className="flex  py-4 w-full md:max-w-[772px] mx-auto">
+            {/* <div className="flex  py-4 w-full md:min-w-[980px]"> */}
             <div className="flex-1 self-stretch grow">
               <div className="my-8">
                 <h1 className="text-xx text-lexblue font-gilda_Display capitalize font-bold my-2">
