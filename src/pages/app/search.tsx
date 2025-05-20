@@ -136,7 +136,7 @@ const Page: NextPageWithLayout = () => {
     isError: sem_error,
     refetch,
   } = useSemantic_searchQuery(
-    query ? query : skipToken
+    query && activeTab_query_type === "sematic_s" ? query : skipToken
     // search_classifier?.classification === "semantic" ? query : skipToken
   );
   const [llm_data, setLlm_data] = useState<
