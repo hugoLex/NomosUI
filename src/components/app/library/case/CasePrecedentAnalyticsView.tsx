@@ -62,34 +62,27 @@ const PrecedentView = ({
       {isError && <ErrorView />}
 
       {data && (
-        <div className="py-6 md:grid grid-cols-12 gap-8">
-          <div className="col-span-4 self-baselane">
+        <div className="pb-6 pt-[60px] md:grid gri d-cols-12 max-w-[772px] mx-auto gap-8">
+          {/* <div className="col-span-4 self-baselane">
             <div className="sticky top-[68px]  py-[2rem]">
-              {/* <div className="sticky top-[68px] bg-gray-100 p-[2rem]"> */}
-              {/* <div className="flex gap-2 items-center"> */}
+             
 
               <h5 className="relative flex gap-2 items-center pl- [8px] text-base text-[#171F46] font-midium font-rubik">
                 <FilterIcon2 />
                 Filter Treatments
               </h5>
-              {/* </div> */}
-              {/* <div>
-            <p>Positive</p>
-            <p>Neutral</p>
-            <p>Negative</p>
-            <p>Cited by counsel</p>
-          </div> */}
+             
               <PrecedenceTreatment selectedTreatment={selectedTreatment} />
             </div>
-          </div>
-          <div className="col-span-8">
+          </div> */}
+          <div className="col-span-8 ">
             <p className="hidden font-light uppercase text-[0.813rem] text-black/80  mt-2 pr-2.5 py-1 leading-[1.25rem]">
               Judicial insight
             </p>
             <h2
               ref={innerRef}
               id="Judicialinsight"
-              className="text-xx font-normal text-[#245b91] mb-2 "
+              className="text-xx text-lexblue font-gilda_Display capitalize font-bold mb-2 "
             >
               Precedent analytics
             </h2>
@@ -115,7 +108,7 @@ const PrecedentView = ({
                               });
                               // UpdateUrlParams("tab", "case");
                             }}
-                            className="text-base capitalize cursor-pointer hover:underline "
+                            className="text-powder_blue text-[1.1rem] font-semibold font-gilda_Display capitalize cursor-pointer hover:underline "
                           >
                             {citation}
                           </h5>
@@ -143,7 +136,7 @@ const PrecedentView = ({
                             });
                             // UpdateUrlParams("tab", "case");
                           }}
-                          className="text-[0.875rem] gray-200 "
+                          className="text-[0.875rem] gray-200 text-lexblue"
                         >
                           {context}
                         </p>
@@ -159,6 +152,7 @@ const PrecedentView = ({
                       </div>
 
                       <FeedbackWidget />
+                      <div className="mb-8  border-t border-t-primary/10 pb-5"></div>
                     </Fragment>
                   )
                 )}

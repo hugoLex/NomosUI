@@ -135,7 +135,6 @@ const Page: NextPageWithLayout = () => {
                     (
                       {
                         area_of_law,
-
                         case_title,
                         case_summary,
                         document_id,

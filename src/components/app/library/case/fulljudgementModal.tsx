@@ -44,15 +44,25 @@ function FulljudgementModal({
       !quoteToHighlight?.quote ||
       !content.includes(quoteToHighlight?.quote)
     ) {
-      return <Markdown content={content} />;
+      return (
+        <Markdown
+          className="text-sm text-lexblue font-poppins"
+          content={content}
+        />
+      );
     }
     // Split the content at the quote
     const parts = content.split(quoteToHighlight?.quote);
-
+    // console.log(parts);
     return (
       <>
         {/* Render first part */}
-        {parts[0] && <Markdown content={parts[0]} />}
+        {parts[0] && (
+          <Markdown
+            className="text-sm text-lexblue font-poppins"
+            content={parts[0]}
+          />
+        )}
 
         {/* Render highlighted quote */}
         <div
@@ -63,11 +73,20 @@ function FulljudgementModal({
         </div>
 
         {/* Render remaining content */}
-        {parts[1] && <Markdown content={parts[1]} />}
+        {parts[1] && (
+          <Markdown
+            className="text-sm text-lexblue font-poppins"
+            content={parts[1]}
+          />
+        )}
       </>
     );
   };
-
+  // console.log(
+  //   full_judgement,
+  //   quoteToHighlight?.quote,
+  //   full_judgement?.includes(quoteToHighlight?.quote.replace("\\", ""))
+  // );
   return (
     <>
       {quoteToHighlight && (
