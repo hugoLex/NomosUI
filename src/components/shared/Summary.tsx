@@ -111,7 +111,9 @@ export const SummaryComponent = ({
         )}
       </div>
       <hr className="mt-2 mb-5" />
-      <p className="text-sm flex-wrap">{summary ?? defaultSummary}</p>
+      <p className="text-sm font-poppins text-lexblue flex-wrap">
+        {summary ?? defaultSummary}
+      </p>
       <div className=" hidden gap-5 items-center py-5">
         <SmallTextBtn
           smallBtnData={["Judgement"]}

@@ -551,7 +551,7 @@ const Page: NextPageWithLayout = () => {
         />
       </Fragment>
     );
-  console.log("semantic data", sementic_data);
+  // console.log("semantic data", sementic_data);
   return (
     <Fragment>
       <Head title={`Search Result - ${q}`} />

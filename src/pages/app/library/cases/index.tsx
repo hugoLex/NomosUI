@@ -126,7 +126,9 @@ const Page: NextPageWithLayout = () => {
                 </div>
               </div>
               <div className="col-span-8">
-                <h1 className="text-xx font-normal mb-2">Library</h1>
+                <h1 className="text-xx text-lexblue font-gilda_Display capitalize font-bold mb-2">
+                  Library
+                </h1>
                 <h5 className="text-base text-[#9ea7b4] mb-4">Cases</h5>
                 <div className="space-y-4">
                   {cases.map(
@@ -143,20 +145,20 @@ const Page: NextPageWithLayout = () => {
                       }: Case,
                       idx: number
                     ) => (
-                      <div key={idx} className="space-y-2 mb-6">
+                      <div key={idx} className="space-y-2 pb-8">
                         <h5>
                           <Link
                             href={`/library/cases/${document_id}?title=${case_title}&tab=case`}
-                            className="text-[#245b91]"
+                            className="text-powder_blue text-[1.1rem] font-semibold font-gilda_Display"
                           >
                             {idx + 1}. {case_title}
                           </Link>
                         </h5>
                         <div className="inline-flex gap-2">
-                          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+                          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-lexblue text-sm font-medium">
                             {court}
                           </span>
-                          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+                          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-lexblue text-sm font-medium">
                             {year_decided}
                           </span>
                         </div>
@@ -178,7 +180,7 @@ const Page: NextPageWithLayout = () => {
                               <span
                                 key={sdx}
                                 title="Subject matter"
-                                className="bg-stone-100 text-teal-900  px-3 py-1 rounded"
+                                className="bg-stone-100 text-lexblue  px-3 py-1 rounded"
                               >
                                 {stx}
                               </span>
@@ -225,7 +227,7 @@ const Page: NextPageWithLayout = () => {
                     disabled={isPageError}
                     label={`${isFetching ? "loading..." : "load more"}`}
                     onClick={loadMoreDocs}
-                    className={`primary ${
+                    className={`bg-lexblue text-white ${
                       isPageError ? "opacity-50 cursor-none" : "opacity-100"
                     }`}
                   />

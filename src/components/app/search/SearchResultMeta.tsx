@@ -66,37 +66,33 @@ export const SearchAIMetaResult = ({
   const query = searchParams.get("q");
   const query_type = searchParams.get("query_type");
   // console.log("query from llm page", query);
-  const {
-    data: search_classifier,
-    isError: isError_clas,
-    isFetching: isFetching_clas,
-    isLoading: Isloading_clas,
-  } = useQuery_route_classifierQuery(query ? query : skipToken);
-  // const [llm_search, { data: llm_search_data, error, isLoading: llm_loading }] =
-  //   useLlm_searchMutation();
-  // console.log("what i am seeing");
+
   const {
     data: llm_search_data,
     error,
     isLoading: llm_loading,
+    isFetching,
   } = useLlm_searchQuery(query_type === "llm_s" && query ? query : skipToken);
   useEffect(() => {
     llm_search_data && setLlm_data(llm_search_data);
   }, [llm_search_data]);
-  console.log("returned from llm", llm_search_data, llm_loading, error);
+  // console.log(
+  //   "returned from llm",
+  //   llm_loading,
+  //   "fetching",
+  //   isFetching,
+  //   "error",
+  //   error
+  // );
+  // console.log("returned from llm", llm_search_data, llm_loading, error);
 
-  if (
-    query_type === "llm_s" &&
-    // (search_classifier as TclasifierResult)?.user_message &&
-    llm_loading
-  ) {
+  if (query_type === "llm_s" && (llm_loading || isFetching)) {
     return (
       <div className="flex items-center justify-center min-h-[500px] bg-gray-100">
         <div className="flex flex-col items-center space-y-4 bg-white p-6 rounded-2xl shadow-xl">
           <p className="text-gray-700 text-lg text-center max-w-md">
-            {(search_classifier as TclasifierResult)?.user_message
-              ? (search_classifier as TclasifierResult)?.user_message
-              : "Analyzing your legal question to provide a comprehensive response....."}
+            Analyzing your legal question to provide a comprehensive
+            response.....
           </p>
           <div className="flex items-center justify-center">
             <Loader variant="classic" size={20} />
@@ -145,7 +141,7 @@ export const SearchAIMetaResult = ({
         "## Conclusion:",
       ];
       const result = splitWithDelimiter(markdownContent, headingsToHighlight);
-      console.log("split text ready for mapping", result);
+      // console.log("split text ready for mapping", result);
       const replacedText = result.map((text, idx) =>
         headingsToHighlight.includes(text) ? (
           <h3
@@ -578,9 +574,22 @@ export const SearchResultMeta = (prop: {
       //   </p>
       // );
     });
+  const pageNumberMapping: { [index: number]: number } = {
+    6: 2,
+    11: 3,
+    16: 4,
+    21: 5,
+  };
   // console.log("Occurences updated", occurrences);
   return (
-    <div className="mb-8 space-y-3 border-b border-b-primary/10 pb-5">
+    <div
+      className={`mb-8 space-y-3 border-b border-b-primary/10 pb-5`}
+      // className={`mb-8 space-y-3 border-b ${
+      //   Object.keys(pageNumberMapping).includes(String(Number(index) + 1))
+      //     ? "border-b-lexblue"
+      //     : "border-b-primary/10"
+      // }  pb-5`}
+    >
       {/* This is a modal to display the fullcase and highlighted area  */}
       {quoteToHighlight && fullJudgement && (
         <FulljudgementModal
@@ -591,6 +600,12 @@ export const SearchResultMeta = (prop: {
           quoteToHighlight={quoteToHighlight}
           full_judgement={fullJudgement?.judgement}
         />
+      )}
+      {/* THIS INDICATES WHERE 2 STARTS FROM  */}
+      {Object.keys(pageNumberMapping).includes(index as string) && (
+        <span className="mx-auto max-w-[100px] block text-white bg-lexblue text-base px-3 py-1 mt -8 mb-8 rounded font-gilda_Display">
+          PAGE {pageNumberMapping[Number(index)]}
+        </span>
       )}
       <span className="text-powder_blue bg-[#008E00]/10 text-xs px-3 py-1 rounded font-gilda_Display">
         {metadata.document_type}
