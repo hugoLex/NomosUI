@@ -25,6 +25,7 @@ import {
 
 import { logo, logoIcon } from "@app/assets";
 import { getCookie } from "@app/utils";
+import { useQueryHandler } from "@app/hooks";
 
 type Variant = "default" | "empty";
 
@@ -39,6 +40,17 @@ const MenuIcons = ({ path }: { path: string }) => {
       <span className="inline-block shrink-0 w-5 aspect-[1.25] align-middle">
         {path === "/" && <Search2 />}
         {path === "/library" && <Library2 />}
+        {path === "/brief_analyzer" && (
+          <div className=" relative h-[24px] w-[24px]">
+            <Image
+              height={40}
+              width={40}
+              src={"/images/icons/brief_analyzer.svg"}
+              // src={"../icons/ai-search-02-stroke-rounded.svg"}
+              alt="Case Craft"
+            />
+          </div>
+        )}
         {path === "/analytics" && <Bench2 />}
         {path === "/taxonomy" && <FilterIcon3 />}
       </span>
@@ -48,6 +60,7 @@ const MenuIcons = ({ path }: { path: string }) => {
 
 const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
   const router = useRouter();
+  const { pathname } = useQueryHandler();
   const { setIsSearchModal } = useContext(AppLayoutContext);
 
   const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
@@ -69,6 +82,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
     setIsCollapsed(!isCollapsed);
     document.cookie = `isSidebar=${!isCollapsed}`;
   };
+  // console.log("path name", pathname);
 
   return (
     <Fragment>
@@ -156,8 +170,9 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                               className={`flex items-center gap-1 text-center whitespace-nowrap 
                                ${isCollapsed ? "justify-center" : ""}
                               ${
-                                path === router.asPath
-                                  ? "text-primary font-medium"
+                                path === pathname
+                                  ? // path === router.asPath
+                                    "text-primary font-medium"
                                   : "hover:text-primary"
                               }
                               `}
@@ -188,8 +203,9 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                                 className={`flex items-center gap-1 text-center
                                whitespace-nowrap  ${
                                  // I added this logic to implement activate state for the rest of the tabs. Since you wrote the original logic, you can change it to what works best
-                                 path === `/${router.asPath.split("/")[1]}`
-                                   ? "text-primary font-medium"
+                                 path === pathname
+                                   ? //  path === `/${router.asPath.split("/")[1]}`
+                                     "text-primary font-medium"
                                    : "hover:text-primary"
                                }  ${isCollapsed ? "justify-center" : "pb-2"}`}
                                 id={`menu-item-${idx}`}
@@ -255,6 +271,8 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                           {isCollapsed &&
                             ((path === "/" &&
                               `${router.asPath.split("?")[0]}` === "/search") ||
+                              path === pathname ||
+                              // path === "/brief_analyzer" ||
                               path === router.asPath ||
                               // I added this logic to implement activate state for the rest of the tabs. Since you wrote the original logic, you can change it to what works best
                               path === `/${router.asPath.split("/")[1]}`) && (

@@ -16,6 +16,7 @@ import {
   TSearchResultDocuments,
 } from "@app/types";
 import { baseURL } from "@app/utils";
+import { LegalBriefApiResponse } from "@app/types/briefanalyzer";
 
 type SearchQuery = {
   query: string;
@@ -203,6 +204,20 @@ export const searchQueryAPI = injectEndpoints({
       ),
 
     }),
+    brief_analyzer: builder.mutation<LegalBriefApiResponse, string>({
+      query: (brief) => ({
+        // url: `https://webapp.lexanalytics.ai/api/generate-brief`,
+        url: `${baseURL}/generate-brief`,
+        method: "POST",
+        body: {
+          "case_description": brief, "include_optional_sections": true
+        }
+      }
+
+
+      ),
+
+    }),
   }),
   overrideExisting: true,
 });
@@ -217,6 +232,7 @@ export const {
   useLlm_searchQuery,
   // useLlm_searchMutation,
   useQuery_route_classifierQuery,
+  useBrief_analyzerMutation,
   util: searchQueryUtil
   // useLlm_searchQuery
 } = searchQueryAPI;

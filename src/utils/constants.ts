@@ -809,10 +809,10 @@ export const menuList: MenuLink[] = [
     label: "Home",
     path: "/",
   },
-  // {
-  //   label: "Search",
-  //   path: "/",
-  // },
+  {
+    label: "Case Craft",
+    path: "/brief_analyzer",
+  },
   {
     label: "Library",
     path: "/library",
