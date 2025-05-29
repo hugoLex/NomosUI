@@ -57,7 +57,7 @@ const Page: NextPageWithLayout = () => {
           //     }
           //   );
           if (res) {
-            console.log(JSON.stringify(res.markdown_brief));
+            // console.log(JSON.stringify(res.markdown_brief));
             // setCase_crafter()
           }
           // Only process response if component is still mounted
@@ -116,14 +116,6 @@ const Page: NextPageWithLayout = () => {
 
     currentTarget.reset();
   };
-  //   const { data, isError } = useSearchTrendingQuery({});
-
-  //   useEffect(() => {
-  //     if (data) {
-  //       const { trending_searches } = data;
-  //       setTrendingSearches(trending_searches);
-  //     }
-  //   }, [data]);
 
   //   function SearchTypePicker() {
   //     const options = [
@@ -191,13 +183,13 @@ const Page: NextPageWithLayout = () => {
             className="relative flex flex-col justify-center max-w-full m-auto
         md:w-[700px] self-stretch p-5"
           >
-            <Link href={"/"} className="mx-auto">
+            {/* <Link href={"/"} className="mx-auto">
               <Image
                 src={logo2}
                 alt="Logo"
                 className="shrink-0 max-w-full w-72 aspect-[4.35]"
               />
-            </Link>
+            </Link> */}
             {/* <SearchBox /> */}
 
             {
@@ -205,7 +197,7 @@ const Page: NextPageWithLayout = () => {
                 className="relative"
                 // id={lookupId}
               >
-                <p>
+                <p className="text-[#567C8A] text-sm">
                   Describe your legal issue in your own words - no legal jargon
                   required. Case craft will transform your plain English
                   description into a properly formatted legal brief that clearly
@@ -337,10 +329,317 @@ const Page: NextPageWithLayout = () => {
                   </h1>
 
                   {data && data?.markdown_brief && (
-                    <Markdown
-                      content={data?.markdown_brief}
-                      className="wrapper text-wrap overflow-x-hidden text-sm text-lexblue font-poppins"
-                    />
+                    <div>
+                      <section className="pb-5  border-b-[1px] border-gray-300">
+                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                          1. CASE OVERVIEW
+                        </h3>
+                        <h4 className="text-base text-powder_blue">
+                          Parties Involved:
+                        </h4>
+                        <h3 className="text-sm text-lexblue">
+                          {data?.legal_brief.case_overview.parties.map(
+                            ({ name, role }) => (
+                              <div key={"key" + name}>
+                                <span>{role}: </span>
+                                <span className="text -lexblue font-thin">
+                                  {name}
+                                </span>
+                              </div>
+                            )
+                          )}
+                        </h3>
+                      </section>
+
+                      <section className="pb-5  border-b-[1px] border-gray-300">
+                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                          2. BRIEF SUMMARY
+                        </h3>
+                        <p className="text-lexblue text-sm ">
+                          {data?.legal_brief.summary}
+                        </p>
+                      </section>
+                      <section className="pb-5  border-b-[1px] border-gray-300">
+                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                          3. FACTS OF THE CASE/EVENTS
+                        </h3>
+                        <p className="text-lexblue text-sm ">
+                          {data?.legal_brief.facts}
+                        </p>
+                      </section>
+                      <section className="pb-5  border-b-[1px] border-gray-300">
+                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                          4. JURISDICTION/COURT
+                        </h3>
+                        <p className="text-lexblue text-sm ">
+                          {data?.legal_brief.jurisdiction}
+                        </p>
+                      </section>
+                      <section className="pb-5  border-b-[1px] border-gray-300">
+                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                          5. ISSUES FOR DETERMINATION
+                        </h3>
+                        {/* <h4 className="text-base">Parties Involved:</h4> */}
+                        <div className="ml-[10px] text-sm text-lexblue">
+                          {data?.legal_brief.issues.map(
+                            ({ category, description }, idx) => (
+                              <div key={`${category}-${idx}`}>
+                                <h3 className="text-base capitalize text-powder_blue">
+                                  {category} Issue:{" "}
+                                </h3>
+                                <p className="text-lexblue text-sm">
+                                  {description}
+                                </p>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </section>
+                      <section className="pb-5  border-b-[1px] border-gray-300">
+                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                          6. CLAIMS BY PLAINTIFF: STRENGTHS & WEAKNESSES
+                        </h3>
+                        {/* <h4 className="text-base">Parties Involved:</h4> */}
+                        <div className="ml-[10px] text-sm text-lexblue">
+                          {data?.legal_brief.plaintiff_claims.map(
+                            (
+                              { assertion, strength, strengths, weaknesses },
+                              idx
+                            ) => (
+                              <div key={`key-${assertion}-${idx}`}>
+                                <h3 className="text-base capitalize text-powder_blue">
+                                  {assertion} : <span>{strength}</span>
+                                </h3>
+                                <div>
+                                  {strengths.map((value, idx) => (
+                                    <p
+                                      key={`strength-${idx}`}
+                                      className="text-lexblue text-sm"
+                                    >
+                                      Strength: {value}
+                                    </p>
+                                  ))}
+                                </div>
+                                <div>
+                                  {weaknesses.map((value, idx) => (
+                                    <p
+                                      key={`weakness-${idx}`}
+                                      className="text-lexblue text-sm"
+                                    >
+                                      Weakness: {value}
+                                    </p>
+                                  ))}
+                                </div>
+                                {/* <p className="text-lexblue text-sm">
+                                  {strength}
+                                </p> */}
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </section>
+                      <section className="pb-5  border-b-[1px] border-gray-300">
+                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                          7. CLAIMS BY DEFENDANT: STRENGTHS & WEAKNESSES
+                        </h3>
+                        {/* <h4 className="text-base">Parties Involved:</h4> */}
+                        <div className="ml-[10px] text-sm text-lexblue">
+                          {data?.legal_brief.defendant_claims.map(
+                            (
+                              { assertion, strength, strengths, weaknesses },
+                              idx
+                            ) => (
+                              <div key={`key-${assertion}-${idx}`}>
+                                <h3 className="text-base capitalize text-powder_blue">
+                                  {assertion} : <span>{strength}</span>
+                                </h3>
+                                <div>
+                                  {strengths.map((value, idx) => (
+                                    <p
+                                      key={`strength-${idx}`}
+                                      className="text-lexblue text-sm"
+                                    >
+                                      Strength: {value}
+                                    </p>
+                                  ))}
+                                </div>
+                                <div>
+                                  {weaknesses.map((value, idx) => (
+                                    <p
+                                      key={`weakness-${idx}`}
+                                      className="text-lexblue text-sm"
+                                    >
+                                      Weakness: {value}
+                                    </p>
+                                  ))}
+                                </div>
+                                {/* <p className="text-lexblue text-sm">
+                                  {strength}
+                                </p> */}
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </section>
+                      <section className="pb-5  border-b-[1px] border-gray-300">
+                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                          8. PRAYERS TO THE COURT/REMEDIES SOUGHT
+                        </h3>
+                        <h4 className="text-[1.1rem] text-powder_blue">
+                          Plaintiff's Prayers:
+                        </h4>
+                        {data?.legal_brief.prayers.plaintiff.map(
+                          (value, idx) => (
+                            <p
+                              key={`key-plaintiff_prayer-${idx}`}
+                              className="text-lexblue text-sm "
+                            >
+                              {value}
+                            </p>
+                          )
+                        )}
+
+                        <h4 className="text-[1.1rem] text-powder_blue">
+                          Defendant's Likely Prayers:
+                        </h4>
+                        {data?.legal_brief.prayers.plaintiff.map(
+                          (value, idx) => (
+                            <p
+                              key={`key-plaintiff_prayer-${idx}`}
+                              className="text-lexblue text-sm "
+                            >
+                              {value}
+                            </p>
+                          )
+                        )}
+                      </section>
+                      <section className="pb-5  border-b-[1px] border-gray-300">
+                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                          9. SUPPORTING EVIDENCE
+                        </h3>
+                        <p className="text-lexblue text-sm ">
+                          {data?.legal_brief.evidence}
+                        </p>
+                      </section>
+                      <section className="pb-5  border-b-[1px] border-gray-300">
+                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                          10. RELEVANT CASE PRECEDENTS
+                        </h3>
+
+                        {data?.legal_brief.precedents.map((value, idx) => (
+                          <p
+                            key={`key-precendent-${idx}`}
+                            className="text-lexblue text-sm "
+                          >
+                            {value}
+                          </p>
+                        ))}
+                      </section>
+                      <section className="pb-5  border-b-[1px] border-gray-300">
+                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                          11. SUPPORTING AUTHORITIES (LEGISLATION)
+                        </h3>
+                        <div className="text-lexblue text-sm ">
+                          {data?.legal_brief.legislation.map((value, idx) => (
+                            <p
+                              key={`key-legislations-${idx}`}
+                              className="text-lexblue text-sm "
+                            >
+                              {value}
+                            </p>
+                          ))}
+                        </div>
+                      </section>
+                      <section className="pb-5  border-b-[1px] border-gray-300">
+                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                          12. LEGAL ARGUMENTS
+                        </h3>
+                        <h4 className="text-[1.1rem] text-powder_blue">
+                          Plaintiff's Arguments:
+                        </h4>
+                        <div className="text-lexblue text-sm ">
+                          {data?.legal_brief.legal_arguments.plaintiff.map(
+                            (value, idx) => (
+                              <p
+                                key={`key-legislations-${idx}`}
+                                className="text-lexblue text-sm "
+                              >
+                                {value}
+                              </p>
+                            )
+                          )}
+                        </div>
+                        <h4 className="text-[1.1rem] text-powder_blue">
+                          Defendant's Counterarguments:
+                        </h4>
+                        <div className="text-lexblue text-sm ">
+                          {data?.legal_brief.legal_arguments.defendant.map(
+                            (value, idx) => (
+                              <p
+                                key={`key-legislations-${idx}`}
+                                className="text-lexblue text-sm "
+                              >
+                                {value}
+                              </p>
+                            )
+                          )}
+                        </div>
+                      </section>
+                      <section className="pb-5  border-b-[1px] border-gray-300">
+                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                          13. RISK ANALYSIS
+                        </h3>
+                        {/* <h4 className="text-[1.1rem] text-powder_blue">
+                          Defendant's Counterarguments:
+                        </h4> */}
+                        <div className="text-lexblue text-sm ">
+                          {data?.legal_brief.risk_analysis.plaintiff.map(
+                            (value, idx) => (
+                              <p
+                                key={`key-defendant-risk-${idx}`}
+                                className="text-lexblue text-sm "
+                              >
+                                Plaintiff's Risks:{" "}
+                                <span className="">{value}</span>
+                              </p>
+                            )
+                          )}
+                        </div>
+                        <div className="text-lexblue text-sm ">
+                          {data?.legal_brief.risk_analysis.defendant.map(
+                            (value, idx) => (
+                              <p
+                                key={`key-defendant-risk-${idx}`}
+                                className="text-lexblue text-sm "
+                              >
+                                Defendant's Risks:{" "}
+                                <span className="">{value}</span>
+                              </p>
+                            )
+                          )}
+                        </div>
+                      </section>
+                      <section className="pb-5  border-b-[1px] border-gray-300">
+                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                          14. READING LIST
+                        </h3>
+                        <p className="text-lexblue text-sm ">
+                          {data?.legal_brief?.reading_list.map((value, idx) => (
+                            <p
+                              key={`key-reading-list-${idx}`}
+                              className="text-lexblue text-sm "
+                            >
+                              <span className="">{idx + 1}.</span> {value}
+                              {/* Defendant's Risks: <span className="">{value}</span> */}
+                            </p>
+                          ))}
+                        </p>
+                      </section>
+                      {/* <Markdown
+                        content={data?.markdown_brief}
+                        className="wrapper text-wrap overflow-x-hidden text-sm text-lexblue font-poppins"
+                      /> */}
+                    </div>
                   )}
                 </div>
               </div>
