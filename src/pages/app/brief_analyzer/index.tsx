@@ -174,7 +174,47 @@ const Page: NextPageWithLayout = () => {
   //       </div>
   //     );
   //   }
+  //   function splitWithDelimiter(text: string, delimiters: string[]) {
+  //     // Escape special regex characters in the delimiters
+  //     // const escapedDelimiters = delimiters.map((d) =>
+  //     //   d.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+  //     // );
 
+  //     // Join the escaped delimiters with | for alternation
+  //     const pattern = `(${delimiters.join("|")})`;
+
+  //     // Create the regex with the capture group
+  //     const regex = new RegExp(pattern, "g");
+
+  //     // Split while keeping the delimiters as separate elements
+  //     return text.split(regex).filter((item) => item !== "");
+  //   }
+  //   function CaseTreatmentDetails() {
+  //     if (data) {
+  //       return data?.legal_brief.precedents.map((value, idx) => {
+  //         // const treaments = [" "];
+  //         const treaments = ["Persuasive", "Binding"];
+  //         const result = splitWithDelimiter(value, treaments);
+  //         console.log(result);
+  //         const formattedResult = value.split(" ").map((valueToBeFormatted) => (
+  //           <p
+  //             key={`key-precendent-${idx}`}
+  //             className={` ${
+  //               valueToBeFormatted == "persuasive"
+  //                 ? "text-red-500"
+  //                 : "text-lexblue"
+  //             }  text-sm `}
+  //           >
+  //             {valueToBeFormatted}
+  //           </p>
+  //         ));
+
+  //         return formattedResult;
+  //       });
+  //     } else {
+  //       return <p></p>;
+  //     }
+  //   }
   return (
     <>
       {!query && (
@@ -314,19 +354,28 @@ const Page: NextPageWithLayout = () => {
                   {/* was 8 with the sidebar  */}
                   {/* <div className="col-span-8"> */}
                   <h1
+                    ref={h1Ref}
+                    className="text-xx text-lexblue font-gilda_Display uppercase font-bold my-2"
+                  >
+                    Case Crafter
+                  </h1>
+                  <h5 className="text-base text-[#9ea7b4] ">
+                    Professionally crafted case theory
+                  </h5>
+                  {/* <h1
                     id="case_crafter"
                     ref={h1Ref}
                     className={`${
-                      query && query?.length > 73 ? "text-lg" : "text-xx"
+                      query && query?.length > 73 ? "text-sm" : "text-xx"
                     } font-normal mb-6`}
                   >
-                    {/* Relevant sources for: */}
+                    
                     <span
                       className={` text-lexblue font-gilda_Display capitalize font-bold`}
                     >
                       {query.slice(0, 73)}
                     </span>
-                  </h1>
+                  </h1>  */}
 
                   {data && data?.markdown_brief && (
                     <div>
@@ -334,21 +383,23 @@ const Page: NextPageWithLayout = () => {
                         <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
                           1. CASE OVERVIEW
                         </h3>
-                        <h4 className="text-base text-powder_blue">
+                        <h4 className="text-sm text-powder_blue">
                           Parties Involved:
                         </h4>
-                        <h3 className="text-sm text-lexblue">
+                        <div className="">
                           {data?.legal_brief.case_overview.parties.map(
                             ({ name, role }) => (
                               <div key={"key" + name}>
-                                <span>{role}: </span>
-                                <span className="text -lexblue font-thin">
+                                <span className="text-sm text-powder_blue font-normal">
+                                  {role}:{" "}
+                                </span>
+                                <span className="text-lexblue font-normal text-sm">
                                   {name}
                                 </span>
                               </div>
                             )
                           )}
-                        </h3>
+                        </div>
                       </section>
 
                       <section className="pb-5  border-b-[1px] border-gray-300">
@@ -384,7 +435,7 @@ const Page: NextPageWithLayout = () => {
                           {data?.legal_brief.issues.map(
                             ({ category, description }, idx) => (
                               <div key={`${category}-${idx}`}>
-                                <h3 className="text-base capitalize text-powder_blue">
+                                <h3 className="text-sm capitalize text-powder_blue">
                                   {category} Issue:{" "}
                                 </h3>
                                 <p className="text-lexblue text-sm">
@@ -400,15 +451,26 @@ const Page: NextPageWithLayout = () => {
                           6. CLAIMS BY PLAINTIFF: STRENGTHS & WEAKNESSES
                         </h3>
                         {/* <h4 className="text-base">Parties Involved:</h4> */}
-                        <div className="ml-[10px] text-sm text-lexblue">
+                        <div className="ml-[10px] text-sm text-powder_blue">
                           {data?.legal_brief.plaintiff_claims.map(
                             (
                               { assertion, strength, strengths, weaknesses },
                               idx
                             ) => (
                               <div key={`key-${assertion}-${idx}`}>
-                                <h3 className="text-base capitalize text-powder_blue">
-                                  {assertion} : <span>{strength}</span>
+                                <h3 className="text-sm  text-powder_blue">
+                                  {assertion}{" "}
+                                  <button
+                                    className={`${
+                                      strength == "weak"
+                                        ? "bg-red-400"
+                                        : strength == "strong"
+                                        ? "bg-lexblue"
+                                        : "bg-powder_blue"
+                                    }  text-white text-[8px] capitalize px-1 py-[.5px] rounded-sm`}
+                                  >
+                                    {strength}
+                                  </button>
                                 </h3>
                                 <div>
                                   {strengths.map((value, idx) => (
@@ -450,8 +512,17 @@ const Page: NextPageWithLayout = () => {
                               idx
                             ) => (
                               <div key={`key-${assertion}-${idx}`}>
-                                <h3 className="text-base capitalize text-powder_blue">
-                                  {assertion} : <span>{strength}</span>
+                                <h3 className="text-sm  text-powder_blue">
+                                  {assertion}{" "}
+                                  <button
+                                    className={`${
+                                      strength == "weak"
+                                        ? "bg-red-400"
+                                        : "bg-lexblue"
+                                    }  text-white text-[8px] capitalize px-1 py-[.5px] rounded-sm`}
+                                  >
+                                    {strength}
+                                  </button>
                                 </h3>
                                 <div>
                                   {strengths.map((value, idx) => (
@@ -485,7 +556,7 @@ const Page: NextPageWithLayout = () => {
                         <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
                           8. PRAYERS TO THE COURT/REMEDIES SOUGHT
                         </h3>
-                        <h4 className="text-[1.1rem] text-powder_blue">
+                        <h4 className="text-sm text-powder_blue">
                           Plaintiff's Prayers:
                         </h4>
                         {data?.legal_brief.prayers.plaintiff.map(
@@ -499,7 +570,7 @@ const Page: NextPageWithLayout = () => {
                           )
                         )}
 
-                        <h4 className="text-[1.1rem] text-powder_blue">
+                        <h4 className="text-sm text-powder_blue mt-5">
                           Defendant's Likely Prayers:
                         </h4>
                         {data?.legal_brief.prayers.plaintiff.map(
@@ -525,7 +596,7 @@ const Page: NextPageWithLayout = () => {
                         <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
                           10. RELEVANT CASE PRECEDENTS
                         </h3>
-
+                        {/* <CaseTreatmentDetails /> */}
                         {data?.legal_brief.precedents.map((value, idx) => (
                           <p
                             key={`key-precendent-${idx}`}
@@ -554,7 +625,7 @@ const Page: NextPageWithLayout = () => {
                         <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
                           12. LEGAL ARGUMENTS
                         </h3>
-                        <h4 className="text-[1.1rem] text-powder_blue">
+                        <h4 className="text-sm text-powder_blue">
                           Plaintiff's Arguments:
                         </h4>
                         <div className="text-lexblue text-sm ">
@@ -569,7 +640,7 @@ const Page: NextPageWithLayout = () => {
                             )
                           )}
                         </div>
-                        <h4 className="text-[1.1rem] text-powder_blue">
+                        <h4 className="text-sm text-powder_blue mt-5">
                           Defendant's Counterarguments:
                         </h4>
                         <div className="text-lexblue text-sm ">
@@ -623,7 +694,7 @@ const Page: NextPageWithLayout = () => {
                         <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
                           14. READING LIST
                         </h3>
-                        <p className="text-lexblue text-sm ">
+                        <div className="text-lexblue text-sm ">
                           {data?.legal_brief?.reading_list.map((value, idx) => (
                             <p
                               key={`key-reading-list-${idx}`}
@@ -633,7 +704,7 @@ const Page: NextPageWithLayout = () => {
                               {/* Defendant's Risks: <span className="">{value}</span> */}
                             </p>
                           ))}
-                        </p>
+                        </div>
                       </section>
                       {/* <Markdown
                         content={data?.markdown_brief}
@@ -641,6 +712,68 @@ const Page: NextPageWithLayout = () => {
                       /> */}
                     </div>
                   )}
+                </div>
+                <div className="pt-[50px]">
+                  {[
+                    ["share-knowledge-stroke-rounded.svg", "Share"],
+                    ["file-download-stroke-rounded.svg", "Download"],
+                  ].map(([icon, name]) => (
+                    <button
+                      key={name as string}
+                      type="button"
+                      className=" focus:outline-none outline-none outline-transparent transition duration-300 ease-out font-sans  select-none  relative group/button  justify-center text-center items-center rounded-full cursor-pointer active:scale-[0.97] active:duration-150  origin-center whitespace-nowrap inline-flex text-sm h-8 pl-2.5 pr-3"
+                    >
+                      {name === "Download" ? (
+                        <a
+                          href={
+                            name === "Download"
+                              ? `https://webapp.lexanalytics.ai/api/ask/pdf?question=${encodeURIComponent(
+                                  query ?? ""
+                                )}`
+                              : "#Llmanswer"
+                          }
+                          download
+                          className="flex items-center min-w-0 font-medium gap-1.5 justify-center"
+                        >
+                          <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
+                            <Image
+                              width={16}
+                              height={16}
+                              src={`/images/icons/${icon}`}
+                              alt={name}
+                            />
+                          </div>
+                          <div className="text-align-center relative truncate leading-loose -mb-px text-powder_blue">
+                            {name}
+                          </div>
+                        </a>
+                      ) : (
+                        <div
+                          // href={
+                          //   name === "Download"
+                          //     ? `https://webapp.lexanalytics.ai/api/ask/pdf?question=${encodeURIComponent(
+                          //         query ?? ""
+                          //       )}`
+                          //     : "#Llmanswer"
+                          // }
+                          // download
+                          className="flex items-center min-w-0 font-medium gap-1.5 justify-center"
+                        >
+                          <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
+                            <Image
+                              width={16}
+                              height={16}
+                              src={`/images/icons/${icon}`}
+                              alt={name}
+                            />
+                          </div>
+                          <div className="text-align-center relative truncate leading-loose -mb-px text-powder_blue">
+                            {name}
+                          </div>
+                        </div>
+                      )}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
