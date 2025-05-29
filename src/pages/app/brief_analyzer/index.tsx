@@ -219,10 +219,23 @@ const Page: NextPageWithLayout = () => {
     <>
       {!query && (
         <Fragment>
+          <Navbar>
+            <div className="flex justify-between py-2.5">
+              {/* <div className="md:flex justify-between py-2.5"> */}
+              <NavbarTitle isTitle={!isTitle} title={query ?? ""} />
+              <ActionButtons />
+            </div>
+          </Navbar>
           <section
-            className="relative flex flex-col justify-center max-w-full m-auto
+            className="relative flex flex-col justify-center max-w-full mx-auto mb-auto
         md:w-[700px] self-stretch p-5"
           >
+            <h1
+              ref={h1Ref}
+              className="mb-[8px] text-xx text-lexblue font-gilda_Display capitalize font-bold my-2"
+            >
+              Case Craft
+            </h1>
             {/* <Link href={"/"} className="mx-auto">
               <Image
                 src={logo2}
@@ -337,7 +350,7 @@ const Page: NextPageWithLayout = () => {
       {isLoading && <LoadingLg />}
       {query && !isLoading && (
         <Fragment>
-          <Head title={`Case Crafter - ${query ?? ""}`} />
+          <Head title={`Case Craft - ${query ?? ""}`} />
 
           <Navbar>
             <div className="flex justify-between py-2.5">
@@ -355,9 +368,9 @@ const Page: NextPageWithLayout = () => {
                   {/* <div className="col-span-8"> */}
                   <h1
                     ref={h1Ref}
-                    className="text-xx text-lexblue font-gilda_Display uppercase font-bold my-2"
+                    className="text-xx text-lexblue font-gilda_Display capitalize font-bold my-2"
                   >
-                    Case Crafter
+                    Case Craft
                   </h1>
                   <h5 className="text-base text-[#9ea7b4] ">
                     Professionally crafted case theory
