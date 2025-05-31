@@ -2,7 +2,7 @@ import React, { FormEvent, Fragment, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Head } from "@app/components/ui";
+import { Head, Loader } from "@app/components/ui";
 import { AppLayout } from "@app/components/layout";
 import { logo2 } from "@app/assets";
 import { NextPageWithLayout } from "@app/types";
@@ -19,9 +19,9 @@ import {
   NavbarTitle,
 } from "@app/components/shared";
 import LoadingLg from "@app/components/app/authentication/LoadingLg";
-import Riskanalysis from "./riskanalysis";
-import Legalarguements from "./legalarguments";
-import Partyclaims from "./partyclaims";
+import Riskanalysis from "../../../components/app/briefanalyzer/riskanalysis";
+import Legalarguements from "../../../components/app/briefanalyzer/legalarguments";
+import Partyclaims from "../../../components/app/briefanalyzer/partyclaims";
 
 const Page: NextPageWithLayout = () => {
   const { pathname, searchParams } = useQueryHandler();
@@ -388,7 +388,11 @@ const Page: NextPageWithLayout = () => {
           </footer>
         </Fragment>
       )}
-      {isLoading && <LoadingLg />}
+      {isLoading && (
+        <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
+          <Loader variant="classic" size={80} />
+        </div>
+      )}
       {query && !isLoading && (
         <Fragment>
           <Head title={`Case Craft - ${query ?? ""}`} />
