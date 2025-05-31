@@ -19,10 +19,16 @@ import {
   NavbarTitle,
 } from "@app/components/shared";
 import LoadingLg from "@app/components/app/authentication/LoadingLg";
+import Riskanalysis from "./riskanalysis";
+import Legalarguements from "./legalarguments";
+import Partyclaims from "./partyclaims";
 
 const Page: NextPageWithLayout = () => {
   const { pathname, searchParams } = useQueryHandler();
   const [inputText, setInputText] = useState<string | undefined>(undefined);
+  const [partiesPrayerss, setPartiesPrayers] = useState<
+    { [key: string]: string[] } | undefined
+  >(undefined);
   const [case_crafter_data, setCase_crafter] = useState<string | undefined>(
     undefined
   );
@@ -215,6 +221,41 @@ const Page: NextPageWithLayout = () => {
   //       return <p></p>;
   //     }
   //   }
+
+  function PartiesPrayers() {
+    if (data?.legal_brief.prayers) {
+      return Object.keys(data?.legal_brief.prayers).map((key) => {
+        // setPartiesPrayers((prev) => ({
+        //   ...prev,
+        //   [key]: data?.legal_brief.prayers[key],
+        // }));
+
+        return (
+          <>
+            <h4 className="text-sm text-powder_blue">
+              <span className=" capitalize">{key}</span>'s Prayers:
+            </h4>
+
+            {data?.legal_brief.prayers[key].map((value, idx) => (
+              <p
+                key={`key-${key}_prayer-${idx}`}
+                className="text-lexblue text-sm "
+              >
+                {value}
+              </p>
+            ))}
+          </>
+        );
+      });
+    } else {
+      return <></>;
+    }
+  }
+  //   useEffect(() => {
+  //     data && PartiesPrayers();
+  //   }, [data]);
+  //   }, [data??Object.keys(data?.legal_brief.prayers)[0]]);
+  //   console.log("prayers ready", partiesPrayers);
   return (
     <>
       {!query && (
@@ -390,7 +431,7 @@ const Page: NextPageWithLayout = () => {
                     </span>
                   </h1>  */}
 
-                  {data && data?.markdown_brief && (
+                  {data && (
                     <div>
                       <section className="pb-5  border-b-[1px] border-gray-300">
                         <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
@@ -459,11 +500,33 @@ const Page: NextPageWithLayout = () => {
                           )}
                         </div>
                       </section>
-                      <section className="pb-5  border-b-[1px] border-gray-300">
+                      <section className="ml-[10px] text-sm text-powder_blue">
                         <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
                           6. CLAIMS BY PLAINTIFF: STRENGTHS & WEAKNESSES
                         </h3>
-                        {/* <h4 className="text-base">Parties Involved:</h4> */}
+                        {data?.legal_brief?.plaintiff_claims && (
+                          <Partyclaims
+                            data={data?.legal_brief.plaintiff_claims}
+                            party="Plaintiff"
+                          />
+                        )}
+                      </section>
+                      <section>
+                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                          7. CLAIMS BY DEFENDANT: STRENGTHS & WEAKNESSES
+                        </h3>
+                        {data?.legal_brief?.defendant_claims && (
+                          <Partyclaims
+                            data={data?.legal_brief.defendant_claims}
+                            party="Defendant"
+                          />
+                        )}
+                      </section>
+
+                      {/* <section className="pb-5  border-b-[1px] border-gray-300">
+                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                          6. CLAIMS BY PLAINTIFF: STRENGTHS & WEAKNESSES
+                        </h3>
                         <div className="ml-[10px] text-sm text-powder_blue">
                           {data?.legal_brief.plaintiff_claims.map(
                             (
@@ -505,19 +568,16 @@ const Page: NextPageWithLayout = () => {
                                     </p>
                                   ))}
                                 </div>
-                                {/* <p className="text-lexblue text-sm">
-                                  {strength}
-                                </p> */}
+                                
                               </div>
                             )
                           )}
                         </div>
-                      </section>
-                      <section className="pb-5  border-b-[1px] border-gray-300">
+                      </section> */}
+                      {/* <section className="pb-5  border-b-[1px] border-gray-300">
                         <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
                           7. CLAIMS BY DEFENDANT: STRENGTHS & WEAKNESSES
                         </h3>
-                        {/* <h4 className="text-base">Parties Involved:</h4> */}
                         <div className="ml-[10px] text-sm text-lexblue">
                           {data?.legal_brief.defendant_claims.map(
                             (
@@ -557,45 +617,17 @@ const Page: NextPageWithLayout = () => {
                                     </p>
                                   ))}
                                 </div>
-                                {/* <p className="text-lexblue text-sm">
-                                  {strength}
-                                </p> */}
+                               
                               </div>
                             )
                           )}
                         </div>
-                      </section>
+                      </section> */}
                       <section className="pb-5  border-b-[1px] border-gray-300">
                         <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
                           8. PRAYERS TO THE COURT/REMEDIES SOUGHT
                         </h3>
-                        <h4 className="text-sm text-powder_blue">
-                          Plaintiff's Prayers:
-                        </h4>
-                        {data?.legal_brief.prayers.plaintiff.map(
-                          (value, idx) => (
-                            <p
-                              key={`key-plaintiff_prayer-${idx}`}
-                              className="text-lexblue text-sm "
-                            >
-                              {value}
-                            </p>
-                          )
-                        )}
-
-                        <h4 className="text-sm text-powder_blue mt-5">
-                          Defendant's Likely Prayers:
-                        </h4>
-                        {data?.legal_brief.prayers.plaintiff.map(
-                          (value, idx) => (
-                            <p
-                              key={`key-plaintiff_prayer-${idx}`}
-                              className="text-lexblue text-sm "
-                            >
-                              {value}
-                            </p>
-                          )
-                        )}
+                        <PartiesPrayers />
                       </section>
                       <section className="pb-5  border-b-[1px] border-gray-300">
                         <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
@@ -638,14 +670,19 @@ const Page: NextPageWithLayout = () => {
                         <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
                           12. LEGAL ARGUMENTS
                         </h3>
-                        <h4 className="text-sm text-powder_blue">
+                        {data?.legal_brief?.legal_arguments && (
+                          <Legalarguements
+                            data={data?.legal_brief.legal_arguments}
+                          />
+                        )}
+                        {/* <h4 className="text-sm text-powder_blue">
                           Plaintiff's Arguments:
                         </h4>
                         <div className="text-lexblue text-sm ">
                           {data?.legal_brief.legal_arguments.plaintiff.map(
                             (value, idx) => (
                               <p
-                                key={`key-legislations-${idx}`}
+                                key={`key-legal-arguments-${idx}`}
                                 className="text-lexblue text-sm "
                               >
                                 {value}
@@ -667,16 +704,21 @@ const Page: NextPageWithLayout = () => {
                               </p>
                             )
                           )}
-                        </div>
+                        </div> */}
                       </section>
                       <section className="pb-5  border-b-[1px] border-gray-300">
                         <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
                           13. RISK ANALYSIS
                         </h3>
+                        {data?.legal_brief?.risk_analysis && (
+                          <Riskanalysis
+                            data={data?.legal_brief.risk_analysis}
+                          />
+                        )}
                         {/* <h4 className="text-[1.1rem] text-powder_blue">
                           Defendant's Counterarguments:
                         </h4> */}
-                        <div className="text-lexblue text-sm ">
+                        {/* <div className="text-lexblue text-sm ">
                           {data?.legal_brief.risk_analysis.plaintiff.map(
                             (value, idx) => (
                               <p
@@ -688,8 +730,8 @@ const Page: NextPageWithLayout = () => {
                               </p>
                             )
                           )}
-                        </div>
-                        <div className="text-lexblue text-sm ">
+                        </div> */}
+                        {/* <div className="text-lexblue text-sm ">
                           {data?.legal_brief.risk_analysis.defendant.map(
                             (value, idx) => (
                               <p
@@ -701,7 +743,7 @@ const Page: NextPageWithLayout = () => {
                               </p>
                             )
                           )}
-                        </div>
+                        </div> */}
                       </section>
                       <section className="pb-5  border-b-[1px] border-gray-300">
                         <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">

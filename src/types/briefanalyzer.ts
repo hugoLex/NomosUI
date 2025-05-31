@@ -31,6 +31,7 @@ interface legal_brief {
     prayers: {
         plaintiff: string[];
         defendant: string[];
+        [key: string]: string[]
     };
     evidence: string[];
     precedents: string[];
@@ -42,6 +43,7 @@ interface legal_brief {
     risk_analysis: {
         plaintiff: string[];
         defendant: string[];
+
     };
     reading_list: string[];
     markdown_brief: string;
