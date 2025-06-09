@@ -24,13 +24,18 @@ import Legalarguements from "../../../components/app/briefanalyzer/legalargument
 import Partyclaims from "../../../components/app/briefanalyzer/partyclaims";
 
 const Page: NextPageWithLayout = () => {
-  const { pathname, searchParams } = useQueryHandler();
+  const { pathname, searchParams, UpdateUrlParams } = useQueryHandler();
   const [inputText, setInputText] = useState<string | undefined>(undefined);
-  const [partiesPrayerss, setPartiesPrayers] = useState<
-    { [key: string]: string[] } | undefined
-  >(undefined);
-  const [case_crafter_data, setCase_crafter] = useState<string | undefined>(
-    undefined
+  // const [partiesPrayerss, setPartiesPrayers] = useState<
+  //   { [key: string]: string[] } | undefined
+  // >(undefined);
+  // const [case_crafter_data, setCase_crafter] = useState<string | undefined>(
+  //   undefined
+  // );
+  const [editQuery, setEditQuery] = useState<string | null>(null);
+  const [partToScrollTo, setPartToScrollTo] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string | null>(
+    "A man wanted to sell his car how ever his neighbor exchanged the car with his they went home happy. after a month the price of the man's car became twice of the value and he wants his car back"
   );
   const query = searchParams.get("q");
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
@@ -104,9 +109,36 @@ const Page: NextPageWithLayout = () => {
       isCancelled = true;
     };
   }, [query]);
+  const headings = [
+    "1. CASE OVERVIEW",
+    "2. BRIEF SUMMARY",
+    "3. FACTS OF THE CASE/EVENTS",
+    "4. JURISDICTION/COURT",
+    "5. ISSUES FOR DETERMINATION",
+    "6. CLAIMS BY PLAINTIFF: STRENGTHS & WEAKNESSES",
+    "7. CLAIMS BY DEFENDANT: STRENGTHS & WEAKNESSES",
+    "8. PRAYERS TO THE COURT/REMEDIES SOUGHT",
+    "9. SUPPORTING EVIDENCE",
+    "10. RELEVANT CASE PRECEDENTS",
+    "11. SUPPORTING AUTHORITIES (LEGISLATION)",
+    "12. LEGAL ARGUMENTS",
+    "13. RISK ANALYSIS",
+    "14. READING LIST",
+  ];
+
+  useEffect(() => {
+    // After judgment loads, scroll to the highlighted section
+    partToScrollTo &&
+      setTimeout(() => {
+        const targetElement = document.getElementById(partToScrollTo);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 300);
+  }, [partToScrollTo]);
 
   const onSearchSubmit = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
+    evt?.preventDefault();
 
     const { currentTarget } = evt;
 
@@ -406,21 +438,84 @@ const Page: NextPageWithLayout = () => {
           </Navbar>
 
           <Container>
-            <div className={`py-8 w-full md:max-w-[772px] mx-auto`}>
-              <div className="">
-                <div className="">
-                  {/* was 8 with the sidebar  */}
-                  {/* <div className="col-span-8"> */}
-                  <h1
-                    ref={h1Ref}
-                    className="text-xx text-lexblue font-gilda_Display capitalize font-bold my-2"
-                  >
-                    Case Craft
-                  </h1>
-                  <h5 className="text-base text-[#9ea7b4] ">
-                    Professionally crafted case theory
-                  </h5>
-                  {/* <h1
+            <div className="flex gap-5 ">
+              <div className="case-headings pt-[50px]">
+                <h2 className="text-lg font-gilda_Display font-semibold">
+                  Case Headings
+                </h2>
+                <ul>
+                  {headings.map((heading, index) => (
+                    <li
+                      onClick={() => setPartToScrollTo(heading)}
+                      key={`heading-${index}`}
+                      className="text-sm cursor-pointer my-5"
+                    >
+                      {heading}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="h-screen overflow-y-scroll">
+                <div className={`py-8 w-full md:max-w-[772px] mx-auto`}>
+                  <div className="">
+                    <div className="">
+                      {/* was 8 with the sidebar  */}
+                      {/* <div className="col-span-8"> */}
+                      <h1
+                        ref={h1Ref}
+                        className="text-xx text-lexblue font-gilda_Display capitalize font-bold my-2"
+                      >
+                        Case Craft
+                      </h1>
+                      <h5 className="text-base text-[#9ea7b4] ">
+                        Professionally crafted case theory
+                      </h5>
+                      <div className="w-full    ">
+                        {editQuery ? (
+                          <textarea
+                            className="text-red-600 w-full text-wrap"
+                            onChange={(
+                              event: React.ChangeEvent<HTMLTextAreaElement>
+                            ) => {
+                              setSearchQuery(event?.target?.value);
+                            }}
+                            value={searchQuery || ""}
+                          />
+                        ) : (
+                          <p className="line-clamp-3">{searchQuery}</p>
+                        )}
+                        {editQuery !== "edit" ? (
+                          <button
+                            onClick={() => setEditQuery("edit")}
+                            // onClick={() => setEditQuery((prev) => !prev)}
+                            className="inline-block px-1 py-[0.5px] rounded-md text-sm bg-green-600  text-white"
+                          >
+                            Edit
+                          </button>
+                        ) : (
+                          <div className="flex gap-5">
+                            <button
+                              onClick={() => {
+                                searchQuery && setEditQuery(null);
+                                searchQuery &&
+                                  UpdateUrlParams("q", searchQuery);
+                              }}
+                              // onClick={() => setEditQuery((prev) => !prev)}
+                              className="px-1 py-[0.5px] rounded-md text-sm bg-red-600 text-white"
+                            >
+                              Search
+                            </button>
+                            <button
+                              className="px-1 py-[0.5px] rounded-md text-sm bg-blue-600 text-white"
+                              onClick={() => setEditQuery(null)}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* <h1
                     id="case_crafter"
                     ref={h1Ref}
                     className={`${
@@ -434,100 +529,120 @@ const Page: NextPageWithLayout = () => {
                       {query.slice(0, 73)}
                     </span>
                   </h1>  */}
+                      {data && (
+                        <div>
+                          <section
+                            id="1. CASE OVERVIEW"
+                            className="pb-5  border-b-[1px] border-gray-300"
+                          >
+                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                              1. CASE OVERVIEW
+                            </h3>
+                            <h4 className="text-sm text-powder_blue">
+                              Parties Involved:
+                            </h4>
+                            <div className="">
+                              {data?.legal_brief.case_overview.parties.map(
+                                ({ name, role }) => (
+                                  <div key={"key" + name}>
+                                    <span className="text-sm text-powder_blue font-normal">
+                                      {role}:{" "}
+                                    </span>
+                                    <span className="text-lexblue font-normal text-sm">
+                                      {name}
+                                    </span>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </section>
 
-                  {data && (
-                    <div>
-                      <section className="pb-5  border-b-[1px] border-gray-300">
-                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
-                          1. CASE OVERVIEW
-                        </h3>
-                        <h4 className="text-sm text-powder_blue">
-                          Parties Involved:
-                        </h4>
-                        <div className="">
-                          {data?.legal_brief.case_overview.parties.map(
-                            ({ name, role }) => (
-                              <div key={"key" + name}>
-                                <span className="text-sm text-powder_blue font-normal">
-                                  {role}:{" "}
-                                </span>
-                                <span className="text-lexblue font-normal text-sm">
-                                  {name}
-                                </span>
-                              </div>
-                            )
-                          )}
-                        </div>
-                      </section>
+                          <section
+                            id="2. BRIEF SUMMARY"
+                            className="pb-5  border-b-[1px] border-gray-300"
+                          >
+                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                              2. BRIEF SUMMARY
+                            </h3>
+                            <p className="text-lexblue text-sm ">
+                              {data?.legal_brief.summary}
+                            </p>
+                          </section>
+                          <section
+                            id="3. FACTS OF THE CASE/EVENTS"
+                            className="pb-5  border-b-[1px] border-gray-300"
+                          >
+                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                              3. FACTS OF THE CASE/EVENTS
+                            </h3>
+                            <p className="text-lexblue text-sm ">
+                              {data?.legal_brief.facts}
+                            </p>
+                          </section>
+                          <section
+                            id="4. JURISDICTION/COURT"
+                            className="pb-5  border-b-[1px] border-gray-300"
+                          >
+                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                              4. JURISDICTION/COURT
+                            </h3>
+                            <p className="text-lexblue text-sm ">
+                              {data?.legal_brief.jurisdiction}
+                            </p>
+                          </section>
+                          <section
+                            id="5. ISSUES FOR DETERMINATION"
+                            className="pb-5  border-b-[1px] border-gray-300"
+                          >
+                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                              5. ISSUES FOR DETERMINATION
+                            </h3>
+                            {/* <h4 className="text-base">Parties Involved:</h4> */}
+                            <div className="ml-[10px] text-sm text-lexblue">
+                              {data?.legal_brief.issues.map(
+                                ({ category, description }, idx) => (
+                                  <div key={`${category}-${idx}`}>
+                                    <h3 className="text-sm capitalize text-powder_blue">
+                                      {category} Issue:{" "}
+                                    </h3>
+                                    <p className="text-lexblue text-sm">
+                                      {description}
+                                    </p>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </section>
+                          <section
+                            id="6. CLAIMS BY PLAINTIFF: STRENGTHS & WEAKNESSES"
+                            className="ml-[10px] text-sm text-powder_blue"
+                          >
+                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                              6. CLAIMS BY PLAINTIFF: STRENGTHS & WEAKNESSES
+                            </h3>
+                            {data?.legal_brief?.plaintiff_claims && (
+                              <Partyclaims
+                                data={data?.legal_brief.plaintiff_claims}
+                                party="Plaintiff"
+                              />
+                            )}
+                          </section>
+                          <section
+                            id="7. CLAIMS BY DEFENDANT: STRENGTHS & WEAKNESSES"
+                            className=""
+                          >
+                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                              7. CLAIMS BY DEFENDANT: STRENGTHS & WEAKNESSES
+                            </h3>
+                            {data?.legal_brief?.defendant_claims && (
+                              <Partyclaims
+                                data={data?.legal_brief.defendant_claims}
+                                party="Defendant"
+                              />
+                            )}
+                          </section>
 
-                      <section className="pb-5  border-b-[1px] border-gray-300">
-                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
-                          2. BRIEF SUMMARY
-                        </h3>
-                        <p className="text-lexblue text-sm ">
-                          {data?.legal_brief.summary}
-                        </p>
-                      </section>
-                      <section className="pb-5  border-b-[1px] border-gray-300">
-                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
-                          3. FACTS OF THE CASE/EVENTS
-                        </h3>
-                        <p className="text-lexblue text-sm ">
-                          {data?.legal_brief.facts}
-                        </p>
-                      </section>
-                      <section className="pb-5  border-b-[1px] border-gray-300">
-                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
-                          4. JURISDICTION/COURT
-                        </h3>
-                        <p className="text-lexblue text-sm ">
-                          {data?.legal_brief.jurisdiction}
-                        </p>
-                      </section>
-                      <section className="pb-5  border-b-[1px] border-gray-300">
-                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
-                          5. ISSUES FOR DETERMINATION
-                        </h3>
-                        {/* <h4 className="text-base">Parties Involved:</h4> */}
-                        <div className="ml-[10px] text-sm text-lexblue">
-                          {data?.legal_brief.issues.map(
-                            ({ category, description }, idx) => (
-                              <div key={`${category}-${idx}`}>
-                                <h3 className="text-sm capitalize text-powder_blue">
-                                  {category} Issue:{" "}
-                                </h3>
-                                <p className="text-lexblue text-sm">
-                                  {description}
-                                </p>
-                              </div>
-                            )
-                          )}
-                        </div>
-                      </section>
-                      <section className="ml-[10px] text-sm text-powder_blue">
-                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
-                          6. CLAIMS BY PLAINTIFF: STRENGTHS & WEAKNESSES
-                        </h3>
-                        {data?.legal_brief?.plaintiff_claims && (
-                          <Partyclaims
-                            data={data?.legal_brief.plaintiff_claims}
-                            party="Plaintiff"
-                          />
-                        )}
-                      </section>
-                      <section>
-                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
-                          7. CLAIMS BY DEFENDANT: STRENGTHS & WEAKNESSES
-                        </h3>
-                        {data?.legal_brief?.defendant_claims && (
-                          <Partyclaims
-                            data={data?.legal_brief.defendant_claims}
-                            party="Defendant"
-                          />
-                        )}
-                      </section>
-
-                      {/* <section className="pb-5  border-b-[1px] border-gray-300">
+                          {/* <section className="pb-5  border-b-[1px] border-gray-300">
                         <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
                           6. CLAIMS BY PLAINTIFF: STRENGTHS & WEAKNESSES
                         </h3>
@@ -578,7 +693,7 @@ const Page: NextPageWithLayout = () => {
                           )}
                         </div>
                       </section> */}
-                      {/* <section className="pb-5  border-b-[1px] border-gray-300">
+                          {/* <section className="pb-5  border-b-[1px] border-gray-300">
                         <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
                           7. CLAIMS BY DEFENDANT: STRENGTHS & WEAKNESSES
                         </h3>
@@ -627,59 +742,76 @@ const Page: NextPageWithLayout = () => {
                           )}
                         </div>
                       </section> */}
-                      <section className="pb-5  border-b-[1px] border-gray-300">
-                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
-                          8. PRAYERS TO THE COURT/REMEDIES SOUGHT
-                        </h3>
-                        <PartiesPrayers />
-                      </section>
-                      <section className="pb-5  border-b-[1px] border-gray-300">
-                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
-                          9. SUPPORTING EVIDENCE
-                        </h3>
-                        <p className="text-lexblue text-sm ">
-                          {data?.legal_brief.evidence}
-                        </p>
-                      </section>
-                      <section className="pb-5  border-b-[1px] border-gray-300">
-                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
-                          10. RELEVANT CASE PRECEDENTS
-                        </h3>
-                        {/* <CaseTreatmentDetails /> */}
-                        {data?.legal_brief.precedents.map((value, idx) => (
-                          <p
-                            key={`key-precendent-${idx}`}
-                            className="text-lexblue text-sm "
+                          <section
+                            id="8. PRAYERS TO THE COURT/REMEDIES SOUGHT"
+                            className="pb-5  border-b-[1px] border-gray-300"
                           >
-                            {value}
-                          </p>
-                        ))}
-                      </section>
-                      <section className="pb-5  border-b-[1px] border-gray-300">
-                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
-                          11. SUPPORTING AUTHORITIES (LEGISLATION)
-                        </h3>
-                        <div className="text-lexblue text-sm ">
-                          {data?.legal_brief.legislation.map((value, idx) => (
-                            <p
-                              key={`key-legislations-${idx}`}
-                              className="text-lexblue text-sm "
-                            >
-                              {value}
+                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                              8. PRAYERS TO THE COURT/REMEDIES SOUGHT
+                            </h3>
+                            <PartiesPrayers />
+                          </section>
+                          <section
+                            id="9. SUPPORTING EVIDENCE"
+                            className="pb-5  border-b-[1px] border-gray-300"
+                          >
+                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                              9. SUPPORTING EVIDENCE
+                            </h3>
+                            <p className="text-lexblue text-sm ">
+                              {data?.legal_brief.evidence}
                             </p>
-                          ))}
-                        </div>
-                      </section>
-                      <section className="pb-5  border-b-[1px] border-gray-300">
-                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
-                          12. LEGAL ARGUMENTS
-                        </h3>
-                        {data?.legal_brief?.legal_arguments && (
-                          <Legalarguements
-                            data={data?.legal_brief.legal_arguments}
-                          />
-                        )}
-                        {/* <h4 className="text-sm text-powder_blue">
+                          </section>
+                          <section
+                            id="10. RELEVANT CASE PRECEDENTS"
+                            className="pb-5  border-b-[1px] border-gray-300"
+                          >
+                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                              10. RELEVANT CASE PRECEDENTS
+                            </h3>
+                            {/* <CaseTreatmentDetails /> */}
+                            {data?.legal_brief.precedents.map((value, idx) => (
+                              <p
+                                key={`key-precendent-${idx}`}
+                                className="text-lexblue text-sm "
+                              >
+                                {value}
+                              </p>
+                            ))}
+                          </section>
+                          <section
+                            id="11. SUPPORTING AUTHORITIES (LEGISLATION)"
+                            className="pb-5  border-b-[1px] border-gray-300"
+                          >
+                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                              11. SUPPORTING AUTHORITIES (LEGISLATION)
+                            </h3>
+                            <div className="text-lexblue text-sm ">
+                              {data?.legal_brief.legislation.map(
+                                (value, idx) => (
+                                  <p
+                                    key={`key-legislations-${idx}`}
+                                    className="text-lexblue text-sm "
+                                  >
+                                    {value}
+                                  </p>
+                                )
+                              )}
+                            </div>
+                          </section>
+                          <section
+                            id="12. LEGAL ARGUMENTS"
+                            className="pb-5  border-b-[1px] border-gray-300"
+                          >
+                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                              12. LEGAL ARGUMENTS
+                            </h3>
+                            {data?.legal_brief?.legal_arguments && (
+                              <Legalarguements
+                                data={data?.legal_brief.legal_arguments}
+                              />
+                            )}
+                            {/* <h4 className="text-sm text-powder_blue">
                           Plaintiff's Arguments:
                         </h4>
                         <div className="text-lexblue text-sm ">
@@ -709,20 +841,23 @@ const Page: NextPageWithLayout = () => {
                             )
                           )}
                         </div> */}
-                      </section>
-                      <section className="pb-5  border-b-[1px] border-gray-300">
-                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
-                          13. RISK ANALYSIS
-                        </h3>
-                        {data?.legal_brief?.risk_analysis && (
-                          <Riskanalysis
-                            data={data?.legal_brief.risk_analysis}
-                          />
-                        )}
-                        {/* <h4 className="text-[1.1rem] text-powder_blue">
+                          </section>
+                          <section
+                            id="13. RISK ANALYSIS"
+                            className="pb-5  border-b-[1px] border-gray-300"
+                          >
+                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                              13. RISK ANALYSIS
+                            </h3>
+                            {data?.legal_brief?.risk_analysis && (
+                              <Riskanalysis
+                                data={data?.legal_brief.risk_analysis}
+                              />
+                            )}
+                            {/* <h4 className="text-[1.1rem] text-powder_blue">
                           Defendant's Counterarguments:
                         </h4> */}
-                        {/* <div className="text-lexblue text-sm ">
+                            {/* <div className="text-lexblue text-sm ">
                           {data?.legal_brief.risk_analysis.plaintiff.map(
                             (value, idx) => (
                               <p
@@ -735,7 +870,7 @@ const Page: NextPageWithLayout = () => {
                             )
                           )}
                         </div> */}
-                        {/* <div className="text-lexblue text-sm ">
+                            {/* <div className="text-lexblue text-sm ">
                           {data?.legal_brief.risk_analysis.defendant.map(
                             (value, idx) => (
                               <p
@@ -748,91 +883,98 @@ const Page: NextPageWithLayout = () => {
                             )
                           )}
                         </div> */}
-                      </section>
-                      <section className="pb-5  border-b-[1px] border-gray-300">
-                        <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
-                          14. READING LIST
-                        </h3>
-                        <div className="text-lexblue text-sm ">
-                          {data?.legal_brief?.reading_list.map((value, idx) => (
-                            <p
-                              key={`key-reading-list-${idx}`}
-                              className="text-lexblue text-sm "
-                            >
-                              <span className="">{idx + 1}.</span> {value}
-                              {/* Defendant's Risks: <span className="">{value}</span> */}
-                            </p>
-                          ))}
-                        </div>
-                      </section>
-                      {/* <Markdown
+                          </section>
+                          <section
+                            id="14. READING LIST"
+                            className="pb-5  border-b-[1px] border-gray-300"
+                          >
+                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                              14. READING LIST
+                            </h3>
+                            <div className="text-lexblue text-sm ">
+                              {data?.legal_brief?.reading_list.map(
+                                (value, idx) => (
+                                  <p
+                                    key={`key-reading-list-${idx}`}
+                                    className="text-lexblue text-sm "
+                                  >
+                                    <span className="">{idx + 1}.</span> {value}
+                                    {/* Defendant's Risks: <span className="">{value}</span> */}
+                                  </p>
+                                )
+                              )}
+                            </div>
+                          </section>
+                          {/* <Markdown
                         content={data?.markdown_brief}
                         className="wrapper text-wrap overflow-x-hidden text-sm text-lexblue font-poppins"
                       /> */}
-                    </div>
-                  )}
-                </div>
-                <div className="pt-[50px]">
-                  {[
-                    ["share-knowledge-stroke-rounded.svg", "Share"],
-                    ["file-download-stroke-rounded.svg", "Download"],
-                  ].map(([icon, name]) => (
-                    <button
-                      key={name as string}
-                      type="button"
-                      className=" focus:outline-none outline-none outline-transparent transition duration-300 ease-out font-sans  select-none  relative group/button  justify-center text-center items-center rounded-full cursor-pointer active:scale-[0.97] active:duration-150  origin-center whitespace-nowrap inline-flex text-sm h-8 pl-2.5 pr-3"
-                    >
-                      {name === "Download" ? (
-                        <a
-                          href={
-                            name === "Download"
-                              ? `https://webapp.lexanalytics.ai/api/ask/pdf?question=${encodeURIComponent(
-                                  query ?? ""
-                                )}`
-                              : "#Llmanswer"
-                          }
-                          download
-                          className="flex items-center min-w-0 font-medium gap-1.5 justify-center"
-                        >
-                          <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
-                            <Image
-                              width={16}
-                              height={16}
-                              src={`/images/icons/${icon}`}
-                              alt={name}
-                            />
-                          </div>
-                          <div className="text-align-center relative truncate leading-loose -mb-px text-powder_blue">
-                            {name}
-                          </div>
-                        </a>
-                      ) : (
-                        <div
-                          // href={
-                          //   name === "Download"
-                          //     ? `https://webapp.lexanalytics.ai/api/ask/pdf?question=${encodeURIComponent(
-                          //         query ?? ""
-                          //       )}`
-                          //     : "#Llmanswer"
-                          // }
-                          // download
-                          className="flex items-center min-w-0 font-medium gap-1.5 justify-center"
-                        >
-                          <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
-                            <Image
-                              width={16}
-                              height={16}
-                              src={`/images/icons/${icon}`}
-                              alt={name}
-                            />
-                          </div>
-                          <div className="text-align-center relative truncate leading-loose -mb-px text-powder_blue">
-                            {name}
-                          </div>
                         </div>
                       )}
-                    </button>
-                  ))}
+                    </div>
+                    <div className="pt-[50px]">
+                      {[
+                        ["share-knowledge-stroke-rounded.svg", "Share"],
+                        ["file-download-stroke-rounded.svg", "Download"],
+                      ].map(([icon, name]) => (
+                        <button
+                          key={name as string}
+                          type="button"
+                          className=" focus:outline-none outline-none outline-transparent transition duration-300 ease-out font-sans  select-none  relative group/button  justify-center text-center items-center rounded-full cursor-pointer active:scale-[0.97] active:duration-150  origin-center whitespace-nowrap inline-flex text-sm h-8 pl-2.5 pr-3"
+                        >
+                          {name === "Download" ? (
+                            <a
+                              href={
+                                name === "Download"
+                                  ? `https://webapp.lexanalytics.ai/api/ask/pdf?question=${encodeURIComponent(
+                                      query ?? ""
+                                    )}`
+                                  : "#Llmanswer"
+                              }
+                              download
+                              className="flex items-center min-w-0 font-medium gap-1.5 justify-center"
+                            >
+                              <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
+                                <Image
+                                  width={16}
+                                  height={16}
+                                  src={`/images/icons/${icon}`}
+                                  alt={name}
+                                />
+                              </div>
+                              <div className="text-align-center relative truncate leading-loose -mb-px text-powder_blue">
+                                {name}
+                              </div>
+                            </a>
+                          ) : (
+                            <div
+                              // href={
+                              //   name === "Download"
+                              //     ? `https://webapp.lexanalytics.ai/api/ask/pdf?question=${encodeURIComponent(
+                              //         query ?? ""
+                              //       )}`
+                              //     : "#Llmanswer"
+                              // }
+                              // download
+                              className="flex items-center min-w-0 font-medium gap-1.5 justify-center"
+                            >
+                              <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
+                                <Image
+                                  width={16}
+                                  height={16}
+                                  src={`/images/icons/${icon}`}
+                                  alt={name}
+                                />
+                              </div>
+                              <div className="text-align-center relative truncate leading-loose -mb-px text-powder_blue">
+                                {name}
+                              </div>
+                            </div>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
