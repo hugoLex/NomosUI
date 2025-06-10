@@ -473,7 +473,8 @@ const Page: NextPageWithLayout = () => {
                       <div className="w-full    ">
                         {editQuery ? (
                           <textarea
-                            className="text-red-600 w-full text-wrap"
+                            rows={3}
+                            className="text-red-600 w-full text-wrap "
                             onChange={(
                               event: React.ChangeEvent<HTMLTextAreaElement>
                             ) => {
@@ -482,17 +483,49 @@ const Page: NextPageWithLayout = () => {
                             value={searchQuery || ""}
                           />
                         ) : (
-                          <p className="line-clamp-3">{searchQuery}</p>
+                          <div className="max-h-[500px] overflow-y-clip relative">
+                            <p className="line-clamp-3 relative">
+                              {searchQuery}
+                              <div className="absolute bottom-[2px] z-50 right-0 ">
+                                <button
+                                  onClick={() => setEditQuery("edit")}
+                                  // onClick={() => setEditQuery((prev) => !prev)}
+                                  className=" inline-block px-1 py-[0.5px] rounded-md text-sm bg-green-600  text-white"
+                                >
+                                  Edit{" "}
+                                </button>
+                                <button
+                                  className="ml-[10px] px-1 py-[0.5px] rounded-md text-sm bg-white hover:bg-gray-authinput"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    searchQuery &&
+                                      navigator.clipboard.writeText(
+                                        searchQuery
+                                      );
+                                  }}
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="1.7142857142857142"
+                                    strokeLinecap="round"
+                                    stroke-linejoin="round"
+                                    className=" "
+                                  >
+                                    <path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z"></path>
+                                    <path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"></path>
+                                  </svg>
+                                </button>
+                              </div>
+                            </p>
+                            <div className="w-full absolute bottom-0 h-[52px] bg-[linear-gradient(transparent_0px,rgba(255,255,255,0.9)_52px,#fff_80px)]"></div>
+                          </div>
                         )}
-                        {editQuery !== "edit" ? (
-                          <button
-                            onClick={() => setEditQuery("edit")}
-                            // onClick={() => setEditQuery((prev) => !prev)}
-                            className="inline-block px-1 py-[0.5px] rounded-md text-sm bg-green-600  text-white"
-                          >
-                            Edit
-                          </button>
-                        ) : (
+                        {editQuery == "edit" && (
                           <div className="flex gap-5">
                             <button
                               onClick={() => {
