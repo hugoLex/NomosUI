@@ -472,35 +472,43 @@ const Page: NextPageWithLayout = () => {
                         Professionally crafted case theory
                       </h5>
                       <div className="w-full    ">
-                        {editQuery ? (
-                          <textarea
-                            rows={3} //the row should be determined the the size of the text
-                            className="text-red-600 w-full text-wrap "
-                            onChange={(
-                              event: React.ChangeEvent<HTMLTextAreaElement>
-                            ) => {
-                              setSearchQuery(event?.target?.value);
-                            }}
-                            value={searchQuery || ""}
-                          />
-                        ) : (
-                          <div className="max-h-[500px] overflow-y-clip relative">
-                            <div className="mt-[30px] bg-[#eaf0f2]/30 rounded-lg px-4 py-3 relative">
-                              <div className="flex justify-between">
-                                <h4 className="text-sm font-medium">Brief</h4>{" "}
-                                <div className=" ">
-                                  <PenIcon
-                                    size={14}
+                        <div className="max-h-[500px] overflow-y-clip relative">
+                          <div className="mt-[30px] bg-[#eaf0f2]/30 rounded-lg px-4 py-3 relative">
+                            <div className="flex justify-between">
+                              <h4 className="text-sm font-medium">Brief</h4>{" "}
+                              {editQuery != "edit" && (
+                                <div className=" flex items-center gap-2">
+                                  <Image
                                     onClick={() => setEditQuery("edit")}
                                     // onClick={() => setEditQuery((prev) => !prev)}
-                                    className=" inline-block px-1 py-[0.5px] rounded-md text-sm bg-green-600  text-white"
+                                    className=" inline-block px-1 py-[0.5px] cursor-pointer rounded-md text-sm hover:bg-[#20A8DE] text-white"
+                                    height={24}
+                                    width={24}
+                                    src={
+                                      "/images/icons/pencil-edit-stroke-rounded.svg"
+                                    }
+                                    // src={"../icons/ai-search-02-stroke-rounded.svg"}
+                                    alt="search"
+                                  />
+
+                                  <Image
+                                    className="ml-[10px] px-1 py-[0.5px] cursor-pointer rounded-md text- hover:bg-[#20A8DE] bg-white "
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      searchQuery &&
+                                        navigator.clipboard.writeText(
+                                          searchQuery
+                                        );
+                                    }}
+                                    height={24}
+                                    width={24}
+                                    src={
+                                      "/images/icons/copy-stroke-rounded.svg"
+                                    }
+                                    // src={"../icons/ai-search-02-stroke-rounded.svg"}
+                                    alt="search"
                                   />
                                   {/* <button
-                                   
-                                  >
-                                    Edit{" "}
-                                  </button> */}
-                                  <button
                                     className="ml-[10px] px-1 py-[0.5px] rounded-md text-sm bg-white hover:bg-gray-authinput"
                                     onClick={(e) => {
                                       e.stopPropagation();
@@ -525,40 +533,82 @@ const Page: NextPageWithLayout = () => {
                                       <path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z"></path>
                                       <path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1"></path>
                                     </svg>
-                                  </button>
+                                  </button> */}
                                 </div>
-                              </div>
-                              <hr className="mt-2 mb-5" />
+                              )}
+                              {editQuery == "edit" && (
+                                <div className="flex gap-5">
+                                  <Image
+                                    onClick={() => {
+                                      searchQuery && setEditQuery(null);
+                                      searchQuery &&
+                                        UpdateUrlParams("q", searchQuery);
+                                    }}
+                                    // onClick={() => setEditQuery((prev) => !prev)}
+                                    className="px-1 py-[0.5px] rounded-md text-sm cursor-pointer hover:bg-[#20A8DE] text-white"
+                                    height={24}
+                                    width={24}
+                                    src={
+                                      "/images/icons/search-stroke-rounded.svg"
+                                    }
+                                    // src={"../icons/ai-search-02-stroke-rounded.svg"}
+                                    alt="search"
+                                  />
+                                  {/* <button
+                                    onClick={() => {
+                                      searchQuery && setEditQuery(null);
+                                      searchQuery &&
+                                        UpdateUrlParams("q", searchQuery);
+                                    }}
+                                    // onClick={() => setEditQuery((prev) => !prev)}
+                                    className="px-1 py-[0.5px] rounded-md text-sm bg-red-600 text-white"
+                                  >
+                                    Search
+                                  </button> */}
+                                  <Image
+                                    className="px-1 py-[0.5px] rounded-md cursor-pointer text-sm hover:bg-[#20A8DE] text-white"
+                                    onClick={() => setEditQuery(null)}
+                                    height={24}
+                                    width={24}
+                                    src={
+                                      "/images/icons/cancel-stroke-rounded.svg"
+                                    }
+                                    // src={"../icons/ai-search-02-stroke-rounded.svg"}
+                                    alt="Cancel"
+                                  />
+                                  {/* <button
+                                    className="px-1 py-[0.5px] rounded-md text-sm bg-blue-600 text-white"
+                                    onClick={() => setEditQuery(null)}
+                                  >
+                                    Cancel
+                                  </button> */}
+                                </div>
+                              )}
+                            </div>
+                            <hr className="mt-2 mb-5" />
 
+                            {editQuery ? (
+                              <textarea
+                                rows={3} //the row should be determined the the size of the text
+                                className="text-gray-authinput w-full text-wrap outline-none focus:outline-none"
+                                onChange={(
+                                  event: React.ChangeEvent<HTMLTextAreaElement>
+                                ) => {
+                                  setSearchQuery(event?.target?.value);
+                                }}
+                                value={searchQuery || ""}
+                              />
+                            ) : (
                               <p className="line-clamp-3 relative text-sm font-poppins text-lexblue">
                                 {searchQuery}
                               </p>
-                            </div>
+                            )}
+                          </div>
 
+                          {!editQuery && (
                             <div className="w-full absolute bottom-0 h-[52px] bg-[linear-gradient(transparent_0px,rgba(255,255,255,0.9)_52px,#fff_80px)]"></div>
-                          </div>
-                        )}
-                        {editQuery == "edit" && (
-                          <div className="flex gap-5">
-                            <button
-                              onClick={() => {
-                                searchQuery && setEditQuery(null);
-                                searchQuery &&
-                                  UpdateUrlParams("q", searchQuery);
-                              }}
-                              // onClick={() => setEditQuery((prev) => !prev)}
-                              className="px-1 py-[0.5px] rounded-md text-sm bg-red-600 text-white"
-                            >
-                              Search
-                            </button>
-                            <button
-                              className="px-1 py-[0.5px] rounded-md text-sm bg-blue-600 text-white"
-                              onClick={() => setEditQuery(null)}
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        )}
+                          )}
+                        </div>
                       </div>
 
                       {/* <h1
