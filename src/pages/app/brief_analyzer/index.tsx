@@ -23,6 +23,7 @@ import Riskanalysis from "../../../components/app/briefanalyzer/riskanalysis";
 import Legalarguements from "../../../components/app/briefanalyzer/legalarguments";
 import Partyclaims from "../../../components/app/briefanalyzer/partyclaims";
 import { PenIcon } from "lucide-react";
+import AutoResizingTextarea from "@app/components/app/briefanalyzer/textareacomponent";
 
 const Page: NextPageWithLayout = () => {
   const { pathname, searchParams, UpdateUrlParams } = useQueryHandler();
@@ -111,20 +112,32 @@ const Page: NextPageWithLayout = () => {
     };
   }, [query]);
   const headings = [
-    "1. CASE OVERVIEW",
-    "2. BRIEF SUMMARY",
-    "3. FACTS OF THE CASE/EVENTS",
-    "4. JURISDICTION/COURT",
-    "5. ISSUES FOR DETERMINATION",
-    "6. CLAIMS BY PLAINTIFF: STRENGTHS & WEAKNESSES",
-    "7. CLAIMS BY DEFENDANT: STRENGTHS & WEAKNESSES",
-    "8. PRAYERS TO THE COURT/REMEDIES SOUGHT",
-    "9. SUPPORTING EVIDENCE",
-    "10. RELEVANT CASE PRECEDENTS",
-    "11. SUPPORTING AUTHORITIES (LEGISLATION)",
-    "12. LEGAL ARGUMENTS",
-    "13. RISK ANALYSIS",
-    "14. READING LIST",
+    ["1. CASE OVERVIEW", "1. Case Overview"],
+    ["2. BRIEF SUMMARY", "2. Brief Summary"],
+    ["3. FACTS OF THE CASE/EVENTS", "3. Facts Of The Case/Events"],
+    ["4. JURISDICTION/COURT", "4. Jurisdiction/Court"],
+    ["5. ISSUES FOR DETERMINATION", "5. Issues for Determination"],
+    [
+      "6. CLAIMS BY PLAINTIFF: STRENGTHS & WEAKNESSES",
+      "6. Claims By Plaintiff: Strengths & Weaknesses",
+    ],
+    [
+      "7. CLAIMS BY DEFENDANT: STRENGTHS & WEAKNESSES",
+      "7. Claims By Defendant: Strengths & Weaknesses",
+    ],
+    [
+      "8. PRAYERS TO THE COURT/REMEDIES SOUGHT",
+      "8. Prayers To The Court/Remedies Sought",
+    ],
+    ["9. SUPPORTING EVIDENCE", "9. Supporting Evidence"],
+    ["10. RELEVANT CASE PRECEDENTS", "10. Relevant Case Precedents"],
+    [
+      "11. SUPPORTING AUTHORITIES (LEGISLATION)",
+      "11. Supporting Authorities (Legislation)",
+    ],
+    ["12. LEGAL ARGUMENTS", "12. Legal Arguments"],
+    ["13. RISK ANALYSIS", "13. Risk Analysis"],
+    ["14. READING LIST", "14. Reading List"],
   ];
 
   useEffect(() => {
@@ -264,7 +277,7 @@ const Page: NextPageWithLayout = () => {
         // }));
 
         return (
-          <>
+          <Fragment key={key}>
             <h4 className="text-sm text-powder_blue">
               <span className=" capitalize">{key}</span>'s Prayers:
             </h4>
@@ -277,7 +290,7 @@ const Page: NextPageWithLayout = () => {
                 {value}
               </p>
             ))}
-          </>
+          </Fragment>
         );
       });
     } else {
@@ -439,30 +452,39 @@ const Page: NextPageWithLayout = () => {
           </Navbar>
 
           <Container>
-            <div className="flex gap-5 ">
-              <div className="case-headings pt-[50px]">
-                <h2 className="text-lg font-gilda_Display font-semibold">
+            <div className="flex gap-5 pt-[32px]">
+              <div className="case-headings pb-[32px] h-[calc(100vh-100px)] overflow-auto scrollbar ">
+                <h1
+                  ref={h1Ref}
+                  className="text-xx text-lexblue font-gilda_Display capitalize font-bold my-2"
+                >
+                  Case Craft
+                </h1>
+                <h5 className="text-base text-[#9ea7b4] ">
+                  Professionally crafted case theory
+                </h5>
+                <h2 className="mt-5 text-lg font-gilda_Display font-semibold text-lexblue">
                   Case Headings
                 </h2>
                 <ul>
-                  {headings.map((heading, index) => (
+                  {headings.map(([headingCaps, headingLow], index) => (
                     <li
-                      onClick={() => setPartToScrollTo(heading)}
+                      onClick={() => setPartToScrollTo(headingCaps)}
                       key={`heading-${index}`}
-                      className="text-sm cursor-pointer my-5"
+                      className="text-sm cursor-pointer my-5 text-powder_blue "
                     >
-                      {heading}
+                      {headingLow}
                     </li>
                   ))}
                 </ul>
               </div>
-              <div className="h-screen overflow-y-scroll">
-                <div className={`py-8 w-full md:max-w-[772px] mx-auto`}>
+              <div className=" h-[calc(100vh-100px)] overflow-y-auto no-scrollbar pr-[0.875rem]">
+                <div className={`pb-8 w-full md:max-w-[772px] mx-auto`}>
                   <div className="">
                     <div className="">
                       {/* was 8 with the sidebar  */}
                       {/* <div className="col-span-8"> */}
-                      <h1
+                      {/* <h1
                         ref={h1Ref}
                         className="text-xx text-lexblue font-gilda_Display capitalize font-bold my-2"
                       >
@@ -470,8 +492,8 @@ const Page: NextPageWithLayout = () => {
                       </h1>
                       <h5 className="text-base text-[#9ea7b4] ">
                         Professionally crafted case theory
-                      </h5>
-                      <div className="w-full    ">
+                      </h5> */}
+                      <div className="w-full mt- [72px]    ">
                         <div className="max-h-[500px] overflow-y-clip relative">
                           <div className="mt-[30px] bg-[#eaf0f2]/30 rounded-lg px-4 py-3 relative">
                             <div className="flex justify-between">
@@ -479,9 +501,10 @@ const Page: NextPageWithLayout = () => {
                               {editQuery != "edit" && (
                                 <div className=" flex items-center gap-2">
                                   <Image
+                                    title="Edit Query"
                                     onClick={() => setEditQuery("edit")}
                                     // onClick={() => setEditQuery((prev) => !prev)}
-                                    className=" inline-block px-1 py-[0.5px] cursor-pointer rounded-md text-sm hover:bg-[#20A8DE] text-white"
+                                    className=" inline-block px-1 py-[0.5px] cursor-pointer rounded-md text-sm hover:bg-[#20A8DE]/30 bg-white text-white"
                                     height={24}
                                     width={24}
                                     src={
@@ -492,7 +515,8 @@ const Page: NextPageWithLayout = () => {
                                   />
 
                                   <Image
-                                    className="ml-[10px] px-1 py-[0.5px] cursor-pointer rounded-md text- hover:bg-[#20A8DE] bg-white "
+                                    title="Copy Query"
+                                    className="ml-[10px] px-1 py-[0.5px] cursor-pointer rounded-md text- hover:bg-[#20A8DE]/30 bg-white "
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       searchQuery &&
@@ -539,13 +563,14 @@ const Page: NextPageWithLayout = () => {
                               {editQuery == "edit" && (
                                 <div className="flex gap-5">
                                   <Image
+                                    title="Update Brief"
                                     onClick={() => {
                                       searchQuery && setEditQuery(null);
                                       searchQuery &&
                                         UpdateUrlParams("q", searchQuery);
                                     }}
                                     // onClick={() => setEditQuery((prev) => !prev)}
-                                    className="px-1 py-[0.5px] rounded-md text-sm cursor-pointer hover:bg-[#20A8DE] text-white"
+                                    className="px-1 py-[0.5px] rounded-md text-sm cursor-pointer hover:bg-[#20A8DE]/30 bg-white text-white"
                                     height={24}
                                     width={24}
                                     src={
@@ -566,7 +591,8 @@ const Page: NextPageWithLayout = () => {
                                     Search
                                   </button> */}
                                   <Image
-                                    className="px-1 py-[0.5px] rounded-md cursor-pointer text-sm hover:bg-[#20A8DE] text-white"
+                                    title="Cancel"
+                                    className="px-1 py-[0.5px] rounded-md cursor-pointer text-sm hover:bg-[#20A8DE]/30 bg-white text-white"
                                     onClick={() => setEditQuery(null)}
                                     height={24}
                                     width={24}
@@ -588,9 +614,7 @@ const Page: NextPageWithLayout = () => {
                             <hr className="mt-2 mb-5" />
 
                             {editQuery ? (
-                              <textarea
-                                rows={3} //the row should be determined the the size of the text
-                                className="text-gray-authinput w-full text-wrap outline-none focus:outline-none"
+                              <AutoResizingTextarea
                                 onChange={(
                                   event: React.ChangeEvent<HTMLTextAreaElement>
                                 ) => {
@@ -599,6 +623,18 @@ const Page: NextPageWithLayout = () => {
                                 value={searchQuery || ""}
                               />
                             ) : (
+                              // <textarea
+                              //   ref={textareaRef}
+                              //   // rows={3} //the row should be determined the the size of the text
+                              //   className="text-gray-authinput w-full text-wrap outline-none focus:outline-none"
+                              //   onChange={(
+                              //     event: React.ChangeEvent<HTMLTextAreaElement>
+                              //   ) => {
+                              //     setSearchQuery(event?.target?.value);
+                              //   }}
+                              //   value={searchQuery || ""}
+                              //   onInput={resizeTextarea}
+                              // />
                               <p className="line-clamp-3 relative text-sm font-poppins text-lexblue">
                                 {searchQuery}
                               </p>
