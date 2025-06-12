@@ -35,11 +35,14 @@ const Page: NextPageWithLayout = () => {
   //   undefined
   // );
   const [editQuery, setEditQuery] = useState<string | null>(null);
-  const [partToScrollTo, setPartToScrollTo] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState<string | null>(
-    "A man wanted to sell his car how ever his neighbor exchanged the car with his they went home happy. after a month the price of the man's car became twice of the value and he wants his car back"
+  const [partToScrollTo, setPartToScrollTo] = useState<string | null>(
+    "1. CASE OVERVIEW"
   );
   const query = searchParams.get("q");
+  const [searchQuery, setSearchQuery] = useState<string | null>(
+    query
+    // "A man wanted to sell his car how ever his neighbor exchanged the car with his they went home happy. after a month the price of the man's car became twice of the value and he wants his car back"
+  );
   const h1Ref = useRef<HTMLHeadingElement | null>(null);
 
   const [brief_analyzer, { isLoading, isSuccess, data }] =
@@ -141,15 +144,48 @@ const Page: NextPageWithLayout = () => {
   ];
 
   useEffect(() => {
-    // After judgment loads, scroll to the highlighted section
     partToScrollTo &&
       setTimeout(() => {
         const targetElement = document.getElementById(partToScrollTo);
         if (targetElement) {
-          targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
+          // targetElement.scrollTo({
+          //   top: 100,
+          //   behavior: "smooth",
+          // });
+
+          // targetElement.
+          targetElement.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "nearest",
+          });
         }
       }, 300);
   }, [partToScrollTo]);
+
+  // useEffect(() => {
+  //   partToScrollTo &&
+  //     setTimeout(() => {
+  //       const targetElement = document.getElementById(partToScrollTo);
+  //       const scrollContainer = document.getElementById("scrollContainerBrief");
+
+  //       if (targetElement && scrollContainer) {
+  //         const containerRect = scrollContainer.getBoundingClientRect();
+  //         const targetRect = targetElement.getBoundingClientRect();
+
+  //         const scrollTop =
+  //           targetRect.top - containerRect.top + scrollContainer.scrollTop;
+
+  //         scrollContainer.scrollTo({
+  //           top:
+  //             scrollTop -
+  //             scrollContainer.clientHeight / 2 +
+  //             targetRect.height / 2, // Center the element
+  //           behavior: "smooth",
+  //         });
+  //       }
+  //     }, 300);
+  // }, [partToScrollTo]);
 
   const onSearchSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt?.preventDefault();
@@ -454,7 +490,7 @@ const Page: NextPageWithLayout = () => {
           <Container>
             <div className="flex gap-5 pt-[32px]">
               <div className="case-headings pb-[32px] h-[calc(100vh-100px)] overflow-auto scrollbar ">
-                <h1
+                {/* <h1
                   ref={h1Ref}
                   className="text-xx text-lexblue font-gilda_Display capitalize font-bold my-2"
                 >
@@ -462,29 +498,31 @@ const Page: NextPageWithLayout = () => {
                 </h1>
                 <h5 className="text-base text-[#9ea7b4] ">
                   Professionally crafted case theory
-                </h5>
-                <h2 className="mt-5 text-lg font-gilda_Display font-semibold text-lexblue">
-                  Case Headings
+                </h5> */}
+                <h2 className="mt-5 text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                  CONTENTS
                 </h2>
                 <ul>
                   {headings.map(([headingCaps, headingLow], index) => (
                     <li
                       onClick={() => setPartToScrollTo(headingCaps)}
                       key={`heading-${index}`}
-                      className="text-sm cursor-pointer my-5 text-powder_blue "
+                      className={`text-sm cursor-pointer my-5 text-powder_blue ${
+                        partToScrollTo === headingCaps && "font-bold"
+                      } `}
                     >
                       {headingLow}
                     </li>
                   ))}
                 </ul>
               </div>
-              <div className=" h-[calc(100vh-100px)] overflow-y-auto no-scrollbar pr-[0.875rem]">
+              <div className="scrollContainerBrief h-[calc(100vh-100px)] overflow-y-auto no-scrollbar pr-[0.875rem]">
                 <div className={`pb-8 w-full md:max-w-[772px] mx-auto`}>
                   <div className="">
                     <div className="">
                       {/* was 8 with the sidebar  */}
                       {/* <div className="col-span-8"> */}
-                      {/* <h1
+                      <h1
                         ref={h1Ref}
                         className="text-xx text-lexblue font-gilda_Display capitalize font-bold my-2"
                       >
@@ -492,7 +530,7 @@ const Page: NextPageWithLayout = () => {
                       </h1>
                       <h5 className="text-base text-[#9ea7b4] ">
                         Professionally crafted case theory
-                      </h5> */}
+                      </h5>
                       <div className="w-full mt- [72px]    ">
                         <div className="max-h-[500px] overflow-y-clip relative">
                           <div className="mt-[30px] bg-[#eaf0f2]/30 rounded-lg px-4 py-3 relative">
@@ -620,7 +658,7 @@ const Page: NextPageWithLayout = () => {
                                 ) => {
                                   setSearchQuery(event?.target?.value);
                                 }}
-                                value={searchQuery || ""}
+                                value={searchQuery || query}
                               />
                             ) : (
                               // <textarea
@@ -636,7 +674,8 @@ const Page: NextPageWithLayout = () => {
                               //   onInput={resizeTextarea}
                               // />
                               <p className="line-clamp-3 relative text-sm font-poppins text-lexblue">
-                                {searchQuery}
+                                {query}
+                                {/* {searchQuery || query} */}
                               </p>
                             )}
                           </div>
@@ -667,7 +706,13 @@ const Page: NextPageWithLayout = () => {
                             id="1. CASE OVERVIEW"
                             className="pb-5  border-b-[1px] border-gray-300"
                           >
-                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                            <h3
+                              className={` ${
+                                partToScrollTo == "1. CASE OVERVIEW"
+                                  ? "text-lexblue"
+                                  : "text-powder_blue"
+                              } my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                            >
                               1. CASE OVERVIEW
                             </h3>
                             <h4 className="text-sm text-powder_blue">
@@ -693,7 +738,13 @@ const Page: NextPageWithLayout = () => {
                             id="2. BRIEF SUMMARY"
                             className="pb-5  border-b-[1px] border-gray-300"
                           >
-                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                            <h3
+                              className={`${
+                                partToScrollTo == "2. BRIEF SUMMARY"
+                                  ? "text-lexblue"
+                                  : "text-powder_blue"
+                              } my-[16px] text-[1.1rem] font-semibold  font-gilda_Display`}
+                            >
                               2. BRIEF SUMMARY
                             </h3>
                             <p className="text-lexblue text-sm ">
@@ -704,7 +755,13 @@ const Page: NextPageWithLayout = () => {
                             id="3. FACTS OF THE CASE/EVENTS"
                             className="pb-5  border-b-[1px] border-gray-300"
                           >
-                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                            <h3
+                              className={` ${
+                                partToScrollTo == "3. FACTS OF THE CASE/EVENTS"
+                                  ? "text-lexblue"
+                                  : "text-powder_blue"
+                              }  my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                            >
                               3. FACTS OF THE CASE/EVENTS
                             </h3>
                             <p className="text-lexblue text-sm ">
@@ -715,7 +772,13 @@ const Page: NextPageWithLayout = () => {
                             id="4. JURISDICTION/COURT"
                             className="pb-5  border-b-[1px] border-gray-300"
                           >
-                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                            <h3
+                              className={`${
+                                partToScrollTo == "4. JURISDICTION/COURT"
+                                  ? "text-lexblue"
+                                  : "text-powder_blue"
+                              } my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                            >
                               4. JURISDICTION/COURT
                             </h3>
                             <p className="text-lexblue text-sm ">
@@ -726,7 +789,13 @@ const Page: NextPageWithLayout = () => {
                             id="5. ISSUES FOR DETERMINATION"
                             className="pb-5  border-b-[1px] border-gray-300"
                           >
-                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                            <h3
+                              className={` ${
+                                partToScrollTo == "5. ISSUES FOR DETERMINATION"
+                                  ? "text-lexblue"
+                                  : "text-powder_blue"
+                              }  my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                            >
                               5. ISSUES FOR DETERMINATION
                             </h3>
                             {/* <h4 className="text-base">Parties Involved:</h4> */}
@@ -749,7 +818,14 @@ const Page: NextPageWithLayout = () => {
                             id="6. CLAIMS BY PLAINTIFF: STRENGTHS & WEAKNESSES"
                             className="ml-[10px] text-sm text-powder_blue"
                           >
-                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                            <h3
+                              className={` ${
+                                partToScrollTo ==
+                                "6. CLAIMS BY PLAINTIFF: STRENGTHS & WEAKNESSES"
+                                  ? "text-lexblue"
+                                  : "text-powder_blue"
+                              } my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                            >
                               6. CLAIMS BY PLAINTIFF: STRENGTHS & WEAKNESSES
                             </h3>
                             {data?.legal_brief?.plaintiff_claims && (
@@ -763,7 +839,14 @@ const Page: NextPageWithLayout = () => {
                             id="7. CLAIMS BY DEFENDANT: STRENGTHS & WEAKNESSES"
                             className=""
                           >
-                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                            <h3
+                              className={` ${
+                                partToScrollTo ==
+                                "7. CLAIMS BY DEFENDANT: STRENGTHS & WEAKNESSES"
+                                  ? "text-lexblue"
+                                  : "text-powder_blue"
+                              }  my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                            >
                               7. CLAIMS BY DEFENDANT: STRENGTHS & WEAKNESSES
                             </h3>
                             {data?.legal_brief?.defendant_claims && (
@@ -878,7 +961,14 @@ const Page: NextPageWithLayout = () => {
                             id="8. PRAYERS TO THE COURT/REMEDIES SOUGHT"
                             className="pb-5  border-b-[1px] border-gray-300"
                           >
-                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                            <h3
+                              className={`${
+                                partToScrollTo ==
+                                "8. PRAYERS TO THE COURT/REMEDIES SOUGHT"
+                                  ? "text-lexblue"
+                                  : "text-powder_blue"
+                              }  my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                            >
                               8. PRAYERS TO THE COURT/REMEDIES SOUGHT
                             </h3>
                             <PartiesPrayers />
@@ -887,7 +977,13 @@ const Page: NextPageWithLayout = () => {
                             id="9. SUPPORTING EVIDENCE"
                             className="pb-5  border-b-[1px] border-gray-300"
                           >
-                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                            <h3
+                              className={`${
+                                partToScrollTo == "9. SUPPORTING EVIDENCE"
+                                  ? "text-lexblue"
+                                  : "text-powder_blue"
+                              }  my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                            >
                               9. SUPPORTING EVIDENCE
                             </h3>
                             <p className="text-lexblue text-sm ">
@@ -898,7 +994,13 @@ const Page: NextPageWithLayout = () => {
                             id="10. RELEVANT CASE PRECEDENTS"
                             className="pb-5  border-b-[1px] border-gray-300"
                           >
-                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                            <h3
+                              className={`${
+                                partToScrollTo == "10. RELEVANT CASE PRECEDENTS"
+                                  ? "text-lexblue"
+                                  : "text-powder_blue"
+                              }  my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display`}
+                            >
                               10. RELEVANT CASE PRECEDENTS
                             </h3>
                             {/* <CaseTreatmentDetails /> */}
@@ -915,7 +1017,14 @@ const Page: NextPageWithLayout = () => {
                             id="11. SUPPORTING AUTHORITIES (LEGISLATION)"
                             className="pb-5  border-b-[1px] border-gray-300"
                           >
-                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                            <h3
+                              className={`${
+                                partToScrollTo ==
+                                "11. SUPPORTING AUTHORITIES (LEGISLATION)"
+                                  ? "text-lexblue"
+                                  : "text-powder_blue"
+                              }  my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                            >
                               11. SUPPORTING AUTHORITIES (LEGISLATION)
                             </h3>
                             <div className="text-lexblue text-sm ">
@@ -935,7 +1044,13 @@ const Page: NextPageWithLayout = () => {
                             id="12. LEGAL ARGUMENTS"
                             className="pb-5  border-b-[1px] border-gray-300"
                           >
-                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                            <h3
+                              className={`${
+                                partToScrollTo == "12. LEGAL ARGUMENTS"
+                                  ? "text-lexblue"
+                                  : "text-powder_blue"
+                              }  my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                            >
                               12. LEGAL ARGUMENTS
                             </h3>
                             {data?.legal_brief?.legal_arguments && (
@@ -978,7 +1093,13 @@ const Page: NextPageWithLayout = () => {
                             id="13. RISK ANALYSIS"
                             className="pb-5  border-b-[1px] border-gray-300"
                           >
-                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                            <h3
+                              className={`${
+                                partToScrollTo == "13. RISK ANALYSIS"
+                                  ? "text-lexblue"
+                                  : "text-powder_blue"
+                              }  my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display`}
+                            >
                               13. RISK ANALYSIS
                             </h3>
                             {data?.legal_brief?.risk_analysis && (
@@ -1020,7 +1141,13 @@ const Page: NextPageWithLayout = () => {
                             id="14. READING LIST"
                             className="pb-5  border-b-[1px] border-gray-300"
                           >
-                            <h3 className="my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
+                            <h3
+                              className={`${
+                                partToScrollTo == "14. READING LIST"
+                                  ? "text-lexblue"
+                                  : "text-powder_blue"
+                              }  my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                            >
                               14. READING LIST
                             </h3>
                             <div className="text-lexblue text-sm ">
