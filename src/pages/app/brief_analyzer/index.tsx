@@ -532,7 +532,7 @@ const Page: NextPageWithLayout = () => {
                         Professionally crafted case theory
                       </h5>
                       <div className="w-full mt- [72px]    ">
-                        <div className="max-h-[500px] overflow-y-clip relative">
+                        <div className="max-h-[750px] overflow-y-clip relative">
                           <div className="mt-[30px] bg-[#eaf0f2]/30 rounded-lg px-4 py-3 relative">
                             <div className="flex justify-between">
                               <h4 className="text-sm font-medium">Brief</h4>{" "}
@@ -673,7 +673,7 @@ const Page: NextPageWithLayout = () => {
                               //   value={searchQuery || ""}
                               //   onInput={resizeTextarea}
                               // />
-                              <p className="line-clamp-3 relative text-sm font-poppins text-lexblue">
+                              <p className="line-clamp-6 relative text-sm font-poppins text-lexblue">
                                 {query}
                                 {/* {searchQuery || query} */}
                               </p>
