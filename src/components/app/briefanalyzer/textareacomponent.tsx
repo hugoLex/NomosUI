@@ -35,7 +35,7 @@ const AutoResizingTextarea: React.FC<AutoResizingTextareaProps> = ({
       onChange={onChange}
       onInput={resizeTextarea}
       placeholder={placeholder}
-      className={`text-gray-authinput w-full text-wrap outline-none focus:outline-none ${className}`}
+      className={`text-gray-authinput text-sm p-[10px] w-full text-wrap outline-none focus:outline-none ${className}`}
     />
   );
 };

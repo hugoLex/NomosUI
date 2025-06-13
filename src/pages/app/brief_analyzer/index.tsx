@@ -500,14 +500,14 @@ const Page: NextPageWithLayout = () => {
                   Professionally crafted case theory
                 </h5> */}
                 <h2 className="mt-5 text-[1.1rem] font-semibold text-powder_blue font-gilda_Display">
-                  CONTENTS
+                  CONTENT
                 </h2>
                 <ul>
                   {headings.map(([headingCaps, headingLow], index) => (
                     <li
                       onClick={() => setPartToScrollTo(headingCaps)}
                       key={`heading-${index}`}
-                      className={`text-sm cursor-pointer my-5 text-powder_blue ${
+                      className={`text-sm cursor-pointer my-[15px] text-powder_blue ${
                         partToScrollTo === headingCaps && "font-bold"
                       } `}
                     >
@@ -533,7 +533,7 @@ const Page: NextPageWithLayout = () => {
                       </h5>
                       <div className="w-full mt- [72px]    ">
                         <div className="max-h-[750px] overflow-y-clip relative">
-                          <div className="mt-[30px] bg-[#eaf0f2]/30 rounded-lg px-4 py-3 relative">
+                          <div className="mt-[30px] w-full bg-[#eaf0f2]/30 rounded-lg px-4 py-3 relative">
                             <div className="flex justify-between">
                               <h4 className="text-sm font-medium">Brief</h4>{" "}
                               {editQuery != "edit" && (
@@ -711,9 +711,9 @@ const Page: NextPageWithLayout = () => {
                                 partToScrollTo == "1. CASE OVERVIEW"
                                   ? "text-lexblue"
                                   : "text-powder_blue"
-                              } my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                              } my-[16px] text-[1.1rem] capitalize font-semibold font-gilda_Display`}
                             >
-                              1. CASE OVERVIEW
+                              {"1. CASE OVERVIEW".toLowerCase()}
                             </h3>
                             <h4 className="text-sm text-powder_blue">
                               Parties Involved:
@@ -743,9 +743,9 @@ const Page: NextPageWithLayout = () => {
                                 partToScrollTo == "2. BRIEF SUMMARY"
                                   ? "text-lexblue"
                                   : "text-powder_blue"
-                              } my-[16px] text-[1.1rem] font-semibold  font-gilda_Display`}
+                              } my-[16px] text-[1.1rem] font-semibold capitalize  font-gilda_Display`}
                             >
-                              2. BRIEF SUMMARY
+                              {"2. BRIEF SUMMARY".toLowerCase()}
                             </h3>
                             <p className="text-lexblue text-sm ">
                               {data?.legal_brief.summary}
@@ -760,9 +760,9 @@ const Page: NextPageWithLayout = () => {
                                 partToScrollTo == "3. FACTS OF THE CASE/EVENTS"
                                   ? "text-lexblue"
                                   : "text-powder_blue"
-                              }  my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                              }  my-[16px] text-[1.1rem] font-semibold capitalize font-gilda_Display`}
                             >
-                              3. FACTS OF THE CASE/EVENTS
+                              {"3. FACTS OF THE CASE/EVENTS".toLowerCase()}
                             </h3>
                             <p className="text-lexblue text-sm ">
                               {data?.legal_brief.facts}
@@ -777,9 +777,9 @@ const Page: NextPageWithLayout = () => {
                                 partToScrollTo == "4. JURISDICTION/COURT"
                                   ? "text-lexblue"
                                   : "text-powder_blue"
-                              } my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                              } my-[16px] text-[1.1rem] font-semibold capitalize font-gilda_Display`}
                             >
-                              4. JURISDICTION/COURT
+                              {"4. JURISDICTION/COURT".toLowerCase()}
                             </h3>
                             <p className="text-lexblue text-sm ">
                               {data?.legal_brief.jurisdiction}
@@ -794,9 +794,9 @@ const Page: NextPageWithLayout = () => {
                                 partToScrollTo == "5. ISSUES FOR DETERMINATION"
                                   ? "text-lexblue"
                                   : "text-powder_blue"
-                              }  my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                              }  my-[16px] text-[1.1rem] font-semibold capitalize font-gilda_Display`}
                             >
-                              5. ISSUES FOR DETERMINATION
+                              {"5. ISSUES FOR DETERMINATION".toLowerCase()}
                             </h3>
                             {/* <h4 className="text-base">Parties Involved:</h4> */}
                             <div className="ml-[10px] text-sm text-lexblue">
@@ -824,9 +824,9 @@ const Page: NextPageWithLayout = () => {
                                 "6. CLAIMS BY PLAINTIFF: STRENGTHS & WEAKNESSES"
                                   ? "text-lexblue"
                                   : "text-powder_blue"
-                              } my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                              } my-[16px] text-[1.1rem] font-semibold capitalize font-gilda_Display`}
                             >
-                              6. CLAIMS BY PLAINTIFF: STRENGTHS & WEAKNESSES
+                              {"6. CLAIMS BY PLAINTIFF: STRENGTHS & WEAKNESSES".toLowerCase()}
                             </h3>
                             {data?.legal_brief?.plaintiff_claims && (
                               <Partyclaims
@@ -845,9 +845,9 @@ const Page: NextPageWithLayout = () => {
                                 "7. CLAIMS BY DEFENDANT: STRENGTHS & WEAKNESSES"
                                   ? "text-lexblue"
                                   : "text-powder_blue"
-                              }  my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                              }  my-[16px] text-[1.1rem] font-semibold capitalize font-gilda_Display`}
                             >
-                              7. CLAIMS BY DEFENDANT: STRENGTHS & WEAKNESSES
+                              {"7. CLAIMS BY DEFENDANT: STRENGTHS & WEAKNESSES".toLowerCase()}
                             </h3>
                             {data?.legal_brief?.defendant_claims && (
                               <Partyclaims
@@ -967,9 +967,9 @@ const Page: NextPageWithLayout = () => {
                                 "8. PRAYERS TO THE COURT/REMEDIES SOUGHT"
                                   ? "text-lexblue"
                                   : "text-powder_blue"
-                              }  my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                              }  my-[16px] text-[1.1rem] font-semibold capitalize font-gilda_Display`}
                             >
-                              8. PRAYERS TO THE COURT/REMEDIES SOUGHT
+                              {"8. PRAYERS TO THE COURT/REMEDIES SOUGHT".toLowerCase()}
                             </h3>
                             <PartiesPrayers />
                           </section>
@@ -982,9 +982,9 @@ const Page: NextPageWithLayout = () => {
                                 partToScrollTo == "9. SUPPORTING EVIDENCE"
                                   ? "text-lexblue"
                                   : "text-powder_blue"
-                              }  my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                              }  my-[16px] text-[1.1rem] font-semibold capitalize font-gilda_Display`}
                             >
-                              9. SUPPORTING EVIDENCE
+                              {"9. SUPPORTING EVIDENCE".toLowerCase()}
                             </h3>
                             <p className="text-lexblue text-sm ">
                               {data?.legal_brief.evidence}
@@ -999,9 +999,9 @@ const Page: NextPageWithLayout = () => {
                                 partToScrollTo == "10. RELEVANT CASE PRECEDENTS"
                                   ? "text-lexblue"
                                   : "text-powder_blue"
-                              }  my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display`}
+                              }  my-[16px] text-[1.1rem] font-semibold text-powder_blue capitalize font-gilda_Display`}
                             >
-                              10. RELEVANT CASE PRECEDENTS
+                              {"10. RELEVANT CASE PRECEDENTS".toLowerCase()}
                             </h3>
                             {/* <CaseTreatmentDetails /> */}
                             {data?.legal_brief.precedents.map((value, idx) => (
@@ -1023,9 +1023,9 @@ const Page: NextPageWithLayout = () => {
                                 "11. SUPPORTING AUTHORITIES (LEGISLATION)"
                                   ? "text-lexblue"
                                   : "text-powder_blue"
-                              }  my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                              }  my-[16px] text-[1.1rem] font-semibold capitalize font-gilda_Display`}
                             >
-                              11. SUPPORTING AUTHORITIES (LEGISLATION)
+                              {"11. SUPPORTING AUTHORITIES (LEGISLATION)".toLowerCase()}
                             </h3>
                             <div className="text-lexblue text-sm ">
                               {data?.legal_brief.legislation.map(
@@ -1049,9 +1049,9 @@ const Page: NextPageWithLayout = () => {
                                 partToScrollTo == "12. LEGAL ARGUMENTS"
                                   ? "text-lexblue"
                                   : "text-powder_blue"
-                              }  my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                              }  my-[16px] text-[1.1rem] font-semibold capitalize font-gilda_Display`}
                             >
-                              12. LEGAL ARGUMENTS
+                              {"12. LEGAL ARGUMENTS".toLowerCase()}
                             </h3>
                             {data?.legal_brief?.legal_arguments && (
                               <Legalarguements
@@ -1098,9 +1098,9 @@ const Page: NextPageWithLayout = () => {
                                 partToScrollTo == "13. RISK ANALYSIS"
                                   ? "text-lexblue"
                                   : "text-powder_blue"
-                              }  my-[16px] text-[1.1rem] font-semibold text-powder_blue font-gilda_Display`}
+                              }  my-[16px] text-[1.1rem] font-semibold capitalize text-powder_blue font-gilda_Display`}
                             >
-                              13. RISK ANALYSIS
+                              {"13. RISK ANALYSIS".toLowerCase()}
                             </h3>
                             {data?.legal_brief?.risk_analysis && (
                               <Riskanalysis
@@ -1146,9 +1146,9 @@ const Page: NextPageWithLayout = () => {
                                 partToScrollTo == "14. READING LIST"
                                   ? "text-lexblue"
                                   : "text-powder_blue"
-                              }  my-[16px] text-[1.1rem] font-semibold font-gilda_Display`}
+                              }  my-[16px] text-[1.1rem] font-semibold capitalize font-gilda_Display`}
                             >
-                              14. READING LIST
+                              {"14. READING LIST".toLowerCase()}
                             </h3>
                             <div className="text-lexblue text-sm ">
                               {data?.legal_brief?.reading_list.map(
