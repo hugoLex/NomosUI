@@ -381,6 +381,7 @@ export const SearchResultMeta = (prop: {
   type: SearchType;
 }) => {
   const { searchParams } = useQueryToggler();
+
   const query = searchParams.get("q");
   const { index, data, type } = prop;
   const { occurrences, metadata } = data;
@@ -679,6 +680,31 @@ export const SearchResultMeta = (prop: {
       )}
 
       <div>
+        <div className="mt-[8px] mb-[8px] border-l-2 py-1.5 border-lexblue bg-gray flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="mx-[8px] text-super shrink-0 -translate-y-px rotate-180"
+          >
+            <path d="M10 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
+            <path d="M19 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
+          </svg>
+          <p className="text-sm text-gray-authinput line-clamp-3 ">
+            The extends keyword restricts T so that only types compatible with
+            FormikValues can The extends keyword restricts T so that only types
+            compatible with FormikValues can The extends keyword restricts T so
+            that only types compatible with FormikValues canThe extends keyword
+            restricts T so that only types compatible with FormikValues can
+            <span>...</span>
+          </p>
+        </div>
         <Occurrences />
         {/* <p dangerouslySetInnerHTML={{ __html: fmtTxt }} className="text-sm" /> */}
         {/* when i wrote this logic, I understood it, as you read it God help you to understand it in your attempt to change it */}

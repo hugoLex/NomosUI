@@ -70,7 +70,7 @@ const CaseView = ({
   }) => {
     // test with Citi Bank Nigeria Limited v. Mr. Martins Ikediashi
     if (!content || !quoteToHighlight || !content.includes(quoteToHighlight)) {
-      return <Markdown content={content} />;
+      return <Markdown className="text-lexblue" content={content} />;
     }
     // Split the content at the quote
     const parts = content.split(quoteToHighlight);
@@ -93,7 +93,7 @@ const CaseView = ({
   return (
     caseDocument && (
       <Container>
-        <div className={`py-8  w-full md:min-w-[980px]`}>
+        <div className={`pb-8  w-full md:min-w-[980px]`}>
           <div className="md:grid grid-cols-12 gap-8">
             <div className="col-span-4 self-baselane">
               <div className="sticky top-[68px]">
@@ -108,7 +108,7 @@ const CaseView = ({
                 <h1
                   id="searchQuery"
                   ref={innerRef}
-                  className="text-xx font-normal mb-3 text-[#245b91]"
+                  className="text-xx font-normal font-gilda_Display mb-3 text-[#245b91]"
                 >
                   {caseDocument.case_title}
                 </h1>

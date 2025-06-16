@@ -174,10 +174,9 @@ const Page: NextPageWithLayout = () => {
   return (
     <Fragment>
       <Head title={`Case - ${caseTitle}`} />
-
       <Navbar referrer={referrer}>
         <div className="flex justify-evenly gap-x-4">
-          <Tabs tabs={tabs} />
+          {/* <Tabs tabs={tabs} /> */}
           <div className="py-2.5 md:min-w-[50%]">
             <NavbarTitle
               isTitle={!isH1Visible}
@@ -187,7 +186,9 @@ const Page: NextPageWithLayout = () => {
           </div>
         </div>
       </Navbar>
-
+      <div className="max-w-[1100px] mx-auto w-full px-16 pt-[32px] pb-[30px] sticky top-[40px] z-[999] bg-white">
+        <Tabs tabs={tabs} />
+      </div>{" "}
       {tabId === "case" && (
         <Fragment>
           {caseDocument && (
