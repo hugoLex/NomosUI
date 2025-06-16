@@ -42,6 +42,7 @@ import useQueryToggler from "@app/hooks/useQueryHandler";
 import { Loader } from "@app/components/ui";
 import { useDispatch } from "react-redux";
 import Image from "next/image";
+import { Minus, PlusIcon } from "lucide-react";
 type TclasifierResult = {
   query: string;
   classification: string;
@@ -581,6 +582,74 @@ export const SearchResultMeta = (prop: {
     16: 4,
     21: 5,
   };
+
+  function SubQuery() {
+    const [open, setopen] = useState<boolean>(false);
+
+    return (
+      <div className="mt-[8px] mb-[8px] border-l-2 py-1.5 border-lexblue bg-gray flex items-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="mx-[8px] text-super shrink-0 -translate-y-px rotate-180"
+        >
+          <path d="M10 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
+          <path d="M19 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
+        </svg>
+        <p
+          className={`text-sm text-gray-authinput ${
+            open ? null : "line-clamp-3"
+          } `}
+        >
+          The extends keyword restricts T so that only types compatible with
+          FormikValues can The extends keyword restricts T so that only types
+          compatible with FormikValues can The extends keyword restricts T so
+          that only types compatible with FormikValues canThe extends keyword
+          restricts T so that only types compatible with FormikValues can
+          compatible with FormikValues can The extends keyword restricts T so
+          that only types compatible with FormikValues canThe extends keyword
+          restricts T so that only types compatible with FormikValues can
+          {/* {open && <span>...</span>} */}
+        </p>
+        {open ? (
+          <Minus
+            className="cursor-pointer flex-shrink-0"
+            size={18}
+            onClick={() => setopen(false)}
+          />
+        ) : (
+          <svg
+            onClick={() => setopen(true)}
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.7333333333333334"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className=" cursor-pointer fill-current opacity-75 flex-shrink-0 "
+          >
+            <path d="M12 5l0 14"></path>
+            <path d="M5 12l14 0"></path>
+          </svg>
+          // <PlusIcon
+          //   className="cursor-pointer"
+          //   size={50}
+          //   onClick={() => setopen(true)}
+          // />
+        )}
+      </div>
+    );
+  }
   // console.log("Occurences updated", occurrences);
   return (
     <div
@@ -680,31 +749,7 @@ export const SearchResultMeta = (prop: {
       )}
 
       <div>
-        <div className="mt-[8px] mb-[8px] border-l-2 py-1.5 border-lexblue bg-gray flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="mx-[8px] text-super shrink-0 -translate-y-px rotate-180"
-          >
-            <path d="M10 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
-            <path d="M19 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
-          </svg>
-          <p className="text-sm text-gray-authinput line-clamp-3 ">
-            The extends keyword restricts T so that only types compatible with
-            FormikValues can The extends keyword restricts T so that only types
-            compatible with FormikValues can The extends keyword restricts T so
-            that only types compatible with FormikValues canThe extends keyword
-            restricts T so that only types compatible with FormikValues can
-            <span>...</span>
-          </p>
-        </div>
+        <SubQuery />
         <Occurrences />
         {/* <p dangerouslySetInnerHTML={{ __html: fmtTxt }} className="text-sm" /> */}
         {/* when i wrote this logic, I understood it, as you read it God help you to understand it in your attempt to change it */}
