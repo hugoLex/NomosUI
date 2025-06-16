@@ -12,7 +12,7 @@ const Tabs: FC<TabsProps> = ({ tabs }) => {
 
   const tabClicked = searchParams.get("tab");
   return (
-    <div className="relative flex gap-x-4 items-center flex-grow py-2.5">
+    <div className="relative flex gap-x-4 items-center flex-grow py-2.5 ">
       {tabs.map(({ active, id, label }, idx) => (
         <span
           key={`tabitem-${idx}`}

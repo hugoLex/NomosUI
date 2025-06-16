@@ -108,7 +108,7 @@ const CaseView = ({
                 <h1
                   id="searchQuery"
                   ref={innerRef}
-                  className="text-xx font-normal font-gilda_Display mb-3 text-[#245b91]"
+                  className="text-xx font-bold font-gilda_Display mb-3 text-lexblue"
                 >
                   {caseDocument.case_title}
                 </h1>
