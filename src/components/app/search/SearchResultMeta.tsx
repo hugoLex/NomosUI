@@ -587,7 +587,7 @@ export const SearchResultMeta = (prop: {
     const [open, setopen] = useState<boolean>(false);
 
     return (
-      <div className="mt-[8px] mb-[8px] border-l-2 py-1.5 border-lexblue bg-gray flex items-center">
+      <div className="max-h-[750px] overflow-y-clip relative mt-[8px] mb-[8px] border-l-2 py-1.5 border-lexblue bg-gray flex items-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="18"
@@ -617,6 +617,9 @@ export const SearchResultMeta = (prop: {
           that only types compatible with FormikValues canThe extends keyword
           restricts T so that only types compatible with FormikValues can
           {/* {open && <span>...</span>} */}
+          {!open && (
+            <div className="w-full absolute bottom-0 h-[52px] bg-[linear-gradient(transparent_0px,rgba(255,255,255,0.9)_52px,#fff_80px)]"></div>
+          )}
         </p>
         {open ? (
           <Minus
