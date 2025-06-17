@@ -186,12 +186,12 @@ const Page: NextPageWithLayout = () => {
           </div>
         </div>
       </Navbar>
-      <div className="relative">
-        <div className="  max-w-[1100px] mx-auto w-full px-16 pt-[32px] pb-[30px] sticky top-[40px] z-[999] bg-white">
-          <Tabs tabs={tabs} />
-        </div>{" "}
-        <div className="border-b z-[999] border-solid border-stone-300 border-opacity-50 absolute top-[74px] w-full min-w-[100px] right-0 left-0"></div>
+
+      <div className="  max-w-[1100px] mx-auto w-full px-16 mt-[30px] pt-[32px] pb-[30px] sticky top-[40px] z-[1] bg-white">
+        <Tabs tabs={tabs} />
+        <div className="pl-16 border-b z- [999] border-solid border-stone-300 border-opacity-50 absolute top-[74px] w-full  max-w-[1000px]"></div>
       </div>
+
       {tabId === "case" && (
         <Fragment>
           {caseDocument && (
