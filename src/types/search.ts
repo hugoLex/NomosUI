@@ -150,7 +150,7 @@ export type SearchResultDocumentMeta = {
 };
 
 export type TSearchResultDocument = {
-  occurrences: { content: string; context: string }[];
+  occurrences: { content: string; context: string[] }[];
   metadata: SearchResultDocumentMeta;
 };
 

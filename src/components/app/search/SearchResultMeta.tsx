@@ -436,7 +436,7 @@ export const SearchResultMeta = (prop: {
     (
       occurrences as {
         content: string;
-        context: string;
+        context: string[];
         excerpt_note: string;
         excerpt_notes: string;
         rhetorical_function: string;
@@ -468,23 +468,51 @@ export const SearchResultMeta = (prop: {
         //     mappedAlphabets[ptx]
         //   }</sup></span>`
         // );
-        console.log("excerpt notes from me", excerpt_note);
+        // console.log("excerpt notes from me", excerpt_note);
         const boldWords = keywords;
         // Create a regex pattern dynamically from the boldWords array
         // const regexPattern = new RegExp(`\\b(${boldWords.join("|")})\\b`, "gi");
-        const contextResolved = context.trim().split(" ");
-        const contextLength = contextResolved.length;
+        // const contextResolved = context.trim().split(" ");
+        // const contextLength = contextResolved.length;
 
+        // function splitAndKeep(content: string, contexts: string[]): string[] {
+
+        //   const pattern = `(${contexts.join('|')})`;
+        //   const regex = new RegExp(pattern, 'g');
+
+        //   const parts: string[] = [];
+        //   let lastIndex = 0;
+
+        //   content.replace(regex, (match, p1, offset) => {
+        //     if (offset > lastIndex) {
+        //       parts.push(content.substring(lastIndex, offset));
+        //     }
+        //     parts.push(match);
+        //     lastIndex = offset + match.length;
+        //     return match;
+        //   });
+
+        //   if (lastIndex < content.length) {
+        //     parts.push(content.substring(lastIndex));
+        //   }
+
+        //   return parts;
+        // }
+
+        const pattern = `(${context.join("|")})`;
+        // const regexPattern = new RegExp(pattern, "g");
+        console.log(
+          "THIS IS THE CONTEXT AND CONTENT"
+          // content.split(regexPattern)
+          // [JSON.stringify(content), JSON.stringify(context)]
+          // context.trim().split(`${content.trim()}`)
+        );
         // const renderTextWithBold = content
         //   .split(regexPattern)
         //   .map((word, index) =>
         //     boldWords.includes(word) ? <b key={index}>{word}</b> : word
         //   );
-        console.log(
-          "THIS IS THE CONTEXT AND CONTENT"
-          // [JSON.stringify(content), JSON.stringify(context)]
-          // context.trim().split(`${content.trim()}`)
-        );
+
         return (
           <p className="text-sm mb-6 text- primary" key={ptx}>
             <SubQuery excerpt_note={excerpt_notes ?? excerpt_note} />
