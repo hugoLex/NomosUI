@@ -437,145 +437,175 @@ export const SearchResultMeta = (prop: {
       occurrences as {
         content: string;
         context: string;
+        excerpt_note: string;
+        excerpt_notes: string;
+        rhetorical_function: string;
         // keywords was added please update your type definition
         keywords: string[];
       }[]
-    ).map(({ content, context, keywords }, ptx: number) => {
-      // let fmtTxt: string = content.trim();
-      // // if (typeof context === "string") {
-      // console.log("full context", context);
-      // fmtTxt = fmtTxt.replace(
-      //   RegExp(escapeRegExp(`${context.trim()}`), "gi"),
-      //   `<span class="bg-[#FFE89E]" onClick="${
-      //     handleHighlightFullJudgement(  "hello world",
-      //       "123456789")
+    ).map(
+      (
+        {
+          content,
+          context,
+          keywords,
+          excerpt_note,
+          excerpt_notes,
+          rhetorical_function,
+        },
+        ptx: number
+      ) => {
+        // let fmtTxt: string = content.trim();
+        // // if (typeof context === "string") {
+        // console.log("full context", context);
+        // fmtTxt = fmtTxt.replace(
+        //   RegExp(escapeRegExp(`${context.trim()}`), "gi"),
+        //   `<span class="bg-[#FFE89E]" onClick="${
+        //     handleHighlightFullJudgement(  "hello world",
+        //       "123456789")
 
-      //   }">${context.trim()}<sup class="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]">${
-      //     mappedAlphabets[ptx]
-      //   }</sup></span>`
-      // );
+        //   }">${context.trim()}<sup class="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]">${
+        //     mappedAlphabets[ptx]
+        //   }</sup></span>`
+        // );
+        console.log("excerpt notes from me", excerpt_note);
+        const boldWords = keywords;
+        // Create a regex pattern dynamically from the boldWords array
+        // const regexPattern = new RegExp(`\\b(${boldWords.join("|")})\\b`, "gi");
+        const contextResolved = context.trim().split(" ");
+        const contextLength = contextResolved.length;
 
-      const boldWords = keywords;
-      // Create a regex pattern dynamically from the boldWords array
-      // const regexPattern = new RegExp(`\\b(${boldWords.join("|")})\\b`, "gi");
-      const contextResolved = context.trim().split(" ");
-      const contextLength = contextResolved.length;
+        // const renderTextWithBold = content
+        //   .split(regexPattern)
+        //   .map((word, index) =>
+        //     boldWords.includes(word) ? <b key={index}>{word}</b> : word
+        //   );
+        console.log(
+          "THIS IS THE CONTEXT AND CONTENT"
+          // [JSON.stringify(content), JSON.stringify(context)]
+          // context.trim().split(`${content.trim()}`)
+        );
+        return (
+          <p className="text-sm mb-6 text- primary" key={ptx}>
+            <SubQuery excerpt_note={excerpt_notes ?? excerpt_note} />
+            <span className="mb-[15px] capitalize inline-block px-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium">
+              {rhetorical_function}
+            </span>
+            {/* Render highlighted quote */}
+            <mark
+              id=""
+              className="block bg-transparent text-[#0E3165] font -poppins"
+            >
+              {content
+                .trim()
+                .split(" ")
+                // .split(context)
+                // .split(regexPatternHighlight)
+                .map((word, index) => {
+                  return context?.includes(word) ? (
+                    // return contextResolved.includes(word) ? (
+                    // && index < contextLength
+                    <span
+                      className={`text- red-600 ${
+                        boldWords.includes(word) ? "font-bold" : ""
+                      } `}
+                      key={index}
+                    >
+                      {" "}
+                      {word}
+                    </span>
+                  ) : (
+                    <span
+                      className={`${
+                        boldWords.includes(word) ? "font-bold" : ""
+                      }`}
+                      key={index}
+                    >
+                      {" "}
+                      {word}
+                    </span>
+                  );
+                })}
+            </mark>
 
-      // const renderTextWithBold = content
-      //   .split(regexPattern)
-      //   .map((word, index) =>
-      //     boldWords.includes(word) ? <b key={index}>{word}</b> : word
-      //   );
+            <sup
+              onClick={
+                () =>
+                  setQuoteToHighlight({
+                    citation: null,
+                    quote: content.trim(),
+                    treatment_type: "",
+                  })
+                // This opens the full judgement page and highlights the content
+                // handleHighlightFullJudgement(
+                //   content.trim(),
+                //   metadata?.document_id
+                // )
+              }
+              className="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]"
+            >
+              {mappedAlphabets[ptx]}
+            </sup>
+          </p>
+          // <p className="text-sm mb-6" key={ptx}>
+          //   {/* Render first part */}
+          //   {parts[0] && <span>{parts[0]} </span>}
 
-      return (
-        <p className="text-sm mb-6 text- primary" key={ptx}>
-          {/* Render highlighted quote */}
-          <mark id="" className="bg-transparent text-[#0E3165] font -poppins">
-            {content
-              .trim()
-              .split(" ")
-              // .split(regexPatternHighlight)
-              .map((word, index) => {
-                return contextResolved.includes(word) ? (
-                  // && index < contextLength
-                  <span
-                    className={`text -primary ${
-                      boldWords.includes(word) ? "font-bold" : ""
-                    } `}
-                    key={index}
-                  >
-                    {" "}
-                    {word}
-                  </span>
-                ) : (
-                  <span
-                    className={`${boldWords.includes(word) ? "font-bold" : ""}`}
-                    key={index}
-                  >
-                    {" "}
-                    {word}
-                  </span>
-                );
-              })}
-          </mark>
+          //   {/* Render highlighted quote */}
+          //   <mark id="" className="bg-[#FFECB3]">
+          //     {contextResolved.split(regexPattern).map((word, index) =>
+          //       boldWords.includes(word) ? (
+          //         <b className="text-primary font-bold" key={index}>
+          //           {word}
+          //         </b>
+          //       ) : (
+          //         word
+          //       )
+          //     )}
+          //   </mark>
 
-          <sup
-            onClick={
-              () =>
-                setQuoteToHighlight({
-                  citation: null,
-                  quote: content.trim(),
-                  treatment_type: "",
-                })
-              // This opens the full judgement page and highlights the content
-              // handleHighlightFullJudgement(
-              //   content.trim(),
-              //   metadata?.document_id
-              // )
-            }
-            className="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]"
-          >
-            {mappedAlphabets[ptx]}
-          </sup>
-        </p>
-        // <p className="text-sm mb-6" key={ptx}>
-        //   {/* Render first part */}
-        //   {parts[0] && <span>{parts[0]} </span>}
-
-        //   {/* Render highlighted quote */}
-        //   <mark id="" className="bg-[#FFECB3]">
-        //     {contextResolved.split(regexPattern).map((word, index) =>
-        //       boldWords.includes(word) ? (
-        //         <b className="text-primary font-bold" key={index}>
-        //           {word}
-        //         </b>
-        //       ) : (
-        //         word
-        //       )
-        //     )}
-        //   </mark>
-
-        //   {/* Render remaining content */}
-        //   {parts[1] && <span>{parts[1]} </span>}
-        //   <sup
-        //     onClick={
-        //       () =>
-        //         setQuoteToHighlight({
-        //           citation: null,
-        //           quote: content.trim(),
-        //           treatment_type: "",
-        //         })
-        //       // handleHighlightFullJudgement(
-        //       //   content.trim(),
-        //       //   metadata?.document_id
-        //       // )
-        //     }
-        //     className="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]"
+          //   {/* Render remaining content */}
+          //   {parts[1] && <span>{parts[1]} </span>}
+          //   <sup
+          //     onClick={
+          //       () =>
+          //         setQuoteToHighlight({
+          //           citation: null,
+          //           quote: content.trim(),
+          //           treatment_type: "",
+          //         })
+          //       // handleHighlightFullJudgement(
+          //       //   content.trim(),
+          //       //   metadata?.document_id
+          //       // )
+          //     }
+          //     className="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]"
+          //   >
+          //     {mappedAlphabets[ptx]}
+          //   </sup>
+          // </p>
+        );
+        // return (
+        //   <p
+        //     key={ptx}
+        //     // dangerouslySetInnerHTML={{ __html: fmtTxt }}
+        //     className="text-sm mb-6"
         //   >
-        //     {mappedAlphabets[ptx]}
-        //   </sup>
-        // </p>
-      );
-      // return (
-      //   <p
-      //     key={ptx}
-      //     // dangerouslySetInnerHTML={{ __html: fmtTxt }}
-      //     className="text-sm mb-6"
-      //   >
-      //     {
-      //       <span
-      //         className="bg-[#FFE89E]"
-      //         onClick={handleHighlightFullJudgement}
-      //       >
-      //         {context.trim()}
-      //         <sup className="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]">
-      //           {mappedAlphabets[ptx]}
-      //         </sup>
-      //       </span>
-      //     }
-      //   </p>
-      // );
-    });
+        //     {
+        //       <span
+        //         className="bg-[#FFE89E]"
+        //         onClick={handleHighlightFullJudgement}
+        //       >
+        //         {context.trim()}
+        //         <sup className="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]">
+        //           {mappedAlphabets[ptx]}
+        //         </sup>
+        //       </span>
+        //     }
+        //   </p>
+        // );
+      }
+    );
   const pageNumberMapping: { [index: number]: number } = {
     6: 2,
     11: 3,
@@ -583,7 +613,7 @@ export const SearchResultMeta = (prop: {
     21: 5,
   };
 
-  function SubQuery() {
+  function SubQuery({ excerpt_note }: { excerpt_note: string }) {
     const [open, setopen] = useState<boolean>(false);
 
     return (
@@ -608,14 +638,15 @@ export const SearchResultMeta = (prop: {
             open ? null : "line-clamp-3"
           } `}
         >
-          The extends keyword restricts T so that only types compatible with
+          {excerpt_note ?? "No excerpt found"}
+          {/* The extends keyword restricts T so that only types compatible with
           FormikValues can The extends keyword restricts T so that only types
           compatible with FormikValues can The extends keyword restricts T so
           that only types compatible with FormikValues canThe extends keyword
           restricts T so that only types compatible with FormikValues can
           compatible with FormikValues can The extends keyword restricts T so
           that only types compatible with FormikValues canThe extends keyword
-          restricts T so that only types compatible with FormikValues can
+          restricts T so that only types compatible with FormikValues can */}
           {/* {open && <span>...</span>} */}
           {!open && (
             <div className="w-full absolute bottom-0 h-[52px] bg-[linear-gradient(transparent_0px,rgba(255,255,255,0.9)_52px,#fff_80px)]"></div>
@@ -653,7 +684,7 @@ export const SearchResultMeta = (prop: {
       </div>
     );
   }
-  // console.log("Occurences updated", occurrences);
+  console.log("Occurences updated", occurrences);
   return (
     <div
       className={`mb-8 space-y-3 border-b border-b-primary/10 pb-5`}
@@ -752,7 +783,6 @@ export const SearchResultMeta = (prop: {
       )}
 
       <div>
-        <SubQuery />
         <Occurrences />
         {/* <p dangerouslySetInnerHTML={{ __html: fmtTxt }} className="text-sm" /> */}
         {/* when i wrote this logic, I understood it, as you read it God help you to understand it in your attempt to change it */}
