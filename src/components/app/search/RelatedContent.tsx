@@ -2,7 +2,7 @@
 import { useSimilarity_searchMutation } from "@app/store/services/searchSlice";
 import React from "react";
 
-function RelatedContent() {
+export default function RelatedContent() {
   const [similarirtySearch, { isError, isSuccess, data, isLoading }] =
     useSimilarity_searchMutation();
 
