@@ -147,6 +147,14 @@ export const searchQueryAPI = injectEndpoints({
 
       // invalidatesTags:["LlmSearch"]
     }),
+    similarity_search: builder.mutation<TSearchResultDocuments, { content: string }>({
+      // http://webapp.lexanalytics.ai/api/semantic/similar
+      query: (payload) => ({
+        url: `/semantic/similar`,
+        method: "POST",
+        body: { ...payload }
+      })
+    }),
 
     // llm_search: builder.query<string, string>({
     //   queryFn: async (question, _api, _extraOptions, _baseQuery) => {
@@ -229,6 +237,7 @@ export const {
   useSearchTrendingQuery,
   usePrefetch,
   useSemantic_searchQuery,
+  useSimilarity_searchMutation,
   useLlm_searchQuery,
   // useLlm_searchMutation,
   useQuery_route_classifierQuery,

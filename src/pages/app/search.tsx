@@ -48,6 +48,7 @@ import BgClosebtn from "@app/components/shared/bgClosebtn";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useDispatch } from "react-redux";
 import StartLlmSearch from "@app/components/shared/llsearchTriger";
+import RelatedContent from "@app/components/app/search/RelatedContent";
 
 const Page: NextPageWithLayout = () => {
   const dispatch = useDispatch();
@@ -732,7 +733,12 @@ const Page: NextPageWithLayout = () => {
                     >
                       <div className="bg-white ml-auto  min-w-[500px] w-[40vw] h-screen shadow-overlay top-0 right-0 fixed  animate-in slide-in-from-right ">
                         <div className="min-h-[64px] justify-between flex items-center p-3.5 bg-purple- 500 border-b border-b-black\50  ">
-                          <span>Tasks</span>
+                          <span
+                            className={` text-lexblue text-xx font-gilda_Display capitalize font-bold`}
+                          >
+                            Related Content
+                          </span>
+
                           <svg
                             onClick={() => removeQueryParam("right_cover_menu")}
                             className="ml-auto cursor-pointer"
@@ -760,6 +766,7 @@ const Page: NextPageWithLayout = () => {
                             />
                           </svg>
                         </div>
+                        <RelatedContent />
                       </div>
                     </div>
                   )}
