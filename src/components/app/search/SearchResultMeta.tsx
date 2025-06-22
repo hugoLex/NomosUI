@@ -468,36 +468,22 @@ export const SearchResultMeta = (prop: {
         //     mappedAlphabets[ptx]
         //   }</sup></span>`
         // );
-        // console.log("excerpt notes from me", excerpt_note);
+
+        // Escape special characters for each context string
+        const escapedContext = context.map((str) =>
+          str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+        );
+        console.log(escapedContext);
+        // Build the regex pattern with capturing group
+        const contextPattern = `(${escapedContext.join("|")})`;
+        const regex = new RegExp(contextPattern, "g");
+
+        // Split with capturing group so context strings are retained
+        const splitted = content.split(regex);
+
+        console.log("it is working", splitted);
+
         const boldWords = keywords;
-        // Create a regex pattern dynamically from the boldWords array
-        // const regexPattern = new RegExp(`\\b(${boldWords.join("|")})\\b`, "gi");
-        // const contextResolved = context.trim().split(" ");
-        // const contextLength = contextResolved.length;
-
-        // function splitAndKeep(content: string, contexts: string[]): string[] {
-
-        //   const pattern = `(${contexts.join('|')})`;
-        //   const regex = new RegExp(pattern, 'g');
-
-        //   const parts: string[] = [];
-        //   let lastIndex = 0;
-
-        //   content.replace(regex, (match, p1, offset) => {
-        //     if (offset > lastIndex) {
-        //       parts.push(content.substring(lastIndex, offset));
-        //     }
-        //     parts.push(match);
-        //     lastIndex = offset + match.length;
-        //     return match;
-        //   });
-
-        //   if (lastIndex < content.length) {
-        //     parts.push(content.substring(lastIndex));
-        //   }
-
-        //   return parts;
-        // }
 
         const pattern = `(${context.join("|")})`;
         // const regexPattern = new RegExp(pattern, "g");
@@ -545,40 +531,64 @@ export const SearchResultMeta = (prop: {
               </button>
             </div>
             {/* Render highlighted quote */}
-            <mark
-              id=""
-              className="block bg-transparent text-[#0E3165] font -poppins"
-            >
-              {content
-                .trim()
-                .split(" ")
-                // .split(context)
-                // .split(regexPatternHighlight)
-                .map((word, index) => {
-                  return context?.includes(word) ? (
-                    // return contextResolved.includes(word) ? (
-                    // && index < contextLength
-                    <span
-                      className={`text- red-600 ${
-                        boldWords.includes(word) ? "font-bold" : ""
-                      } `}
-                      key={index}
-                    >
-                      {" "}
-                      {word}
-                    </span>
-                  ) : (
-                    <span
-                      className={`${
-                        boldWords.includes(word) ? "font-bold" : ""
-                      }`}
-                      key={index}
-                    >
-                      {" "}
-                      {word}
-                    </span>
-                  );
-                })}
+            <mark id="" className="block text-sm bg-transparent  font -poppins">
+              {splitted?.map((word, index) => {
+                return context?.includes(word) ? (
+                  // return contextResolved.includes(word) ? (
+                  // && index < contextLength
+                  <h3
+                    className={` inline text-red-600 font-normal font-gilda_display text-sm ${null}`}
+                    key={index}
+                  >
+                    {word?.split(" ")?.map((bWord, idx) => {
+                      if (boldWords?.includes(bWord)) {
+                        return (
+                          <span
+                            key={`${bWord}-${idx}`}
+                            className="font-bold text-sm"
+                          >
+                            {" "}
+                            {bWord}
+                          </span>
+                        );
+                      }
+                      return ` ${bWord}`;
+                      // (
+                      //   <span key={`${bWord}-${idx}`} className="text-sm">
+                      //     {" "}
+                      //     {bWord}
+                      //   </span>
+                      // );
+                    })}
+                  </h3>
+                ) : (
+                  <h3
+                    className={` inline text-[#0E3165] font-normal font-gilda_display text-sm ${null}`}
+                    key={index}
+                  >
+                    {word?.split(" ")?.map((bWord, idx) => {
+                      if (boldWords?.includes(bWord)) {
+                        return (
+                          <span
+                            key={`${bWord}-${idx}`}
+                            className="font-bold text-sm"
+                          >
+                            {" "}
+                            {bWord}
+                          </span>
+                        );
+                      }
+                      return ` ${bWord}`;
+                      // (
+                      //   <span key={`${bWord}-${idx}`} className="text-sm">
+                      //     {" "}
+                      //     {bWord}
+                      //   </span>
+                      // );
+                    })}
+                  </h3>
+                );
+              })}
             </mark>
 
             <sup

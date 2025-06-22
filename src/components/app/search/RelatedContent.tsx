@@ -18,6 +18,7 @@ function RelatedContent() {
       console.log("error from similarity search", error);
     }
   }
+
   return (
     <div className="relative z-50 bg-red-600 h-full">
       <h3 className=" capitalize pl-1 pr-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium">
@@ -34,4 +35,39 @@ function RelatedContent() {
   );
 }
 
-export default RelatedContent;
+// export function App(props) {
+
+// const context = [
+//   "It is powerful, gentle, and endless.",
+//   "helpful actions, or simply being there for someone",
+//   "It helps us support each other during hard times and celebrate"
+// ];
+
+// const content = `Love is a beautiful feeling that connects people. It makes us care deeply for family, friends, and even strangers. Love is kind, patient, and forgiving. It helps us support each other during hard times and celebrate together in happy moments. True love is not selfish; it thinks of others first. Love can be shown through kind
+//  words, warm hugs, helpful actions, or simply being there for someone. Even when people are far apart, love keeps hearts close. It is powerful, gentle, and endless. Love makes the world a brighter, better place for everyone.`;
+
+// // Escape special characters for each context string
+// const escapedContext = context.map(str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+// console.log(escapedContext)
+// // Build the regex pattern with capturing group
+// const pattern = `(${escapedContext.join('|')})`;
+// const regex = new RegExp(pattern, 'g');
+
+// // Split with capturing group so context strings are retained
+// const splitted = content.split(regex);
+
+// console.log(splitted);
+
+//   return (
+//     <div className='App'>
+//       <h1>Hello React.</h1>
+//       <h2>Start editing to see some magic happen!</h2>
+//       <div>{splitted.map((item,idx)=>{
+//         if(context.includes(item)){
+//           return <span style={{color:"red"}} key={`key-of-item${idx}`}>{item}</span>
+//         }
+//         return <span key={`key-of-item${idx}`}>{item}</span>
+//       })}</div>
+//     </div>
+//   );
+// }
