@@ -1,0 +1,1 @@
+export type AuthErrorT = { data: { detail: string } }

@@ -1,34 +1,47 @@
-import "../assets/app.css";
 import { Fragment } from "react";
-import type { AppProps } from "next/app";
-
-import type { NextPageWithLayout } from "@app/types";
-
-import { dmSans, inter, paytone } from "@app/assets/fonts";
-import { NoSSR } from "@app/components/";
-
-type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout;
-};
+import { Provider } from "react-redux";
+import Head from "next/head";
+import { store } from "@app/store/store";
+import { NoSSR } from "@app/components/shared";
+import { AppPropsWithLayout } from "@app/types";
+import { inter, poppins, rubik, gilda_Display, cabin } from "@app/assets/fonts";
+import "../assets/app.css";
+import { Toaster } from "@app/components/ui/sonner";
 
 function App({ Component, pageProps }: AppPropsWithLayout) {
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout ?? ((page) => page);
-  const Layout = Component.layout ?? Fragment;
 
   return (
-    <NoSSR>
-      <style>
-        {`
+    <Fragment>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {/* Remove the tag below because its a security risk */}
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
+        />
+        <meta charSet="UTF-8" />
+      </Head>
+
+      <Provider store={store}>
+        <Toaster />
+        <NoSSR>
+          <style>
+            {`
           :root {
-            --font-dm-sans: ${dmSans.style.fontFamily};
+            --font-rubik: ${rubik.style.fontFamily};
             --font-inter: ${inter.style.fontFamily};
-            --font-paytone: ${paytone.style.fontFamily};
+            --font-poppins:${poppins.style.fontFamily};
+            --font-gilda_Display:${gilda_Display.style.fontFamily};
+            --font-cabin:${cabin.style.fontFamily};
           }
         `}
-      </style>
-      <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
-    </NoSSR>
+          </style>
+          <Fragment>{getLayout(<Component {...pageProps} />)}</Fragment>
+        </NoSSR>
+      </Provider>
+    </Fragment>
   );
 }
 

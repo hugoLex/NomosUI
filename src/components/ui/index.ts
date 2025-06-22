@@ -5,7 +5,10 @@ import Header from "./Header";
 import Heading from "./Heading";
 import Input from "./Input";
 import Modal from "./Modal";
-import Sidebar from "./Sidebar";
-import View from "./View";
+import Switch from "./Switch";
+import Tabs from "./Tabs";
 
-export { Button, Footer, Head, Header, Heading, Input, Modal, Sidebar, View };
+export { Button, Footer, Head, Header, Heading, Input, Modal, Switch, Tabs };
+
+export * from "./Loader";
+export * from "./Tooltip";

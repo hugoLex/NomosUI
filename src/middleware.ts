@@ -9,7 +9,7 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    "/((?!api|_next/static|_next/docs|image|images|favicon.ico).*)",
   ],
 };
 
@@ -21,6 +21,9 @@ export default async function middleware(req: NextRequest) {
 
   // Get the pathname of the request (e.g. /, /about, /blog/first-post)
   const path = url.pathname;
+
+  url.pathname = `/app${url.pathname}`;
+  return NextResponse.rewrite(url);
 
   // Only for demo purposes - remove this if you want to use your root domain as the landing page
   if (hostname === "vercel.pub" || hostname === "platforms.vercel.app") {
@@ -34,9 +37,9 @@ export default async function middleware(req: NextRequest) {
   const currentHost =
     process.env.NODE_ENV === "production" && process.env.VERCEL === "1"
       ? hostname
-          .replace(`.vercel.pub`, "")
-          .replace(`.platformize.vercel.app`, "")
-      : hostname.replace(`.localhost:9000`, "");
+          // .replace(`.vercel.pub`, "")
+          .replace(`*.beta-lexanalytics.vercel.app`, "")
+      : hostname.replace(`8.localhost:9000`, "");
 
   // rewrites for app pages
   if (currentHost == "app") {

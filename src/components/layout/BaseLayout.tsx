@@ -1,25 +1,23 @@
-import React, { FC, Fragment, PropsWithChildren, useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
+import React, { FC, createContext, useState } from "react";
 import { useRouter } from "next/router";
 
-import { ComponentProps } from "@app/types";
-import { Button, Footer, Header, Sidebar } from "../ui";
+import { ComponentProps, LayoutContextProp } from "@app/types";
+import { Footer, Header } from "../ui";
 
-import { LayoutContext } from ".";
+export const BaseLayoutContext = createContext<any>({});
 
-const BaseLayout: FC<PropsWithChildren> = ({ children }) => {
+export const BaseLayout: FC<ComponentProps> = ({ children }) => {
   const router = useRouter();
   const [show, setShow] = useState<boolean>(false);
 
-  const values = {};
+  const props = {};
 
   return (
-    <LayoutContext.Provider value={values}>
+    <BaseLayoutContext.Provider value={props}>
       <Header variants="default"></Header>
       {children}
       <Footer />
-    </LayoutContext.Provider>
+    </BaseLayoutContext.Provider>
   );
 };
 export default BaseLayout;

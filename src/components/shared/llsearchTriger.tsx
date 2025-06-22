@@ -1,0 +1,61 @@
+import useQueryToggler from "@app/hooks/useQueryHandler";
+import Image from "next/image";
+
+const StartLlmSearch = () => {
+  const { searchParams, UpdateUrlParams } = useQueryToggler();
+  const query_type = searchParams.get("query_type");
+  return (
+    <div
+      className={` ${
+        query_type == "llm_s" && "hidden"
+        // query_type == "sematic_s" && "hidden"
+      } mb-[20px] flex items-center justify-between bg-[#eaf0f2] bor der border-gray-300 px-4 py-2 rounded-[.20rem] max-w -xl shadow-sm`}
+    >
+      <div className="flex items-center space-x-2">
+        <Image
+          height={30}
+          width={30}
+          src={"/images/ai-search-02-stroke-rounded.svg"}
+          // src={"../icons/ai-search-02-stroke-rounded.svg"}
+          alt="search"
+        />
+        {/* <svg
+          className="w-5 h-5 text-gray-700"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"
+          />
+        </svg> */}
+        <div className="font- gilda_Display font-poppins ">
+          <p className="text-[10px] md:text-sm font-medium text-[#245b91] -gray-800">
+            Need more comprehensive legal insights?
+          </p>
+          <p className=" text-[10px] md:text-sm text-[#245b91] gray-600">
+            Click for an in-depth analysis of your query
+          </p>
+        </div>
+      </div>
+      <div
+        onClick={() => {
+          UpdateUrlParams("query_type", "llm_s");
+        }}
+        className="flex items-center space-x-2"
+      >
+        <button className="bg-lexblue font-poppins text-white px-3 py-1.5 text-[10px] whitespace-nowrap md:text-sm rounded-[.20rem] hover:bg-[#00656c] transition-colors">
+          Analysis
+        </button>
+        {/* <button className="text-gray-500 hover:text-gray-700">
+          <X size={18} />
+        </button> */}
+      </div>
+    </div>
+  );
+};
+
+export default StartLlmSearch;

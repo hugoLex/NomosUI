@@ -1,26 +1,23 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Image from "next/image";
-import { Layout, View, Button } from "@app/components/ui";
+import { Button, Head, Header } from "@app/components/ui";
 import { RigthArrowIcon } from "@app/components/icons";
 
 import cloud from "../../public/cloud.svg";
+import { ErrorView500 } from "@app/components/shared";
 
 const Page = () => {
   return (
-    <Layout>
-      <View>
+    <Fragment>
+      <Head title="Not Found" />
+      <Header />
+      <main>
         <section>
-          <div>
-            <h2>Opps!</h2>
-            <p>An unknown error occurred. Please reload or check back later.</p>
-            <Button label="Back to home page" icon={<RigthArrowIcon />} />
-          </div>
-          <div>
-            <Image src={cloud} alt="Cloud" />
-          </div>
+          <ErrorView500 />
+          <Button label="Back to home page" icon={<RigthArrowIcon />} />
         </section>
-      </View>
-    </Layout>
+      </main>
+    </Fragment>
   );
 };
 

@@ -1,14 +1,14 @@
 import { ComponentProps } from "@app/types";
 import React, { FC, Fragment, ReactElement } from "react";
 
-type Variant = "default" | "icon";
+type IconPosition = "left" | "right";
 
 interface ButtonProps extends ComponentProps {
   disabled?: boolean;
   icon?: ReactElement | any;
   label: string;
   onClick?: () => void;
-  variant?: Variant;
+  iconPosition?: IconPosition;
   type?: "button" | "submit";
 }
 
@@ -18,14 +18,14 @@ const Button: FC<ButtonProps> = ({
   icon,
   label,
   onClick,
-  variant = "default",
+  iconPosition = "left",
   type = "button",
 }) => {
   return (
     <Fragment>
-      {variant === "default" && (
+      {!icon && (
         <button
-          className={`btn ${className ? className : ""}`}
+          className={`btn ${className ? className : ""} `}
           disabled={disabled}
           onClick={onClick}
           type={type}
@@ -33,15 +33,16 @@ const Button: FC<ButtonProps> = ({
           <span>{label}</span>
         </button>
       )}
-      {variant === "icon" && (
+      {icon && (
         <button
           className={`btn ${className ? className : ""}`}
           onClick={onClick}
           type={type}
           disabled={disabled}
         >
+          {iconPosition === "left" && <span className="mr-1">{icon}</span>}
           <span>{label}</span>
-          {icon && <span className="ml-2">{icon}</span>}
+          {iconPosition === "right" && <span className="ml-1">{icon}</span>}
         </button>
       )}
     </Fragment>

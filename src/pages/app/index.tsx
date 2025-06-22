@@ -1,94 +1,99 @@
-import React, { Fragment, useRef } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
-import { Head, Header, Heading, Layout, View } from "@app/components";
+import { Head } from "@app/components/ui";
+import { SearchBox } from "@app/components/shared";
+import { AppLayout } from "@app/components/layout";
+import { logo2 } from "@app/assets";
 import { NextPageWithLayout } from "@app/types";
-import {} from "@app/assets";
-import { useIsVisible } from "@app/hooks";
-import { SearchBox } from "@app/components/app";
+import { useSearchTrendingQuery } from "@app/store/services/searchSlice";
+import { SearchTrendingWidget } from "@app/components/app/search";
 
 const Page: NextPageWithLayout = () => {
-  const ref1 = useRef<HTMLDivElement>(null);
+  const [trendingSearches, setTrendingSearches] = useState<any[]>([]);
+  const { data, isError } = useSearchTrendingQuery({});
+
+  useEffect(() => {
+    if (data) {
+      const { trending_searches } = data;
+      setTrendingSearches(trending_searches);
+    }
+  }, [data]);
+
   return (
-    <Layout.AppLayout>
-      <section className="flex flex-col justify-center px-8 pt-20 pb-4 max-w-full w-[768px] max-md:px-5">
-        <div className="self-center mt-44 text-2xl text-center text-cyan-950 max-md:mt-10">
-          Search like never before
-        </div>
+    <Fragment>
+      <section
+        className="relative flex flex-col justify-center max-w-full m-auto
+        md:w-[700px] self-stretch p-5"
+      >
+        <Link href={"/"} className="mx-auto">
+          <Image
+            src={logo2}
+            alt="Logo"
+            className="shrink-0 max-w-full w-72 aspect-[4.35]"
+          />
+        </Link>
         <SearchBox />
-        <div className="flex gap-2 mt-4 max-md:flex-wrap">
-          <div className="flex flex-1 flex-auto gap-2 py-1.5 rounded-lg border border-solid border-stone-300 border-opacity-50">
-            <div className="flex justify-center items-center px-1.5 py-1 w-8 h-8 rounded-md bg-stone-100">
-              <img
-                loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/386c05f7f3554f970c33f757629b7de7efcd1134c291d8289497d059dc1610f7?"
-                className="w-5 aspect-square"
-              />
-            </div>
-            <div className="my-auto text-sm font-medium leading-5 text-cyan-950">
-              Upcoming AI events
-            </div>
-          </div>
-          <div className="flex flex-1 flex-auto gap-2 py-1.5 rounded-lg border border-solid border-stone-300 border-opacity-50">
-            <div className="flex justify-center items-center px-1.5 py-1 w-8 h-8 rounded-md bg-stone-100">
-              <img
-                loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/386c05f7f3554f970c33f757629b7de7efcd1134c291d8289497d059dc1610f7?"
-                className="w-5 aspect-square"
-              />
-            </div>
-            <div className="my-auto text-sm font-medium leading-5 text-cyan-950">
-              Latest men's fashion trends summer 2024
+
+        <SearchTrendingWidget trendingSearches={trendingSearches} />
+
+        {/* 
+
+        {trendingSearches.length > 0 && (
+          <div className="mt-4">
+            <h3 className="text-lg font-medium">Trending Searches</h3>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {trendingSearches.map((trend) => (
+                <button
+                  key={trend.text}
+                  className="px-3 py-1 text-sm bg-gray-100 rounded-full hover:bg-gray-200"
+                  // onClick={() => handleTrendClick(trend)}
+                >
+                  {trend.text}
+                  <span className="ml-2 text-xs text-gray-500">
+                    {trend.usage_count}
+                  </span>
+                </button>
+              ))}
             </div>
           </div>
-        </div>
-        <div className="flex gap-2 mt-2 max-md:flex-wrap">
-          <div className="flex flex-1 flex-auto gap-2 py-1.5 rounded-lg border border-solid border-stone-300 border-opacity-50">
-            <div className="flex justify-center items-center px-1.5 py-1 w-8 h-8 rounded-md bg-stone-100">
-              <img
-                loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/386c05f7f3554f970c33f757629b7de7efcd1134c291d8289497d059dc1610f7?"
-                className="w-5 aspect-square"
-              />
-            </div>
-            <div className="my-auto text-sm font-medium leading-5 text-cyan-950">
-              How is Perplexity AI different?
-            </div>
-          </div>
-          <div className="flex flex-1 flex-auto gap-2 py-1.5 rounded-lg border border-solid border-stone-300 border-opacity-50">
-            <div className="flex justify-center items-center px-1.5 py-1 w-8 h-8 rounded-md bg-stone-100">
-              <img
-                loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/386c05f7f3554f970c33f757629b7de7efcd1134c291d8289497d059dc1610f7?"
-                className="w-5 aspect-square"
-              />
-            </div>
-            <div className="my-auto text-sm font-medium leading-5 text-cyan-950">
-              Market size of the creator economy
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-wrap justify-center content-center items-center px-16 mt-72 text-sm leading-5 text-zinc-600 max-md:px-5 max-md:mt-10 max-md:max-w-full">
-          <div className="flex gap-4 max-md:flex-wrap">
-            <div>Pro</div>
-            <div>Enterprise</div>
-            <div>Playground</div>
-            <div>Blog</div>
-            <div>Careers</div>
-            <div className="flex gap-1">
-              <div>English (English)</div>
-              <img
-                loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/07d3aca2012748c4ff825edd245b5670b0eba0f6209bd3da91b67183d8f01480?"
-                className="shrink-0 my-auto w-3.5 aspect-[1.41]"
-              />
-            </div>
-          </div>
-        </div>
+        )}
+        
+        */}
+
+        <Link
+          href={"/signin"}
+          className={
+            "hidden w-full md:w-fit md:mx-auto px-16 py-2.5 mt-10 font-medium  text-white bg-primary rounded-full hover:opacity-80 font-sans focus:outline-none outline-none outline-transparent transition duration-300 ease-in-out  select-none  relative group/button cursor-pointer active:scale-95 origin-center whitespace-nowrap"
+          }
+        >
+          Sign In
+        </Link>
       </section>
-    </Layout.AppLayout>
+
+      <footer className="mx-auto">
+        <div
+          className="flex items-center mt-5 text-sm leading-5
+           text-zinc-500 p-3 max-md:mt-10 max-md:max-w-full"
+        >
+          <div className="flex gap-4 max-md:flex-wrap">
+            <a className="hover:underline">FAQ</a>
+            <a className="hover:underline">Privacy</a>
+            <a className="hover:underline">About</a>
+          </div>
+        </div>
+      </footer>
+    </Fragment>
+  );
+};
+
+Page.getLayout = (page) => {
+  return (
+    <Fragment>
+      <Head title={"Search"} />
+      <AppLayout>{page}</AppLayout>
+    </Fragment>
   );
 };
 

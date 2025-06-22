@@ -1,4 +1,5 @@
 import DetectOutsideClick from "./withDetectClick";
 import ReactPortal from "./withReactPortal";
+import ErrorBoundary from "./withErrorBoundary";
 
-export { DetectOutsideClick, ReactPortal };
+export { DetectOutsideClick, ErrorBoundary, ReactPortal };

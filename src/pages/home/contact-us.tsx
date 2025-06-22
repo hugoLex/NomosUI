@@ -2,28 +2,19 @@ import React, { Fragment } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-import {
-  Footer,
-  Head,
-  Header,
-  BaseLayout,
-  View,
-  Heading,
-} from "@app/components/ui";
-
 import { NextPageWithLayout } from "@app/types";
+import { Head, Heading } from "@app/components/ui";
+import { BaseLayout } from "@app/components/layout";
 
 const Page: NextPageWithLayout = () => {
   return (
-    <Fragment>
+    <BaseLayout>
       <Head title="Contact Us" />
-      <View className="mt-24">
+      <main className="mt-24">
         <p>Contact</p>
-      </View>
-    </Fragment>
+      </main>
+    </BaseLayout>
   );
 };
-
-Page.getLayout = BaseLayout;
 
 export default Page;
