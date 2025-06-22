@@ -17,6 +17,20 @@ export const aiURL = "https://llmsearch.lexanalytics.ai/api";
 
 export const baseURL = "https://webapp.lexanalytics.ai/api";
 
+
+export const rhetorical_function_tooltips = {
+  "issue formulation": "Outlines the legal questions or disputes to be resolved",
+  "precedent analysis": "Examines and applies previous case decisions",
+  ruling: "States the court's final determination on issues",
+  "factual background": "Establishes relevant facts of the case",
+  "legal reasoning": "Presents the court's analysis and rationale",
+  "dissenting opinion": "Records disagreement with the majority ruling",
+  "concurring opinion": "Agrees with outcome but offers different reasoning",
+  "procedural history": "Tracks the case's journey through the courts",
+  "statutory interpretation": "Analyzes and applies relevant legislation"
+}
+
+
 export const dummyCasesResult: CaseResults = {
   search_id: "9d182815-5515-437c-bc85-66de4619fcc7",
   filter_elements: {

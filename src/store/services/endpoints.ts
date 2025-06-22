@@ -49,7 +49,7 @@ const baseQueryWithReauth: BaseQueryFn<
 
   // if (true) {
   if (result.error && result?.error?.status === 401) {
-    console.log("Requesting a refresh token", result.error);
+    // console.log("Requesting a refresh token", result.error);
     //  Use refresh token to get access token
     const refresh_token = Cookies.get("refresh_token")
     // console.log("refresh token:", refresh_token);
@@ -64,7 +64,7 @@ const baseQueryWithReauth: BaseQueryFn<
         method: "POST",
         body: { refresh: refresh_token }
       }, api, extraOptions);
-    console.log("refresh token result", refreshResult);
+    // console.log("refresh token result", refreshResult);
     if (refreshResult.error && refreshResult?.error?.status === 401) {
       // if the access token expires and refresh token also expires then the user must login again
       // Token refresh failed (blacklisted/expired) → Force logout by clearing access and refresh tokens
@@ -95,13 +95,13 @@ const baseQueryWithReauth: BaseQueryFn<
         //   })
         // );
       } else {
-        console.log("Access token is missing");
+        // console.log("Access token is missing");
       }
-      console.log("access token gotten and used to fetch data:", result);
+      // console.log("access token gotten and used to fetch data:", result);
       result = await baseQuery(args, api, extraOptions);
       return result
     } else {
-      console.log("There is an unhandled error in rtk api");
+      // console.log("There is an unhandled error in rtk api");
     }
   }
 

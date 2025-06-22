@@ -93,7 +93,7 @@ const Signup = () => {
     // }
     setErrorMsg(null);
     const { remember, email, ...rest } = values;
-    console.log("Attempting to signup", { email, ...rest });
+    // console.log("Attempting to signup", { email, ...rest });
     try {
       const res = await signup({
         ...rest,
@@ -108,9 +108,9 @@ const Signup = () => {
 
       resetForm();
 
-      console.log("Response from signup page,saving!!", {
-        res,
-      });
+      // console.log("Response from signup page,saving!!", {
+      //   res,
+      // });
       // router.push(`/auth/onboard?email=${email.toLowerCase()}`);
     } catch (error) {
       if ((error as Error)?.message) {
@@ -153,7 +153,7 @@ const Signup = () => {
         // );
       }
 
-      console.log("signup failed!!!", error);
+      // console.log("signup failed!!!", error);
     }
   }
 

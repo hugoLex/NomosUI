@@ -17,7 +17,7 @@ import {
   SearchType,
   TSearchResultDocument,
 } from "@app/types";
-import { escapeRegExp } from "@app/utils";
+import { escapeRegExp, rhetorical_function_tooltips } from "@app/utils";
 import { HiMinus, HiOutlineDocumentText } from "react-icons/hi2";
 
 import { LLMResult } from "@app/types";
@@ -381,7 +381,7 @@ export const SearchResultMeta = (prop: {
   data: TSearchResultDocument;
   type: SearchType;
 }) => {
-  const { searchParams } = useQueryToggler();
+  const { searchParams, UpdateUrlParams } = useQueryToggler();
 
   const query = searchParams.get("q");
   const { index, data, type } = prop;
@@ -390,7 +390,7 @@ export const SearchResultMeta = (prop: {
   let _metadata: any;
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log("usestate for llm invalidate tags ran");
+    // console.log("usestate for llm invalidate tags ran");
     dispatch(searchQueryUtil.invalidateTags(["LlmSearch"]));
   }, [query]);
   // console.log("Content and contex", metadata);
@@ -516,9 +516,34 @@ export const SearchResultMeta = (prop: {
         return (
           <p className="text-sm mb-6 text- primary" key={ptx}>
             <SubQuery excerpt_note={excerpt_notes ?? excerpt_note} />
-            <span className="mb-[15px] capitalize inline-block px-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium">
-              {rhetorical_function}
-            </span>
+            <div className="my-[15px]  flex items-center gap-3">
+              <span
+                title={
+                  rhetorical_function_tooltips[
+                    rhetorical_function.toLowerCase() as keyof typeof rhetorical_function_tooltips
+                  ]
+                }
+                className="flex items-center gap-1 cursor-pointer capitalize pl-1 pr-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium"
+              >
+                <Image
+                  height={20}
+                  width={20}
+                  src={"/images/icons/information-circle-stroke-rounded.svg"}
+                  // src={"../icons/ai-search-02-stroke-rounded.svg"}
+                  alt="search"
+                />{" "}
+                {rhetorical_function}
+              </span>
+              <button
+                onClick={() => {
+                  UpdateUrlParams("right_cover_menu", "true");
+                }}
+                title="Click to view related content"
+                className="  capitalize inline-block px-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium"
+              >
+                Related content
+              </button>
+            </div>
             {/* Render highlighted quote */}
             <mark
               id=""

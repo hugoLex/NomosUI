@@ -192,13 +192,13 @@ export default function OnboardingFormA() {
       const res = await onboard_account(formData).unwrap();
       if (res) {
         toast(`${email} onboard successfully`);
-        console.log(res);
+        // console.log(res);
       }
 
       // Optional: reset form after success
       // resetForm();
     } catch (error) {
-      console.error("Onboarding submission error:", error);
+      // console.error("Onboarding submission error:", error);
       toast(
         error instanceof Error ? error.message : "An unexpected error occurred"
       );

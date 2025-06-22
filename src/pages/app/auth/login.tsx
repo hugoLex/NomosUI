@@ -80,10 +80,10 @@ const Login = () => {
           }));
         }
       } catch (error) {
-        console.error("Failed to parse user data:", error);
+        // console.error("Failed to parse user data:", error);
       }
     } else {
-      console.warn("No user data found in cookies.");
+      // console.warn("No user data found in cookies.");
     }
 
     // access_token && token && router.push("/");
@@ -102,7 +102,7 @@ const Login = () => {
         email: values?.email.toLowerCase(),
       }).unwrap();
       if (res) {
-        console.log(res);
+        // console.log(res);
         Cookies.set("refresh_token", res.refresh);
         Cookies.set("access_token", res.access);
         Cookies.set("user_id", res.user_id);
@@ -113,9 +113,9 @@ const Login = () => {
             JSON.stringify({ email: values?.email, password: values?.password })
           );
           Cookies.set("user", encrypted);
-          console.log("Response from login page,saving!!", {
-            res,
-          });
+          // console.log("Response from login page,saving!!", {
+          //   res,
+          // });
           return router.push("/");
         } else {
           Cookies.remove("user");
@@ -128,9 +128,9 @@ const Login = () => {
         resetForm();
         // router.push("/");
       }
-      console.log("Response from login page,saving!!", {
-        res,
-      });
+      // console.log("Response from login page,saving!!", {
+      //   res,
+      // });
       router.push("/");
     } catch (error) {
       if ((error as AuthErrorT).data.detail) {
@@ -139,7 +139,7 @@ const Login = () => {
         // setErrorMsg((error as AuthErrorT)?.data.detail);
       }
 
-      console.log("Login failed!!!", error);
+      // console.log("Login failed!!!", error);
     }
   }
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
