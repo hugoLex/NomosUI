@@ -523,7 +523,7 @@ export const SearchResultMeta = (prop: {
               </span>
               <button
                 onClick={() => {
-                  UpdateUrlParams("right_cover_menu", "true");
+                  UpdateUrlParams("right_cover_menu", excerpt_notes);
                 }}
                 title="Click to view related content"
                 className="  capitalize inline-block px-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium"
@@ -906,7 +906,7 @@ export const SimilaritySearchResultMeta = (prop: {
         {/* Render highlighted quote */}
         <p
           id=""
-          className="block text-lexblue font-gilda_Display text-sm bg-transparent  font -poppins"
+          className="block text-lexblue font-cabin gilda_ Display text-sm bg-transparent  font- poppins"
         >
           {content}
           {/* {splitted?.map((word, index) => {
