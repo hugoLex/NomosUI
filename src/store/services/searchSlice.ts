@@ -17,6 +17,7 @@ import {
 } from "@app/types";
 import { baseURL } from "@app/utils";
 import { LegalBriefApiResponse } from "@app/types/briefanalyzer";
+import { LegalSearchResponse } from "@app/types/similarity";
 
 type SearchQuery = {
   query: string;
@@ -147,7 +148,7 @@ export const searchQueryAPI = injectEndpoints({
 
       // invalidatesTags:["LlmSearch"]
     }),
-    similarity_search: builder.mutation<TSearchResultDocuments, { content: string }>({
+    similarity_search: builder.mutation<LegalSearchResponse, { content: string }>({
       // http://webapp.lexanalytics.ai/api/semantic/similar
       query: (payload) => ({
         url: `/semantic/similar`,

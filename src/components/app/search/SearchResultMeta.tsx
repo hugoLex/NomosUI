@@ -43,6 +43,7 @@ import { Loader } from "@app/components/ui";
 import { useDispatch } from "react-redux";
 import Image from "next/image";
 import { Minus, PlusIcon } from "lucide-react";
+import { RelatedChunk } from "@app/types/similarity";
 type TclasifierResult = {
   query: string;
   classification: string;
@@ -102,7 +103,7 @@ export const SearchAIMetaResult = ({
       </div>
     );
   }
-  llm_search_data && console.log(llm_search_data, error);
+  // llm_search_data && console.log(llm_search_data, error);
   // if (llm_search_data && typeof llm_search_data === "string") {
   //   return <PreviewCard content={llm_search_data?.slice(13).slice(0, -3)} />;
   // }
@@ -473,7 +474,7 @@ export const SearchResultMeta = (prop: {
         const escapedContext = context.map((str) =>
           str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
         );
-        console.log(escapedContext);
+        // console.log(escapedContext);
         // Build the regex pattern with capturing group
         const contextPattern = `(${escapedContext.join("|")})`;
         const regex = new RegExp(contextPattern, "g");
@@ -481,18 +482,18 @@ export const SearchResultMeta = (prop: {
         // Split with capturing group so context strings are retained
         const splitted = content.split(regex);
 
-        console.log("it is working", splitted);
+        // console.log("it is working", splitted);
 
         const boldWords = keywords;
 
         const pattern = `(${context.join("|")})`;
         // const regexPattern = new RegExp(pattern, "g");
-        console.log(
-          "THIS IS THE CONTEXT AND CONTENT"
-          // content.split(regexPattern)
-          // [JSON.stringify(content), JSON.stringify(context)]
-          // context.trim().split(`${content.trim()}`)
-        );
+        // console.log(
+        //   "THIS IS THE CONTEXT AND CONTENT"
+        //   // content.split(regexPattern)
+        //   // [JSON.stringify(content), JSON.stringify(context)]
+        //   // context.trim().split(`${content.trim()}`)
+        // );
         // const renderTextWithBold = content
         //   .split(regexPattern)
         //   .map((word, index) =>
@@ -610,63 +611,7 @@ export const SearchResultMeta = (prop: {
               {mappedAlphabets[ptx]}
             </sup>
           </p>
-          // <p className="text-sm mb-6" key={ptx}>
-          //   {/* Render first part */}
-          //   {parts[0] && <span>{parts[0]} </span>}
-
-          //   {/* Render highlighted quote */}
-          //   <mark id="" className="bg-[#FFECB3]">
-          //     {contextResolved.split(regexPattern).map((word, index) =>
-          //       boldWords.includes(word) ? (
-          //         <b className="text-primary font-bold" key={index}>
-          //           {word}
-          //         </b>
-          //       ) : (
-          //         word
-          //       )
-          //     )}
-          //   </mark>
-
-          //   {/* Render remaining content */}
-          //   {parts[1] && <span>{parts[1]} </span>}
-          //   <sup
-          //     onClick={
-          //       () =>
-          //         setQuoteToHighlight({
-          //           citation: null,
-          //           quote: content.trim(),
-          //           treatment_type: "",
-          //         })
-          //       // handleHighlightFullJudgement(
-          //       //   content.trim(),
-          //       //   metadata?.document_id
-          //       // )
-          //     }
-          //     className="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]"
-          //   >
-          //     {mappedAlphabets[ptx]}
-          //   </sup>
-          // </p>
         );
-        // return (
-        //   <p
-        //     key={ptx}
-        //     // dangerouslySetInnerHTML={{ __html: fmtTxt }}
-        //     className="text-sm mb-6"
-        //   >
-        //     {
-        //       <span
-        //         className="bg-[#FFE89E]"
-        //         onClick={handleHighlightFullJudgement}
-        //       >
-        //         {context.trim()}
-        //         <sup className="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]">
-        //           {mappedAlphabets[ptx]}
-        //         </sup>
-        //       </span>
-        //     }
-        //   </p>
-        // );
       }
     );
   const pageNumberMapping: { [index: number]: number } = {
@@ -747,7 +692,7 @@ export const SearchResultMeta = (prop: {
       </div>
     );
   }
-  console.log("Occurences updated", occurrences);
+  // console.log("Occurences updated", occurrences);
   return (
     <div
       className={`mb-8 space-y-3 border-b border-b-primary/10 pb-5`}
@@ -847,40 +792,388 @@ export const SearchResultMeta = (prop: {
 
       <div>
         <Occurrences />
-        {/* <p dangerouslySetInnerHTML={{ __html: fmtTxt }} className="text-sm" /> */}
-        {/* when i wrote this logic, I understood it, as you read it God help you to understand it in your attempt to change it */}
-        {/* God help us all 🤣🤣🤣? */}
-        {/* {index == "1" && showCaseSummary !== null && showCaseSummary !== "1" ? (
-          <>
-            <HiOutlineDocumentText
-              title="Case summary"
-              onClick={() => close("showCaseSummary", index as string)}
-              className="text-gray-500 my-5 cursor-pointer  mr-auto"
-              size={19}
-            />
-            Summary
-          </>
-        ) : index !== "1" && showCaseSummary !== index ? (
-          <HiOutlineDocumentText
-            title="Case summary"
-            onClick={() => close("showCaseSummary", index as string)}
-            className="text-gray-500 my-5 cursor-pointer  mr-auto"
-            size={19}
-          />
-        ) : null} */}
       </div>
+    </div>
+  );
+};
+export const SimilaritySearchResultMeta = (prop: {
+  index: number;
+  data: RelatedChunk;
+}) => {
+  const { searchParams, UpdateUrlParams } = useQueryToggler();
+  const query = searchParams.get("q");
+  const { index, data } = prop;
+  const {
+    case_title,
+    chunk_id,
+    content,
+    court,
+    document_id,
+    document_type,
+    excerpt_notes,
+    rhetorical_function,
+    suit_number,
+    year,
+  } = data;
+  // console.log("similarity search data", data);
+  let _link: string = "what is law";
 
-      {/* {type === "cases" && (
-        <Fragment>
-          {showCaseSummary !== null && showCaseSummary === index && (
-            <SummaryComponent summary={metadata.summary} isCollapsible />
-          )}
+  const [quoteToHighlight, setQuoteToHighlight] = useState<{
+    quote: string;
+    citation: string | null;
+    treatment_type: string;
+  } | null>(null);
+  // search using the case id or skip it
+  // const { isError, isLoading, data:fullJudgement } = useCaseQuery(metadata.document_id??skipToken)
+  // This is a hook to get the fullcase of any valid id
+  // const { fullJudgement } = useFetchFullJudgementData(metadata.document_id);
 
-          {showCaseSummary === null && index === "1" && (
-            <SummaryComponent summary={metadata.summary} isCollapsible />
+  const mappedAlphabets: { [key: number]: string } = {
+    0: "a",
+    1: "b",
+    2: "c",
+    3: "d",
+    4: "e",
+    5: "f",
+    6: "g",
+    7: "h",
+    8: "i",
+    9: "j",
+    10: "k",
+  };
+  function Occurrences() {
+    // // Escape special characters for each context string
+    // const escapedContext = context.map((str) =>
+    //   str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    // );
+    // console.log(escapedContext);
+    // // Build the regex pattern with capturing group
+    // const contextPattern = `(${escapedContext.join("|")})`;
+    // const regex = new RegExp(contextPattern, "g");
+
+    // // Split with capturing group so context strings are retained
+    // const splitted = content.split(regex);
+
+    // console.log("it is working", splitted);
+
+    // const boldWords = keywords;
+
+    // const pattern = `(${context.join("|")})`;
+    // const regexPattern = new RegExp(pattern, "g");
+    // console.log(
+    //   "THIS IS THE CONTEXT AND CONTENT"
+    //   // content.split(regexPattern)
+    //   // [JSON.stringify(content), JSON.stringify(context)]
+    //   // context.trim().split(`${content.trim()}`)
+    // );
+    // const renderTextWithBold = content
+    //   .split(regexPattern)
+    //   .map((word, index) =>
+    //     boldWords.includes(word) ? <b key={index}>{word}</b> : word
+    //   );
+
+    return (
+      <p className="text-sm mb-6 text- primary" key={index}>
+        <SubQuery excerpt_note={excerpt_notes ? excerpt_notes : ""} />
+        <div className="my-[15px]  flex items-center gap-3">
+          <span
+            title={
+              rhetorical_function_tooltips[
+                rhetorical_function.toLowerCase() as keyof typeof rhetorical_function_tooltips
+              ]
+            }
+            className="flex items-center gap-1 cursor-pointer capitalize pl-1 pr-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium"
+          >
+            <Image
+              height={20}
+              width={20}
+              src={"/images/icons/information-circle-stroke-rounded.svg"}
+              // src={"../icons/ai-search-02-stroke-rounded.svg"}
+              alt="search"
+            />{" "}
+            {rhetorical_function}
+          </span>
+          <button
+            onClick={() => {
+              UpdateUrlParams("right_cover_menu", "true");
+            }}
+            title="Click to view related content"
+            className="  capitalize inline-block px-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium"
+          >
+            Related content
+          </button>
+        </div>
+        {/* Render highlighted quote */}
+        <p
+          id=""
+          className="block text-lexblue font-gilda_Display text-sm bg-transparent  font -poppins"
+        >
+          {content}
+          {/* {splitted?.map((word, index) => {
+                return context?.includes(word) ? (
+                  // return contextResolved.includes(word) ? (
+                  // && index < contextLength
+                  <h3
+                    className={` inline text-red-600 font-normal font-gilda_display text-sm ${null}`}
+                    key={index}
+                  >
+                    {word?.split(" ")?.map((bWord, idx) => {
+                      if (boldWords?.includes(bWord)) {
+                        return (
+                          <span
+                            key={`${bWord}-${idx}`}
+                            className="font-bold text-sm"
+                          >
+                            {" "}
+                            {bWord}
+                          </span>
+                        );
+                      }
+                      return ` ${bWord}`;
+                      // (
+                      //   <span key={`${bWord}-${idx}`} className="text-sm">
+                      //     {" "}
+                      //     {bWord}
+                      //   </span>
+                      // );
+                    })}
+                  </h3>
+                ) : (
+                  <h3
+                    className={` inline text-[#0E3165] font-normal font-gilda_display text-sm ${null}`}
+                    key={index}
+                  >
+                    {word?.split(" ")?.map((bWord, idx) => {
+                      if (boldWords?.includes(bWord)) {
+                        return (
+                          <span
+                            key={`${bWord}-${idx}`}
+                            className="font-bold text-sm"
+                          >
+                            {" "}
+                            {bWord}
+                          </span>
+                        );
+                      }
+                      return ` ${bWord}`;
+                      // (
+                      //   <span key={`${bWord}-${idx}`} className="text-sm">
+                      //     {" "}
+                      //     {bWord}
+                      //   </span>
+                      // );
+                    })}
+                  </h3>
+                );
+              })} */}
+        </p>
+
+        <sup
+          onClick={
+            () =>
+              setQuoteToHighlight({
+                citation: null,
+                quote: content.trim(),
+                treatment_type: "",
+              })
+            // This opens the full judgement page and highlights the content
+            // handleHighlightFullJudgement(
+            //   content.trim(),
+            //   metadata?.document_id
+            // )
+          }
+          className="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]"
+        >
+          {mappedAlphabets[index]}
+        </sup>
+      </p>
+    );
+  }
+
+  const pageNumberMapping: { [index: number]: number } = {
+    6: 2,
+    11: 3,
+    16: 4,
+    21: 5,
+  };
+
+  function SubQuery({ excerpt_note }: { excerpt_note: string }) {
+    const [open, setopen] = useState<boolean>(false);
+
+    return (
+      <div className="max-h-[750px] overflow-y-clip relative mt-[8px] mb-[8px] border-l-2 py-1.5 border-lexblue bg-gray flex items-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="mx-[8px] text-super shrink-0 -translate-y-px rotate-180"
+        >
+          <path d="M10 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
+          <path d="M19 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
+        </svg>
+        <p
+          className={`text-sm text-gray-authinput ${
+            open ? null : "line-clamp-3"
+          } `}
+        >
+          {excerpt_note ?? "No excerpt found"}
+          {/* The extends keyword restricts T so that only types compatible with
+          FormikValues can The extends keyword restricts T so that only types
+          compatible with FormikValues can The extends keyword restricts T so
+          that only types compatible with FormikValues canThe extends keyword
+          restricts T so that only types compatible with FormikValues can
+          compatible with FormikValues can The extends keyword restricts T so
+          that only types compatible with FormikValues canThe extends keyword
+          restricts T so that only types compatible with FormikValues can */}
+          {/* {open && <span>...</span>} */}
+          {!open && (
+            <div className="w-full absolute bottom-0 h-[52px] bg-[linear-gradient(transparent_0px,rgba(255,255,255,0.9)_52px,#fff_80px)]"></div>
           )}
-        </Fragment>
+        </p>
+        {open ? (
+          <Minus
+            className="cursor-pointer flex-shrink-0"
+            size={18}
+            onClick={(e) => {
+              e?.stopPropagation();
+              setopen(false);
+            }}
+          />
+        ) : (
+          <svg
+            onClick={(e) => {
+              e?.stopPropagation();
+
+              setopen(true);
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.7333333333333334"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className=" cursor-pointer fill-current opacity-75 flex-shrink-0 "
+          >
+            <path d="M12 5l0 14"></path>
+            <path d="M5 12l14 0"></path>
+          </svg>
+          // <PlusIcon
+          //   className="cursor-pointer"
+          //   size={50}
+          //   onClick={() => setopen(true)}
+          // />
+        )}
+      </div>
+    );
+  }
+  // console.log("Occurences updated", occurrences);
+  return (
+    <div className={`mb-8 space-y-3 border-b border-b-primary/10 pb-5`}>
+      <span className=" capitalize pl-1 pr-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium">
+        Similar
+      </span>
+      {/* This is a modal to display the fullcase and highlighted area  */}
+      {/* {quoteToHighlight && fullJudgement && (
+        <FulljudgementModal
+          // innerRef={h2Ref}
+          // id={caseId}
+          setClickedQuote={setQuoteToHighlight}
+          case_title={metadata.case_title}
+          quoteToHighlight={quoteToHighlight}
+          full_judgement={fullJudgement?.judgement}
+        />
       )} */}
+      {/* THIS INDICATES WHERE 2 STARTS FROM  */}
+      {Object.keys(pageNumberMapping).includes(String(index)) && (
+        <span className="mx-auto max-w-[100px] block text-white bg-lexblue text-base px-3 py-1 mt -8 mb-8 rounded font-gilda_Display">
+          PAGE {pageNumberMapping[Number(index)]}
+        </span>
+      )}
+      <span className="text-powder_blue block w-fit bg-[#008E00]/10 text-xs px-3 py-1 rounded font-gilda_Display">
+        {/* {document_type} */}Case
+      </span>
+
+      <h3 className="text-[1.1rem] font-semibold font-gilda_Display">
+        <Link
+          href={`/library/cases/${
+            document_id ? document_id : _link.replace(/\s/g, "-")
+          }?title=${case_title}&tab=case`}
+          className="text-powder_blue"
+        >
+          <span className="text-gray-500 ">{index}. </span>
+          {case_title}
+          {/* {type === "articles" && (metadata as ArticleMetadata).article_title} */}
+          {/* {type === "cases" && (metadata as CaseMetadata).case_title} */}
+          {/* {type === "legislations" &&
+            (metadata as LegislationMetadata).document_title}
+          {type === "principles" && (metadata as PrinciplesMetadata).case_title} */}
+        </Link>
+      </h3>
+
+      {/* {type === "articles" && (
+        <p className="flex gap-x-4">
+          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+            {(metadata as ArticleMetadata).author}
+          </span>
+          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+            {(metadata as ArticleMetadata).year}
+          </span>
+        </p>
+      )} */}
+
+      {suit_number && (
+        // {type === "cases" && (
+        <p className="flex gap-x-4 font-poppins">
+          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-teal-900 text-sm font-medium">
+            {court}
+            {/* {(metadata as CaseMetadata).court} */}
+          </span>
+          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-teal-900 text-sm font-medium">
+            {year}
+            {/* {(metadata as CaseMetadata).year} */}
+          </span>
+
+          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-teal-900 text-sm font-medium">
+            {suit_number}
+            {/* {(metadata as CaseMetadata).suit_number} */}
+          </span>
+        </p>
+      )}
+
+      {/* {type === "legislations" && (
+        <p className="flex gap-x-4">
+          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+            Section {(metadata as LegislationMetadata).section_number}
+          </span>
+          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+            {(metadata as LegislationMetadata).year}
+          </span>
+        </p>
+      )} */}
+
+      {/* {type === "principles" && (
+        <p className="flex gap-x-4">
+          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-gilda_Display font-medium">
+            {(metadata as PrinciplesMetadata).court}
+          </span>
+          <span className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium">
+            {(metadata as PrinciplesMetadata).}
+          </span>
+        </p>
+      )} */}
+
+      <div>
+        <Occurrences />
+      </div>
     </div>
   );
 };
