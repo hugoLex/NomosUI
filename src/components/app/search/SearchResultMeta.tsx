@@ -695,7 +695,7 @@ export const SearchResultMeta = (prop: {
   // console.log("Occurences updated", occurrences);
   return (
     <div
-      className={`mb-8 space-y-3 border-b border-b-primary/10 pb-5`}
+      className={`mb-8  space-y-3 border-b border-b-primary/10 pb-5`}
       // className={`mb-8 space-y-3 border-b ${
       //   Object.keys(pageNumberMapping).includes(String(Number(index) + 1))
       //     ? "border-b-lexblue"
@@ -906,7 +906,7 @@ export const SimilaritySearchResultMeta = (prop: {
         {/* Render highlighted quote */}
         <p
           id=""
-          className="block text-lexblue font-cabin gilda_ Display text-sm bg-transparent  font- poppins"
+          className="block text-lexblue font- cabin gilda_ Display text-sm bg-transparent  font-poppins"
         >
           {content}
           {/* {splitted?.map((word, index) => {
@@ -1077,7 +1077,9 @@ export const SimilaritySearchResultMeta = (prop: {
   }
   // console.log("Occurences updated", occurrences);
   return (
-    <div className={`mb-8 space-y-3 border-b border-b-primary/10 pb-5`}>
+    <div
+      className={`mb-8 px-[40px] space-y-3 border-b border-b-primary/10 pb-5`}
+    >
       <span className=" capitalize pl-1 pr-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium">
         Similar
       </span>
