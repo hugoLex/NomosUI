@@ -39,7 +39,7 @@ import {
   useQuery_route_classifierQuery,
 } from "@app/store/services/searchSlice";
 import useQueryToggler from "@app/hooks/useQueryHandler";
-import { Loader } from "@app/components/ui";
+import { Button, Loader } from "@app/components/ui";
 import { useDispatch } from "react-redux";
 import Image from "next/image";
 import { Minus, PlusIcon } from "lucide-react";
@@ -390,6 +390,7 @@ export const SearchResultMeta = (prop: {
   let _link: string = "what is law";
   let _metadata: any;
   const dispatch = useDispatch();
+  const [lastOccurrence, setLastOccurrence] = useState<number>(1);
   useEffect(() => {
     // console.log("usestate for llm invalidate tags ran");
     dispatch(searchQueryUtil.invalidateTags(["LlmSearch"]));
@@ -435,7 +436,7 @@ export const SearchResultMeta = (prop: {
   };
   const Occurrences = () =>
     (
-      occurrences as {
+      occurrences?.slice(0, lastOccurrence) as {
         content: string;
         context: string[];
         excerpt_note: string;
@@ -456,6 +457,7 @@ export const SearchResultMeta = (prop: {
         },
         ptx: number
       ) => {
+        const [open, setopen] = useState<boolean>(false);
         // let fmtTxt: string = content.trim();
         // // if (typeof context === "string") {
         // console.log("full context", context);
@@ -499,11 +501,91 @@ export const SearchResultMeta = (prop: {
         //   .map((word, index) =>
         //     boldWords.includes(word) ? <b key={index}>{word}</b> : word
         //   );
+        function SubQuery({ excerpt_note }: { excerpt_note: string }) {
+          return (
+            <div className="max-h-[750px] overflow-y-clip relative mt-[8px] mb-[8px]  bg-gray flex items-center">
+              {/* <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="mx-[8px] text-super shrink-0 -translate-y-px rotate-180"
+        >
+          <path d="M10 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
+          <path d="M19 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
+        </svg> */}
+              <p
+                className={`text-sm text-gray-authinput ${
+                  open ? null : "hidden line- clamp-3"
+                } `}
+              >
+                {excerpt_note ?? "No excerpt found"}
+                {/* The extends keyword restricts T so that only types compatible with
+          FormikValues can The extends keyword restricts T so that only types
+          compatible with FormikValues can The extends keyword restricts T so
+          that only types compatible with FormikValues canThe extends keyword
+          restricts T so that only types compatible with FormikValues can
+          compatible with FormikValues can The extends keyword restricts T so
+          that only types compatible with FormikValues canThe extends keyword
+          restricts T so that only types compatible with FormikValues can */}
+                {/* {open && <span>...</span>} */}
+                {/* this gives a fading effect to the text  */}
+                {/* {!open && (
+            <div className="w-full absolute bottom-0 h-[52px] bg-[linear-gradient(transparent_0px,rgba(255,255,255,0.9)_52px,#fff_80px)]"></div>
+          )} */}
+              </p>
+              {/* {open ? (
+          <Minus
+            className="cursor-pointer flex-shrink-0"
+            size={18}
+            onClick={() => setopen(false)}
+          />
+        ) : (
+          <svg
+            onClick={() => setopen(true)}
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.7333333333333334"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className=" cursor-pointer fill-current opacity-75 flex-shrink-0 "
+          >
+            <path d="M12 5l0 14"></path>
+            <path d="M5 12l14 0"></path>
+          </svg>
+        
+        )} */}
+            </div>
+          );
+        }
 
         return (
           <p className="text-sm mb-6 text- primary" key={ptx}>
             <SubQuery excerpt_note={excerpt_notes ?? excerpt_note} />
             <div className="my-[15px]  flex items-center gap-3">
+              <span
+                title="Click to open and close the context"
+                onClick={() => setopen(!open)}
+                className="flex items-center gap-1 cursor-pointer capitalize pl-1 pr-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium"
+              >
+                <Image
+                  height={15}
+                  width={15}
+                  src={"/images/icons/layers-01-stroke-rounded.svg"}
+                  // src={"../icons/ai-search-02-stroke-rounded.svg"}
+                  alt="search"
+                />{" "}
+                Context
+              </span>
               <span
                 title={
                   rhetorical_function_tooltips[
@@ -513,8 +595,8 @@ export const SearchResultMeta = (prop: {
                 className="flex items-center gap-1 cursor-pointer capitalize pl-1 pr-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium"
               >
                 <Image
-                  height={20}
-                  width={20}
+                  height={15}
+                  width={15}
                   src={"/images/icons/information-circle-stroke-rounded.svg"}
                   // src={"../icons/ai-search-02-stroke-rounded.svg"}
                   alt="search"
@@ -538,7 +620,7 @@ export const SearchResultMeta = (prop: {
                   // return contextResolved.includes(word) ? (
                   // && index < contextLength
                   <h3
-                    className={` inline text-red-600 font-normal font-gilda_display text-sm ${null}`}
+                    className={` inline bg-[#EBF2FF] text- font-normal font-gilda_display text-sm ${null}`}
                     key={index}
                   >
                     {word?.split(" ")?.map((bWord, idx) => {
@@ -621,77 +703,6 @@ export const SearchResultMeta = (prop: {
     21: 5,
   };
 
-  function SubQuery({ excerpt_note }: { excerpt_note: string }) {
-    const [open, setopen] = useState<boolean>(false);
-
-    return (
-      <div className="max-h-[750px] overflow-y-clip relative mt-[8px] mb-[8px] border-l-2 py-1.5 border-lexblue bg-gray flex items-center">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="mx-[8px] text-super shrink-0 -translate-y-px rotate-180"
-        >
-          <path d="M10 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
-          <path d="M19 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
-        </svg>
-        <p
-          className={`text-sm text-gray-authinput ${
-            open ? null : "line-clamp-3"
-          } `}
-        >
-          {excerpt_note ?? "No excerpt found"}
-          {/* The extends keyword restricts T so that only types compatible with
-          FormikValues can The extends keyword restricts T so that only types
-          compatible with FormikValues can The extends keyword restricts T so
-          that only types compatible with FormikValues canThe extends keyword
-          restricts T so that only types compatible with FormikValues can
-          compatible with FormikValues can The extends keyword restricts T so
-          that only types compatible with FormikValues canThe extends keyword
-          restricts T so that only types compatible with FormikValues can */}
-          {/* {open && <span>...</span>} */}
-          {!open && (
-            <div className="w-full absolute bottom-0 h-[52px] bg-[linear-gradient(transparent_0px,rgba(255,255,255,0.9)_52px,#fff_80px)]"></div>
-          )}
-        </p>
-        {open ? (
-          <Minus
-            className="cursor-pointer flex-shrink-0"
-            size={18}
-            onClick={() => setopen(false)}
-          />
-        ) : (
-          <svg
-            onClick={() => setopen(true)}
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.7333333333333334"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className=" cursor-pointer fill-current opacity-75 flex-shrink-0 "
-          >
-            <path d="M12 5l0 14"></path>
-            <path d="M5 12l14 0"></path>
-          </svg>
-          // <PlusIcon
-          //   className="cursor-pointer"
-          //   size={50}
-          //   onClick={() => setopen(true)}
-          // />
-        )}
-      </div>
-    );
-  }
   // console.log("Occurences updated", occurrences);
   return (
     <div
@@ -755,14 +766,14 @@ export const SearchResultMeta = (prop: {
 
       {type === "cases" && (
         <p className="flex gap-x-4 font-poppins">
-          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-teal-900 text-sm font-medium">
+          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-[#5B85AB] text-sm font-medium">
             {(metadata as CaseMetadata).court}
           </span>
-          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-teal-900 text-sm font-medium">
+          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-[#5B85AB] text-sm font-medium">
             {(metadata as CaseMetadata).year}
           </span>
 
-          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-teal-900 text-sm font-medium">
+          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-[#5B85AB] text-sm font-medium">
             {(metadata as CaseMetadata).suit_number}
           </span>
         </p>
@@ -792,6 +803,31 @@ export const SearchResultMeta = (prop: {
 
       <div>
         <Occurrences />
+        {occurrences?.length - 1 > 0 && (
+          <div className="flex justify-left py-2.5 ">
+            <Button
+              label={
+                lastOccurrence == 1
+                  ? `Load ${occurrences?.length - 1} occurence${
+                      occurrences?.length - 1 > 1 ? "s" : ""
+                    }`
+                  : "Show less"
+              }
+              onClick={() =>
+                setLastOccurrence((prev) =>
+                  prev === 1 ? occurrences?.length : 1
+                )
+              }
+              className="bg-lexblue text-white"
+            />
+          </div>
+        )}
+        {/* <button
+          onClick={() => setLastOccurrence(occurrences?.length - 1)}
+          className="px-4 py-2 bg-primary text-white text-base "
+        >
+          Show more {occurrences?.length - 1}
+        </button> */}
       </div>
     </div>
   );
@@ -872,10 +908,104 @@ export const SimilaritySearchResultMeta = (prop: {
     //     boldWords.includes(word) ? <b key={index}>{word}</b> : word
     //   );
 
+    const [open, setopen] = useState<boolean>(false);
+    function SubQuery({ excerpt_note }: { excerpt_note: string }) {
+      return (
+        <div
+          className={` ${
+            !open && "hidden"
+          } max-h-[750px] overflow-y-clip relative mt-[8px] mb-[8px] border- l-2 py-1.5 border-lexblue bg-gray flex items-center`}
+        >
+          {/* <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="mx-[8px] text-super shrink-0 -translate-y-px rotate-180"
+          >
+            <path d="M10 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
+            <path d="M19 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
+          </svg> */}
+          <p
+            className={`text-sm text-gray-authinput ${
+              open ? null : "line- clamp-3"
+            } `}
+          >
+            {excerpt_note ?? "No excerpt found"}
+            {/* The extends keyword restricts T so that only types compatible with
+          FormikValues can The extends keyword restricts T so that only types
+          compatible with FormikValues can The extends keyword restricts T so
+          that only types compatible with FormikValues canThe extends keyword
+          restricts T so that only types compatible with FormikValues can
+          compatible with FormikValues can The extends keyword restricts T so
+          that only types compatible with FormikValues canThe extends keyword
+          restricts T so that only types compatible with FormikValues can */}
+            {/* {open && <span>...</span>} */}
+            {/* {!open && (
+            <div className="w-full absolute bottom-0 h-[52px] bg-[linear-gradient(transparent_0px,rgba(255,255,255,0.9)_52px,#fff_80px)]"></div>
+          )} */}
+          </p>
+          {/* {open ? (
+          <Minus
+            className="cursor-pointer flex-shrink-0"
+            size={18}
+            onClick={(e) => {
+              e?.stopPropagation();
+              setopen(false);
+            }}
+          />
+        ) : (
+          <svg
+            onClick={(e) => {
+              e?.stopPropagation();
+
+              setopen(true);
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.7333333333333334"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className=" cursor-pointer fill-current opacity-75 flex-shrink-0 "
+          >
+            <path d="M12 5l0 14"></path>
+            <path d="M5 12l14 0"></path>
+          </svg>
+         
+        )} */}
+        </div>
+      );
+    }
+
     return (
       <p className="text-sm mb-6 text- primary" key={index}>
         <SubQuery excerpt_note={excerpt_notes ? excerpt_notes : ""} />
         <div className="my-[15px]  flex items-center gap-3">
+          <span
+            onClick={(e) => {
+              e?.stopPropagation();
+              setopen(!open);
+            }}
+            className="flex items-center gap-1 cursor-pointer capitalize pl-1 pr-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium"
+          >
+            <Image
+              height={15}
+              width={15}
+              src={"/images/icons/layers-01-stroke-rounded.svg"}
+              // src={"../icons/ai-search-02-stroke-rounded.svg"}
+              alt="search"
+            />{" "}
+            Context
+          </span>
           <span
             title={
               rhetorical_function_tooltips[
@@ -885,15 +1015,15 @@ export const SimilaritySearchResultMeta = (prop: {
             className="flex items-center gap-1 cursor-pointer capitalize pl-1 pr-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium"
           >
             <Image
-              height={20}
-              width={20}
+              height={15}
+              width={15}
               src={"/images/icons/information-circle-stroke-rounded.svg"}
               // src={"../icons/ai-search-02-stroke-rounded.svg"}
               alt="search"
             />{" "}
             {rhetorical_function}
           </span>
-          <button
+          {/* <button
             onClick={() => {
               UpdateUrlParams("right_cover_menu", "true");
             }}
@@ -901,7 +1031,7 @@ export const SimilaritySearchResultMeta = (prop: {
             className="  capitalize inline-block px-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium"
           >
             Related content
-          </button>
+          </button> */}
         </div>
         {/* Render highlighted quote */}
         <p
@@ -997,92 +1127,14 @@ export const SimilaritySearchResultMeta = (prop: {
     21: 5,
   };
 
-  function SubQuery({ excerpt_note }: { excerpt_note: string }) {
-    const [open, setopen] = useState<boolean>(false);
-
-    return (
-      <div className="max-h-[750px] overflow-y-clip relative mt-[8px] mb-[8px] border-l-2 py-1.5 border-lexblue bg-gray flex items-center">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="mx-[8px] text-super shrink-0 -translate-y-px rotate-180"
-        >
-          <path d="M10 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
-          <path d="M19 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
-        </svg>
-        <p
-          className={`text-sm text-gray-authinput ${
-            open ? null : "line-clamp-3"
-          } `}
-        >
-          {excerpt_note ?? "No excerpt found"}
-          {/* The extends keyword restricts T so that only types compatible with
-          FormikValues can The extends keyword restricts T so that only types
-          compatible with FormikValues can The extends keyword restricts T so
-          that only types compatible with FormikValues canThe extends keyword
-          restricts T so that only types compatible with FormikValues can
-          compatible with FormikValues can The extends keyword restricts T so
-          that only types compatible with FormikValues canThe extends keyword
-          restricts T so that only types compatible with FormikValues can */}
-          {/* {open && <span>...</span>} */}
-          {!open && (
-            <div className="w-full absolute bottom-0 h-[52px] bg-[linear-gradient(transparent_0px,rgba(255,255,255,0.9)_52px,#fff_80px)]"></div>
-          )}
-        </p>
-        {open ? (
-          <Minus
-            className="cursor-pointer flex-shrink-0"
-            size={18}
-            onClick={(e) => {
-              e?.stopPropagation();
-              setopen(false);
-            }}
-          />
-        ) : (
-          <svg
-            onClick={(e) => {
-              e?.stopPropagation();
-
-              setopen(true);
-            }}
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.7333333333333334"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className=" cursor-pointer fill-current opacity-75 flex-shrink-0 "
-          >
-            <path d="M12 5l0 14"></path>
-            <path d="M5 12l14 0"></path>
-          </svg>
-          // <PlusIcon
-          //   className="cursor-pointer"
-          //   size={50}
-          //   onClick={() => setopen(true)}
-          // />
-        )}
-      </div>
-    );
-  }
   // console.log("Occurences updated", occurrences);
   return (
     <div
       className={`mb-8 px-[40px] space-y-3 border-b border-b-primary/10 pb-5`}
     >
-      <span className=" capitalize pl-1 pr-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium">
+      {/* <span className=" capitalize pl-1 pr-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium">
         Similar
-      </span>
+      </span> */}
       {/* This is a modal to display the fullcase and highlighted area  */}
       {/* {quoteToHighlight && fullJudgement && (
         <FulljudgementModal

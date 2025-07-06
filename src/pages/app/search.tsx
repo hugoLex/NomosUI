@@ -594,9 +594,12 @@ const Page: NextPageWithLayout = () => {
                 >
                   {/* Relevant sources for: */}
                   <span
-                    className={` text-lexblue font-gilda_Display capitalize font-bold`}
+                    className={` text-lexblue font-gilda_Display font-bold`}
                   >
-                    {q}
+                    {q
+                      ? (q as string).charAt(0).toUpperCase() +
+                        (q as string).slice(1).toLowerCase()
+                      : ""}
                   </span>
                 </h1>
 
@@ -644,7 +647,7 @@ const Page: NextPageWithLayout = () => {
                   >
                     {" "}
                     <StartLlmSearch />
-                    <div className=" flex gap-[32px] items-center border-b border-gray-200 font-poppins">
+                    <div className=" text-sm flex gap-[32px] items-center border-b border-gray-200 font-poppins">
                       {sementic_data && (
                         <button
                           className={`pt-2 px- 4 pb-[14px] font-medium flex items-center ${

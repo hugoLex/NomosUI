@@ -66,7 +66,8 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
 
   const isHome = router.asPath === "/";
-  const sidebarWidth = isCollapsed ? "md:w-[90px]" : "md:w-[220px]";
+  const sidebarWidth = isCollapsed ? "md:w-[72px]" : "md:w-[220px]";
+  // const sidebarWidth = isCollapsed ? "md:w-[90px]" : "md:w-[220px]";
   // console.log("pathhhhh", `${router.asPath.split("?")[0]}`);
   useEffect(() => {
     const isSidebar = getCookie("isSidebar");
@@ -137,7 +138,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
 
               {/* Menu */}
               <div className="flex-1">
-                <div className="flex justify-center my-6 px-4 max-md:px-5">
+                <div className="flex justify-center my-6 px- 4 max-md:px-5">
                   <div
                     role="button"
                     title="Start new search"
@@ -162,7 +163,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                         <li
                           title={label}
                           className={`relative w-full min-h-10 flex flex-col justify-center group text-base font-medium 
-                          leading-4 text-zinc-600 px-4 max-md:px-5 `}
+                          leading-4 text-zinc-600 px- 4 max-md:px-5 `}
                         >
                           {!children && (
                             <Link
