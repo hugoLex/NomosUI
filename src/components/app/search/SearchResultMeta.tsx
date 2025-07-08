@@ -570,12 +570,11 @@ export const SearchResultMeta = (prop: {
 
         return (
           <p className="text-sm mb-6 text- primary" key={ptx}>
-            <SubQuery excerpt_note={excerpt_notes ?? excerpt_note} />
-            <div className="my-[15px]  flex items-center gap-3">
+            <div className="mb-[15px] mt-[12px]  flex items-center gap-3">
               <span
                 title="Click to open and close the context"
                 onClick={() => setopen(!open)}
-                className="flex items-center gap-1 cursor-pointer capitalize pl-1 pr-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium"
+                className="flex items-center gap-1 cursor-pointer uppercase  pl-1 pr-2 py-[0.125rem] bg-[#fff] stone-100 rounded text-center text-[#668891] hover:text-[#245B91] text-[13px] font-medium"
               >
                 <Image
                   height={15}
@@ -592,7 +591,7 @@ export const SearchResultMeta = (prop: {
                     rhetorical_function.toLowerCase() as keyof typeof rhetorical_function_tooltips
                   ]
                 }
-                className="flex items-center gap-1 cursor-pointer capitalize pl-1 pr-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium"
+                className="flex items-center gap-1 cursor-pointer uppercase pl-1 pr-2 py-[0.125rem] bg-[#fff] stone-100 rounded text-center text-[#668891] hover:text-[#245B91] text-[13px]  font-medium"
               >
                 <Image
                   height={15}
@@ -608,11 +607,13 @@ export const SearchResultMeta = (prop: {
                   UpdateUrlParams("right_cover_menu", excerpt_notes);
                 }}
                 title="Click to view related content"
-                className="  capitalize inline-block px-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium"
+                className="  uppercase inline-block px-2 py-[0.125rem] bg-[#fff] stone-100 rounded text-center text-[#668891] hover:text-[#245B91] text-[13px] font-medium"
               >
                 Related content
               </button>
             </div>
+            <SubQuery excerpt_note={excerpt_notes ?? excerpt_note} />
+
             {/* Render highlighted quote */}
             <mark id="" className="block text-sm bg-transparent  font -poppins">
               {splitted?.map((word, index) => {
@@ -706,7 +707,7 @@ export const SearchResultMeta = (prop: {
   // console.log("Occurences updated", occurrences);
   return (
     <div
-      className={`mb-8  space-y-3 border-b border-b-primary/10 pb-5`}
+      className={`mb-8  space-y -3 border-b border-b-primary/10 pb-5`}
       // className={`mb-8 space-y-3 border-b ${
       //   Object.keys(pageNumberMapping).includes(String(Number(index) + 1))
       //     ? "border-b-lexblue"
@@ -734,24 +735,22 @@ export const SearchResultMeta = (prop: {
         {metadata.document_type}
       </span>
 
-      <h3 className="text-[1.1rem] font-semibold font-gilda_Display">
-        <Link
-          href={`/library/cases/${
-            metadata.document_id
-              ? metadata.document_id
-              : _link.replace(/\s/g, "-")
-          }?title=${metadata.case_title}&tab=case`}
-          className="text-powder_blue"
-        >
-          <span className="text-gray-500 ">{index}. </span>
-          {type === "articles" && (metadata as ArticleMetadata).article_title}
-          {type === "cases" && (metadata as CaseMetadata).case_title}
-          {type === "legislations" &&
-            (metadata as LegislationMetadata).document_title}
-          {type === "principles" && (metadata as PrinciplesMetadata).case_title}
-        </Link>
-        {/* {button} */}
-      </h3>
+      <Link
+        href={`/library/cases/${
+          metadata.document_id
+            ? metadata.document_id
+            : _link.replace(/\s/g, "-")
+        }?title=${metadata.case_title}&tab=case`}
+        className="text-powder_blue text-[1.1rem] mt-[12px] block font-semibold font-gilda_Display"
+      >
+        <span className="text-gray-500 ">{index}. </span>
+        {type === "articles" && (metadata as ArticleMetadata).article_title}
+        {type === "cases" && (metadata as CaseMetadata).case_title}
+        {type === "legislations" &&
+          (metadata as LegislationMetadata).document_title}
+        {type === "principles" && (metadata as PrinciplesMetadata).case_title}
+      </Link>
+      {/* {button} */}
 
       {type === "articles" && (
         <p className="flex gap-x-4">
@@ -765,7 +764,7 @@ export const SearchResultMeta = (prop: {
       )}
 
       {type === "cases" && (
-        <p className="flex gap-x-4 font-poppins">
+        <p className="flex gap-x-4 mt-[10px] my-0 font-poppins">
           <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-[#5B85AB] text-sm font-medium">
             {(metadata as CaseMetadata).court}
           </span>
@@ -988,14 +987,13 @@ export const SimilaritySearchResultMeta = (prop: {
 
     return (
       <p className="text-sm mb-6 text- primary" key={index}>
-        <SubQuery excerpt_note={excerpt_notes ? excerpt_notes : ""} />
-        <div className="my-[15px]  flex items-center gap-3">
+        <div className="mb-[15px] mt-[12px] flex items-center gap-3">
           <span
             onClick={(e) => {
               e?.stopPropagation();
               setopen(!open);
             }}
-            className="flex items-center gap-1 cursor-pointer capitalize pl-1 pr-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium"
+            className="flex items-center gap-1 cursor-pointer uppercase pl-1 pr-2 py-[0.125rem] bg-[#fff] stone-100 rounded text-center text-[#668891] hover:text-[#245B91] text-sm font-medium"
           >
             <Image
               height={15}
@@ -1012,7 +1010,7 @@ export const SimilaritySearchResultMeta = (prop: {
                 rhetorical_function.toLowerCase() as keyof typeof rhetorical_function_tooltips
               ]
             }
-            className="flex items-center gap-1 cursor-pointer capitalize pl-1 pr-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium"
+            className="flex items-center gap-1 cursor-pointer uppercase pl-1 pr-2 py-[0.125rem] bg-[#fff] stone-100 rounded text-center text-[#668891] hover:text-[#245B91] text-sm font-medium"
           >
             <Image
               height={15}
@@ -1033,6 +1031,8 @@ export const SimilaritySearchResultMeta = (prop: {
             Related content
           </button> */}
         </div>
+        <SubQuery excerpt_note={excerpt_notes ? excerpt_notes : ""} />
+
         {/* Render highlighted quote */}
         <p
           id=""
@@ -1114,7 +1114,7 @@ export const SimilaritySearchResultMeta = (prop: {
           }
           className="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]"
         >
-          {mappedAlphabets[index]}
+          * {mappedAlphabets[index]}
         </sup>
       </p>
     );
@@ -1130,7 +1130,7 @@ export const SimilaritySearchResultMeta = (prop: {
   // console.log("Occurences updated", occurrences);
   return (
     <div
-      className={`mb-8 px-[40px] space-y-3 border-b border-b-primary/10 pb-5`}
+      className={`mb-8 px-[40px] space- y-3 border-b border-b-primary/10 pb-5`}
     >
       {/* <span className=" capitalize pl-1 pr-2 py-[0.125rem] bg-[#EBF2FF] stone-100 rounded text-center text-[#245B91] text-sm font-medium">
         Similar
@@ -1156,22 +1156,20 @@ export const SimilaritySearchResultMeta = (prop: {
         {/* {document_type} */}Case
       </span>
 
-      <h3 className="text-[1.1rem] font-semibold font-gilda_Display">
-        <Link
-          href={`/library/cases/${
-            document_id ? document_id : _link.replace(/\s/g, "-")
-          }?title=${case_title}&tab=case`}
-          className="text-powder_blue"
-        >
-          <span className="text-gray-500 ">{index}. </span>
-          {case_title}
-          {/* {type === "articles" && (metadata as ArticleMetadata).article_title} */}
-          {/* {type === "cases" && (metadata as CaseMetadata).case_title} */}
-          {/* {type === "legislations" &&
+      <Link
+        href={`/library/cases/${
+          document_id ? document_id : _link.replace(/\s/g, "-")
+        }?title=${case_title}&tab=case`}
+        className="text-powder_blue text-[1.1rem] font-semibold font-gilda_Display mt-[12px] block"
+      >
+        <span className="text-gray-500 ">{index}. </span>
+        {case_title}
+        {/* {type === "articles" && (metadata as ArticleMetadata).article_title} */}
+        {/* {type === "cases" && (metadata as CaseMetadata).case_title} */}
+        {/* {type === "legislations" &&
             (metadata as LegislationMetadata).document_title}
           {type === "principles" && (metadata as PrinciplesMetadata).case_title} */}
-        </Link>
-      </h3>
+      </Link>
 
       {/* {type === "articles" && (
         <p className="flex gap-x-4">
@@ -1186,17 +1184,17 @@ export const SimilaritySearchResultMeta = (prop: {
 
       {suit_number && (
         // {type === "cases" && (
-        <p className="flex gap-x-4 font-poppins">
-          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-teal-900 text-sm font-medium">
+        <p className="flex gap-x-4 font-poppins mt-[10px]">
+          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-[#5B85AB] text-[13px] font-medium">
             {court}
             {/* {(metadata as CaseMetadata).court} */}
           </span>
-          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-teal-900 text-sm font-medium">
+          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-[#5B85AB] text-[13px] font-medium">
             {year}
             {/* {(metadata as CaseMetadata).year} */}
           </span>
 
-          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-teal-900 text-sm font-medium">
+          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-[#5B85AB] text-[13px] font-medium">
             {suit_number}
             {/* {(metadata as CaseMetadata).suit_number} */}
           </span>
