@@ -570,7 +570,7 @@ export const SearchResultMeta = (prop: {
 
         return (
           <p className="text-sm mb-6 text- primary" key={ptx}>
-            <div className="mb-[15px] mt-[12px]  flex items-center gap-3">
+            <div className="mb- [15px] mt-[12px]  flex items-center gap-3">
               <span
                 title="Click to open and close the context"
                 onClick={() => setopen(!open)}
@@ -987,7 +987,7 @@ export const SimilaritySearchResultMeta = (prop: {
 
     return (
       <p className="text-sm mb-6 text- primary" key={index}>
-        <div className="mb-[15px] mt-[12px] flex items-center gap-3">
+        <div className="mb-[16px] mt-[12px] flex items-center gap-3">
           <span
             onClick={(e) => {
               e?.stopPropagation();
