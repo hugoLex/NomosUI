@@ -49,6 +49,7 @@ import { skipToken } from "@reduxjs/toolkit/query";
 import { useDispatch } from "react-redux";
 import StartLlmSearch from "@app/components/shared/llsearchTriger";
 import RelatedContent from "@app/components/app/search/RelatedContent";
+import { DashboardSkeletonLoader } from "@app/components/shared/DashboardSkeletonLoader";
 
 const Page: NextPageWithLayout = () => {
   const dispatch = useDispatch();
@@ -529,17 +530,17 @@ const Page: NextPageWithLayout = () => {
     }
   };
 
-  if (sem_fetching || sem_loading)
-    return (
-      <Fragment>
-        <Head title={`Search Result - ${q}`} />
-        <Navbar />
+  // if (sem_fetching || sem_loading)
+  //   return (
+  //     <Fragment>
+  //       <Head title={`Search Result - ${q}`} />
+  //       <Navbar />
 
-        <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
-          <Loader variant="classic" size={80} />
-        </div>
-      </Fragment>
-    );
+  //       <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-[]">
+  //         <Loader variant="classic" size={80} />
+  //       </div>
+  //     </Fragment>
+  //   );
 
   if (sem_error)
     return (
@@ -565,7 +566,8 @@ const Page: NextPageWithLayout = () => {
         </div>
       </Navbar>
 
-      {!sem_fetching && !sem_error && (
+      {!sem_error && (
+        // {!sem_fetching && !sem_error && (
         <Container>
           <div className={`py-8 w-full md:max-w-[772px] mx-auto`}>
             <div className="">
@@ -646,53 +648,45 @@ const Page: NextPageWithLayout = () => {
                     }  sticky z-[1] top-[55px] bg-white [rgb(250,250,249)] `}
                   >
                     {" "}
-                    <StartLlmSearch />
+                    {/* this component is used to trigger llm search */}
+                    {/* <StartLlmSearch /> */}
                     <div className=" text-sm flex gap-[32px] items-center border-b border-gray-200 font-poppins">
-                      {sementic_data && (
-                        <button
-                          className={`pt-2 px- 4 pb-[14px] font-medium flex items-center ${
-                            activeTab_query_type === "sematic_s"
-                              ? "text-primary border-b-2 border-primary "
-                              : "text-gray-500 hover:text-gray-700 "
-                          }`}
-                          onClick={() =>
-                            UpdateUrlParams("query_type", "sematic_s")
-                          }
-                        >
-                          CASES
-                          {sementic_data && (
-                            <button className="p-1 py-[2px] text-black text-[10px] bg-gray-black rounded-md ml-[2px]">
-                              {
-                                (
-                                  sementic_data as TSearchResultDocuments & {
-                                    total_results: number;
-                                  }
-                                )?.total_results
-                              }
-                            </button>
-                          )}
-                          {/* Search */}
-                        </button>
-                      )}
-                      {llm_data ? (
-                        <button
-                          className={`pt-2 pb-[14px] uppercase px- 4 font-medium ${
-                            activeTab_query_type === "llm_s"
-                              ? "text-primary border-b-2 border-primary pb-[14px]"
-                              : "text-gray-500 hover:text-gray-700"
-                          }`}
-                          onClick={() => UpdateUrlParams("query_type", "llm_s")}
-                        >
-                          Analysis
-                        </button>
-                      ) : (
-                        <button
-                          className={`py-2 px- 4 font-medium text-gray-500 opacity-0
-                          `}
-                        >
-                          DEEP ANALYSIS
-                        </button>
-                      )}
+                      <button
+                        className={`pt-2 px- 4 pb-[14px] font-medium flex items-center ${
+                          activeTab_query_type === "sematic_s"
+                            ? "text-primary border-b-2 border-primary "
+                            : "text-gray-500 hover:text-gray-700 "
+                        }`}
+                        onClick={() =>
+                          UpdateUrlParams("query_type", "sematic_s")
+                        }
+                      >
+                        CASES
+                        {sementic_data && (
+                          <span className="p-1 py-[2px] inline-block text-black text-[10px] bg-gray-black rounded-md ml-[2px]">
+                            {
+                              (
+                                sementic_data as TSearchResultDocuments & {
+                                  total_results: number;
+                                }
+                              )?.total_results
+                            }
+                          </span>
+                        )}
+                        {/* Search */}
+                      </button>
+
+                      <button
+                        className={`pt-2 px- 4 pb-[14px] font-medium flex items-center ${
+                          activeTab_query_type === "llm_s"
+                            ? "text-primary border-b-2 border-primary "
+                            : "text-gray-500 hover:text-gray-700 "
+                        }`}
+                        onClick={() => UpdateUrlParams("query_type", "llm_s")}
+                      >
+                        ANALYSIS
+                      </button>
+
                       <button
                         className="ml-auto w-[73.41px] h-[32px] flex gap-1 items-center"
                         onClick={() => {
@@ -778,12 +772,15 @@ const Page: NextPageWithLayout = () => {
 
                 {/* Search result */}
                 {(activeTab_query_type === "sematic_s" ||
-                  activeTab_query_type !== "llm_s") && (
+                  activeTab_query_type !== "llm_s") &&
+                (sem_fetching || sem_loading) ? (
+                  <DashboardSkeletonLoader />
+                ) : (
                   <div className="my-6 ">
-                    {allFilters.length === 0 && (
+                    {allFilters?.length === 0 && (
                       <Fragment>
                         {searchDocuments &&
-                          searchDocuments.documents?.map((data, idx) => (
+                          searchDocuments?.documents?.map((data, idx) => (
                             <SearchResultMeta
                               key={`${data.metadata.document_id}-${idx}`}
                               index={String(idx + 1)}

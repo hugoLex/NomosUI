@@ -44,6 +44,7 @@ import { useDispatch } from "react-redux";
 import Image from "next/image";
 import { Minus, PlusIcon } from "lucide-react";
 import { RelatedChunk } from "@app/types/similarity";
+import { DashboardSkeletonLoader } from "@app/components/shared/DashboardSkeletonLoader";
 type TclasifierResult = {
   query: string;
   classification: string;
@@ -90,17 +91,18 @@ export const SearchAIMetaResult = ({
 
   if (query_type === "llm_s" && (llm_loading || isFetching)) {
     return (
-      <div className="flex items-center justify-center min-h-[500px] bg-gray-100">
-        <div className="flex flex-col items-center space-y-4 bg-white p-6 rounded-2xl shadow-xl">
-          <p className="text-gray-700 text-lg text-center max-w-md">
-            Analyzing your legal question to provide a comprehensive
-            response.....
-          </p>
-          <div className="flex items-center justify-center">
-            <Loader variant="classic" size={20} />
-          </div>
-        </div>
-      </div>
+      <DashboardSkeletonLoader />
+      // <div className="flex items-center justify-center min-h-[500px] bg-gray-100">
+      //   <div className="flex flex-col items-center space-y-4 bg-white p-6 rounded-2xl shadow-xl">
+      //     <p className="text-gray-700 text-lg text-center max-w-md">
+      //       Analyzing your legal question to provide a comprehensive
+      //       response.....
+      //     </p>
+      //     <div className="flex items-center justify-center">
+      //       <Loader variant="classic" size={20} />
+      //     </div>
+      //   </div>
+      // </div>
     );
   }
   // llm_search_data && console.log(llm_search_data, error);
@@ -157,7 +159,7 @@ export const SearchAIMetaResult = ({
             {text.replaceAll("#", "")}
           </h3>
         ) : (
-          <p
+          <div
             key={"replaced" + idx}
             className={`relative ${idx == 0 && "hidden"} 
               `}
@@ -166,7 +168,7 @@ export const SearchAIMetaResult = ({
               content={text}
               className="wrapper text-wrap overflow-x-hidden text-sm text-lexblue font-poppins"
             />
-          </p>
+          </div>
         )
       );
       // console.log(replacedText);
@@ -569,7 +571,7 @@ export const SearchResultMeta = (prop: {
         }
 
         return (
-          <p className="text-sm mb-6 text- primary" key={ptx}>
+          <div className="text-sm mb-6 text- primary" key={ptx}>
             <div className="mb- [15px] mt-[12px]  flex items-center gap-3">
               <span
                 title="Click to open and close the context"
@@ -612,10 +614,13 @@ export const SearchResultMeta = (prop: {
                 Related content
               </button>
             </div>
-            <SubQuery excerpt_note={excerpt_notes ?? excerpt_note} />
+            {open && <SubQuery excerpt_note={excerpt_notes ?? excerpt_note} />}
 
             {/* Render highlighted quote */}
-            <mark id="" className="block text-sm bg-transparent  font -poppins">
+            <mark
+              id=""
+              className="block mt-[5px] text-sm bg-transparent  font -poppins"
+            >
               {splitted?.map((word, index) => {
                 return context?.includes(word) ? (
                   // return contextResolved.includes(word) ? (
@@ -673,27 +678,26 @@ export const SearchResultMeta = (prop: {
                   </h3>
                 );
               })}
+              <sup
+                onClick={
+                  () =>
+                    setQuoteToHighlight({
+                      citation: null,
+                      quote: content.trim(),
+                      treatment_type: "",
+                    })
+                  // This opens the full judgement page and highlights the content
+                  // handleHighlightFullJudgement(
+                  //   content.trim(),
+                  //   metadata?.document_id
+                  // )
+                }
+                className="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]"
+              >
+                {mappedAlphabets[ptx]}
+              </sup>
             </mark>
-
-            <sup
-              onClick={
-                () =>
-                  setQuoteToHighlight({
-                    citation: null,
-                    quote: content.trim(),
-                    treatment_type: "",
-                  })
-                // This opens the full judgement page and highlights the content
-                // handleHighlightFullJudgement(
-                //   content.trim(),
-                //   metadata?.document_id
-                // )
-              }
-              className="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]"
-            >
-              {mappedAlphabets[ptx]}
-            </sup>
-          </p>
+          </div>
         );
       }
     );
@@ -765,14 +769,14 @@ export const SearchResultMeta = (prop: {
 
       {type === "cases" && (
         <p className="flex gap-x-4 mt-[10px] my-0 font-poppins">
-          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-[#5B85AB] text-sm font-medium">
+          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-[#5B85AB] text-sm font-normal">
             {(metadata as CaseMetadata).court}
           </span>
-          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-[#5B85AB] text-sm font-medium">
+          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-[#5B85AB] text-sm font-normal">
             {(metadata as CaseMetadata).year}
           </span>
 
-          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-[#5B85AB] text-sm font-medium">
+          <span className="px-2 py-[0.125rem] bg-[#eaf0f2] stone-100 rounded text-center text-[#5B85AB] text-sm font-normal">
             {(metadata as CaseMetadata).suit_number}
           </span>
         </p>
@@ -986,7 +990,7 @@ export const SimilaritySearchResultMeta = (prop: {
     }
 
     return (
-      <p className="text-sm mb-6 text- primary" key={index}>
+      <div className="text-sm mb-6 text- primary" key={index}>
         <div className="mb-[16px] mt-[12px] flex items-center gap-3">
           <span
             onClick={(e) => {
@@ -1116,7 +1120,7 @@ export const SimilaritySearchResultMeta = (prop: {
         >
           * {mappedAlphabets[index]}
         </sup>
-      </p>
+      </div>
     );
   }
 
