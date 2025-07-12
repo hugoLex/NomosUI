@@ -745,11 +745,15 @@ export const SearchResultMeta = (prop: {
             ? metadata.document_id
             : _link.replace(/\s/g, "-")
         }?title=${metadata.case_title}&tab=case`}
-        className="text-powder_blue text-[1.1rem] mt-[12px] block font-semibold font-gilda_Display"
+        className="text-powder_blue text-[1.1rem]  bg-white h-[50px] sticky top-[130px] flex gap-2 items-center z -[1] mt-[12px]  font-semibold font-gilda_Display"
       >
         <span className="text-gray-500 ">{index}. </span>
         {type === "articles" && (metadata as ArticleMetadata).article_title}
-        {type === "cases" && (metadata as CaseMetadata).case_title}
+        {type === "cases" && (
+          <span className="inline-block">
+            {(metadata as CaseMetadata).case_title}
+          </span>
+        )}
         {type === "legislations" &&
           (metadata as LegislationMetadata).document_title}
         {type === "principles" && (metadata as PrinciplesMetadata).case_title}
