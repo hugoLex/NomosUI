@@ -24,6 +24,7 @@ import { ErrorView, Navbar, NavbarTitle } from "@app/components/shared";
 import { useVisibility, useQueryHandler } from "@app/hooks";
 import { useCaseQuery } from "@app/store/services/caseSlice";
 import FulljudgementModal from "@app/components/app/library/case/fulljudgementModal";
+import { useParams, usePathname } from "next/navigation";
 
 const tabItems: TabItem[] = [
   {
@@ -54,11 +55,12 @@ export type QuoteHighlighterData = {
   treatment_type: string;
 };
 const Page: NextPageWithLayout = () => {
-  const { UpdateUrlParams, searchParams } = useQueryHandler();
+  const { UpdateUrlParams, searchParams, pathname } = useQueryHandler();
   const caseTitleName = searchParams.get("title");
   const caseTab = searchParams.get("tab");
   const router = useRouter();
   const { referrer } = useContext(AppLayoutContext);
+  const new_case_id_slug = useParams();
   const { slug, title, tab } = router.query;
   const caseId = slug as string;
   const caseTitle = String(caseTitleName);
@@ -87,7 +89,12 @@ const Page: NextPageWithLayout = () => {
   const [clickedQuote, setClickedQuote] = useState<QuoteHighlighterData | null>(
     null
   );
-  const { isError, isLoading, data } = useCaseQuery(caseId);
+  const { isError, isLoading, data } = useCaseQuery(
+    // new_case_id_slug ? new_case_id_slug?.slug[0] : ""
+    "ce1f8469-a471-4bda-ba5c-0d4719bc23fb"
+  );
+  // const { isError, isLoading, data } = useCaseQuery(caseId);
+  console.log("case data from cases query", data, new_case_id_slug?.slug[0]);
   const [caseDocument, setCaseDocument] = useState<TCaseDocument | null>(null);
   const [analysisDocument, setAnalysisDocument] = useState<any>(undefined);
   // console.log("case full judgement", )
@@ -112,7 +119,7 @@ const Page: NextPageWithLayout = () => {
           ]);
           // const res = await axios.get(judgementUrl);
 
-          console.log(judgementRes, analysisRes);
+          console.log("from cases/slug", judgementRes, analysisRes);
 
           if (judgementRes) {
             const { content } = matter(judgementRes.data);

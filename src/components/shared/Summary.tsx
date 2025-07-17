@@ -88,7 +88,7 @@ export const SummaryComponent = ({
   summary,
   isCollapsible = false,
 }: {
-  summary?: string;
+  summary?: string | React.ReactNode;
   isCollapsible: boolean;
 }) => {
   const { close, searchParams } = useQueryHandler();

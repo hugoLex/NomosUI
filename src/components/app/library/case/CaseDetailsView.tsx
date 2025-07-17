@@ -74,7 +74,7 @@ const CaseView = ({
     }
     // Split the content at the quote
     const parts = content.split(quoteToHighlight);
-
+    console.log("A case document has been loaded", caseDocument);
     return (
       <>
         {/* Render first part */}
@@ -138,7 +138,7 @@ const CaseView = ({
                   {caseDocument.subject_matter &&
                     caseDocument.subject_matter.length > 0 && (
                       <div className="flex items-center gap-2 flex-wrap mb-4">
-                        {caseDocument.subject_matter.map((subjectMatter) => (
+                        {caseDocument?.subject_matter?.map((subjectMatter) => (
                           <span
                             className={` px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium`}
                             key={subjectMatter}
@@ -154,14 +154,26 @@ const CaseView = ({
                 {caseDocument.case_summary && (
                   <div id="summary" ref={(el) => (sectionRefs.current[0] = el)}>
                     <SummaryComponent
-                      summary={caseDocument.case_summary}
+                      summary={
+                        <div>
+                          <h3 className="text-sm font-medium mb-2">
+                            {
+                              (caseDocument?.case_summary as any)
+                                ?.issues_for_determination
+                            }
+                          </h3>
+                          <h3></h3>
+                          <h3></h3>
+                          <h3></h3>
+                        </div>
+                      }
                       isCollapsible={false}
                     />
                   </div>
                 )}
 
                 <hr className="my-8" />
-                {caseDocument.judgement && (
+                {caseDocument?.judgement && (
                   <div
                     id="judgement"
                     ref={(el) => (sectionRefs.current[1] = el)}
@@ -194,7 +206,7 @@ const CaseView = ({
                 effective and capable of execution, and is absolute, complete, and
                 certain. */}
 
-                    {caseDocument.ratio_decidendi.map((itx, idx) => (
+                    {caseDocument?.ratio_decidendi?.map((itx, idx) => (
                       <p key={idx} className="text-[.88rem] my-1">
                         <LuDot
                           className={`text-[#245b91] text-[25px] inline-block`}

@@ -740,6 +740,7 @@ export const SearchResultMeta = (prop: {
       </span>
 
       <Link
+        style={{ backfaceVisibility: "hidden" }}
         href={`/library/cases/${
           metadata.document_id
             ? metadata.document_id
