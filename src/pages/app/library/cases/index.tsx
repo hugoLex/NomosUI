@@ -188,7 +188,31 @@ const Page: NextPageWithLayout = () => {
 
                         {case_summary && (
                           <SummaryComponent
-                            summary={case_summary}
+                            summary={
+                              <div className="">
+                                <h3 className="text-sm font-normal mb-2">
+                                  {
+                                    (case_summary as any)
+                                      ?.issues_for_determination
+                                  }
+                                </h3>
+                                <h3 className="text-sm font-normal mb-2">
+                                  {(case_summary as any)?.holding_and_reasoning}
+                                </h3>
+                                <h3 className="text-sm font-normal mb-2">
+                                  {
+                                    (case_summary as any)
+                                      ?.originating_court_and_claims
+                                  }
+                                </h3>
+                                <h3 className="text-sm font-normal mb-2">
+                                  {(case_summary as any)?.procedural_history}
+                                </h3>
+                                <h3 className="text-sm font-normal mb-2">
+                                  {(case_summary as any)?.disposition}
+                                </h3>
+                              </div>
+                            }
                             isCollapsible={false}
                           />
                         )}
