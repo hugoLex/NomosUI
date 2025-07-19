@@ -7,6 +7,7 @@ import { useCaseQuery } from "@app/store/services/caseSlice";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { Loader } from "@app/components/ui";
 import { mappedAlphabets } from "@app/utils";
+import { QuoteHighlighterData } from "@app/pages/app/library/cases/[slug]";
 
 interface LegalRatio {
   id: number;
@@ -24,12 +25,16 @@ interface CaseData {
   issues_with_ratios?: LegalIssue[];
   innerRef?: React.MutableRefObject<any>;
   isTitle?: boolean;
+  setClickedQuote: React.Dispatch<
+    React.SetStateAction<QuoteHighlighterData | null>
+  >;
 }
 
 export default function CaseIssuesForDeterminatonComponent({
   issues_with_ratios,
   innerRef,
   isTitle,
+  setClickedQuote,
 }: CaseData) {
   const new_case_id_slug = useParams();
   const { isError, isLoading, data } = useCaseQuery(
@@ -183,7 +188,16 @@ export default function CaseIssuesForDeterminatonComponent({
                         </div>
                       </div>
 
-                      <p className="text-powder_blue text-[1.1rem] font-semibold font-gilda_Display capitalize cursor-pointer hover:underline">
+                      <p
+                        onClick={() => {
+                          setClickedQuote({
+                            quote: issue.issue,
+                            citation: "",
+                            treatment_type: "",
+                          });
+                        }}
+                        className="text-powder_blue text-[1.1rem] font-semibold font-gilda_Display capitalize cursor-pointer hover:underline"
+                      >
                         {issue.issue}
                       </p>
                     </div>

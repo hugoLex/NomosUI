@@ -237,7 +237,7 @@ const Page: NextPageWithLayout = () => {
           // full_judgement={caseDocument?.judgement}
         />
       )}
-      {tabId === "precedent" && clickedQuote && (
+      {(tabId === "precedent" || tabId === "issues") && clickedQuote && (
         <FulljudgementModal
           // innerRef={h2Ref}
           // id={caseId}
@@ -251,6 +251,7 @@ const Page: NextPageWithLayout = () => {
         <CaseIssuesForDeterminatonComponent
           innerRef={h1Ref}
           isTitle={!isH1Visible}
+          setClickedQuote={setClickedQuote}
           // issues_with_ratios={caseDocument?.issues_with_ratios}
           // innerRef={h2Ref}
           // id={caseId}
