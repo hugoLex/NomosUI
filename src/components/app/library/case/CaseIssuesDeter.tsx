@@ -1,6 +1,11 @@
+"use client";
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronRight, Scale, FileText, Hash } from "lucide-react";
 import { number } from "yup";
+import { useParams } from "next/navigation";
+import { useCaseQuery } from "@app/store/services/caseSlice";
+import { skipToken } from "@reduxjs/toolkit/query";
+import { Loader } from "@app/components/ui";
 
 interface LegalRatio {
   id: number;
@@ -18,13 +23,15 @@ interface CaseData {
   issues_with_ratios?: LegalIssue[];
 }
 
-export default function CaseIssuesForDeterminatonComponent({
-  issues_with_ratios,
-}: CaseData) {
+export default function CaseIssuesForDeterminatonComponent() {
+  const new_case_id_slug = useParams();
+  const { isError, isLoading, data } = useCaseQuery(
+    new_case_id_slug ? (new_case_id_slug?.slug as string) : skipToken
+    // new_case_id_slug ? new_case_id_slug?.slug[0] : skipToken
+    // "ce1f8469-a471-4bda-ba5c-0d4719bc23fb"
+  );
+  const caseData = data?.case_data?.issues_with_ratios;
   const [expandedIssues, setExpandedIssues] = useState<Set<number>>(new Set());
-  const [caseData] = useState<CaseData>({
-    issues_with_ratios: issues_with_ratios,
-  });
 
   const toggleIssue = (issueId: number) => {
     setExpandedIssues((prev) => {
@@ -63,7 +70,14 @@ export default function CaseIssuesForDeterminatonComponent({
         return "Standard";
     }
   };
-  console.log("issues for determination", caseData);
+  // console.log(
+  //   "issues for determination",
+  //   caseData,
+  //   "the full data",
+  //   data?.case_data
+  // );
+  if (isLoading) return <Loader />;
+
   return (
     <div className="max-w-[1100px] mx-auto py-6 px-[10px] bg-gray-50 min-h-screen">
       {/* Header */}
@@ -86,15 +100,14 @@ export default function CaseIssuesForDeterminatonComponent({
               <div className="flex items-center gap-2">
                 <FileText className="w-5 h-5 text-indigo-600" />
                 <span className="font-medium text-gray-900">
-                  {caseData ? caseData?.issues_with_ratios?.length : ""} Legal
-                  Issues
+                  {caseData ? caseData?.length : ""} Legal Issues
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <Hash className="w-5 h-5 text-green-600" />
                 <span className="font-medium text-gray-900">
-                  {caseData?.issues_with_ratios
-                    ? caseData.issues_with_ratios.reduce(
+                  {caseData
+                    ? caseData.reduce(
                         (acc, issue) =>
                           acc +
                           (typeof issue?.ratios?.length === "number"
@@ -114,7 +127,7 @@ export default function CaseIssuesForDeterminatonComponent({
       {/* Issues List */}
       <div className="space-y-6">
         {caseData ? (
-          caseData?.issues_with_ratios?.map((issue, index) => {
+          caseData?.map((issue, index) => {
             const isExpanded = expandedIssues.has(issue?.id);
 
             return (
@@ -232,12 +245,12 @@ export default function CaseIssuesForDeterminatonComponent({
           <p className="text-sm">
             Displaying{" "}
             <span className="font-semibold text-gray-900">
-              {caseData?.issues_with_ratios?.length}
+              {caseData?.length}
             </span>{" "}
             legal issues with a total of{" "}
             <span className="font-semibold text-gray-900">
-              {caseData?.issues_with_ratios
-                ? caseData.issues_with_ratios.reduce(
+              {caseData
+                ? caseData.reduce(
                     (acc, issue) =>
                       acc +
                       (typeof issue?.ratios?.length === "number"

@@ -248,11 +248,11 @@ const Page: NextPageWithLayout = () => {
       )}
       {tabId === "issues" && (
         <CaseIssuesForDeterminatonComponent
-          issues_with_ratios={caseDocument?.issues_with_ratios}
-          // innerRef={h2Ref}
-          // id={caseId}
+        // issues_with_ratios={caseDocument?.issues_with_ratios}
+        // innerRef={h2Ref}
+        // id={caseId}
 
-          // case_title={caseTitle}
+        // case_title={caseTitle}
         />
       )}
     </Fragment>
