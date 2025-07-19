@@ -9,6 +9,7 @@ import { LegalPersonnal, TCaseDocument } from "@app/types";
 import Link from "next/link";
 import LegalPersonnelWidget from "./LegalPersonnelWidget";
 import { PreviewCard } from "@app/components/shared";
+import { LuExternalLink } from "react-icons/lu";
 
 type ContentOutline = "Judicial Panel" | "Decision history";
 // | "judgement"
@@ -23,8 +24,9 @@ const contentOutline: ContentOutline[] = [
   // "ratio",
 ];
 
-const actions = ["Main Issues", "Issue for Cause of Action", "Ratio Decidendi"];
-const cases = ["By Subject Matter", "By Ratio Decidendi"];
+const actions = ["Issues for determination"];
+// const actions = ["Main Issues", "Issue for Cause of Action", "Ratio Decidendi"];
+// const cases = ["By Subject Matter", "By Ratio Decidendi"];
 
 const CaseDetailsSidebarView = (props: {
   sections: any;
@@ -36,7 +38,7 @@ const CaseDetailsSidebarView = (props: {
   const [tab, setTab] = useState<ContentOutline>("Judicial Panel");
   const judges = caseDocument?.judges ? caseDocument.judges : [];
   const counsels = caseDocument?.counsels ? caseDocument.counsels : [];
-
+  // console.log("casedocument", caseDocument);
   return (
     <Fragment>
       {caseDocument && (
@@ -144,10 +146,16 @@ const CaseDetailsSidebarView = (props: {
                 <ul className="space-y-2">
                   {actions.map((btn, btx) => (
                     <li
+                      // href={`/library/cases?caseId=${"caseDocument?.document_id"}&action=${btn}`}
                       key={btx}
-                      className="bg-[#EBF2FF] text-sm text-primary py-2 px-5 rounded"
+                      className="bg-[#EBF2FF] text-sm text-primary py-2 px-5 rounded flex items-center justify-between"
                     >
-                      {btn}
+                      {btn}{" "}
+                      <Link
+                        href={`/library/cases/${caseDocument?.document_id}&action=${btn}&title=${caseDocument?.case_title}`}
+                      >
+                        <LuExternalLink className="w-4 h-4 text-primary" />
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -169,8 +177,7 @@ const CaseDetailsSidebarView = (props: {
                 )}
               </div>
               {/* Similar */}
-              <div className="space-y-2">
-                {/* <Root></Root> */}
+              {/* <div className="space-y-2">
                 <h5 className="text-base font-normal text-">Similar cases</h5>
 
                 <ul className="space-y-2">
@@ -183,7 +190,7 @@ const CaseDetailsSidebarView = (props: {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
             </div>
           </div>
         </Fragment>

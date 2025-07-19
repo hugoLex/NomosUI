@@ -12,7 +12,12 @@ import Link from "next/link";
 const LegalPersonnelWidget = ({ data }: { data: PersonnalData }) => {
   const { judges, counsels } = data;
   const [activeTab, setActiveTab] = useState("judges");
-
+  const judgesDispositionColour: { [key: string]: string } = {
+    concurred: "text-green-400",
+    dissented: "text-red-400",
+    "lead judge": "text-blue-500",
+  };
+  // console.log("counsels", counsels);
   const EmptyState = ({ type }: { type: any }) => (
     <div className="flex flex-col items-center justify-center py-6 text-gray-500">
       {type === "judges" ? (
@@ -83,23 +88,34 @@ const LegalPersonnelWidget = ({ data }: { data: PersonnalData }) => {
           <div className="space-y-1">
             {judges.length > 0 ? (
               judges.map((judge, index) => (
-                <TooltipProvider key={index}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Link
-                        target="_blank"
-                        href={`/analytics/judges?judgeId=${judge.id}&judge=${judge.name}`}
-                        className="flex items-center justify-between py-1.5 px-2 text-inherit text-sm text-primary"
-                      >
-                        {judge.name}
-                        <LuExternalLink className="w-4 h-4 text-gray-400" />
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>view profile</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                <div key={index}>
+                  <TooltipProvider key={index}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link
+                          target="_blank"
+                          href={`/analytics/judges?judgeId=${judge.id}&judge=${judge.name}`}
+                          className="flex items-center justify-between py-1.5 px-2 text-inherit text-sm text-primary"
+                        >
+                          {judge.name}
+                          <LuExternalLink className="w-4 h-4 text-gray-400" />
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>view profile</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <span
+                    className={`text-[10px] block mt-[-10px] ml-[10px] uppercase font-cabin ${
+                      judgesDispositionColour[
+                        judge.disposition?.toLowerCase() || ""
+                      ] || "text-gray-500"
+                    }`}
+                  >
+                    {judge?.disposition || "Judge"}
+                  </span>{" "}
+                </div>
               ))
             ) : (
               <EmptyState type="judges" />
@@ -111,23 +127,28 @@ const LegalPersonnelWidget = ({ data }: { data: PersonnalData }) => {
           <div className="space-y-1">
             {counsels.length > 0 ? (
               counsels.map((counsel, index) => (
-                <TooltipProvider key={index}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Link
-                        target="_blank"
-                        href={`/analytics/counsels?counselId=${counsel.id}&judge=${counsel.name}`}
-                        className="text-primary flex items-center justify-between py-1.5 px-2 text-inherit text-sm"
-                      >
-                        {counsel.name}
-                        <LuExternalLink className="w-4 h-4 text-gray-400" />
-                      </Link>
-                    </TooltipTrigger>
-                    <TooltipContent className="text-sm">
-                      <p>view profile</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                <div key={index}>
+                  <TooltipProvider key={index}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Link
+                          target="_blank"
+                          href={`/analytics/counsels?counselId=${counsel.id}&judge=${counsel.name}`}
+                          className="text-primary flex items-center justify-between py-1.5 px-2 text-inherit text-sm"
+                        >
+                          {counsel.name}
+                          <LuExternalLink className="w-4 h-4 text-gray-400" />
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent className="text-sm">
+                        <p>view profile</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <span className="text-[10px] block mt-[-10px] ml-[10px] uppercase text-gray-500">
+                    {counsel?.representation || "Counsel"}
+                  </span>{" "}
+                </div>
               ))
             ) : (
               <EmptyState type="counsel" />

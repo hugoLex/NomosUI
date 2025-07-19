@@ -1,5 +1,6 @@
 export type TCaseData = {
   case_title: string | null;
+  document_id: string | null;
   suit_number: string | null;
   court: string | null;
   court_division?: string | null;
@@ -44,9 +45,10 @@ export type TCaseDocument = Omit<TCaseData, "main_judgement_url"> & {
   judgement?: string | null;
 };
 
-export type LegalPersonnal = { id: string; name: string; title?: string };
+export type LegalPersonnal = { id: string; name: string; title?: string, representation?: string | null; profile_url?: string | null };
+export type JudicialPersonnal = { id: string; name: string; title?: string, disposition?: string | null; profile_url?: string | null };
 
 export type PersonnalData = {
-  judges: LegalPersonnal[];
+  judges: JudicialPersonnal[];
   counsels: LegalPersonnal[];
 };
