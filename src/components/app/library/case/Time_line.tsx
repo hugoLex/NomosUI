@@ -325,13 +325,13 @@ const LegalTime_lineSideCover = () => {
       {right_cover_menu && (
         <div
           onClick={() => removeQueryParam("right_cover_menu")}
-          className={` bg-red- 500 max-md:h idden fixed top-[20px] right-[25px] h-[90%] z-[99999] w-[99%] max-w-[700px]
+          className={` bg-red- 500 max-md:h idden fixed top-[20px] right-[25px] h-[90%] z-[99999] w-[99%] 
                           `}
         >
           <div className="bg-white ml-auto  min-w-[500px] w-[50vw] h-screen shadow-overlay top-0 right-0 fixed  animate-in slide-in-from-right ">
             <div className="min-h-[64px] justify-between flex items-center p-3.5 bg-purple- 500 border-b border-b-black\50  ">
               <span
-                className={` text-lexblue text-xx font-gilda_Display capitalize font-bold`}
+                className={` text-xx font-bold font-gilda_Display mb-3 text-lexblue`}
               >
                 Time line Content
               </span>
@@ -371,7 +371,7 @@ const LegalTime_lineSideCover = () => {
               <div className="bg-white rounded-xl shadow-lg p-6 mb-8 border border-slate-200">
                 <div className="flex items-center gap-3 mb-4">
                   <Scale className="w-8 h-8 text-blue-600" />
-                  <h1 className="text-xl font-bold text-slate-800">
+                  <h1 className="text-xx font-bold font-gilda_Display  text-lexblue">
                     Legal Case Timeline
                   </h1>
                 </div>
@@ -456,10 +456,10 @@ const LegalTime_lineSideCover = () => {
               {/* Timeline */}
               <div className="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
                 <div className="p-6 border-b border-slate-200 bg-slate-50">
-                  <h2 className="text-xl font-semibold text-slate-800">
+                  <h2 className="text-xx font-bold font-gilda_Display mb-3 text-lexblue">
                     Case Timeline
                   </h2>
-                  <p className="text-slate-600 mt-1">
+                  <p className="font-cabin mt-1 text-sm ">
                     Chronological record of all court proceedings
                   </p>
                 </div>
