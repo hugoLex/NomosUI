@@ -24,7 +24,10 @@ const contentOutline: ContentOutline[] = [
   // "ratio",
 ];
 
-const actions = ["Issues for determination"];
+const actions = [
+  ["Issues for determination", "tab=issues"],
+  ["Timeline and events", `right_cover_menu=${true}`],
+];
 // const actions = ["Main Issues", "Issue for Cause of Action", "Ratio Decidendi"];
 // const cases = ["By Subject Matter", "By Ratio Decidendi"];
 
@@ -144,7 +147,7 @@ const CaseDetailsSidebarView = (props: {
                 <h5 className="text-base font-normal text-inherit">Actions</h5>
 
                 <ul className="space-y-2">
-                  {actions.map((btn, btx) => (
+                  {actions.map(([btn, param], btx) => (
                     <li
                       // href={`/library/cases?caseId=${"caseDocument?.document_id"}&action=${btn}`}
                       key={btx}
@@ -152,9 +155,7 @@ const CaseDetailsSidebarView = (props: {
                     >
                       {btn}{" "}
                       <Link
-                        href={`/library/cases/${
-                          caseDocument?.document_id
-                        }?tab=${"issues"}&title=${caseDocument?.case_title}`}
+                        href={`/library/cases/${caseDocument?.document_id}?title=${caseDocument?.case_title}&${param}`}
                       >
                         <LuExternalLink className="w-4 h-4 text-primary" />
                       </Link>

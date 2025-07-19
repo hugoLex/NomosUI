@@ -10,6 +10,8 @@ import { getMarkdownRemoteStream } from "@app/utils/getMarkdown";
 
 import CaseDetailsSidebarView from "./CaseDetailsSidebarView";
 import { TCaseDocument } from "@app/types";
+// import Time_lineSideCover from "./Time_line";
+import LegalTime_lineSideCover from "./Time_line";
 
 const sections = [
   {
@@ -104,6 +106,8 @@ const CaseView = ({
     caseDocument && (
       <Container>
         <div className={`pb-8  w-full md:min-w-[980px]`}>
+          {/* this is the side bar for displaying the case history   */}
+          <LegalTime_lineSideCover />
           <div className="md:grid grid-cols-12 gap-8">
             <div className="col-span-4 self-baselane">
               <div className="sticky top-[145px]">
@@ -194,7 +198,7 @@ const CaseView = ({
                             }
                           </h3>
                           <h3 className="text-sm text- lexblue font-normal mb-2">
-                            {summarySubHeading(" Holding and reasoning:")}
+                            {summarySubHeading("Holding and reasoning:")}
 
                             {
                               (caseDocument?.case_summary as any)

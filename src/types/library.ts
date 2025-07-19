@@ -1,3 +1,28 @@
+
+interface Duration {
+  total_years: number;
+  total_days: number;
+}
+
+interface TimelineEvent {
+  id: number;
+  date: string; // ISO date format (YYYY-MM-DD)
+  court: string | null;
+  order: number;
+  description: string;
+}
+
+export interface Timeline {
+  duration: Duration;
+  events: TimelineEvent[];
+}
+
+// interface TimelineData {
+//   timeline: Timeline;
+// }
+
+
+
 interface Ratio {
   id: number;
   text: string;
@@ -13,6 +38,7 @@ interface IssueWithRatio {
 
 type IssuesWithRatios = IssueWithRatio[];
 export type TCaseData = {
+  timeline: Timeline;
   case_title: string | null;
   document_id: string | null;
   suit_number: string | null;
