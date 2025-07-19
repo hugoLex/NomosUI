@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { useCaseQuery } from "@app/store/services/caseSlice";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { Loader } from "@app/components/ui";
+import { mappedAlphabets } from "@app/utils";
 
 interface LegalRatio {
   id: number;
@@ -21,9 +22,15 @@ interface LegalIssue {
 
 interface CaseData {
   issues_with_ratios?: LegalIssue[];
+  innerRef?: React.MutableRefObject<any>;
+  isTitle?: boolean;
 }
 
-export default function CaseIssuesForDeterminatonComponent() {
+export default function CaseIssuesForDeterminatonComponent({
+  issues_with_ratios,
+  innerRef,
+  isTitle,
+}: CaseData) {
   const new_case_id_slug = useParams();
   const { isError, isLoading, data } = useCaseQuery(
     new_case_id_slug ? (new_case_id_slug?.slug as string) : skipToken
@@ -76,18 +83,22 @@ export default function CaseIssuesForDeterminatonComponent() {
   //   "the full data",
   //   data?.case_data
   // );
+
   if (isLoading) return <Loader />;
 
   return (
-    <div className="max-w-[1100px] mx-auto py-6 px-[10px] bg-gray-50 min-h-screen">
+    <div className="relative max-w-[972px] mx-auto pt-6 pb-[70px] px- [64px] bg-gray-50 min-h-screen">
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-4">
-          <div className="p-3 bg-indigo-600 rounded-lg shadow-md">
+          {/* <div className="p-3 bg-indigo-600 rounded-lg shadow-md">
             <Scale className="w-8 h-8 text-white" />
-          </div>
-          <div>
-            <h1 className="text-xxl font-gilda_Display  font-bold text-lexblue">
+          </div> */}
+          <div className="ml-[30px]">
+            <h1
+              ref={innerRef}
+              className="text-xx font-gilda_Display capitalize  font-bold text-lexblue"
+            >
               Legal Case Analysis
             </h1>
             <p className="text-gray-600 mt-1">Issues and Ratios Overview</p>
@@ -172,7 +183,7 @@ export default function CaseIssuesForDeterminatonComponent() {
                         </div>
                       </div>
 
-                      <p className="text-gray-900 font-medium leading-relaxed">
+                      <p className="text-powder_blue text-[1.1rem] font-semibold font-gilda_Display capitalize cursor-pointer hover:underline">
                         {issue.issue}
                       </p>
                     </div>
@@ -185,7 +196,7 @@ export default function CaseIssuesForDeterminatonComponent() {
                     <div className="p-6">
                       <div className="flex items-center gap-2 mb-4">
                         <Scale className="w-5 h-5 text-indigo-600" />
-                        <h3 className="font-semibold text-gray-900">
+                        <h3 className="font-semibold text-gray-900 text-xx font-gilda_Display">
                           Legal Ratios
                         </h3>
                         <span className="text-sm text-gray-500 bg-white px-2 py-1 rounded-full border">
@@ -204,7 +215,7 @@ export default function CaseIssuesForDeterminatonComponent() {
                               <div className="flex items-start gap-4">
                                 <div className="flex-shrink-0">
                                   <div className="w-8 h-8 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center text-sm font-semibold">
-                                    {ratioIndex + 1}
+                                    {mappedAlphabets[ratioIndex]}
                                   </div>
                                 </div>
                                 <div className="flex-1">
@@ -213,7 +224,7 @@ export default function CaseIssuesForDeterminatonComponent() {
                                       Ratio ID: {ratio.id}
                                     </span>
                                   </div>
-                                  <p className="text-gray-800 leading-relaxed text-justify">
+                                  <p className="text-[0.875rem] text-lexblue leading-relaxed text-justify">
                                     {ratio.text}
                                   </p>
                                 </div>
@@ -240,7 +251,11 @@ export default function CaseIssuesForDeterminatonComponent() {
       </div>
 
       {/* Footer Summary */}
-      <div className="mt-8 bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+      <div
+        className={`mt-8 bg-white rounded-lg p-6 shadow-sm border border-gray-200 ${
+          isTitle && "fixed"
+        } bottom-0 w-full max-w-[972px]`}
+      >
         <div className="text-center text-gray-600">
           <p className="text-sm">
             Displaying{" "}

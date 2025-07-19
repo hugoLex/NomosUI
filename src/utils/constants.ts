@@ -29,7 +29,24 @@ export const rhetorical_function_tooltips = {
   "procedural history": "Tracks the case's journey through the courts",
   "statutory interpretation": "Analyzes and applies relevant legislation"
 }
-
+export const mappedAlphabets: { [key: number]: string } = {
+  0: "a",
+  1: "b",
+  2: "c",
+  3: "d",
+  4: "e",
+  5: "f",
+  6: "g",
+  7: "h",
+  8: "i",
+  9: "j",
+  10: "k",
+  11: "l",
+  12: "m",
+  13: "n",
+  14: "o",
+  15: "p",
+};
 
 export const dummyCasesResult: CaseResults = {
   search_id: "9d182815-5515-437c-bc85-66de4619fcc7",

@@ -36,9 +36,10 @@ const tabItems: TabItem[] = [
   },
   {
     active: false,
-    id: "judgement",
-    label: "Judgement analysis",
+    id: "issues",
+    label: "Issues for Determination & Ratio",
   },
+
   {
     active: false,
     id: "precedent",
@@ -46,8 +47,8 @@ const tabItems: TabItem[] = [
   },
   {
     active: false,
-    id: "issues",
-    label: "Issues for Determination",
+    id: "judgement",
+    label: "Judgement analysis",
   },
 
   // {
@@ -127,7 +128,7 @@ const Page: NextPageWithLayout = () => {
           ]);
           // const res = await axios.get(judgementUrl);
 
-          console.log("from cases/slug", judgementRes, analysisRes);
+          // console.log("from cases/slug", judgementRes, analysisRes);
 
           if (judgementRes) {
             const { content } = matter(judgementRes.data);
@@ -248,11 +249,13 @@ const Page: NextPageWithLayout = () => {
       )}
       {tabId === "issues" && (
         <CaseIssuesForDeterminatonComponent
-        // issues_with_ratios={caseDocument?.issues_with_ratios}
-        // innerRef={h2Ref}
-        // id={caseId}
+          innerRef={h1Ref}
+          isTitle={!isH1Visible}
+          // issues_with_ratios={caseDocument?.issues_with_ratios}
+          // innerRef={h2Ref}
+          // id={caseId}
 
-        // case_title={caseTitle}
+          // case_title={caseTitle}
         />
       )}
     </Fragment>

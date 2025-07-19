@@ -62,7 +62,7 @@ const PrecedentView = ({
       {isError && <ErrorView />}
 
       {data && (
-        <div className="pb-6 pt- [60px] md:flex g rid gri d-cols-12 max-w-[772px] mx-auto gap-8">
+        <div className="pb-6 pt-[60px]   mx-auto ">
           {/* <div className="col-span-4 self-baselane">
             <div className="sticky top-[68px]  py-[2rem]">
              
@@ -75,7 +75,7 @@ const PrecedentView = ({
               <PrecedenceTreatment selectedTreatment={selectedTreatment} />
             </div>
           </div> */}
-          <div className="col- span-8 ">
+          <div className=" w-full">
             <p className="hidden font-light uppercase text-[0.813rem] text-black/80  mt-2 pr-2.5 py-1 leading-[1.25rem]">
               Judicial insight
             </p>
