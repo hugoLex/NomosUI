@@ -2,7 +2,6 @@ import React, { Fragment, MutableRefObject, useEffect, useState } from "react";
 import { LuDot } from "react-icons/lu";
 import { PiGavelThin } from "react-icons/pi";
 import { LiaBalanceScaleSolid } from "react-icons/lia";
-
 // import { UseQueryToggler } from "@app/hooks/queryHandler";
 import { useScrollspy } from "@app/hooks/useScrollspyHook";
 import { SummaryComponent, Markdown, Container } from "@app/components/shared";
@@ -74,7 +73,7 @@ const CaseView = ({
     }
     // Split the content at the quote
     const parts = content.split(quoteToHighlight);
-    console.log("A case document has been loaded", caseDocument);
+    // console.log("A case document has been loaded", caseDocument);
     return (
       <>
         {/* Render first part */}
@@ -90,6 +89,7 @@ const CaseView = ({
       </>
     );
   };
+  // console.log("caseDocument", caseDocument);
   return (
     caseDocument && (
       <Container>

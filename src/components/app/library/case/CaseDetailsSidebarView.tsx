@@ -152,7 +152,9 @@ const CaseDetailsSidebarView = (props: {
                     >
                       {btn}{" "}
                       <Link
-                        href={`/library/cases/${caseDocument?.document_id}&action=${btn}&title=${caseDocument?.case_title}`}
+                        href={`/library/cases/${
+                          caseDocument?.document_id
+                        }?tab=${"issues"}&title=${caseDocument?.case_title}`}
                       >
                         <LuExternalLink className="w-4 h-4 text-primary" />
                       </Link>

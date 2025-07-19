@@ -25,6 +25,8 @@ import { useVisibility, useQueryHandler } from "@app/hooks";
 import { useCaseQuery } from "@app/store/services/caseSlice";
 import FulljudgementModal from "@app/components/app/library/case/fulljudgementModal";
 import { useParams, usePathname } from "next/navigation";
+import { skipToken } from "@reduxjs/toolkit/query";
+import CaseIssuesForDeterminatonComponent from "@app/components/app/library/case/CaseIssuesDeter";
 
 const tabItems: TabItem[] = [
   {
@@ -41,6 +43,11 @@ const tabItems: TabItem[] = [
     active: false,
     id: "precedent",
     label: "Precedent analytics",
+  },
+  {
+    active: false,
+    id: "issues",
+    label: "Issues for Determination",
   },
 
   // {
@@ -90,11 +97,12 @@ const Page: NextPageWithLayout = () => {
     null
   );
   const { isError, isLoading, data } = useCaseQuery(
-    // new_case_id_slug ? new_case_id_slug?.slug[0] : ""
-    "ce1f8469-a471-4bda-ba5c-0d4719bc23fb"
+    new_case_id_slug ? (new_case_id_slug?.slug as string) : skipToken
+    // new_case_id_slug ? new_case_id_slug?.slug[0] : skipToken
+    // "ce1f8469-a471-4bda-ba5c-0d4719bc23fb"
   );
   // const { isError, isLoading, data } = useCaseQuery(caseId);
-  console.log("case data from cases query", data, new_case_id_slug?.slug[0]);
+  // console.log("case data from cases query", data, new_case_id_slug);
   const [caseDocument, setCaseDocument] = useState<TCaseDocument | null>(null);
   const [analysisDocument, setAnalysisDocument] = useState<any>(undefined);
   // console.log("case full judgement", )
@@ -236,6 +244,15 @@ const Page: NextPageWithLayout = () => {
           case_title={caseTitle}
           quoteToHighlight={clickedQuote}
           full_judgement={caseDocument?.judgement}
+        />
+      )}
+      {tabId === "issues" && (
+        <CaseIssuesForDeterminatonComponent
+          issues_with_ratios={caseDocument?.issues_with_ratios}
+          // innerRef={h2Ref}
+          // id={caseId}
+
+          // case_title={caseTitle}
         />
       )}
     </Fragment>

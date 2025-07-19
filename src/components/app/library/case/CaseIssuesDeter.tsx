@@ -1,0 +1,274 @@
+import { useState, useEffect } from "react";
+import { ChevronDown, ChevronRight, Scale, FileText, Hash } from "lucide-react";
+
+interface LegalRatio {
+  id: number;
+  text: string;
+}
+
+interface LegalIssue {
+  id: number;
+  issue: string;
+  priority: number;
+  ratios: LegalRatio[];
+}
+
+interface CaseData {
+  issues_with_ratios?: LegalIssue[];
+}
+
+export default function CaseIssuesForDeterminatonComponent({
+  issues_with_ratios,
+}: CaseData) {
+  const [expandedIssues, setExpandedIssues] = useState<Set<number>>(new Set());
+  const [caseData] = useState<CaseData>({
+    issues_with_ratios: issues_with_ratios,
+  });
+
+  const toggleIssue = (issueId: number) => {
+    setExpandedIssues((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(issueId)) {
+        newSet.delete(issueId);
+      } else {
+        newSet.add(issueId);
+      }
+      return newSet;
+    });
+  };
+
+  const getPriorityColor = (priority: number) => {
+    switch (priority) {
+      case 1:
+        return "bg-red-50 border-red-200 text-red-800";
+      case 2:
+        return "bg-amber-50 border-amber-200 text-amber-800";
+      case 3:
+        return "bg-green-50 border-green-200 text-green-800";
+      default:
+        return "bg-gray-50 border-gray-200 text-gray-800";
+    }
+  };
+
+  const getPriorityLabel = (priority: number) => {
+    switch (priority) {
+      case 1:
+        return "High Priority";
+      case 2:
+        return "Medium Priority";
+      case 3:
+        return "Low Priority";
+      default:
+        return "Standard";
+    }
+  };
+
+  return (
+    <div className="max-w-[1100px] mx-auto py-6 px-[10px] bg-gray-50 min-h-screen">
+      {/* Header */}
+      <div className="mb-8">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="p-3 bg-indigo-600 rounded-lg shadow-md">
+            <Scale className="w-8 h-8 text-white" />
+          </div>
+          <div>
+            <h1 className="text-xxl font-gilda_Display  font-bold text-lexblue">
+              Legal Case Analysis
+            </h1>
+            <p className="text-gray-600 mt-1">Issues and Ratios Overview</p>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <FileText className="w-5 h-5 text-indigo-600" />
+                <span className="font-medium text-gray-900">
+                  {caseData ? caseData?.issues_with_ratios?.length : ""} Legal
+                  Issues
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Hash className="w-5 h-5 text-green-600" />
+                <span className="font-medium text-gray-900">
+                  {caseData
+                    ? caseData?.issues_with_ratios?.reduce(
+                        (acc, issue) => acc + issue.ratios.length,
+                        0
+                      )
+                    : ""}{" "}
+                  Total Ratios
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Issues List */}
+      <div className="space-y-6">
+        {caseData ? (
+          caseData?.issues_with_ratios?.map((issue, index) => {
+            const isExpanded = expandedIssues.has(issue.id);
+
+            return (
+              <div
+                key={issue.id}
+                className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-200 hover:shadow-md"
+              >
+                {/* Issue Header */}
+                <div
+                  className="p-6 cursor-pointer hover:bg-gray-50 transition-colors duration-150"
+                  onClick={() => toggleIssue(issue.id)}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0 mt-1">
+                      {isExpanded ? (
+                        <ChevronDown className="w-5 h-5 text-gray-500" />
+                      ) : (
+                        <ChevronRight className="w-5 h-5 text-gray-500" />
+                      )}
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-4 mb-3">
+                        <div className="flex items-center gap-3">
+                          <span className="text-sm font-semibold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
+                            Issue #{index + 1}
+                          </span>
+                          <span
+                            className={`text-xs font-medium px-2 py-1 rounded-full border ${getPriorityColor(
+                              issue.priority
+                            )}`}
+                          >
+                            {getPriorityLabel(issue.priority)}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-gray-500 flex-shrink-0">
+                          <Hash className="w-4 h-4" />
+                          <span>{issue.ratios.length} ratios</span>
+                        </div>
+                      </div>
+
+                      <p className="text-gray-900 font-medium leading-relaxed">
+                        {issue.issue}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Ratios Section */}
+                {isExpanded && (
+                  <div className="border-t border-gray-100 bg-gray-50">
+                    <div className="p-6">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Scale className="w-5 h-5 text-indigo-600" />
+                        <h3 className="font-semibold text-gray-900">
+                          Legal Ratios
+                        </h3>
+                        <span className="text-sm text-gray-500 bg-white px-2 py-1 rounded-full border">
+                          {issue.ratios.length} items
+                        </span>
+                      </div>
+
+                      <div className="space-y-4">
+                        {issue.ratios.map((ratio, ratioIndex) => (
+                          <div
+                            key={ratio.id}
+                            className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200"
+                          >
+                            <div className="flex items-start gap-4">
+                              <div className="flex-shrink-0">
+                                <div className="w-8 h-8 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center text-sm font-semibold">
+                                  {ratioIndex + 1}
+                                </div>
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-center justify-between mb-2">
+                                  <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                    Ratio ID: {ratio.id}
+                                  </span>
+                                </div>
+                                <p className="text-gray-800 leading-relaxed text-justify">
+                                  {ratio.text}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })
+        ) : (
+          <p className="text-gray-500 text-center py-6">
+            No issues found for this case.
+          </p>
+        )}
+      </div>
+
+      {/* Footer Summary */}
+      <div className="mt-8 bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+        <div className="text-center text-gray-600">
+          <p className="text-sm">
+            Displaying{" "}
+            <span className="font-semibold text-gray-900">
+              {caseData?.issues_with_ratios?.length}
+            </span>{" "}
+            legal issues with a total of{" "}
+            <span className="font-semibold text-gray-900">
+              {caseData?.issues_with_ratios?.reduce(
+                (acc, issue) => acc + issue.ratios.length,
+                0
+              )}
+            </span>{" "}
+            associated ratios
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+//  [
+//       {
+//         id: 161,
+//         issue:
+//           "CONSTITUTIONAL LAW - JUDICIARY AND JUSTICE ADMINISTRATION - Whether the judgment of the lower Court delivered on the 7th day of June, 2018 outside the 90 days limited by Section 294(1) of the 1999 Constitution as amended is null and void.",
+//         priority: 1,
+//         ratios: [
+//           {
+//             id: 463,
+//             text: "Pursuant to the provisions of Section 294(1) of the 1999 Constitution (as amended), all Courts of law in Nigeria; particularly superior Courts of record established directly under the Constitution, have a legal duty and a binding judicial obligation to deliver their judgments/decisions in writing not later than ninety (90) days after conclusion of evidence and final addresses in all cases/matters brought before them and furnish all the parties with duly authenticated copies thereof within seven (7) days of the delivery thereof.",
+//           },
+//           {
+//             id: 464,
+//             text: "The constitutional provision limiting the time for delivery of judgment to 90 days is mandatory and not directory, and any judgment delivered beyond this period is null and void ab initio.",
+//           },
+//           {
+//             id: 465,
+//             text: "Where a court fails to deliver judgment within the constitutionally prescribed time limit, such failure renders the entire proceedings nugatory and of no legal effect.",
+//           },
+//         ],
+//       },
+//       {
+//         id: 162,
+//         issue:
+//           "EVIDENCE - BURDEN OF PROOF - Whether the plaintiff has discharged the burden of proof required to establish his case on the balance of probabilities.",
+//         priority: 2,
+//         ratios: [
+//           {
+//             id: 466,
+//             text: "In civil proceedings, the standard of proof required is proof on the balance of probabilities, which means that the case of one party is more probable than that of the other.",
+//           },
+//           {
+//             id: 467,
+//             text: "The burden of proof lies on the party who asserts the affirmative of any proposition, and this burden does not shift throughout the trial.",
+//           },
+//         ],
+//       },
+//     ]

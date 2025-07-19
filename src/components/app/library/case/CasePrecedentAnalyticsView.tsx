@@ -15,7 +15,7 @@ import { dummyCaseDetails } from "@app/utils";
 import FeedbackWidget from "./FeedbackWidget";
 import { SelectedTreatment, TPrecedentData } from "@app/types";
 import useQueryToggler from "@app/hooks/useQueryHandler";
-import { QuoteHighlighterData } from "@app/pages/app/library/cases/[...slug]";
+import { QuoteHighlighterData } from "@app/pages/app/library/cases/[slug]";
 
 const PrecedentView = ({
   case_title,

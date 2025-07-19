@@ -1,3 +1,17 @@
+interface Ratio {
+  id: number;
+  text: string;
+  // Add other properties that might exist in the ratio object
+}
+
+interface IssueWithRatio {
+  id: number;
+  issue: string;
+  priority: number;
+  ratios: Ratio[];
+}
+
+type IssuesWithRatios = IssueWithRatio[];
 export type TCaseData = {
   case_title: string | null;
   document_id: string | null;
@@ -17,6 +31,7 @@ export type TCaseData = {
   main_judgement_url: string | null;
   analysis_url: string | null;
   subject_matter: string[];
+  issues_with_ratios: IssuesWithRatios
 };
 
 export type TPrecedentData = {
