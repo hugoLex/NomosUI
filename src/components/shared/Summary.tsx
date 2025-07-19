@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { RiCloseLine } from "react-icons/ri";
+import { RiCloseLine, RiOpenaiFill } from "react-icons/ri";
 import { CaretDown, CaretUp } from "../icons";
 import SmallTextBtn from "./SmallBtn";
 import { useQueryHandler } from "@app/hooks";
@@ -87,9 +87,13 @@ const SummaryView = ({
 export const SummaryComponent = ({
   summary,
   isCollapsible = false,
+  toogler,
+  isCollapsed,
 }: {
   summary?: string | React.ReactNode;
   isCollapsible: boolean;
+  toogler?: () => void;
+  isCollapsed?: boolean;
 }) => {
   const { close, searchParams } = useQueryHandler();
   // const [showCaseSummary, setShowCaseSummary] = useState(index);
@@ -103,17 +107,38 @@ export const SummaryComponent = ({
       <div className="flex justify-between">
         <h4 className="text-sm font-medium">Summary</h4>
         {isCollapsible && (
-          <RiCloseLine
-            onClick={() => close("showCaseSummary", undefined)}
-            className="text-pink-600 ml-auto cursor-pointer"
-            size={19}
-          />
+          <>
+            {isCollapsed ? (
+              <RiCloseLine
+                onClick={() => {
+                  toogler ? toogler() : close("showCaseSummary", undefined);
+                }}
+                className="text-pink-600 ml-auto cursor-pointer"
+                size={19}
+              />
+            ) : (
+              <button
+                title=""
+                className="text-primary ml-auto cursor-pointer text-sm font-semibold"
+                onClick={() => {
+                  // check this logic LiaTerminalSolid, the arguement passed to it
+                  toogler ? toogler() : close("showCaseSummary", "true");
+                }}
+                // size={19}
+              >
+                Show more
+              </button>
+            )}
+          </>
         )}
       </div>
       <hr className="mt-2 mb-5" />
-      <p className="text-sm font-poppins text-lexblue flex-wrap">
+      <span className="text-sm font-poppins text-lexblue flex-wrap text-justify block">
         {summary ?? defaultSummary}
-      </p>
+      </span>
+      {/* {!isCollapsed && (
+        <div className="w-full absolute bottom-0 h-[52px] bg-[linear-gradient(transparent_0px,rgba(255,255,255,0.9)_52px,#fff_80px)]"></div>
+      )} */}
       <div className=" hidden gap-5 items-center py-5">
         <SmallTextBtn
           smallBtnData={["Judgement"]}

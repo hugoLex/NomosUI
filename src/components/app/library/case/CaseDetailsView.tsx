@@ -48,6 +48,7 @@ const CaseView = ({
   };
   // This is the logic for highlighting on the main judgement page
   const [quoteToHighlight, setQuoteToHighlight] = useState(null);
+  const [open, setopen] = useState<boolean>(false);
 
   useEffect(() => {
     const data = localStorage.getItem("caseData");
@@ -69,7 +70,9 @@ const CaseView = ({
   }) => {
     // test with Citi Bank Nigeria Limited v. Mr. Martins Ikediashi
     if (!content || !quoteToHighlight || !content.includes(quoteToHighlight)) {
-      return <Markdown className="text-lexblue" content={content} />;
+      return (
+        <Markdown className="text-lexblue text-justify" content={content} />
+      );
     }
     // Split the content at the quote
     const parts = content.split(quoteToHighlight);
@@ -89,6 +92,13 @@ const CaseView = ({
       </>
     );
   };
+  function summarySubHeading(text: string) {
+    return (
+      <span className="uppercase block font-poppins text-gray-500 text-sm font-medium mb-1">
+        {text}
+      </span>
+    );
+  }
   // console.log("caseDocument", caseDocument);
   return (
     caseDocument && (
@@ -154,38 +164,80 @@ const CaseView = ({
                 {caseDocument.case_summary && (
                   <div id="summary" ref={(el) => (sectionRefs.current[0] = el)}>
                     <SummaryComponent
+                      toogler={() => setopen(!open)}
+                      isCollapsed={open}
                       summary={
-                        <div className="">
-                          <h3 className="text-sm font-normal mb-2">
+                        <div
+                          style={
+                            open
+                              ? { maxHeight: "none" }
+                              : {
+                                  overflow: "hidden",
+                                  display: "-webkit-box",
+                                  WebkitBoxOrient: "vertical",
+                                  WebkitLineClamp: 9,
+                                }
+                          }
+                          className={` relative  
+                            ${
+                              ""
+                              // open ? null : "line-clamp-6"
+                            }
+                           `}
+                        >
+                          <h3 className="text-sm text- lexblue font-normal mb-2">
+                            {summarySubHeading("Issues for determination:")}
+
                             {
                               (caseDocument?.case_summary as any)
                                 ?.issues_for_determination
                             }
                           </h3>
-                          <h3 className="text-sm font-normal mb-2">
+                          <h3 className="text-sm text- lexblue font-normal mb-2">
+                            {summarySubHeading(" Holding and reasoning:")}
+
                             {
                               (caseDocument?.case_summary as any)
                                 ?.holding_and_reasoning
                             }
                           </h3>
-                          <h3 className="text-sm font-normal mb-2">
+                          <h3 className="text-sm text- lexblue font-normal mb-2">
+                            {summarySubHeading("Originating court and claims:")}
+
                             {
                               (caseDocument?.case_summary as any)
                                 ?.originating_court_and_claims
                             }
                           </h3>
-                          <h3 className="text-sm font-normal mb-2">
+                          <h3 className="text-sm text- lexblue font-normal mb-2">
+                            {summarySubHeading("Procedural history:")}
                             {
                               (caseDocument?.case_summary as any)
                                 ?.procedural_history
                             }
                           </h3>
-                          <h3 className="text-sm font-normal mb-2">
+                          <h3 className="text-sm text- lexblue font-normal mb-2">
+                            {summarySubHeading("Disposition:")}
+
                             {(caseDocument?.case_summary as any)?.disposition}
                           </h3>
+                          {!open && (
+                            <div className="w-full absolute bottom-0 h-[52px] bg-[linear-gradient(transparent_0px,rgba(255,255,255,0.9)_52px,#fff_80px)]"></div>
+                          )}
+                          <button
+                            onClick={() => {
+                              setopen(!open);
+                              window?.scrollTo({ top: 0, behavior: "smooth" });
+                            }}
+                            className={`p-2 bg-primary text-white text-sm rounded mt-2 ${
+                              open ? "bg-gray-300" : "bg-primary"
+                            }`}
+                          >
+                            {open ? "Show less" : "View more"}
+                          </button>
                         </div>
                       }
-                      isCollapsible={false}
+                      isCollapsible={true}
                     />
                   </div>
                 )}

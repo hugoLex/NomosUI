@@ -17,7 +17,11 @@ import {
   SearchType,
   TSearchResultDocument,
 } from "@app/types";
-import { escapeRegExp, rhetorical_function_tooltips } from "@app/utils";
+import {
+  escapeRegExp,
+  mappedAlphabets,
+  rhetorical_function_tooltips,
+} from "@app/utils";
 import { HiMinus, HiOutlineDocumentText } from "react-icons/hi2";
 
 import { LLMResult } from "@app/types";
@@ -365,20 +369,6 @@ export const SearchAIMetaResult = ({
   );
 };
 
-// {(llm_search_data?.document_metadata).map(
-//   (itx: GenericObject, idx: number) => {
-//     return (
-//       <Fragment key={`id-${idx}`}>
-//         {/* <SummaryPreview text={itx} /> */}
-//         {/* <p
-//       className="text-black/80 text-sm leading-6 font-normal whitespace-preWrap"
-//       dangerouslySetInnerHTML={{ __html: itx.trim().split("\n") }}
-//     /> */}
-//       </Fragment>
-//     );
-//   }
-// )}
-
 export const SearchResultMeta = (prop: {
   index: string | number;
   data: TSearchResultDocument;
@@ -423,19 +413,7 @@ export const SearchResultMeta = (prop: {
   //     }?title=${metadata.case_title}&tab=case`
   //   );
   // };
-  const mappedAlphabets: { [key: number]: string } = {
-    0: "a",
-    1: "b",
-    2: "c",
-    3: "d",
-    4: "e",
-    5: "f",
-    6: "g",
-    7: "h",
-    8: "i",
-    9: "j",
-    10: "k",
-  };
+
   const Occurrences = () =>
     (
       occurrences?.slice(0, lastOccurrence) as {
@@ -507,20 +485,20 @@ export const SearchResultMeta = (prop: {
           return (
             <div className="max-h-[750px] overflow-y-clip relative mt-[8px] mb-[8px]  bg-gray flex items-center">
               {/* <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="mx-[8px] text-super shrink-0 -translate-y-px rotate-180"
-        >
-          <path d="M10 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
-          <path d="M19 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
-        </svg> */}
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mx-[8px] text-super shrink-0 -translate-y-px rotate-180"
+              >
+                <path d="M10 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
+                <path d="M19 11h-4a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h3a1 1 0 0 1 1 1v6c0 2.667 -1.333 4.333 -4 5"></path>
+              </svg> */}
               <p
                 className={`text-sm text-gray-authinput ${
                   open ? null : "hidden line- clamp-3"
