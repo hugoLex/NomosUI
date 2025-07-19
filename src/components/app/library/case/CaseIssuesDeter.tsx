@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronRight, Scale, FileText, Hash } from "lucide-react";
+import { number } from "yup";
 
 interface LegalRatio {
   id: number;
@@ -62,7 +63,7 @@ export default function CaseIssuesForDeterminatonComponent({
         return "Standard";
     }
   };
-
+  console.log("issues for determination", caseData);
   return (
     <div className="max-w-[1100px] mx-auto py-6 px-[10px] bg-gray-50 min-h-screen">
       {/* Header */}
@@ -92,9 +93,13 @@ export default function CaseIssuesForDeterminatonComponent({
               <div className="flex items-center gap-2">
                 <Hash className="w-5 h-5 text-green-600" />
                 <span className="font-medium text-gray-900">
-                  {caseData
-                    ? caseData?.issues_with_ratios?.reduce(
-                        (acc, issue) => acc + issue.ratios.length,
+                  {caseData?.issues_with_ratios
+                    ? caseData.issues_with_ratios.reduce(
+                        (acc, issue) =>
+                          acc +
+                          (typeof issue?.ratios?.length === "number"
+                            ? issue.ratios.length
+                            : 0),
                         0
                       )
                     : ""}{" "}
@@ -110,17 +115,17 @@ export default function CaseIssuesForDeterminatonComponent({
       <div className="space-y-6">
         {caseData ? (
           caseData?.issues_with_ratios?.map((issue, index) => {
-            const isExpanded = expandedIssues.has(issue.id);
+            const isExpanded = expandedIssues.has(issue?.id);
 
             return (
               <div
-                key={issue.id}
+                key={issue?.id}
                 className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-200 hover:shadow-md"
               >
                 {/* Issue Header */}
                 <div
                   className="p-6 cursor-pointer hover:bg-gray-50 transition-colors duration-150"
-                  onClick={() => toggleIssue(issue.id)}
+                  onClick={() => toggleIssue(issue?.id)}
                 >
                   <div className="flex items-start gap-4">
                     <div className="flex-shrink-0 mt-1">
@@ -147,7 +152,10 @@ export default function CaseIssuesForDeterminatonComponent({
                         </div>
                         <div className="flex items-center gap-2 text-sm text-gray-500 flex-shrink-0">
                           <Hash className="w-4 h-4" />
-                          <span>{issue.ratios.length} ratios</span>
+                          <span>
+                            {issue.ratios?.length ?? 0} ratio
+                            {issue.ratios?.length > 1 ? "s" : ""}
+                          </span>
                         </div>
                       </div>
 
@@ -168,35 +176,42 @@ export default function CaseIssuesForDeterminatonComponent({
                           Legal Ratios
                         </h3>
                         <span className="text-sm text-gray-500 bg-white px-2 py-1 rounded-full border">
-                          {issue.ratios.length} items
+                          {issue.ratios?.length ?? 0} item
+                          {issue.ratios?.length > 1 ? "s" : ""}
                         </span>
                       </div>
 
                       <div className="space-y-4">
-                        {issue.ratios.map((ratio, ratioIndex) => (
-                          <div
-                            key={ratio.id}
-                            className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200"
-                          >
-                            <div className="flex items-start gap-4">
-                              <div className="flex-shrink-0">
-                                <div className="w-8 h-8 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center text-sm font-semibold">
-                                  {ratioIndex + 1}
+                        {issue?.ratios?.length > 0 ? (
+                          issue.ratios?.map((ratio, ratioIndex) => (
+                            <div
+                              key={ratio.id}
+                              className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200"
+                            >
+                              <div className="flex items-start gap-4">
+                                <div className="flex-shrink-0">
+                                  <div className="w-8 h-8 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center text-sm font-semibold">
+                                    {ratioIndex + 1}
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="flex-1">
-                                <div className="flex items-center justify-between mb-2">
-                                  <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                                    Ratio ID: {ratio.id}
-                                  </span>
+                                <div className="flex-1">
+                                  <div className="flex items-center justify-between mb-2">
+                                    <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                                      Ratio ID: {ratio.id}
+                                    </span>
+                                  </div>
+                                  <p className="text-gray-800 leading-relaxed text-justify">
+                                    {ratio.text}
+                                  </p>
                                 </div>
-                                <p className="text-gray-800 leading-relaxed text-justify">
-                                  {ratio.text}
-                                </p>
                               </div>
                             </div>
+                          ))
+                        ) : (
+                          <div>
+                            <p>No ratio found for this issue</p>
                           </div>
-                        ))}
+                        )}
                       </div>
                     </div>
                   </div>
@@ -221,10 +236,16 @@ export default function CaseIssuesForDeterminatonComponent({
             </span>{" "}
             legal issues with a total of{" "}
             <span className="font-semibold text-gray-900">
-              {caseData?.issues_with_ratios?.reduce(
-                (acc, issue) => acc + issue.ratios.length,
-                0
-              )}
+              {caseData?.issues_with_ratios
+                ? caseData.issues_with_ratios.reduce(
+                    (acc, issue) =>
+                      acc +
+                      (typeof issue?.ratios?.length === "number"
+                        ? issue.ratios.length
+                        : 0),
+                    0
+                  )
+                : ""}
             </span>{" "}
             associated ratios
           </p>
