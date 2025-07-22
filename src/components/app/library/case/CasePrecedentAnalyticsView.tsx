@@ -62,7 +62,7 @@ const PrecedentView = ({
       {isError && <ErrorView />}
 
       {data && (
-        <div className="pb-6 pt-[60px]   mx-auto ">
+        <div className="pb-6 pt- [60px]   mx-auto ">
           {/* <div className="col-span-4 self-baselane">
             <div className="sticky top-[68px]  py-[2rem]">
              

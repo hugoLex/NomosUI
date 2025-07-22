@@ -656,7 +656,7 @@ export const SearchResultMeta = (prop: {
                   </h3>
                 );
               })}
-              <sup
+              <span
                 onClick={
                   () =>
                     setQuoteToHighlight({
@@ -670,10 +670,10 @@ export const SearchResultMeta = (prop: {
                   //   metadata?.document_id
                   // )
                 }
-                className="hover:bg-primary bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]"
+                className="hover:bg-primary z-0 bg-[#e5e7eb] px-[0.3rem] text-[#111827] min-w-[1rem] text-center rounded-[0.3125rem] cursor-pointer align-middle font-mono text-[0.6rem] tabular-nums hover:text-white py-[0.1875rem]"
               >
                 {mappedAlphabets[ptx]}
-              </sup>
+              </span>
             </mark>
           </div>
         );

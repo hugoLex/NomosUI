@@ -8,6 +8,8 @@ import { skipToken } from "@reduxjs/toolkit/query";
 import { Loader } from "@app/components/ui";
 import { mappedAlphabets } from "@app/utils";
 import { QuoteHighlighterData } from "@app/pages/app/library/cases/[slug]";
+import { DashboardSkeletonLoader } from "@app/components/shared/DashboardSkeletonLoader";
+import Link from "next/link";
 
 interface LegalRatio {
   id: number;
@@ -43,15 +45,17 @@ export default function CaseIssuesForDeterminatonComponent({
     // "ce1f8469-a471-4bda-ba5c-0d4719bc23fb"
   );
   const caseData = data?.case_data?.issues_with_ratios;
-  const [expandedIssues, setExpandedIssues] = useState<Set<number>>(new Set());
+  const [expandedIssues, setExpandedIssues] = useState<Set<number>>(
+    new Set([0])
+  );
 
-  const toggleIssue = (issueId: number) => {
+  const toggleIssue = (index: number) => {
     setExpandedIssues((prev) => {
       const newSet = new Set(prev);
-      if (newSet.has(issueId)) {
-        newSet.delete(issueId);
+      if (newSet.has(index)) {
+        newSet.delete(index);
       } else {
-        newSet.add(issueId);
+        newSet.add(index);
       }
       return newSet;
     });
@@ -89,10 +93,15 @@ export default function CaseIssuesForDeterminatonComponent({
   //   data?.case_data
   // );
 
-  if (isLoading) return <Loader />;
+  if (isLoading)
+    return (
+      <div className="max-w-[1100px] px-[60px] mx-auto w-full ">
+        <DashboardSkeletonLoader />;
+      </div>
+    );
 
   return (
-    <div className="relative max-w-[972px] mx-auto pt-6 pb-[70px] px- [64px] bg- gray-50 min-h-screen">
+    <div className=" max-w-[972px] mx-auto pt- [30px] pb-[70px] px- [64px] bg- gray-50 min-h-screen">
       {/* Header */}
       <div className="mb- 8">
         <div className="flex items-center gap-3 mb- 4">
@@ -143,23 +152,23 @@ export default function CaseIssuesForDeterminatonComponent({
       </div>
 
       {/* Issues List */}
-      <div className="space-y-6">
+      <div className="">
         {caseData ? (
-          caseData?.map((issue, index) => {
-            const isExpanded = expandedIssues.has(issue?.id);
+          caseData?.map((issue, idx) => {
+            const isExpanded = expandedIssues.has(idx);
 
             return (
               <div
                 key={issue?.id}
-                className={`bg- white rounded- xl shadow- sm ${
+                className={` relative ${
                   !isExpanded && "border-b hover:bg-primary/5"
-                } border-b-gray-200 overflow-hidden transition-all duration-200 shadow- md`}
+                } border-b-gray-200   `}
               >
                 {/* Issue Header */}
                 <div
                   title="Click to expand/collapse"
-                  className="p-2 6 cursor-pointer  transition-colors duration-150"
-                  onClick={() => toggleIssue(issue?.id)}
+                  className="sticky top-[75px] p-2 6 cursor-pointer  transition-colors duration-150"
+                  onClick={() => toggleIssue(idx)}
                 >
                   <div className="flex items-start gap-4">
                     <div className="flex-shrink-0 mt-1 hidden">
@@ -194,17 +203,13 @@ export default function CaseIssuesForDeterminatonComponent({
                       </div>
 
                       <p
-                        onClick={(e) => {
-                          e?.stopPropagation();
-                          // set the quote to highlight state and navigate to the full judgement page
-                          setClickedQuote({
-                            quote: issue.issue,
-                            citation: "",
-                            treatment_type: "",
-                          });
-                        }}
-                        className="text-powder_blue text-[1.1rem] font-semibold font-gilda_Display capitalize cursor-pointer hover:underline inline"
+                        // href={"#"}
+                        // style={{ zIndex: 10 - idx }}
+                        className=" sticky top-[130px] bg-white pt-5  h- [100px] text-powder_blue text-[1.1rem] font-semibold font-gilda_Display capitalize cursor-pointer hover:underline"
                       >
+                        <span className="text-gray-500 inline-block mr-2">
+                          {idx + 1}.
+                        </span>{" "}
                         {issue.issue}
                       </p>
                     </div>
@@ -245,7 +250,19 @@ export default function CaseIssuesForDeterminatonComponent({
                                       Ratio ID: {ratio.id}
                                     </span>
                                   </div> */}
-                                  <p className="text-[0.875rem] text-lexblue leading-relaxed text-justify">
+                                  <p
+                                    title="Click to read in main judgement"
+                                    onClick={(e) => {
+                                      e?.stopPropagation();
+                                      // set the quote to highlight state and navigate to the full judgement page
+                                      setClickedQuote({
+                                        quote: ratio?.text,
+                                        citation: "",
+                                        treatment_type: "",
+                                      });
+                                    }}
+                                    className="text-[0.875rem] text-lexblue leading-relaxed text-justify"
+                                  >
                                     {ratio.text}
                                   </p>
                                 </div>
@@ -272,7 +289,7 @@ export default function CaseIssuesForDeterminatonComponent({
       </div>
 
       {/* Footer Summary */}
-      <div
+      {/* <div
         className={`mt-8 bg-white rounded-lg p-6 shadow-sm border border-gray-200 ${
           isTitle && "fixed"
         } bottom-0 w-full max-w-[972px]`}
@@ -299,7 +316,7 @@ export default function CaseIssuesForDeterminatonComponent({
             associated ratios
           </p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
