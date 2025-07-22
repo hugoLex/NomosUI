@@ -92,25 +92,27 @@ export default function CaseIssuesForDeterminatonComponent({
   if (isLoading) return <Loader />;
 
   return (
-    <div className="relative max-w-[972px] mx-auto pt-6 pb-[70px] px- [64px] bg-gray-50 min-h-screen">
+    <div className="relative max-w-[972px] mx-auto pt-6 pb-[70px] px- [64px] bg- gray-50 min-h-screen">
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-4">
+      <div className="mb- 8">
+        <div className="flex items-center gap-3 mb- 4">
           {/* <div className="p-3 bg-indigo-600 rounded-lg shadow-md">
             <Scale className="w-8 h-8 text-white" />
           </div> */}
-          <div className="ml-[30px]">
+          <div className="">
             <h1
               ref={innerRef}
               className="text-xx font-gilda_Display capitalize  font-bold text-lexblue"
             >
-              Legal Case Analysis
+              Issues for determination
             </h1>
-            <p className="text-gray-600 mt-1">Issues and Ratios Overview</p>
+            <p className="text-base font-normal text-[#9ea7b4] mb-4 text-wrap mt-1">
+              Issues and Ratios Overview
+            </p>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+        {/* <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
@@ -137,7 +139,7 @@ export default function CaseIssuesForDeterminatonComponent({
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Issues List */}
@@ -149,15 +151,18 @@ export default function CaseIssuesForDeterminatonComponent({
             return (
               <div
                 key={issue?.id}
-                className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-200 hover:shadow-md"
+                className={`bg- white rounded- xl shadow- sm ${
+                  !isExpanded && "border-b hover:bg-primary/5"
+                } border-b-gray-200 overflow-hidden transition-all duration-200 shadow- md`}
               >
                 {/* Issue Header */}
                 <div
-                  className="p-6 cursor-pointer hover:bg-gray-50 transition-colors duration-150"
+                  title="Click to expand/collapse"
+                  className="p-2 6 cursor-pointer  transition-colors duration-150"
                   onClick={() => toggleIssue(issue?.id)}
                 >
                   <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 mt-1">
+                    <div className="flex-shrink-0 mt-1 hidden">
                       {isExpanded ? (
                         <ChevronDown className="w-5 h-5 text-gray-500" />
                       ) : (
@@ -167,7 +172,7 @@ export default function CaseIssuesForDeterminatonComponent({
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-4 mb-3">
-                        <div className="flex items-center gap-3">
+                        {/* <div className="  flex items-center gap-3">
                           <span className="text-sm font-semibold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
                             Issue #{index + 1}
                           </span>
@@ -178,8 +183,8 @@ export default function CaseIssuesForDeterminatonComponent({
                           >
                             {getPriorityLabel(issue.priority)}
                           </span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-gray-500 flex-shrink-0">
+                        </div> */}
+                        <div className="ml-auto flex items-center gap-2 text-sm text-gray-500 flex-shrink-0">
                           <Hash className="w-4 h-4" />
                           <span>
                             {issue.ratios?.length ?? 0} ratio
@@ -189,14 +194,16 @@ export default function CaseIssuesForDeterminatonComponent({
                       </div>
 
                       <p
-                        onClick={() => {
+                        onClick={(e) => {
+                          e?.stopPropagation();
+                          // set the quote to highlight state and navigate to the full judgement page
                           setClickedQuote({
                             quote: issue.issue,
                             citation: "",
                             treatment_type: "",
                           });
                         }}
-                        className="text-powder_blue text-[1.1rem] font-semibold font-gilda_Display capitalize cursor-pointer hover:underline"
+                        className="text-powder_blue text-[1.1rem] font-semibold font-gilda_Display capitalize cursor-pointer hover:underline inline"
                       >
                         {issue.issue}
                       </p>
@@ -206,9 +213,9 @@ export default function CaseIssuesForDeterminatonComponent({
 
                 {/* Ratios Section */}
                 {isExpanded && (
-                  <div className="border-t border-gray-100 bg-gray-50">
+                  <div className="border-b border- gray-100 bg- gray-50">
                     <div className="p-6">
-                      <div className="flex items-center gap-2 mb-4">
+                      {/* <div className="flex items-center gap-2 mb-4">
                         <Scale className="w-5 h-5 text-indigo-600" />
                         <h3 className="font-semibold text-gray-900 text-xx font-gilda_Display">
                           Legal Ratios
@@ -217,27 +224,27 @@ export default function CaseIssuesForDeterminatonComponent({
                           {issue.ratios?.length ?? 0} item
                           {issue.ratios?.length > 1 ? "s" : ""}
                         </span>
-                      </div>
+                      </div> */}
 
                       <div className="space-y-4">
                         {issue?.ratios?.length > 0 ? (
                           issue.ratios?.map((ratio, ratioIndex) => (
                             <div
                               key={ratio.id}
-                              className="bg-white rounded-lg p-5 border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200"
+                              className="bg- white round ed-lg p -5 bor der border-gray -200 shadow- sm hover:shadow- md transition-shad ow duration-200"
                             >
                               <div className="flex items-start gap-4">
-                                <div className="flex-shrink-0">
-                                  <div className="w-8 h-8 bg-indigo-100 text-indigo-700 rounded-full flex items-center justify-center text-sm font-semibold">
+                                <div className="flex-shrink-0 pt-2">
+                                  <div className="w-2 8 h-2 8 bg- indigo-100 text-primary rounded- full flex items-center justify-center text-xs font-semibold">
                                     {mappedAlphabets[ratioIndex]}
                                   </div>
                                 </div>
                                 <div className="flex-1">
-                                  <div className="flex items-center justify-between mb-2">
+                                  {/* <div className="flex items-center justify-between mb-2">
                                     <span className="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded">
                                       Ratio ID: {ratio.id}
                                     </span>
-                                  </div>
+                                  </div> */}
                                   <p className="text-[0.875rem] text-lexblue leading-relaxed text-justify">
                                     {ratio.text}
                                   </p>

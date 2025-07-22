@@ -37,7 +37,7 @@ const tabItems: TabItem[] = [
   {
     active: false,
     id: "issues",
-    label: "Issues for Determination & Ratio",
+    label: "Issues for Determination",
   },
 
   {

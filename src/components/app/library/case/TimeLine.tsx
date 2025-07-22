@@ -325,10 +325,10 @@ const LegalTime_lineSideCover = () => {
       {right_cover_menu && (
         <div
           onClick={() => removeQueryParam("right_cover_menu")}
-          className={` bg-red- 500 max-md:h idden backdrop-blur-sm bg-white/70 border border-white/30 rounded-xl shadow-lg fixed top-[0px] [20px] right-[25px] h-[100%] [90%] z-[99999] w-[99%] 
+          className={` bg-red- 500 max-md:h idden fixed top-[20px] right-[25px] h-[90%] z-[99999] w-[99%] 
                           `}
         >
-          <div className="bg-white border-l border-gray-400/15 ml-auto  min-w-[500px] w-[50vw] h-screen shadow-overlay top-0 right-0 fixed  animate-in slide-in-from-right ">
+          <div className="bg-white ml-auto  min-w-[500px] w-[50vw] h-screen shadow-overlay top-0 right-0 fixed  animate-in slide-in-from-right ">
             <div className="min-h-[64px] justify-between flex items-center p-3.5 bg-purple- 500 border-b border-b-black\50  ">
               <span
                 className={` text-xx font-bold font-gilda_Display mb-3 text-lexblue`}
@@ -468,102 +468,95 @@ const LegalTime_lineSideCover = () => {
                   {/* Timeline Line */}
                   <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-400 to-purple-400"></div>
 
-                  {filteredEvents
-                    ?.filter(
-                      (event) => event?.court !== null
-                      // this condition allows us to filter out events for court set as court
-                      // && event?.court !== "Court"
-                    )
-                    ?.map((event, index) => {
-                      const eventType = getEventType(event?.description);
-                      const isExpanded = expandedEvent === event?.id;
-                      const isImportant =
-                        eventType === "judgment" || eventType === "appeal";
+                  {filteredEvents?.map((event, index) => {
+                    const eventType = getEventType(event?.description);
+                    const isExpanded = expandedEvent === event?.id;
+                    const isImportant =
+                      eventType === "judgment" || eventType === "appeal";
 
-                      return (
+                    return (
+                      <div
+                        key={event.id}
+                        className="relative pl-16 pr-6 py-6 border-b border-slate-100 hover:bg-slate-50 transition-colors"
+                      >
+                        {/* Timeline Dot */}
                         <div
-                          key={event.id}
-                          className="relative pl-16 pr-6 py-6 border-b border-slate-100 hover:bg-slate-50 transition-colors"
-                        >
-                          {/* Timeline Dot */}
-                          <div
-                            className={`absolute left-6 w-4 h-4 rounded-full border-4 ${
-                              isImportant
-                                ? "bg-red-500 border-red-200"
-                                : "bg-blue-500 border-blue-200"
-                            } transform -translate-x-1/2`}
-                          ></div>
+                          className={`absolute left-6 w-4 h-4 rounded-full border-4 ${
+                            isImportant
+                              ? "bg-red-500 border-red-200"
+                              : "bg-blue-500 border-blue-200"
+                          } transform -translate-x-1/2`}
+                        ></div>
 
-                          {/* Event Content */}
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="flex-1">
-                              {/* Date and Court */}
-                              <div className="flex flex-wrap items-center gap-3 mb-3">
-                                <span className="inline-flex items-center gap-1 text-sm font-semibold text-slate-700 bg-slate-100 px-3 py-1 rounded-full">
-                                  <Calendar className="w-4 h-4" />
-                                  {formatDate(event?.date)}
+                        {/* Event Content */}
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1">
+                            {/* Date and Court */}
+                            <div className="flex flex-wrap items-center gap-3 mb-3">
+                              <span className="inline-flex items-center gap-1 text-sm font-semibold text-slate-700 bg-slate-100 px-3 py-1 rounded-full">
+                                <Calendar className="w-4 h-4" />
+                                {formatDate(event?.date)}
+                              </span>
+
+                              {event?.court && (
+                                <span className="text-sm text-slate-600 bg-slate-50 px-2 py-1 rounded">
+                                  {event?.court}
                                 </span>
+                              )}
 
-                                {event?.court !== "Court" && (
-                                  <span className="text-sm text-slate-600 bg-slate-50 px-2 py-1 rounded">
-                                    {event?.court}
-                                  </span>
-                                )}
-
-                                <span
-                                  className={`text-xs px-2 py-1 rounded-full border ${getEventTypeColor(
-                                    eventType
-                                  )}`}
-                                >
-                                  {eventType?.charAt(0)?.toUpperCase() +
-                                    eventType?.slice(1)}
-                                </span>
-                              </div>
-
-                              {/* Description */}
-                              <div className="prose prose-slate max-w-none">
-                                <p
-                                  className={`text-slate-700 leading-relaxed ${
-                                    isExpanded ||
-                                    event?.description?.length < 150
-                                      ? ""
-                                      : "line-clamp-2"
-                                  }`}
-                                >
-                                  {event?.description}
-                                </p>
-
-                                {event?.description?.length > 150 && (
-                                  <button
-                                    onClick={() =>
-                                      toggleEventExpansion(event?.id)
-                                    }
-                                    className="inline-flex items-center gap-1 mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors"
-                                  >
-                                    {isExpanded ? (
-                                      <>
-                                        Show Less{" "}
-                                        <ChevronUp className="w-4 h-4" />
-                                      </>
-                                    ) : (
-                                      <>
-                                        Show More{" "}
-                                        <ChevronDown className="w-4 h-4" />
-                                      </>
-                                    )}
-                                  </button>
-                                )}
-                              </div>
+                              <span
+                                className={`text-xs px-2 py-1 rounded-full border ${getEventTypeColor(
+                                  eventType
+                                )}`}
+                              >
+                                {eventType?.charAt(0)?.toUpperCase() +
+                                  eventType?.slice(1)}
+                              </span>
                             </div>
 
-                            {/* Event ID */}
-                            <div className="text-xs text-slate-400 font-mono bg-slate-100 px-2 py-1 rounded">
-                              #{event?.id}
+                            {/* Description */}
+                            <div className="prose prose-slate max-w-none">
+                              <p
+                                className={`text-slate-700 leading-relaxed ${
+                                  isExpanded || event?.description?.length < 150
+                                    ? ""
+                                    : "line-clamp-2"
+                                }`}
+                              >
+                                {event?.description}
+                              </p>
+
+                              {event?.description?.length > 150 && (
+                                <button
+                                  onClick={() =>
+                                    toggleEventExpansion(event?.id)
+                                  }
+                                  className="inline-flex items-center gap-1 mt-2 text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors"
+                                >
+                                  {isExpanded ? (
+                                    <>
+                                      Show Less{" "}
+                                      <ChevronUp className="w-4 h-4" />
+                                    </>
+                                  ) : (
+                                    <>
+                                      Show More{" "}
+                                      <ChevronDown className="w-4 h-4" />
+                                    </>
+                                  )}
+                                </button>
+                              )}
                             </div>
                           </div>
+
+                          {/* Event ID */}
+                          <div className="text-xs text-slate-400 font-mono bg-slate-100 px-2 py-1 rounded">
+                            #{event?.id}
+                          </div>
                         </div>
-                      );
-                    })}
+                      </div>
+                    );
+                  })}
                 </div>
 
                 {filteredEvents?.length === 0 && (
