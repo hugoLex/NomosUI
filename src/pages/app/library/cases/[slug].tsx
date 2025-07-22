@@ -205,7 +205,7 @@ const Page: NextPageWithLayout = () => {
 
       <div
         className={`  max-w-[1100px] mx-auto w-full px-16 mt-[30px] pt-[32px] ${
-          isH1Visible && "pb-[30px]"
+          isH1Visible && "pb- [30px]"
         } transition-all sticky top-[40px] z-[1] bg-white`}
       >
         <Tabs tabs={tabs} />

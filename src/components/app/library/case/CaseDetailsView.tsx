@@ -105,7 +105,7 @@ const CaseView = ({
   return (
     caseDocument && (
       <Container>
-        <div className={`pb-8  w-full md:min-w-[980px]`}>
+        <div className={`pb-8 w-full md:min-w-[980px]`}>
           {/* this is the side bar for displaying the case history   */}
           <LegalTime_lineSideCover />
           <div className="md:grid grid-cols-12 gap-8">
@@ -114,7 +114,7 @@ const CaseView = ({
                 <CaseDetailsSidebarView {...caseSidebarProps} />
               </div>
             </div>
-            <div className="col-span-8 lg:flex gap-3 text-dark-2">
+            <div className="col-span-8 pt-[30px]  lg:flex gap-3 text-dark-2">
               <div className="block text-wrap overflow-x-hidden">
                 <h3 className="hidden font-light text-[0.813rem]   mt-2 pr-2.5 py-1 leading-[1.25rem]">
                   CASE

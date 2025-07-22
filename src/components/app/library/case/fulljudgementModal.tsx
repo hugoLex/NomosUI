@@ -67,7 +67,7 @@ function FulljudgementModal({
         {/* Render highlighted quote */}
         <div
           id="highlighted-quote"
-          className="bg-yellow-200 p-4 border-l-4 border-yellow-500 mb-4"
+          className="bg-[#FFECBC] p- 4 border- l-4 border-yellow-500 mb -4"
         >
           <Markdown content={quoteToHighlight?.quote} />
         </div>

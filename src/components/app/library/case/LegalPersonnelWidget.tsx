@@ -13,8 +13,8 @@ const LegalPersonnelWidget = ({ data }: { data: PersonnalData }) => {
   const { judges, counsels } = data;
   const [activeTab, setActiveTab] = useState("judges");
   const judgesDispositionColour: { [key: string]: string } = {
-    concurred: "text-green-400",
-    dissented: "text-red-400",
+    concurred: "text-[#6CCC7B]",
+    dissented: "text-[#FEA03C]",
     "lead judge": "text-blue-500",
   };
   // console.log("counsels", counsels);

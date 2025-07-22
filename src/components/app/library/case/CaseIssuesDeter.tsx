@@ -101,7 +101,7 @@ export default function CaseIssuesForDeterminatonComponent({
     );
 
   return (
-    <div className=" max-w-[972px] mx-auto pt- [30px] pb-[70px] px- [64px] bg- gray-50 min-h-screen">
+    <div className=" max-w-[972px] mx-auto pt-[30px] pb-[70px] px- [64px] bg- gray-50 min-h-screen">
       {/* Header */}
       <div className="mb- 8">
         <div className="flex items-center gap-3 mb- 4">
@@ -152,7 +152,7 @@ export default function CaseIssuesForDeterminatonComponent({
       </div>
 
       {/* Issues List */}
-      <div className="">
+      <div className="space-y-6">
         {caseData ? (
           caseData?.map((issue, idx) => {
             const isExpanded = expandedIssues.has(idx);
@@ -166,12 +166,14 @@ export default function CaseIssuesForDeterminatonComponent({
               >
                 {/* Issue Header */}
                 <div
-                  title="Click to expand/collapse"
-                  className="sticky top-[75px] p-2 6 cursor-pointer  transition-colors duration-150"
+                  title={`There are ${issue.ratios?.length ?? 0} ratio${
+                    issue.ratios?.length > 1 ? "s" : ""
+                  } CLICK TO EXPAND/COLLAPSE   `}
+                  className="sticky top-[75px] pt-2 6 cursor-pointer  transition-colors duration-150"
                   onClick={() => toggleIssue(idx)}
                 >
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 mt-1 hidden">
+                  <div className="flex items-start gap -4">
+                    <div className="flex-shrink-0 mt-1 ">
                       {isExpanded ? (
                         <ChevronDown className="w-5 h-5 text-gray-500" />
                       ) : (
@@ -180,7 +182,7 @@ export default function CaseIssuesForDeterminatonComponent({
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-4 mb-3">
+                      <div className="flex items-start justify-between gap-4 mb -3">
                         {/* <div className="  flex items-center gap-3">
                           <span className="text-sm font-semibold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
                             Issue #{index + 1}
@@ -193,7 +195,7 @@ export default function CaseIssuesForDeterminatonComponent({
                             {getPriorityLabel(issue.priority)}
                           </span>
                         </div> */}
-                        <div className="ml-auto flex items-center gap-2 text-sm text-gray-500 flex-shrink-0">
+                        <div className="opacity-0 flex ml-auto  items-center gap-2 text-sm text-gray-500 flex-shrink-0">
                           <Hash className="w-4 h-4" />
                           <span>
                             {issue.ratios?.length ?? 0} ratio
@@ -261,7 +263,7 @@ export default function CaseIssuesForDeterminatonComponent({
                                         treatment_type: "",
                                       });
                                     }}
-                                    className="text-[0.875rem] text-lexblue leading-relaxed text-justify"
+                                    className="text-[0.875rem] text-lexblue [#FFECBC] leading-relaxed text-justify"
                                   >
                                     {ratio.text}
                                   </p>
