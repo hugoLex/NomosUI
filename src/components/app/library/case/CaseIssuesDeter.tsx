@@ -161,8 +161,8 @@ export default function CaseIssuesForDeterminatonComponent({
               <div
                 key={issue?.id}
                 className={` relative ${
-                  !isExpanded && "border-b hover:bg-primary/5"
-                } border-b-gray-200   `}
+                  !isExpanded && "border-b"
+                } border-b-gray-200 pb-5  `}
               >
                 {/* Issue Header */}
                 <div
@@ -207,7 +207,7 @@ export default function CaseIssuesForDeterminatonComponent({
                       <p
                         // href={"#"}
                         // style={{ zIndex: 10 - idx }}
-                        className=" sticky top-[130px] bg-white pt-5  h- [100px] text-powder_blue text-[1.1rem] font-semibold font-gilda_Display capitalize cursor-pointer hover:underline"
+                        className=" sticky top-[130px] bg-white pt-5  h- [100px] text-powder_blue text-[1.1rem] font-semibold font-gilda_Display capitalize cursor-pointer hove r:underline"
                       >
                         <span className="text-gray-500 inline-block mr-2">
                           {idx + 1}.
@@ -263,7 +263,7 @@ export default function CaseIssuesForDeterminatonComponent({
                                         treatment_type: "",
                                       });
                                     }}
-                                    className="text-[0.875rem] text-lexblue [#FFECBC] leading-relaxed text-justify"
+                                    className="text-[0.875rem] cursor-pointer text-lexblue [#FFECBC] leading-relaxed text-justify"
                                   >
                                     {ratio.text}
                                   </p>
