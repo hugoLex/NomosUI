@@ -59,7 +59,7 @@ function FulljudgementModal({
         {/* Render first part */}
         {parts[0] && (
           <Markdown
-            className="text-sm text-lexblue font-poppins m-0"
+            className="text-sm text-lexblue font-poppins [&>ol]:m-0 m-0"
             content={parts[0]}
           />
         )}
@@ -71,7 +71,7 @@ function FulljudgementModal({
           // className="bg-[#FFECBC] p- 4 border- l-4 border- yellow-500 mb -4"
         >
           <Markdown
-            className="bg-[#FFECBC] [&>p]:m-0"
+            className="text-sm bg-[#FFECBC] [&>p]:m-0 m-0"
             content={quoteToHighlight?.quote}
           />
         </div>
@@ -142,7 +142,7 @@ function FulljudgementModal({
               </button>
             </div>
 
-            <div className="flex-1  p-6 font-poppins text-base scrollbar overflow-y-auto scrollbar space-y-4 ">
+            <div className="flex-1  p-6 font-poppins text-base scrollbar overflow-y-auto scrollbar space-y -4 ">
               {!full_judgement ? (
                 <div className="flex items-center justify-center h-full">
                   <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>

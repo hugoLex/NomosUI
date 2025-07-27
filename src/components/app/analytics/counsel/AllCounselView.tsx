@@ -86,7 +86,7 @@ const AllCounselView = () => {
             <div className="flex-1 self-stretch grow">
               <div className="my-8">
                 <h1 className="text-xx text-lexblue font-gilda_Display capitalize font-bold my-2">
-                  Counsel
+                  Counsel index
                 </h1>
                 <h5 className="text-base text-[#9ea7b4] ">All counsel</h5>
                 {/* <div className="mt-8 grid max-lg:grid-rows-2 lg:grid-cols-2 lg:justify-center gap-5">
