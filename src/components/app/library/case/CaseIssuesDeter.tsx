@@ -1,6 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
-import { ChevronDown, ChevronRight, Scale, FileText, Hash } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronRight,
+  Scale,
+  FileText,
+  Hash,
+  ChevronUp,
+} from "lucide-react";
 import { number } from "yup";
 import { useParams } from "next/navigation";
 import { useCaseQuery } from "@app/store/services/caseSlice";
@@ -152,10 +159,14 @@ export default function CaseIssuesForDeterminatonComponent({
       </div>
 
       {/* Issues List */}
-      <div className="space-y-6">
+      <div className="space-y-0 6">
         {caseData ? (
           caseData?.map((issue, idx) => {
             const isExpanded = expandedIssues.has(idx);
+            const spiltIssues = issue?.issue.split(
+              /(?<=[A-Z] - )(?=[A-Z]*[a-z])/
+            );
+            // console.log(result);
 
             return (
               <div
@@ -169,21 +180,21 @@ export default function CaseIssuesForDeterminatonComponent({
                   title={`There are ${issue.ratios?.length ?? 0} ratio${
                     issue.ratios?.length > 1 ? "s" : ""
                   } CLICK TO EXPAND/COLLAPSE   `}
-                  className="sticky top-[75px] pt-2 6 cursor-pointer  transition-colors duration-150"
+                  className="sticky top-[95px] pt-2 6 cursor-pointer  transition-colors duration-150"
                   onClick={() => toggleIssue(idx)}
                 >
                   <div className="flex items-start gap -4">
-                    <div className="flex-shrink-0 mt-1 ">
+                    {/* <div className="flex-shrink-0 mt-1 ">
                       {isExpanded ? (
-                        <ChevronDown className="w-5 h-5 text-gray-500" />
+                        <ChevronUp className="w-5 h-5 text-gray-500" />
                       ) : (
-                        <ChevronRight className="w-5 h-5 text-gray-500" />
+                        <ChevronDown className="w-5 h-5 text-gray-500" />
                       )}
-                    </div>
+                    </div> */}
 
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-4 mb -3">
-                        {/* <div className="  flex items-center gap-3">
+                    <div className="flex-1 min-w-0 flex mt- 6 justify-between">
+                      {/* <div className="flex items-start justify-between gap-4 mb -3">
+                        <div className="  flex items-center gap-3">
                           <span className="text-sm font-semibold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full">
                             Issue #{index + 1}
                           </span>
@@ -194,7 +205,7 @@ export default function CaseIssuesForDeterminatonComponent({
                           >
                             {getPriorityLabel(issue.priority)}
                           </span>
-                        </div> */}
+                        </div>
                         <div className="opacity-0 flex ml-auto  items-center gap-2 text-sm text-gray-500 flex-shrink-0">
                           <Hash className="w-4 h-4" />
                           <span>
@@ -202,25 +213,49 @@ export default function CaseIssuesForDeterminatonComponent({
                             {issue.ratios?.length > 1 ? "s" : ""}
                           </span>
                         </div>
-                      </div>
+                      </div> */}
 
                       <p
                         // href={"#"}
                         // style={{ zIndex: 10 - idx }}
-                        className=" sticky top-[130px] bg-white pt-5  h- [100px] text-powder_blue text-[1.1rem] font-semibold font-gilda_Display capitalize cursor-pointer hove r:underline"
+                        className="  bg-white pt-5  h- [100px] text-powder_blue text-[1.1rem] font-semibold font-gilda_Display capitalize cursor-pointer hove r:underline"
                       >
                         <span className="text-gray-500 inline-block mr-2">
                           {idx + 1}.
                         </span>{" "}
-                        {issue.issue}
+                        {/* {issue.issue} */}
+                        {
+                          spiltIssues[0]
+                          // ?.replace(/[\s-]+$/, "")
+                        }{" "}
+                        <br />
+                        <span className="inline-block mt-1">
+                          {spiltIssues?.length == 2 &&
+                            spiltIssues[1]?.replace(/[\s-]+$/, "")}{" "}
+                        </span>
                       </p>
+                      <div className="flex-shrink-0 mt- 1 pt-5">
+                        <ChevronDown
+                          size={30}
+                          className={` text-gray-500 transition-all duration-700 ${
+                            isExpanded && "rotate-180 "
+                          }`}
+                        />
+                        {/* {isExpanded ? (
+                          <ChevronUp className="w-5 h-5 text-gray-500" />
+                        ) : (
+                          <ChevronDown className="w-5 h-5 text-gray-500" />
+                        )} */}
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Ratios Section */}
                 {isExpanded && (
-                  <div className="border-b border- gray-100 bg- gray-50">
+                  <div
+                    className={` transition-all duration-700 border-b border- gray-100 bg- gray-50`}
+                  >
                     <div className="p-6">
                       {/* <div className="flex items-center gap-2 mb-4">
                         <Scale className="w-5 h-5 text-indigo-600" />

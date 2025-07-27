@@ -59,23 +59,27 @@ function FulljudgementModal({
         {/* Render first part */}
         {parts[0] && (
           <Markdown
-            className="text-sm text-lexblue font-poppins"
+            className="text-sm text-lexblue font-poppins m-0"
             content={parts[0]}
           />
         )}
 
         {/* Render highlighted quote */}
         <div
+          className="m-0"
           id="highlighted-quote"
-          className="bg-[#FFECBC] p- 4 border- l-4 border-yellow-500 mb -4"
+          // className="bg-[#FFECBC] p- 4 border- l-4 border- yellow-500 mb -4"
         >
-          <Markdown content={quoteToHighlight?.quote} />
+          <Markdown
+            className="bg-[#FFECBC] [&>p]:m-0"
+            content={quoteToHighlight?.quote}
+          />
         </div>
 
         {/* Render remaining content */}
         {parts[1] && (
           <Markdown
-            className="text-sm text-lexblue font-poppins"
+            className="text-sm text-lexblue font-poppins m-0"
             content={parts[1]}
           />
         )}

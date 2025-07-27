@@ -41,6 +41,7 @@ const CaseView = ({
   const { activeSection, sectionRefs, scrollToSection } = useScrollspy({
     sections,
   });
+  // console.log("casedetails data", caseDocument.cau);
 
   const caseSidebarProps = {
     activeSection,
@@ -146,10 +147,29 @@ const CaseView = ({
                 </div>
 
                 <div>
-                  <h4 className="font-normal text-base mb-2">
-                    Subject matter:
+                  <h4 className="uppercase block font-poppins text-gray-500 text-sm font-medium mb-1">
+                    Causes of action :
                   </h4>
-                  {caseDocument.subject_matter &&
+                  {caseDocument?.causes_of_action &&
+                    caseDocument.causes_of_action.length > 0 && (
+                      <div className="flex items-center gap-2 flex-wrap mb-4">
+                        {caseDocument?.causes_of_action?.map(
+                          (cause_of_action) => (
+                            <span
+                              className={`text-[#008E00] bg-[#008E00]/10 px-3 py-1 rounded  text-center text-xs font-normal `}
+                              key={cause_of_action}
+                              title="Cause of action"
+                            >
+                              {cause_of_action}
+                            </span>
+                          )
+                        )}
+                      </div>
+                    )}
+                  {/* <h4 className="font-normal text-base mb-2">
+                    Subject matter:
+                  </h4> */}
+                  {/* {caseDocument.subject_matter &&
                     caseDocument.subject_matter.length > 0 && (
                       <div className="flex items-center gap-2 flex-wrap mb-4">
                         {caseDocument?.subject_matter?.map((subjectMatter) => (
@@ -162,7 +182,7 @@ const CaseView = ({
                           </span>
                         ))}
                       </div>
-                    )}
+                    )} */}
                 </div>
 
                 {caseDocument.case_summary && (
@@ -228,7 +248,7 @@ const CaseView = ({
                           {!open && (
                             <div className="w-full absolute bottom-0 h-[52px] bg-[linear-gradient(transparent_0px,rgba(255,255,255,0.9)_52px,#fff_80px)]"></div>
                           )}
-                          <button
+                          {/* <button
                             onClick={() => {
                               setopen(!open);
                               window?.scrollTo({ top: 0, behavior: "smooth" });
@@ -238,7 +258,7 @@ const CaseView = ({
                             }`}
                           >
                             {open ? "Show less" : "View more"}
-                          </button>
+                          </button> */}
                         </div>
                       }
                       isCollapsible={true}

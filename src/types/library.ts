@@ -38,6 +38,7 @@ interface IssueWithRatio {
 
 type IssuesWithRatios = IssueWithRatio[];
 export type TCaseData = {
+  causes_of_action: string[] | null;
   timeline: Timeline;
   case_title: string | null;
   document_id: string | null;

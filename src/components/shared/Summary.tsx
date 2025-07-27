@@ -106,20 +106,30 @@ export const SummaryComponent = ({
     <div className="mt-[30px] bg-[#eaf0f2]/30 rounded-lg px-4 py-3 relative">
       <div className="flex justify-between">
         <h4 className="text-sm font-medium">Summary</h4>
-        {isCollapsible && (
+        {isCollapsible ? (
           <>
             {isCollapsed ? (
-              <RiCloseLine
+              // <RiCloseLine
+              //   onClick={() => {
+              //     toogler ? toogler() : close("showCaseSummary", undefined);
+              //   }}
+              //   className="text-pink-600 ml-auto cursor-pointer"
+              //   size={19}
+              // />
+              <button
+                title=""
+                className="text-primary ml-auto cursor-pointer text-sm font-normal"
                 onClick={() => {
                   toogler ? toogler() : close("showCaseSummary", undefined);
                 }}
-                className="text-pink-600 ml-auto cursor-pointer"
-                size={19}
-              />
+                // size={19}
+              >
+                Collapse
+              </button>
             ) : (
               <button
                 title=""
-                className="text-primary ml-auto cursor-pointer text-sm font-semibold"
+                className="text-primary ml-auto cursor-pointer text-sm font-normal"
                 onClick={() => {
                   // check this logic LiaTerminalSolid, the arguement passed to it
                   toogler ? toogler() : close("showCaseSummary", "true");
@@ -130,6 +140,14 @@ export const SummaryComponent = ({
               </button>
             )}
           </>
+        ) : (
+          <RiCloseLine
+            onClick={() => {
+              toogler ? toogler() : close("showCaseSummary", undefined);
+            }}
+            className="text-pink-600 ml-auto cursor-pointer"
+            size={19}
+          />
         )}
       </div>
       <hr className="mt-2 mb-5" />
@@ -222,7 +240,7 @@ export const PreviewCard = ({ content }: { content?: string }) => {
   // };
 
   return content ? (
-    <div className="bg-transparent py-4 shadow-sm">
+    <div className="bg-transparent pb-4 shadow-sm">
       <div>
         <div
           className={`relative text-sm text-[#4C4D50] font-rubik leading-6

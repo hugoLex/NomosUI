@@ -148,23 +148,24 @@ const CaseDetailsSidebarView = (props: {
 
                 <ul className="space-y-2">
                   {actions.map(([btn, param], btx) => (
-                    <li
+                    <Link
+                      href={`/library/cases/${caseDocument?.document_id}?title=${caseDocument?.case_title}&${param}`}
                       // href={`/library/cases?caseId=${"caseDocument?.document_id"}&action=${btn}`}
                       key={btx}
                       className="bg-[#EBF2FF] text-sm text-primary py-2 px-5 rounded flex items-center justify-between"
                     >
                       {btn}{" "}
-                      <Link
-                        href={`/library/cases/${caseDocument?.document_id}?title=${caseDocument?.case_title}&${param}`}
+                      <span
+                      // href={`/library/cases/${caseDocument?.document_id}?title=${caseDocument?.case_title}&${param}`}
                       >
                         <LuExternalLink className="w-4 h-4 text-primary" />
-                      </Link>
-                    </li>
+                      </span>
+                    </Link>
                   ))}
                 </ul>
               </div>
               {/* Bench & Bar */}
-              <div className="space-y-2">
+              <div className="space-y-2 pt-2">
                 <h5 className="text-base font-normal text-inherit">
                   Bench & Bar
                 </h5>
