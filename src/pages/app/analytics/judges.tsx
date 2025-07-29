@@ -9,7 +9,7 @@ const Page: NextPageWithLayout = () => {
   const { searchParams } = useQueryHandler();
 
   const judgeId = searchParams.get("judgeId");
-  console.log(judgeId);
+  // console.log(judgeId);
   return (
     <Fragment>
       {!judgeId && <AllJudgesView />}

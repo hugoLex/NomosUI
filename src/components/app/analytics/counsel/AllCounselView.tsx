@@ -21,25 +21,183 @@ import { CounselResponseT } from "@app/types/analytics";
 import { AppLayoutContext } from "@app/components/layout";
 import { useRouter } from "next/router";
 import { Head, Loader } from "@app/components/ui";
+import {
+  SearchBox,
+  SearchBoxRef,
+} from "@app/components/shared/SearchBoxLegalAnalysis";
+import { skipToken } from "@reduxjs/toolkit/query";
+import useQueryToggler from "@app/hooks/useQueryHandler";
+
+type CounselFilterProps = {
+  onFilter: (filters: CounselFilterState) => void;
+  filters: CounselFilterState;
+  setFilters: React.Dispatch<React.SetStateAction<CounselFilterState>>;
+  setOpenFilter: React.Dispatch<React.SetStateAction<boolean>>;
+  queryString: string;
+};
+
+type CounselFilterState = {
+  query?: string;
+  case_title?: string;
+  law_firm?: string;
+  specialization?: string;
+  page?: number;
+  limit?: number;
+};
+
+const CounselFilter: React.FC<CounselFilterProps> = ({
+  onFilter,
+  filters,
+  setFilters,
+  setOpenFilter,
+  queryString,
+}) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({
+      ...prev,
+      [name]: name === "page" || name === "limit" ? Number(value) : value,
+    }));
+  };
+  const { UpdateUrlParams, router } = useQueryToggler();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onFilter(filters);
+    router.push(`/analytics/counsels?${queryString}`);
+    // UpdateUrlParams("", queryString);
+    setOpenFilter((openFilter) => !openFilter);
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-white shadow rounded-xl"
+    >
+      <input
+        type="text"
+        name="query"
+        value={filters.query}
+        onChange={handleChange}
+        placeholder="🔍 e.g. maritime law expert"
+        className="border rounded px-3 py-2 w-full"
+      />
+
+      <input
+        type="text"
+        name="case_title"
+        value={filters.case_title}
+        onChange={handleChange}
+        placeholder="Filter by case title"
+        className="border rounded px-3 py-2 w-full"
+      />
+
+      <input
+        type="text"
+        name="law_firm"
+        value={filters.law_firm}
+        onChange={handleChange}
+        placeholder="Filter by law firm"
+        className="border rounded px-3 py-2 w-full"
+      />
+
+      <input
+        type="text"
+        name="specialization"
+        value={filters.specialization}
+        onChange={handleChange}
+        placeholder="Filter by specialization"
+        className="border rounded px-3 py-2 w-full"
+      />
+
+      <div className="flex items-center gap-2">
+        <label htmlFor="page" className="text-sm">
+          Page
+        </label>
+        <input
+          type="number"
+          name="page"
+          // min={1}
+          value={filters.page}
+          onChange={handleChange}
+          className="border rounded px-2 py-1 w-20"
+        />
+      </div>
+
+      <div className="flex items-center gap-2">
+        <label htmlFor="limit" className="text-sm">
+          Limit
+        </label>
+        <input
+          type="number"
+          name="limit"
+          min={1}
+          max={100}
+          value={filters.limit}
+          onChange={handleChange}
+          className="border rounded px-2 py-1 w-20"
+        />
+      </div>
+
+      <button
+        type="submit"
+        className="md:col-span-2 bg-lexblue text-white px-4 py-2 rounded hover:bg-lexblue/60 transition"
+      >
+        Apply Filters
+      </button>
+    </form>
+  );
+};
 
 const AllCounselView = () => {
   const router = useRouter();
   const { setReferrer } = useContext(AppLayoutContext);
-
+  const { UpdateUrlParams, searchParams } = useQueryToggler();
   const [currentPage, setCurrentPage] = useState(1);
+  const [openFilter, setOpenFilter] = useState(false);
   const [allData, setAllData] = useState<[] | CounselResponseT["counsels"]>([]); // Store accumulated data
-  const { isError, isFetching, isLoading, data } = useGetAllCounselQuery({
-    page: currentPage,
+  const [filters, setFilters] = useState<CounselFilterState>({
+    query: "",
+    case_title: "",
+    law_firm: "",
+    specialization: "",
+    page: 1,
+    limit: 10,
   });
-  const searchRef = useRef<HTMLTextAreaElement | null>(null);
+  const newQuery = searchParams.get("name");
+  const newspecialization = searchParams.get("specialization");
+  const compiledQuery = `query=${filters.query}&case_title=${filters.case_title}&law_firm=${filters.law_firm}&specialization=${filters.specialization}&page=${filters.page}&limit=${filters.limit}`;
 
+  //  if the filter is open don't make a request, if closed or not display trigger the request
+  const { isError, isFetching, isLoading, data } = useGetAllCounselQuery(
+    !openFilter
+      ? {
+          params: compiledQuery,
+        }
+      : skipToken
+  );
+
+  const counselSearchRef = useRef<SearchBoxRef | null>(null);
+  useEffect(() => {
+    if (newQuery) {
+      setFilters((prev) => ({ ...prev, query: newQuery }));
+    }
+    if (newspecialization) {
+      setFilters((prev) => ({ ...prev, specialization: newspecialization }));
+    }
+  }, [newQuery, newspecialization]);
   // Update the accumulated data when new data is fetched
   useEffect(() => {
     setReferrer(router.asPath);
 
+    // if (data) {
+    //   setAllData((prev) => Array.from(new Set([...prev, ...data.counsels]))); // Append new data. This is to show a long list of all requests made.
+    // }
     if (data) {
-      setAllData((prev) => Array.from(new Set([...prev, ...data.counsels]))); // Append new data
+      setAllData([...data.counsels]);
     }
+    console.log("counsels fetched from all counsels", data);
   }, [data, router.asPath, setReferrer]);
 
   const loadMore = () => {
@@ -82,15 +240,33 @@ const AllCounselView = () => {
       {allData && (
         <Container className="">
           <div className="flex py-6 w-full md:max-w-[772px] mx-auto">
-            {/* <div className="flex py-6 w-full md:min-w-[980px]"> */}
             <div className="flex-1 self-stretch grow">
               <div className="my-8">
-                <h1 className="text-xx text-lexblue font-gilda_Display capitalize font-bold my-2">
+                <h1 className="text-xx text-lexblue font-gilda_Display font-bold my-2">
                   Counsel index
                 </h1>
                 <h5 className="text-base text-[#9ea7b4] ">All counsel</h5>
-                {/* <div className="mt-8 grid max-lg:grid-rows-2 lg:grid-cols-2 lg:justify-center gap-5">
-                  <div className="flex gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] ">
+                <SearchBox
+                  practitionerType={"counsel"}
+                  isFetchingCounsels={isFetching}
+                  innerRef={counselSearchRef}
+                />
+                {openFilter && (
+                  <CounselFilter
+                    onFilter={() => {}}
+                    filters={filters}
+                    setFilters={setFilters}
+                    setOpenFilter={setOpenFilter}
+                    queryString={compiledQuery}
+                  />
+                )}
+                <div className="mt-8 grid max-lg:grid-rows-2 lg:grid-cols-2 lg:justify-center gap-5">
+                  <div
+                    onClick={() => {
+                      setOpenFilter(!openFilter);
+                    }}
+                    className="cursor-pointer flex gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] "
+                  >
                     <svg
                       width="16"
                       height="11"
@@ -104,19 +280,35 @@ const AllCounselView = () => {
                       />
                     </svg>
 
-                    <span>Thread</span>
+                    <span>Filter</span>
                     <HiMiniPlus className="ml-auto" />
                   </div>
-                  <div className="flex gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] ">
+                  <div
+                    onClick={() => {
+                      setFilters({
+                        query: "",
+                        case_title: "",
+                        law_firm: "",
+                        specialization: "",
+                        page: 1,
+                        limit: 10,
+                      });
+                      setOpenFilter((openFilter) => !openFilter);
+                    }}
+                    className="flex cursor-pointer gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] "
+                  >
                     <GiSplash />
-                    <span>Page</span>
+                    <span>Reset</span>
                     <HiMiniPlus className="ml-auto" />
                   </div>
-                </div> */}
+                </div>
               </div>
               <div className="mb-8 space-y-4">
                 {allData?.map((counsel, index) => (
-                  <div key={counsel.counsel_id} className="flex gap-3">
+                  <div
+                    key={`${counsel.counsel_id}-${index}-key`}
+                    className="flex gap-3"
+                  >
                     <span className="text-gray-500 mt-3 ">{index + 1}.</span>
                     <div className="border-b border-solid border-gray-200 space-y-3 pb-3 w-full">
                       <div className=" flex items-center gap-[8px] ">

@@ -1,4 +1,11 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, {
+  Fragment,
+  Ref,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { GiSplash } from "react-icons/gi";
@@ -17,29 +24,67 @@ import { HiMiniPlus } from "react-icons/hi2";
 import { AppLayoutContext } from "@app/components/layout";
 import { useRouter } from "next/router";
 import { Head } from "@app/components/ui";
-
+import { SearchBoxRef } from "@app/components/shared/SearchBoxLegalAnalysis";
+import { JudgeIndexSearchBox } from "./searchbox";
+import useDebounce from "@app/hooks/useDebounce";
+import { useSearchParams } from "next/navigation";
+import { skipToken } from "@reduxjs/toolkit/query";
+import useQueryToggler from "@app/hooks/useQueryHandler";
+type JudgeFilterState = {
+  query?: string;
+  case_title?: string;
+  law_firm?: string;
+  specialization?: string;
+  page?: number;
+  limit?: number;
+};
 const AllJudgesView = () => {
+  const ref = useRef<SearchBoxRef | null>(null);
+  const { UpdateUrlParams, searchParams } = useQueryToggler();
+  // console.log("state of ref", ref);
   const router = useRouter();
+  const newQuery = useSearchParams().get("query");
   const { setReferrer } = useContext(AppLayoutContext);
   const [currentPage, setCurrentPage] = useState(1);
+  const [inputText, setInputText] = useState<string | null>(null);
   const [allData, setAllData] = useState<[] | AllJudgesListResponseT["judges"]>(
     []
   ); // Store accumulated data
-  const { isError, isFetching, isLoading, data } = useGetAllJudgeQuery({
-    page: currentPage,
+  const searchTerm = useDebounce(inputText, 500); // Reduced debounce time for better UX
+
+  const [filters, setFilters] = useState<JudgeFilterState>({
+    query: "",
+    case_title: "",
+    law_firm: "",
+    specialization: "",
+    page: 1,
+    limit: 10,
   });
+  const { isError, isFetching, isLoading, data } = useGetAllJudgeQuery(
+    searchTerm
+      ? {
+          params: `query=${searchTerm}`,
+        }
+      : skipToken
+  );
 
   // Update the accumulated data when new data is fetched
   useEffect(() => {
     setReferrer(router.asPath);
     if (data) {
-      setAllData((prev) => Array.from(new Set([...prev, ...data.judges]))); // Append new data
+      setAllData((prev) => [...data.judges]); // Append new data
+      // setAllData((prev) => Array.from(new Set([...prev, ...data.judges]))); // Append new data
     }
   }, [data, router.asPath, setReferrer]);
   const loadMore = () => {
     setCurrentPage((prevPage) => prevPage + 1); // Increment page number
   };
-
+  useEffect(() => {
+    setInputText(newQuery);
+    if (!newQuery) {
+      setInputText("");
+    }
+  }, [newQuery]);
   if (isLoading) {
     // Early return for loading state
     return (
@@ -75,10 +120,14 @@ const AllJudgesView = () => {
             {/* <div className="flex  py-4 w-full md:min-w-[980px]"> */}
             <div className="flex-1 self-stretch grow">
               <div className="my-8">
-                <h1 className="text-xx text-lexblue font-gilda_Display capitalize font-bold my-2">
+                <h1 className="text-xx text-lexblue font-gilda_Display  font-bold my-2">
                   Judge index
                 </h1>
                 <h5 className="text-base text-[#9ea7b4] ">All justices</h5>
+                <JudgeIndexSearchBox
+                  practitionerType={"judge"}
+                  innerRef={ref}
+                />
                 <div className="mt-8 grid max-lg:grid-rows-2 lg:grid-cols-2 lg:justify-center gap-5">
                   <div className="flex gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] ">
                     <svg
@@ -97,13 +146,20 @@ const AllJudgesView = () => {
                     <span>Thread</span>
                     <HiMiniPlus className="ml-auto" />
                   </div>
-                  <div className="flex gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] ">
+                  <div
+                    onClick={() => {
+                      // setInputText("a");
+                      UpdateUrlParams("query", "a");
+                    }}
+                    className="cursor-pointer flex gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] "
+                  >
                     <GiSplash />
-                    <span>Page</span>
+                    <span>Reset</span>
                     <HiMiniPlus className="ml-auto" />
                   </div>
                 </div>
               </div>
+
               <div className=" mb-8 space-y-4">
                 {allData?.map((judge, idx) => (
                   <div

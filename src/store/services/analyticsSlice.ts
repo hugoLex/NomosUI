@@ -33,9 +33,13 @@ export const benchAPISlice = injectEndpoints({
   endpoints: (builder) => ({
     getAllJudge: builder.query<
       AllJudgesListResponseT,
-      Omit<RequestParams, "judge_id">
+      { params: string }
     >({
-      query: ({ page }) => `/judges/list?page=${page}`,
+      query: ({ params }) => {
+
+        console.log("The query param from judge's endpoint", params)
+        return `/judges/search?${params}`
+      },
       providesTags: ["Analytics", "Judge"],
     }),
 
@@ -46,9 +50,14 @@ export const benchAPISlice = injectEndpoints({
 
     getAllCounsel: builder.query<
       CounselResponseT,
-      Omit<GetCounselAppearancesRequest, "counsel_id">
+      { params: string }
+    // Omit<GetCounselAppearancesRequest, "counsel_id">
     >({
-      query: ({ page }) => `/counsels/list?page=${page}`,
+      query: ({ params }) => {
+
+        console.log("The query params", params)
+        return `/counsels/list?${params}`
+      },
       providesTags: ["Analytics", "Counsel"],
     }),
 
