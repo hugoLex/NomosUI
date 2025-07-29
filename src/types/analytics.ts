@@ -136,11 +136,14 @@ export interface JudgeProfileResponseT {
 interface JudgeInfoT {
   judge_id: number;
   name: string;
+  original_name: string;
   profile: string;
   court: string;
   division: string;
+  matching_case_count: string;
   jurisdiction: string;
   total_cases: number;
+  match_context: { field: string, highlight: string }
 }
 
 export interface AllJudgesListResponseT {

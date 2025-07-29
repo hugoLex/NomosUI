@@ -292,12 +292,12 @@ export const JudgeIndexSearchBox = forwardRef<SearchBoxRef | null, any>(
             form="searchBox"
             className={`ml-auto flex justify-center items-center w-6 h-6 rounded-full ${
               inputText
-                ? inputText.length <= 3
+                ? inputText.length <= 2
                   ? "bg-neutral-200"
                   : "bg-primary"
                 : "bg-neutral-200"
             }`}
-            disabled={inputText ? (inputText.length <= 3 ? true : false) : true}
+            disabled={inputText ? (inputText.length <= 2 ? true : false) : true}
           >
             <RigthArrowIcon />
           </button>
