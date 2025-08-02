@@ -89,11 +89,13 @@ export const SummaryComponent = ({
   isCollapsible = false,
   toogler,
   isCollapsed,
+  header,
 }: {
   summary?: string | React.ReactNode;
   isCollapsible: boolean;
   toogler?: () => void;
   isCollapsed?: boolean;
+  header?: string;
 }) => {
   const { close, searchParams } = useQueryHandler();
   // const [showCaseSummary, setShowCaseSummary] = useState(index);
@@ -105,7 +107,7 @@ export const SummaryComponent = ({
   return (
     <div className="mt-[30px] bg-[#eaf0f2]/30 rounded-lg px-4 py-3 relative">
       <div className="flex justify-between">
-        <h4 className="text-sm font-medium">Summary</h4>
+        <h4 className="text-sm font-medium">{header ? header : "Summary"}</h4>
         {isCollapsible ? (
           <>
             {isCollapsed ? (

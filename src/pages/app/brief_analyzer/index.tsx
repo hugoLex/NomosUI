@@ -315,7 +315,7 @@ const Page: NextPageWithLayout = () => {
         return (
           <Fragment key={key}>
             <h4 className="text-sm text-powder_blue">
-              <span className=" capitalize">{key}</span>'s Prayers:
+              <span className=" capitalize">{key}</span>&apos;s Prayers:
             </h4>
 
             {data?.legal_brief.prayers[key].map((value, idx) => (

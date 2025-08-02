@@ -124,12 +124,89 @@ interface JudgeJudicialMetricsT {
   lead_judgment_rate: number;
 }
 
+// export interface JudgeProfileResponseT {
+//   user_id: string;
+//   judge_info: JudgeInfoT;
+//   judicial_metrics: JudgeJudicialMetricsT;
+//   page: number;
+// }
+
+
+
+
+
+
+
+
 export interface JudgeProfileResponseT {
   user_id: string;
-  judge_info: JudgeInfoT;
-  judicial_metrics: JudgeJudicialMetricsT;
+  judge_info: {
+    judge_id: number;
+    name: string;
+    profile: null | string;
+    title: string;
+    cases: {
+      document_id: string;
+      case_title: string;
+      year: number;
+      court: string;
+      suit_number: string;
+      judge_stance: string;
+      is_lead_judge: boolean;
+      holding_and_reasoning: string;
+      area_of_law: string[];
+      subject_matters: string[];
+      // please review the presence of this field or otherwise in the data returned
+      // case_summary: string
+      // holding_and_reasoning: string
+    }[];
+    appointments: unknown[];
+    statistics: {
+      total_cases: number;
+      total_concurred: number;
+      total_dissented: number;
+      total_lead_judgments: number;
+      total_trial_judge: number;
+      total_amicus: number;
+      total_appellate: number;
+    };
+  };
+  judicial_metrics: {
+    concurrence_rate: number;
+    dissent_rate: number;
+    role_distribution: {
+      lead_judge: number;
+      trial_judge: number;
+      amicus: number;
+      appellate: number;
+      concurred: number;
+      dissented: number;
+    };
+  };
+  domain_expertise: {
+    domain_groups: {
+      area_of_law: { name: string; case_count: number }[];
+      legal_principles: { name: string; case_count: number }[];
+      subject_matter: { name: string; case_count: number }[];
+    };
+  };
+  temporal_patterns: {
+    yearly_activity: { year: number; case_count: number; lead_count: number }[];
+    trend_direction: string;
+  };
   page: number;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 // All judges list
 

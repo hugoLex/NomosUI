@@ -11,21 +11,26 @@ import {
   LoadMoreBtn,
   Navbar,
   NavbarTitle,
+  SummaryComponent,
 } from "@app/components/shared/";
 import { AppLayoutContext } from "@app/components/layout";
 import { useGetJudgeAnalyticsQuery } from "@app/store/services/analyticsSlice";
 import JudgeCounselHeadings from "../JudgeCounselHeadings";
 import { JudgeProfileResponseT } from "@app/types/analytics";
+import JudicialMetricsDashboard from "./Judgestats";
 
 type stanceT = "Concurred" | "Dissented";
 
 const JudgeDetailsView = () => {
   const { referrer } = useContext(AppLayoutContext);
-  const { searchParams, close } = useQueryHandler();
+  const { searchParams, close, removeQueryParam, UpdateUrlParams } =
+    useQueryHandler();
   const judgeId = searchParams.get("judgeId");
   const profile = searchParams.get("profile");
   const judgeName = searchParams.get("judge");
+  const right_cover_menu = searchParams.get("judicial_stats");
   const [currentPage, setCurrentPage] = useState(1);
+  const [isOpen, setOpen] = useState(new Set([0]));
   const [allData, setAllData] = useState<
     [] | JudgeProfileResponseT["judge_info"][]
   >([]); // Store accumulated data
@@ -39,6 +44,16 @@ const JudgeDetailsView = () => {
       : skipToken
     //     // judge_id: parseInt(judgeId as unknown as string),
   );
+  // console.log("Data from judges", data);
+  // console.log(
+  //   "Data from judges metrics",
+  //   JSON.stringify(data && data.judicial_metrics)
+  // );
+  // console.log(
+  //   "Data from judges statistics",
+  //   JSON.stringify(data?.judge_info?.statistics)
+  // );
+  console.log("Data from judges", data);
 
   // Update the accumulated data when new data is fetched
   useEffect(() => {
@@ -55,7 +70,11 @@ const JudgeDetailsView = () => {
       threshold: 0.8,
     },
   });
-
+  const judgeStance: { [key: string]: string } = {
+    dissented: "bg-[#D71E30]/70 ",
+    Concurred: "bg-[#2fa826]/70",
+    LEAD_OPINION: "bg-[#0e3165]/70",
+  };
   const profileName = judgeName || data?.judge_info.name;
 
   const loadMore = () => {
@@ -84,6 +103,54 @@ const JudgeDetailsView = () => {
 
       {!isFetching && !isError && data?.judge_info && (
         <Container>
+          {right_cover_menu && (
+            <div
+              onClick={() => removeQueryParam("judicial_stats")}
+              className={` bg-red- 500 max-md:h idden backdrop-blur-sm bg-white/70 border border-white/30 rounded-xl shadow-lg fixed top-[0px] [20px] right-[25px] h-[100%] [90%] z-[99999] w-[99%]
+                                `}
+            >
+              <div className="bg-white border-l border-gray-400/15 ml-auto  min-w-[500px] w-[63vw] h-screen shadow-overlay top-0 right-[-30px] fixed  animate-in slide-in-from-right ">
+                <div className="min-h-[64px] justify-between flex items-center p-3.5 bg-purple- 500 border-b border-b-black\50  ">
+                  <span
+                    className={` text-lexblue text-xx font-gilda_Display capitalize font-bold`}
+                  >
+                    Judicial Statistics
+                  </span>
+
+                  <svg
+                    onClick={() => removeQueryParam("judicial_stats")}
+                    className="ml-auto cursor-pointer"
+                    width="16"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <line
+                      x1="4"
+                      y1="4"
+                      x2="20"
+                      y2="20"
+                      stroke="black"
+                      strokeWidth="2"
+                    />
+                    <line
+                      x1="20"
+                      y1="4"
+                      x2="4"
+                      y2="20"
+                      stroke="black"
+                      strokeWidth="2"
+                    />
+                  </svg>
+                </div>
+                <JudicialMetricsDashboard
+                  judicialMetrics={data?.judicial_metrics}
+                  statistics={data?.judge_info?.statistics}
+                />
+              </div>
+            </div>
+          )}
           <div className="py-6">
             <div className="lg:flex gap-[2rem]  relative">
               <div className="basis-[30.7%]">
@@ -114,14 +181,20 @@ const JudgeDetailsView = () => {
                     JSC
                   </span>
 
-                  <div className="flex gap -5 items-center justify-center mt-[20px] divide-x-2 border-t border-b border-gray-200 p-[16.4px]">
-                    <div className="basis-1/2 text-[#2fa826]">
+                  <div className="flex gap-3 items-center justify-center mt-[20px] divide-x-2 border-t border-b border-gray-200 p-[16.4px]">
+                    <div className="basis-1/2 text-lexblue">
+                      <h6 className="block text-center ">Lead</h6>
+                      <h6 className="text-center text-[.875rem]">
+                        {data.judge_info.statistics.total_lead_judgments}
+                      </h6>
+                    </div>
+                    <div className="basis-1/2 text-[#2fa826] pl-3">
                       <h6 className="block text-center ">Concurred</h6>
                       <h6 className="text-center text-[.875rem]">
                         {data.judge_info.statistics.total_concurred}
                       </h6>
                     </div>
-                    <div className="pl- [30px] basis-1/2 text-[#D71E30]">
+                    <div className="pl- [30px] basis-1/2 text-[#D71E30] pl-3">
                       <h6 className="block text-center">Dissented</h6>
                       <h6 className="text-center text-[.875rem] ">
                         {data.judge_info.statistics.total_dissented}
@@ -147,18 +220,34 @@ const JudgeDetailsView = () => {
                     />
                     <h3 className="font-medium text-base">Profile</h3>
                     <hr className="my-[15px]" />
-                    <p>{data.judge_info.profile}</p>
+                    <p>{data?.judge_info?.profile}</p>
                   </div>
                 )}
                 <div className="flex items-center border-b border-solid border-gray-200 pb-3 mb-3">
-                  <select
+                  <div className="flex items-center gap-[5px]">
+                    <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
+                      <Image
+                        width={16}
+                        height={16}
+                        src={`/images/icons/${"analytics-02-stroke-rounded.svg"}`}
+                        alt={"analytics-02-stroke-rounded"}
+                      />
+                    </div>
+                    <h3
+                      onClick={() => UpdateUrlParams("judicial_stats", "true")}
+                      className="text-lexblue text-base font-poppins font-normal cursor-pointer"
+                    >
+                      Judge statistics
+                    </h3>{" "}
+                  </div>
+                  {/* <select
                     className="appearance-auto  pr-4 outline-none"
                     name="sortBy"
                     id="hiee"
                   >
                     <option value={"Most recent"}>Most recent</option>
                     <option value={"Most popular"}>Most popular</option>
-                  </select>
+                  </select> */}
 
                   <span className="ml-auto text-[#008E00] bg-[#008E00]/10 text-xs px-3 py-1 rounded">
                     {`${
@@ -169,56 +258,152 @@ const JudgeDetailsView = () => {
                   </span>
                 </div>
 
-                {data.judge_info.cases.map((item, index) => (
-                  <div
-                    key={item.document_id}
-                    className="font-paytone pb-3 space-y-3"
-                  >
-                    <h3 className="text-base font-semibold text-primary">
-                      <Link
-                        href={`/library/cases/${item.document_id}?title=${item.case_title}&tab=case`}
-                      >
-                        {item.case_title}
-                      </Link>
-                    </h3>
+                <div className="h-screen overflow-y-scroll pb-[50px]">
+                  {data.judge_info?.cases?.map((item, index) => (
+                    <div
+                      key={item.document_id}
+                      className="font-paytone pb-3 space-y-3 "
+                    >
+                      <h3 className="text-base font-semibold text-primary">
+                        <Link
+                          href={`/library/cases/${item.document_id}?title=${item.case_title}&tab=case`}
+                        >
+                          {item.case_title}
+                        </Link>
+                      </h3>
 
-                    <div className="inline-flex gap-2">
-                      <span
+                      <div className="inline-flex gap-2">
+                        <span
+                          title="Year"
+                          className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium"
+                        >
+                          {item.court}
+                        </span>
+                        <span
+                          title="Year"
+                          className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium"
+                        >
+                          {item.year}
+                        </span>
+                        <span
+                          title="Judge stance"
+                          className={` ${
+                            // ""
+                            judgeStance[item.judge_stance]
+                          } px-2 py-[0.125rem] rounded bg- lexblue text-center text-white text-sm font-medium`}
+                        >
+                          {item?.judge_stance == "LEAD_OPINION"
+                            ? "Lead judgement"
+                            : item?.judge_stance}
+                        </span>
+                        {/* <span
                         title="Year"
                         className="px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium"
                       >
                         {item.year}
-                      </span>
-                    </div>
+                      </span> */}
+                      </div>
 
-                    <div className="flex items-center gap-2 flex-wrap mb-4">
-                      {item.area_of_law &&
-                        item.area_of_law.map((subjectMatter) => (
-                          <span
-                            className={` px-2 py-[0.125rem] text-[#008E00] bg-[#008E00]/10 rounded text-center  text-sm font-normal`}
-                            key={subjectMatter}
-                            title="A"
-                          >
-                            {subjectMatter}
-                          </span>
-                        ))}
-                      {item.subject_matters &&
-                        item.subject_matters.map((subjectMatter) => (
-                          <span
-                            className={` px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-normal`}
-                            key={subjectMatter}
-                            title="Subject matter"
-                          >
-                            {subjectMatter}
-                          </span>
-                        ))}
+                      <div className="flex items-center gap-2 flex-wrap mb-4">
+                        {item.area_of_law &&
+                          item.area_of_law.map((subjectMatter) => (
+                            <span
+                              className={` px-2 py-[0.125rem] text-[#008E00] bg-[#008E00]/10 rounded text-center  text-sm font-normal`}
+                              key={subjectMatter}
+                              title="Area of law"
+                            >
+                              {subjectMatter}
+                            </span>
+                          ))}
+                        {item.subject_matters &&
+                          item.subject_matters.map((subjectMatter) => (
+                            <span
+                              className={` px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-normal`}
+                              key={subjectMatter}
+                              title="Subject matter"
+                            >
+                              {subjectMatter}
+                            </span>
+                          ))}
+                      </div>
+
+                      {/* <p className="text-sm text-justify">
+                      {item?.holding_and_reasoning}
+                    </p> */}
+
+                      <div
+                        className="pb-[30px]"
+                        id="summary"
+                        // ref={(el) => (sectionRefs.current[0] = el)}
+                      >
+                        <SummaryComponent
+                          toogler={() => {
+                            setOpen((prev) => {
+                              const newSet = new Set(prev);
+                              if (newSet.has(index)) {
+                                newSet.delete(index);
+                              } else {
+                                newSet.add(index);
+                              }
+                              return newSet;
+                            });
+                          }}
+                          isCollapsed={isOpen.has(index)}
+                          header={"Holding and reasoning"}
+                          summary={
+                            <div
+                              style={
+                                // open
+                                // item?.holding_and_reasoning
+                                isOpen.has(index)
+                                  ? { maxHeight: "none" }
+                                  : {
+                                      overflow: "hidden",
+                                      display: "-webkit-box",
+                                      WebkitBoxOrient: "vertical",
+                                      WebkitLineClamp: 5,
+                                    }
+                              }
+                              className={` relative  
+                                                ${
+                                                  ""
+                                                  // open ? null : "line-clamp-6"
+                                                }
+                                               `}
+                            >
+                              <h3 className="text-sm text- lexblue font-normal mb-2">
+                                {/* <span className="uppercase block font-poppins text-gray-500 text-sm font-medium mb-1">
+                                Holding and reasoning:
+                              </span> */}
+
+                                {item?.holding_and_reasoning}
+                              </h3>
+
+                              {!open && (
+                                <div className="w-full absolute bottom-0 h-[52px] bg-[linear-gradient(transparent_0px,rgba(255,255,255,0.9)_52px,#fff_80px)]"></div>
+                              )}
+                              {/* <button
+                                                onClick={() => {
+                                                  setopen(!open);
+                                                  window?.scrollTo({ top: 0, behavior: "smooth" });
+                                                }}
+                                                className={`p-2 bg-primary text-white text-sm rounded mt-2 ${
+                                                  open ? "bg-gray-300" : "bg-primary"
+                                                }`}
+                                              >
+                                                {open ? "Show less" : "View more"}
+                                              </button> */}
+                            </div>
+                          }
+                          isCollapsible={true}
+                        />
+                      </div>
                     </div>
-                    <p className="text-sm">{item.case_summary}</p>
-                  </div>
-                ))}
-                {data.judge_info.cases.length > 9 && (
-                  <LoadMoreBtn isFetching={isFetching} loadMore={loadMore} />
-                )}
+                  ))}
+                  {data.judge_info.cases.length > 9 && (
+                    <LoadMoreBtn isFetching={isFetching} loadMore={loadMore} />
+                  )}
+                </div>
               </div>
             </div>
           </div>

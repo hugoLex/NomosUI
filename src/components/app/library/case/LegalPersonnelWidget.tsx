@@ -93,7 +93,8 @@ const LegalPersonnelWidget = ({ data }: { data: PersonnalData }) => {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Link
-                          target="_blank"
+                          // target="_blank"
+                          // href={`/analytics/judges?judgeId=${judge.id}&judge=${judge.name}`}
                           href={`/analytics/judges?judgeId=${judge.id}&judge=${judge.name}`}
                           className="flex items-center justify-between py-1.5 px-2 text-inherit text-sm text-primary"
                         >
@@ -133,7 +134,7 @@ const LegalPersonnelWidget = ({ data }: { data: PersonnalData }) => {
                       <TooltipTrigger asChild>
                         <Link
                           target="_blank"
-                          href={`/analytics/counsels?counselId=${counsel.id}&judge=${counsel.name}`}
+                          href={`/analytics/counsels?counselId=${counsel.id}&counsel=${counsel.name}`}
                           className="text-primary flex items-center justify-between py-1.5 px-2 text-inherit text-sm"
                         >
                           {counsel.name}

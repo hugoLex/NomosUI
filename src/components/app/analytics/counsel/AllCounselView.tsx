@@ -27,6 +27,7 @@ import {
 } from "@app/components/shared/SearchBoxLegalAnalysis";
 import { skipToken } from "@reduxjs/toolkit/query";
 import useQueryToggler from "@app/hooks/useQueryHandler";
+import { DashboardSkeletonLoader } from "@app/components/shared/DashboardSkeletonLoader";
 
 type CounselFilterProps = {
   onFilter: (filters: CounselFilterState) => void;
@@ -210,8 +211,9 @@ const AllCounselView = () => {
       <Fragment>
         <Head title={`Counsel - ${"List"}`} />
         <Navbar />
-        <div className=" flex-1 flex flex-col justify-center items-center self-stretch py-6 min-h-screen">
-          <Loader variant="classic" size={80} />
+        <div className=" flex-1 flex flex-col justify-center items-center py-6 w-full md:max-w-[772px] mx-auto">
+          <DashboardSkeletonLoader />
+          {/* <Loader variant="classic" size={80} /> */}
         </div>
       </Fragment>
     );
@@ -267,7 +269,16 @@ const AllCounselView = () => {
                     }}
                     className="cursor-pointer flex gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] "
                   >
-                    <svg
+                    <div className="relative  w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
+                      <Image
+                        width={16}
+                        height={16}
+                        src={`/images/icons/${"filter-vertical-stroke-rounded.svg"}`}
+                        alt={"analytics-02-stroke-rounded"}
+                      />
+                    </div>
+
+                    {/* <svg
                       width="16"
                       height="11"
                       viewBox="0 0 16 11"
@@ -278,10 +289,10 @@ const AllCounselView = () => {
                         d="M15.1299 2.23906H8.04152V3.81406H15.1299V2.23906ZM15.1299 5.38906H8.04152V6.96406H15.1299V5.38906ZM8.04152 0.664062H0.953125V2.23906H8.04152V0.664062ZM8.04152 3.81406H0.953125V5.38906H8.04152V3.81406ZM8.04152 6.96406H0.953125V8.53906H8.04152V6.96406ZM15.1299 8.53906H8.04152V10.1141H15.1299V8.53906Z"
                         fill="black"
                       />
-                    </svg>
+                    </svg> */}
 
                     <span>Filter</span>
-                    <HiMiniPlus className="ml-auto" />
+                    {/* <HiMiniPlus className="ml-auto" /> */}
                   </div>
                   <div
                     onClick={() => {
@@ -293,13 +304,19 @@ const AllCounselView = () => {
                         page: 1,
                         limit: 10,
                       });
-                      setOpenFilter((openFilter) => !openFilter);
+                      setOpenFilter(false);
                     }}
                     className="flex cursor-pointer gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] "
                   >
-                    <GiSplash />
+                    <Image
+                      width={16}
+                      height={16}
+                      src={`/images/icons/${"circle-arrow-reload-02-stroke-rounded.svg"}`}
+                      alt={"analytics-02-stroke-rounded"}
+                    />
+                    {/* <GiSplash /> */}
                     <span>Reset</span>
-                    <HiMiniPlus className="ml-auto" />
+                    {/* <HiMiniPlus className="ml-auto" /> */}
                   </div>
                 </div>
               </div>
