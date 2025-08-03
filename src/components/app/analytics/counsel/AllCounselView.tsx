@@ -30,7 +30,7 @@ import useQueryToggler from "@app/hooks/useQueryHandler";
 import { DashboardSkeletonLoader } from "@app/components/shared/DashboardSkeletonLoader";
 
 type CounselFilterProps = {
-  onFilter: (filters: CounselFilterState) => void;
+  // onFilter: (filters: CounselFilterState) => void;
   filters: CounselFilterState;
   setFilters: React.Dispatch<React.SetStateAction<CounselFilterState>>;
   setOpenFilter: React.Dispatch<React.SetStateAction<boolean>>;
@@ -42,12 +42,12 @@ type CounselFilterState = {
   case_title?: string;
   law_firm?: string;
   specialization?: string;
-  page?: number;
+  page: number;
   limit?: number;
 };
 
 const CounselFilter: React.FC<CounselFilterProps> = ({
-  onFilter,
+  // onFilter,
   filters,
   setFilters,
   setOpenFilter,
@@ -65,7 +65,7 @@ const CounselFilter: React.FC<CounselFilterProps> = ({
   const { UpdateUrlParams, router } = useQueryToggler();
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onFilter(filters);
+    // onFilter(filters);
     router.push(`/analytics/counsels?${queryString}`);
     // UpdateUrlParams("", queryString);
     setOpenFilter((openFilter) => !openFilter);
@@ -155,7 +155,7 @@ const AllCounselView = () => {
   const router = useRouter();
   const { setReferrer } = useContext(AppLayoutContext);
   const { UpdateUrlParams, searchParams } = useQueryToggler();
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
   const [openFilter, setOpenFilter] = useState(false);
   const [allData, setAllData] = useState<[] | CounselResponseT["counsels"]>([]); // Store accumulated data
   const [filters, setFilters] = useState<CounselFilterState>({
@@ -195,14 +195,16 @@ const AllCounselView = () => {
     // if (data) {
     //   setAllData((prev) => Array.from(new Set([...prev, ...data.counsels]))); // Append new data. This is to show a long list of all requests made.
     // }
-    if (data) {
-      setAllData([...data.counsels]);
-    }
+    // if (data) {
+    //   setAllData([...data.counsels]);
+    // }
     console.log("counsels fetched from all counsels", data);
-  }, [data, router.asPath, setReferrer]);
+  }, [router.asPath, setReferrer]);
+  // }, [data, router.asPath, setReferrer]);
 
   const loadMore = () => {
-    setCurrentPage((prevPage) => prevPage + 1); // Increment page number
+    setFilters((prev) => ({ ...prev, page: prev.page + 1 }));
+    // setCurrentPage((prevPage) => prevPage + 1); // Increment page number
   };
 
   if (isLoading) {
@@ -239,7 +241,7 @@ const AllCounselView = () => {
       <Head title={`Counsel - ${"List"}`} />
 
       <Navbar />
-      {allData && (
+      {data && (
         <Container className="">
           <div className="flex py-6 w-full md:max-w-[772px] mx-auto">
             <div className="flex-1 self-stretch grow">
@@ -255,7 +257,7 @@ const AllCounselView = () => {
                 />
                 {openFilter && (
                   <CounselFilter
-                    onFilter={() => {}}
+                    // onFilter={() => {}}
                     filters={filters}
                     setFilters={setFilters}
                     setOpenFilter={setOpenFilter}
@@ -321,7 +323,7 @@ const AllCounselView = () => {
                 </div>
               </div>
               <div className="mb-8 space-y-4">
-                {allData?.map((counsel, index) => (
+                {data?.counsels?.map((counsel, index) => (
                   <div
                     key={`${counsel.counsel_id}-${index}-key`}
                     className="flex gap-3"

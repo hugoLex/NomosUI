@@ -31,12 +31,12 @@ import { useSearchParams } from "next/navigation";
 import { skipToken } from "@reduxjs/toolkit/query";
 import useQueryToggler from "@app/hooks/useQueryHandler";
 import { DashboardSkeletonLoader } from "@app/components/shared/DashboardSkeletonLoader";
-type JudgeFilterState = {
+type TJudgeFilterState = {
   query?: string;
   case_title?: string;
   law_firm?: string;
   specialization?: string;
-  page?: number;
+  page: number;
   limit?: number;
 };
 const AllJudgesView = () => {
@@ -52,8 +52,8 @@ const AllJudgesView = () => {
     []
   ); // Store accumulated data
   const searchTerm = useDebounce(inputText, 500); // Reduced debounce time for better UX
-
-  const [filters, setFilters] = useState<JudgeFilterState>({
+  const [openFilter, setOpenFilter] = useState(false);
+  const [filters, setFilters] = useState<TJudgeFilterState>({
     query: "",
     case_title: "",
     law_firm: "",
@@ -61,15 +61,17 @@ const AllJudgesView = () => {
     page: 1,
     limit: 10,
   });
+  const compiledQuery = `query=${filters.query}&case_title=${filters.case_title}&law_firm=${filters.law_firm}&specialization=${filters.specialization}&page=${filters.page}&limit=${filters.limit}`;
+
   const { isError, isFetching, isLoading, data } = useGetAllJudgeQuery(
-    searchTerm
-      ? {
-          params: `query=${searchTerm}`,
-        }
-      : {
-          params: `query=${""}`,
-        }
-    // : skipToken
+    // searchTerm
+    //   ? {
+    //       params: `query=${searchTerm}`,
+    //     }
+    //   : {
+    //       params: `query=${""}`,
+    //     }
+    !openFilter ? { params: compiledQuery } : skipToken
   );
   // console.log("Data from judges", JSON.stringify(data && data.judges[0]));
   // Update the accumulated data when new data is fetched
@@ -81,10 +83,14 @@ const AllJudgesView = () => {
     }
   }, [data, router.asPath, setReferrer]);
   const loadMore = () => {
-    setCurrentPage((prevPage) => prevPage + 1); // Increment page number
+    setFilters((prev) => ({ ...prev, page: prev.page + 1 }));
+    router.push(`/analytics/judges?${compiledQuery}`);
+
+    // setCurrentPage((prevPage) => prevPage + 1); // Increment page number
   };
   useEffect(() => {
-    setInputText(newQuery);
+    setFilters((prev) => ({ ...prev, query: newQuery || filters.query }));
+    // setInputText(newQuery);
     // if (!newQuery) {
     //   UpdateUrlParams("query", "a");
     //   // setInputText("");
@@ -113,14 +119,14 @@ const AllJudgesView = () => {
 
     // Process first part (before marked content)
     if (parts[0]) {
-      const beforeWords = parts[0].split(/\s+/).filter((word) => word.trim());
+      const beforeWords = parts[0].split(/(\s+)/).filter((word) => word);
       beforeWords.forEach((word, index) => {
         result.push(
           <span
             key={`before-${index}`}
             className="text-[1.1rem] text-powder_blue font-semibold  font-gilda_Display"
           >
-            {" "}
+            {/* {" "} */}
             {word}
           </span>
         );
@@ -128,16 +134,15 @@ const AllJudgesView = () => {
     }
 
     // Process marked content (highlighted part)
-    const markedWords = markedContent
-      .split(/\s+/)
-      .filter((word) => word.trim());
+    const markedWords = markedContent.split(/(\s+)/).filter((word) => word);
+    // .filter((word) => word.trim());
     markedWords.forEach((word, index) => {
       result.push(
         <span
           key={`marked-${index}`}
           className="text-[1.1rem] text-lexblue bg-[#FFECBC] font-semibold  font-gilda_Display"
         >
-          {" "}
+          {/* {" "} */}
           {word}
         </span>
       );
@@ -145,14 +150,15 @@ const AllJudgesView = () => {
 
     // Process remaining content (after marked content)
     if (parts[1]) {
-      const afterWords = parts[1].split(/\s+/).filter((word) => word.trim());
+      const afterWords = parts[1].split(/(\s+)/).filter((word) => word);
+      // const afterWords = parts[1].split(/\s+/).filter((word) => word.trim());
       afterWords.forEach((word, index) => {
         result.push(
           <span
             key={`after-${index}`}
             className="text-[1.1rem] text-powder_blue font-semibold  font-gilda_Display"
           >
-            {" "}
+            {/* {" "} */}
             {word}
           </span>
         );
@@ -206,8 +212,23 @@ const AllJudgesView = () => {
                   practitionerType={"judge"}
                   innerRef={ref}
                 />
+                {openFilter && (
+                  <JudgeFilter
+                    onFilter={() => {}}
+                    filters={filters}
+                    setFilters={setFilters}
+                    setOpenFilter={setOpenFilter}
+                    queryString={compiledQuery}
+                  />
+                )}
+
                 <div className="mt-8 grid max-lg:grid-rows-2 lg:grid-cols-2 lg:justify-center gap-5">
-                  <div className="flex gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] ">
+                  <div
+                    onClick={() => {
+                      setOpenFilter(!openFilter);
+                    }}
+                    className="flex gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] "
+                  >
                     {/* <svg
                       width="16"
                       height="11"
@@ -235,6 +256,15 @@ const AllJudgesView = () => {
                   <div
                     onClick={() => {
                       // setInputText("a");
+                      setFilters({
+                        query: "",
+                        case_title: "",
+                        law_firm: "",
+                        specialization: "",
+                        page: 1,
+                        limit: 10,
+                      });
+                      setOpenFilter(false);
                       removeQueryParam("query");
                       // UpdateUrlParams("query", "a");
                     }}
@@ -316,3 +346,125 @@ const AllJudgesView = () => {
 };
 
 export default AllJudgesView;
+
+type JudgeFilterProps = {
+  onFilter: (filters: TJudgeFilterState) => void;
+  filters: TJudgeFilterState;
+  setFilters: React.Dispatch<React.SetStateAction<TJudgeFilterState>>;
+  setOpenFilter: React.Dispatch<React.SetStateAction<boolean>>;
+  queryString: string;
+};
+
+// type TJudgeFilterState = {
+//   query?: string;
+//   case_title?: string;
+//   law_firm?: string;
+//   specialization?: string;
+//   page?: number;
+//   limit?: number;
+// };
+
+const JudgeFilter: React.FC<JudgeFilterProps> = ({
+  onFilter,
+  filters,
+  setFilters,
+  setOpenFilter,
+  queryString,
+}) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({
+      ...prev,
+      [name]: name === "page" || name === "limit" ? Number(value) : value,
+    }));
+  };
+  const { UpdateUrlParams, router } = useQueryToggler();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onFilter(filters);
+    router.push(`/analytics/judges?${queryString}`);
+    // UpdateUrlParams("", queryString);
+    setOpenFilter((openFilter) => !openFilter);
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-white shadow rounded-xl"
+    >
+      <input
+        type="text"
+        name="query"
+        value={filters.query}
+        onChange={handleChange}
+        placeholder="🔍 e.g. maritime law expert"
+        className="border rounded px-3 py-2 w-full"
+      />
+
+      <input
+        type="text"
+        name="case_title"
+        value={filters.case_title}
+        onChange={handleChange}
+        placeholder="Filter by case title"
+        className="border rounded px-3 py-2 w-full"
+      />
+
+      <input
+        type="text"
+        name="law_firm"
+        value={filters.law_firm}
+        onChange={handleChange}
+        placeholder="Filter by law firm"
+        className="border rounded px-3 py-2 w-full"
+      />
+
+      <input
+        type="text"
+        name="specialization"
+        value={filters.specialization}
+        onChange={handleChange}
+        placeholder="Filter by specialization"
+        className="border rounded px-3 py-2 w-full"
+      />
+
+      <div className="flex items-center gap-2">
+        <label htmlFor="page" className="text-sm">
+          Page
+        </label>
+        <input
+          type="number"
+          name="page"
+          // min={1}
+          value={filters.page}
+          onChange={handleChange}
+          className="border rounded px-2 py-1 w-20"
+        />
+      </div>
+
+      <div className="flex items-center gap-2">
+        <label htmlFor="limit" className="text-sm">
+          Limit
+        </label>
+        <input
+          type="number"
+          name="limit"
+          min={1}
+          max={100}
+          value={filters.limit}
+          onChange={handleChange}
+          className="border rounded px-2 py-1 w-20"
+        />
+      </div>
+
+      <button
+        type="submit"
+        className="md:col-span-2 bg-lexblue text-white px-4 py-2 rounded hover:bg-lexblue/60 transition"
+      >
+        Apply Filters
+      </button>
+    </form>
+  );
+};

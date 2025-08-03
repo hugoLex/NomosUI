@@ -8,6 +8,7 @@ import {
   useChat_enpointMutation,
   useFetch_chatQuery,
 } from "@app/store/services/chatSlice";
+import ChatbotApp from "@app/components/app/chat/chatbot";
 const ChatPage: NextPageWithLayout = () => {
   const [] = useChat_enpointMutation();
   const { data, isError, isLoading } = useFetch_chatQuery("");
@@ -42,7 +43,8 @@ const ChatPage: NextPageWithLayout = () => {
       <Navbar />
       <Container>
         <div className={`py-8 w-full md:min-w-[980px]`}>
-          <ChatIndex />
+          {/* <ChatIndex /> */}
+          <ChatbotApp />
         </div>
       </Container>
     </>
