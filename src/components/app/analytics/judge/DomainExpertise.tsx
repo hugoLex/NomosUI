@@ -47,6 +47,7 @@ const LegalDomainDashboard = () => {
   const { searchParams, close, removeQueryParam, UpdateUrlParams } =
     useQueryHandler();
   const judgeId = searchParams.get("judgeId");
+  const judgeName = searchParams.get("judge");
   const {
     isError,
     isFetching,
@@ -361,7 +362,8 @@ const LegalDomainDashboard = () => {
               <div className="flex items-center space-x-3">
                 <div>
                   <h1 className="text-lexblue text-xx font-gilda_Display capitalize font-bold">
-                    Judge Domain Expertise
+                    {judgeName}
+                    {/* Domain Expertise */}
                   </h1>
                   <p className="text-powder_blue text-sm font-gilda_Display  font-medium">
                     Professional legal case analysis dashboard
