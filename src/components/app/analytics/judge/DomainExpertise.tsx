@@ -158,7 +158,10 @@ const LegalDomainDashboard = () => {
       0
     );
   }, [data]);
-  console.log("data of total", totalCases);
+  //   console.log(
+  //     "data of total",
+  //     data?.domain_expertise?.domain_groups?.area_of_law
+  //   );
   const getFilteredData = (
     category: "subject_matter" | "legal_principles" | "area_of_law"
   ) => {
@@ -315,9 +318,12 @@ const LegalDomainDashboard = () => {
                 cy="50%"
                 labelLine={false}
                 // added ||0 for type safety chibs
-                label={({ name, percent }) =>
-                  `${(percent || 0 * 100).toFixed(0)}%`
-                }
+                label={(data) => {
+                  //   console.log("the data and umber", data);
+                  return `${(((data.value || 0) / totalCases) * 100).toFixed(
+                    0
+                  )}%`;
+                }}
                 outerRadius={80}
                 fill="#0e3165"
                 dataKey="case_count"
