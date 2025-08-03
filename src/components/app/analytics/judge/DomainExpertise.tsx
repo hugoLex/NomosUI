@@ -366,7 +366,7 @@ const LegalDomainDashboard = () => {
                     {/* Domain Expertise */}
                   </h1>
                   <p className="text-powder_blue text-sm font-gilda_Display  font-medium">
-                    Professional legal case analysis dashboard
+                    Professional domain expertise dashboard
                   </p>
                 </div>
               </div>
