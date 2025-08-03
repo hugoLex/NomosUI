@@ -18,6 +18,8 @@ import { useGetJudgeAnalyticsQuery } from "@app/store/services/analyticsSlice";
 import JudgeCounselHeadings from "../JudgeCounselHeadings";
 import { JudgeProfileResponseT } from "@app/types/analytics";
 import JudicialMetricsDashboard from "./Judgestats";
+import LegalDomainDashboard from "./DomainExpertise";
+import { TrendingUp } from "lucide-react";
 
 type stanceT = "Concurred" | "Dissented";
 
@@ -29,6 +31,7 @@ const JudgeDetailsView = () => {
   const profile = searchParams.get("profile");
   const judgeName = searchParams.get("judge");
   const right_cover_menu = searchParams.get("judicial_stats");
+  const right_cover_menu_for_legal_domain = searchParams.get("legal_domain");
   const [currentPage, setCurrentPage] = useState(1);
   const [isOpen, setOpen] = useState(new Set([0]));
   const [allData, setAllData] = useState<
@@ -53,7 +56,23 @@ const JudgeDetailsView = () => {
   //   "Data from judges statistics",
   //   JSON.stringify(data?.judge_info?.statistics)
   // );
-  console.log("Data from judges", data);
+  // console.log(
+  //   "Data from judges",
+  //   JSON.stringify({
+  //     domain_expertise: {
+  //       domain_groups: {
+  //         area_of_law: data?.domain_expertise.domain_groups.area_of_law?.slice(
+  //           0,
+  //           10
+  //         ),
+  //         legal_principles:
+  //           data?.domain_expertise.domain_groups.legal_principles?.slice(0, 10),
+  //         subject_matter:
+  //           data?.domain_expertise.domain_groups.subject_matter?.slice(0, 10),
+  //       },
+  //     },
+  //   })
+  // );
 
   // Update the accumulated data when new data is fetched
   useEffect(() => {
@@ -151,19 +170,66 @@ const JudgeDetailsView = () => {
               </div>
             </div>
           )}
+          {right_cover_menu_for_legal_domain && (
+            <div
+              onClick={() => removeQueryParam("legal_domain")}
+              className={` bg-red- 500 max-md:h idden backdrop-blur-sm bg-white/70 border border-white/30 rounded-xl shadow-lg fixed top-[0px] [20px] right-[25px] h-[100%] [90%] z-[99999] w-[99%]
+                                `}
+            >
+              <div className="bg-white border-l border-gray-400/15 ml-auto  min-w-[500px] w-[63vw] h-screen shadow-overlay top-0 right-[-30px] fixed  animate-in slide-in-from-right ">
+                <div className="min-h-[64px] justify-between flex items-center p-3.5 pl-[32px] bg-purple- 500 border-b border-b-black\50  ">
+                  <span
+                    className={` text-lexblue text-xx font-gilda_Display capitalize font-bold`}
+                  >
+                    Legal domains
+                  </span>
+
+                  <svg
+                    onClick={() => removeQueryParam("judicial_stats")}
+                    className="ml-auto cursor-pointer"
+                    width="16"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <line
+                      x1="4"
+                      y1="4"
+                      x2="20"
+                      y2="20"
+                      stroke="black"
+                      strokeWidth="2"
+                    />
+                    <line
+                      x1="20"
+                      y1="4"
+                      x2="4"
+                      y2="20"
+                      stroke="black"
+                      strokeWidth="2"
+                    />
+                  </svg>
+                </div>
+                <LegalDomainDashboard />
+              </div>
+            </div>
+          )}
           <div className="py-6">
             <div className="lg:flex gap-[2rem]  relative">
               <div className="basis-[30.7%]">
-                <JudgeCounselHeadings
-                  h1HeaderRef={h1Ref}
-                  heading1=""
-                  heading2="Judge analytics"
-                  style={{
-                    ctnStyle: "",
-                    h1Style: "uppercase hidden",
-                    h2Style: "text-[30px]",
-                  }}
-                />
+                <Link href={"/analytics/judges"}>
+                  <JudgeCounselHeadings
+                    h1HeaderRef={h1Ref}
+                    heading1=""
+                    heading2="Judge analytics"
+                    style={{
+                      ctnStyle: "",
+                      h1Style: "uppercase hidden",
+                      h2Style: "text-[30px]",
+                    }}
+                  />{" "}
+                </Link>
                 <div className="font-paytone mt-[50px] bg-[#F6F7F7] py-[32px] px-[20px] shadow-sm">
                   <div className="relative rounded-full overflow-clip w-[130px] h-[130px] mx-auto">
                     <Image
@@ -223,7 +289,7 @@ const JudgeDetailsView = () => {
                     <p>{data?.judge_info?.profile}</p>
                   </div>
                 )}
-                <div className="flex items-center border-b border-solid border-gray-200 pb-3 mb-3">
+                <div className="flex gap-5 items-center border-b border-solid border-gray-200 pb-3 mb-3">
                   <div className="flex items-center gap-[5px]">
                     <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
                       <Image
@@ -238,6 +304,23 @@ const JudgeDetailsView = () => {
                       className="text-lexblue text-base font-poppins font-normal cursor-pointer"
                     >
                       Judge statistics
+                    </h3>{" "}
+                  </div>
+                  <div className="flex items-center gap-[5px]">
+                    <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
+                      {/* <Image
+                        width={16}
+                        height={16}
+                        src={`/images/icons/${"analytics-02-stroke-rounded.svg"}`}
+                        alt={"analytics-02-stroke-rounded"}
+                      /> */}
+                      <TrendingUp className="h-4 w-4" />
+                    </div>
+                    <h3
+                      onClick={() => UpdateUrlParams("legal_domain", "true")}
+                      className="text-lexblue text-base font-poppins font-normal cursor-pointer"
+                    >
+                      Domain expertise
                     </h3>{" "}
                   </div>
                   {/* <select

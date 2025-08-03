@@ -26,7 +26,7 @@ type Appearance = {
 // request parameters type
 type RequestParams = {
   judge_id: number; // judge_id is a number that identifies the judge
-  page: number;
+  page?: number;
 };
 
 export const benchAPISlice = injectEndpoints({
