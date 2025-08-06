@@ -27,6 +27,7 @@ const contentOutline: ContentOutline[] = [
 const actions = [
   ["Issues for determination", "tab=issues"],
   ["Timeline and events", `right_cover_menu=${true}`],
+  ["Chat this document", `right_cover_chatbot=${true}`],
 ];
 // const actions = ["Main Issues", "Issue for Cause of Action", "Ratio Decidendi"];
 // const cases = ["By Subject Matter", "By Ratio Decidendi"];
@@ -149,7 +150,7 @@ const CaseDetailsSidebarView = (props: {
                 <ul className="space-y-2">
                   {actions.map(([btn, param], btx) => (
                     <Link
-                      href={`/library/cases/${caseDocument?.document_id}?title=${caseDocument?.case_title}&${param}`}
+                      href={`/library/cases/${caseDocument?.document_id}?documentId=${caseDocument?.document_id}&title=${caseDocument?.case_title}&${param}`}
                       // href={`/library/cases?caseId=${"caseDocument?.document_id"}&action=${btn}`}
                       key={btx}
                       className="bg-[#EBF2FF] text-sm text-primary py-2 px-5 rounded flex items-center justify-between"

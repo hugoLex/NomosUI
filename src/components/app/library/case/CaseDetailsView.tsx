@@ -12,6 +12,7 @@ import CaseDetailsSidebarView from "./CaseDetailsSidebarView";
 import { TCaseDocument } from "@app/types";
 // import Time_lineSideCover from "./Time_line";
 import LegalTime_lineSideCover from "./Time_line";
+import ChatbotSideCover from "./chatbotRightCover";
 
 const sections = [
   {
@@ -109,6 +110,8 @@ const CaseView = ({
         <div className={`pb-8 w-full md:min-w-[980px]`}>
           {/* this is the side bar for displaying the case history   */}
           <LegalTime_lineSideCover />
+          {/* this is the side bar for displaying the chatbot   */}
+          <ChatbotSideCover />
           <div className="md:grid grid-cols-12 gap-8">
             <div className="col-span-4 self-baselane">
               <div className="sticky top-[145px]">

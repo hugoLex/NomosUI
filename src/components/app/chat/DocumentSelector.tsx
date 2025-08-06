@@ -1,5 +1,6 @@
 // components/DocumentSelector.tsx
 
+import useQueryToggler from "@app/hooks/useQueryHandler";
 import { Search, MessageCircle } from "lucide-react";
 import { useState } from "react";
 
@@ -21,8 +22,22 @@ const DocumentSelector: React.FC<DocumentSelectorProps> = ({
   onSelectDocument,
   selectedDocumentId,
 }) => {
+  const { searchParams } = useQueryToggler();
   const [searchTerm, setSearchTerm] = useState("");
-
+  // for testing purposes, I am using a static list of documents
+  const docId = "cca34a12-17a2-464c-a4a6-0f3b3a93e4c6";
+  // searchParams.get("documentId") || "cca34a12-17a2-464c-a4a6-0f3b3a93e4c6";
+  const docTitle =
+    searchParams.get("title") || "test document title vs sample document";
+  documents = [
+    {
+      id: docId,
+      title: docTitle,
+      court: "Court of Appeal",
+      year: "2019",
+      type: "Criminal Law",
+    },
+  ];
   const filteredDocuments = documents.filter(
     (doc) =>
       doc.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -30,7 +45,7 @@ const DocumentSelector: React.FC<DocumentSelectorProps> = ({
   );
 
   return (
-    <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
+    <div className="w-[250px] bg-white border-r border-gray-200 flex flex-col">
       {/* Header */}
       <div className="p-4 border-b">
         <h2 className="text-lg font-semibold text-gray-800 mb-3">

@@ -113,13 +113,16 @@ const DocumentChat: React.FC<DocumentChatProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full bg-white border rounded-lg shadow-lg">
+    <div
+      // onClick={(e: any) => e.stopPropagation()}
+      className="  bg-white border rounded-lg shadow-lg h-screen overflow-y-scroll pb-[100px]"
+    >
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b bg-gray-50">
         <div className="flex items-center space-x-2">
           <FileText className="w-5 h-5 text-blue-600" />
           <div>
-            <h3 className="font-semibold text-gray-800">
+            <h3 className="text-xx font-normal text-gray-800">
               {documentTitle || `Document ${documentId.slice(0, 8)}`}
             </h3>
             <p className="text-xs text-gray-500">Document Chat</p>
@@ -149,9 +152,9 @@ const DocumentChat: React.FC<DocumentChatProps> = ({
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow -y-auto p-4 space-y-4">
         {messages.length === 0 ? (
-          <div className="text-center text-gray-500 mt-8">
+          <div className="text-center text-gray-500 mt-8 pb-[130px]">
             <FileText className="w-12 h-12 mx-auto mb-4 text-gray-300" />
             <p>Start a conversation about this document</p>
             <p className="text-sm">
@@ -172,7 +175,7 @@ const DocumentChat: React.FC<DocumentChatProps> = ({
       </div>
 
       {/* Input */}
-      <div className="border-t p-4">
+      <div className="  border-t p-4 ">
         <form onSubmit={handleSubmit} className="flex space-x-2">
           <input
             type="text"
