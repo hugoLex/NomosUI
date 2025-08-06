@@ -27,7 +27,7 @@ const contentOutline: ContentOutline[] = [
 const actions = [
   ["Issues for determination", "tab=issues"],
   ["Timeline and events", `right_cover_menu=${true}`],
-  ["Chat this document", `right_cover_chatbot=${true}`],
+  ["Chat with document", `right_cover_chatbot=${true}`],
 ];
 // const actions = ["Main Issues", "Issue for Cause of Action", "Ratio Decidendi"];
 // const cases = ["By Subject Matter", "By Ratio Decidendi"];

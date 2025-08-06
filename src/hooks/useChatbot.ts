@@ -1,5 +1,6 @@
 // hooks/useChatbot.ts
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, use, useEffect } from 'react';
+import useQueryToggler from './useQueryHandler';
 
 export interface ChatMessage {
     id: string;
@@ -17,6 +18,10 @@ export interface ChatSession {
 }
 
 export const useChatbot = () => {
+    const { searchParams } = useQueryToggler();
+    // for testing purposes, I am using a static list of documents
+    const docId = "cca34a12-17a2-464c-a4a6-0f3b3a93e4c6";
+    // const docId = searchParams.get("documentId")
     const [sessions, setSessions] = useState<Record<string, ChatSession>>({});
     const [isStreaming, setIsStreaming] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -219,6 +224,34 @@ export const useChatbot = () => {
             eventSourceRef.current = null;
         }
     }, []);
+
+    useEffect(() => {
+
+        if (docId) {
+            // Load sessions from localStorage on mount 
+            const storedSessions = localStorage.getItem(docId);
+            const parsedSessions = storedSessions ? JSON.parse(storedSessions) : null;
+            if (parsedSessions?.messages?.length > 1) {
+                console.log("Loading sessions from localStorage for documentId now:", docId, parsedSessions);
+                setSessions({ [docId]: parsedSessions });
+            }
+        }
+
+    }
+        , [docId]);
+    useEffect(() => {
+        // Save sessions to localStorage whenever sessions change
+        const tempSession = Object?.values(sessions)[0];
+        if (docId && tempSession?.messages?.length > 1) {
+            // if (docId && [0]?.messages?.length > 1) {
+            // Save sessions to localStorage whenever sessions change
+            console.log("Saving sessions to localStorage:", tempSession);
+            localStorage.setItem(docId, JSON.stringify(tempSession))
+        }
+    }
+        , [docId, sessions]);
+
+    // console.log("Saving sessions to localStorage:", Object?.values(sessions)[0]);
 
     return {
         sessions,

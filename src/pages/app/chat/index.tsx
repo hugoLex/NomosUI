@@ -43,8 +43,8 @@ const ChatPage: NextPageWithLayout = () => {
       <Navbar />
       <Container>
         <div className={`py-8 w-full md:min-w-[980px]`}>
-          {/* <ChatIndex /> */}
-          <ChatbotApp />
+          <ChatIndex />
+          {/* <ChatbotApp /> */}
 
           {/* <ChatWithDocument
             query="What was the court's decision in this case?"

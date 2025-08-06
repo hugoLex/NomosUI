@@ -47,16 +47,6 @@ export default function ChatInterface(): JSX.Element {
 
           {/* Message input */}
           <div className="flex-1 relative items-center h-full">
-            {/* <input
-              type="text"
-              value={message}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setMessage(e.target.value)
-              }
-              onKeyDown={handleKeyDown}
-              placeholder="Enter your message"
-              className="w-full px-4 py-2 pr-12 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            /> */}
             <ReactTextareaAutosize
               maxRows={10}
               placeholder={`Enter your message...`}
@@ -97,7 +87,7 @@ export default function ChatInterface(): JSX.Element {
   );
 }
 
-function MessageSent() {
+export function MessageSent() {
   return (
     <div className="flex justify-end">
       <div className="max-w-xs lg:max-w-md">
