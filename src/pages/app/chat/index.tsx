@@ -9,7 +9,6 @@ import {
   useFetch_chatQuery,
 } from "@app/store/services/chatSlice";
 import ChatbotApp from "@app/components/app/chat/chatbot";
-import ChatWithDocument from "./ChatWithDocument";
 const ChatPage: NextPageWithLayout = () => {
   const [] = useChat_enpointMutation();
   const { data, isError, isLoading } = useFetch_chatQuery("");
