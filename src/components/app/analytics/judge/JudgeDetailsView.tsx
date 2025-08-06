@@ -181,7 +181,7 @@ const JudgeDetailsView = () => {
                   <span
                     className={` text-lexblue text-xx font-gilda_Display capitalize font-bold`}
                   >
-                    Legal domains
+                    Domain expertise
                   </span>
 
                   <svg
@@ -218,62 +218,64 @@ const JudgeDetailsView = () => {
           <div className="py-6">
             <div className="lg:flex gap-[2rem]  relative">
               <div className="basis-[30.7%]">
-                <Link href={"/analytics/judges"}>
-                  <JudgeCounselHeadings
-                    h1HeaderRef={h1Ref}
-                    heading1=""
-                    heading2="Judge analytics"
-                    style={{
-                      ctnStyle: "",
-                      h1Style: "uppercase hidden",
-                      h2Style: "text-[30px]",
-                    }}
-                  />{" "}
-                </Link>
-                <div className="font-paytone mt-[50px] bg-[#F6F7F7] py-[32px] px-[20px] shadow-sm">
-                  <div className="relative rounded-full overflow-clip w-[130px] h-[130px] mx-auto">
-                    <Image
-                      className=""
-                      style={{ objectFit: "cover" }}
-                      fill
-                      src={`/images/${"judge_analytics_av.jpg"}`}
-                      alt="judge counsel profile"
-                    />
-                  </div>
-                  <h3 className="text-[1.4rem] text-center font-paytone leading-none font-medium text-primary mt-[24px]">
-                    {data.judge_info.name}
-                  </h3>
-                  <span className="text-[.8125rem] font-normal text-center text-[#6C757D] block mt-[5px] mb-[24px]">
-                    JSC
-                  </span>
+                <div className="sticky md:top-[68px]">
+                  <Link href={"/analytics/judges"}>
+                    <JudgeCounselHeadings
+                      h1HeaderRef={h1Ref}
+                      heading1=""
+                      heading2="Judge analytics"
+                      style={{
+                        ctnStyle: "",
+                        h1Style: "uppercase hidden",
+                        h2Style: "text-[30px]",
+                      }}
+                    />{" "}
+                  </Link>
+                  <div className="font-paytone mt-[50px] bg-[#F6F7F7] py-[32px] px-[20px] shadow-sm">
+                    <div className="relative rounded-full overflow-clip w-[130px] h-[130px] mx-auto">
+                      <Image
+                        className=""
+                        style={{ objectFit: "cover" }}
+                        fill
+                        src={`/images/${"judge_analytics_av.jpg"}`}
+                        alt="judge counsel profile"
+                      />
+                    </div>
+                    <h3 className="text-[1.4rem] text-center font-paytone leading-none font-medium text-primary mt-[24px]">
+                      {data.judge_info.name}
+                    </h3>
+                    <span className="text-[.8125rem] font-normal text-center text-[#6C757D] block mt-[5px] mb-[24px]">
+                      JSC
+                    </span>
 
-                  <div className="flex gap-3 items-center justify-center mt-[20px] divide-x-2 border-t border-b border-gray-200 p-[16.4px]">
-                    <div className="basis-1/2 text-lexblue">
-                      <h6 className="block text-center ">Lead</h6>
-                      <h6 className="text-center text-[.875rem]">
-                        {data.judge_info.statistics.total_lead_judgments}
-                      </h6>
+                    <div className="flex gap-3 items-center justify-center mt-[20px] divide-x-2 border-t border-b border-gray-200 p-[16.4px]">
+                      <div className="basis-1/2 text-lexblue">
+                        <h6 className="block text-center ">Lead</h6>
+                        <h6 className="text-center text-[.875rem]">
+                          {data.judge_info.statistics.total_lead_judgments}
+                        </h6>
+                      </div>
+                      <div className="basis-1/2 text-[#2fa826] pl-3">
+                        <h6 className="block text-center ">Concurred</h6>
+                        <h6 className="text-center text-[.875rem]">
+                          {data.judge_info.statistics.total_concurred}
+                        </h6>
+                      </div>
+                      <div className="pl- [30px] basis-1/2 text-[#D71E30] pl-3">
+                        <h6 className="block text-center">Dissented</h6>
+                        <h6 className="text-center text-[.875rem] ">
+                          {data.judge_info.statistics.total_dissented}
+                        </h6>
+                      </div>
                     </div>
-                    <div className="basis-1/2 text-[#2fa826] pl-3">
-                      <h6 className="block text-center ">Concurred</h6>
-                      <h6 className="text-center text-[.875rem]">
-                        {data.judge_info.statistics.total_concurred}
-                      </h6>
-                    </div>
-                    <div className="pl- [30px] basis-1/2 text-[#D71E30] pl-3">
-                      <h6 className="block text-center">Dissented</h6>
-                      <h6 className="text-center text-[.875rem] ">
-                        {data.judge_info.statistics.total_dissented}
-                      </h6>
-                    </div>
+                    <h2
+                      onClick={() => close("profile", "true")}
+                      // href={`/${""}`}
+                      className="text-[.875rem] cursor-pointer text-primary font-bold flex justify-center mt-[32px] items-center gap-[5px]"
+                    >
+                      View Profile
+                    </h2>
                   </div>
-                  <h2
-                    onClick={() => close("profile", "true")}
-                    // href={`/${""}`}
-                    className="text-[.875rem] cursor-pointer text-primary font-bold flex justify-center mt-[32px] items-center gap-[5px]"
-                  >
-                    View Profile
-                  </h2>
                 </div>
               </div>
               <div className="basis-[66%] mt-[80px]">
@@ -341,7 +343,7 @@ const JudgeDetailsView = () => {
                   </span>
                 </div>
 
-                <div className="h-screen overflow-y-scroll pb-[50px]">
+                <div className="h- screen overflow- y-scroll pb-[50px]">
                   {data.judge_info?.cases?.map((item, index) => (
                     <div
                       key={item.document_id}

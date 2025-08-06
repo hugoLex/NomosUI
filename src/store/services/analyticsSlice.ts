@@ -5,6 +5,7 @@
 //   } from "@reduxjs/toolkit/query";
 
 import { endpoints, injectEndpoints } from "./endpoints";
+import { baseURL } from "@app/utils";
 import {
   CounselProfileResponse,
   CounselResponseT,
@@ -28,6 +29,12 @@ type RequestParams = {
   judge_id: number; // judge_id is a number that identifies the judge
   page?: number;
 };
+
+type ChatwithDocumentRequestBody = {
+  query: string;
+  document_id: string;
+  session_id: string;
+}
 
 export const benchAPISlice = injectEndpoints({
   endpoints: (builder) => ({
@@ -74,8 +81,79 @@ export const benchAPISlice = injectEndpoints({
       // },
       providesTags: ["Analytics", "Counsel"],
     }),
+
+    chatWithDocument: builder.query<string, ChatwithDocumentRequestBody>({
+      async queryFn(arg, api, extraOptions, baseQuery) {
+        // baseQuery here is actually baseQueryWithReauth (from the API config)
+        const controller = new AbortController();
+        // 1. Use baseQueryWithReauth to prepare headers (and refresh tokens if needed)
+        const dummyRequest = {
+          url: '/chatbot/chat',
+          method: 'POST',
+          body: arg,
+        };
+        // You need headers from baseQueryWithReauth
+        const dummyResult = await baseQuery(dummyRequest,
+          //  api, extraOptions
+
+        );
+
+        // If the dummy result returns a response, headers are valid and tokens are fresh
+        // BUT we discard the response because we want to handle streaming manually
+        if (dummyResult.error) {
+          return { error: dummyResult.error };
+        }
+
+        const headers = new Headers();
+        const preparedHeaders = await (baseQuery as any).prepareHeaders?.(headers, {
+          getState: api.getState,
+        });
+
+        // Now do your fetch manually with those headers (for streaming)
+        const stream = new ReadableStream({
+          start(controllerStream) {
+            fetch(`${baseURL}/chatbot/chat`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                ...Object.fromEntries(preparedHeaders?.entries?.() ?? []),
+              },
+              body: JSON.stringify(arg),
+              signal: controller.signal,
+            }).then((response) => {
+              const reader = response.body?.getReader();
+              const decoder = new TextDecoder('utf-8');
+
+              const read = async () => {
+                if (!reader) return;
+                while (true) {
+                  const { done, value } = await reader.read();
+                  if (done) {
+                    controllerStream.close();
+                    break;
+                  }
+                  const chunk = decoder.decode(value, { stream: true });
+                  controllerStream.enqueue(chunk);
+                }
+              };
+
+              read().catch((err) => {
+                controllerStream.error(err);
+              });
+            });
+          },
+        });
+
+        const text = await new Response(stream).text();
+
+        return { data: text };
+      },
+    }),
+
+
   }),
 });
+
 
 export const {
   useGetJudgeAnalyticsQuery,

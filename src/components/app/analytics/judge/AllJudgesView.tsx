@@ -400,7 +400,7 @@ const JudgeFilter: React.FC<JudgeFilterProps> = ({
         name="query"
         value={filters.query}
         onChange={handleChange}
-        placeholder="🔍 e.g. maritime law expert"
+        placeholder="🔍 e.g. Ejembi Eko, JSC"
         className="border rounded px-3 py-2 w-full"
       />
 
@@ -418,7 +418,7 @@ const JudgeFilter: React.FC<JudgeFilterProps> = ({
         name="law_firm"
         value={filters.law_firm}
         onChange={handleChange}
-        placeholder="Filter by law firm"
+        placeholder="Filter by court"
         className="border rounded px-3 py-2 w-full"
       />
 
@@ -452,7 +452,7 @@ const JudgeFilter: React.FC<JudgeFilterProps> = ({
         <input
           type="number"
           name="limit"
-          min={1}
+          // min={1}
           max={100}
           value={filters.limit}
           onChange={handleChange}

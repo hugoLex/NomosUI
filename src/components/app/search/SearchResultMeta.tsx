@@ -568,7 +568,7 @@ export const SearchResultMeta = (prop: {
               <span
                 title={
                   rhetorical_function_tooltips[
-                    rhetorical_function.toLowerCase() as keyof typeof rhetorical_function_tooltips
+                    rhetorical_function?.toLowerCase() as keyof typeof rhetorical_function_tooltips
                   ]
                 }
                 className="flex items-center gap-1 cursor-pointer uppercase pl-1 pr-2 py-[0.125rem] bg-[#fff] stone-100 rounded text-center text-[#668891] hover:text-[#245B91] text-[13px]  font-medium"
@@ -994,7 +994,7 @@ export const SimilaritySearchResultMeta = (prop: {
           <span
             title={
               rhetorical_function_tooltips[
-                rhetorical_function.toLowerCase() as keyof typeof rhetorical_function_tooltips
+                rhetorical_function?.toLowerCase() as keyof typeof rhetorical_function_tooltips
               ]
             }
             className="flex items-center gap-1 cursor-pointer uppercase pl-1 pr-2 py-[0.125rem] bg-[#fff] stone-100 rounded text-center text-[#668891] hover:text-[#245B91] text-sm font-medium"

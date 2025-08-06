@@ -9,6 +9,7 @@ import {
   useFetch_chatQuery,
 } from "@app/store/services/chatSlice";
 import ChatbotApp from "@app/components/app/chat/chatbot";
+import ChatWithDocument from "./ChatWithDocument";
 const ChatPage: NextPageWithLayout = () => {
   const [] = useChat_enpointMutation();
   const { data, isError, isLoading } = useFetch_chatQuery("");
@@ -45,6 +46,13 @@ const ChatPage: NextPageWithLayout = () => {
         <div className={`py-8 w-full md:min-w-[980px]`}>
           {/* <ChatIndex /> */}
           <ChatbotApp />
+
+          {/* <ChatWithDocument
+            query="What was the court's decision in this case?"
+            documentId="cca34a12-17a2-464c-a4a6-0f3b3a93e4c6"
+            // documentId="ce1f8469-a471-4bda-ba5c-0d4719bc23fb"
+            sessionId="test2-session-123"
+          /> */}
         </div>
       </Container>
     </>

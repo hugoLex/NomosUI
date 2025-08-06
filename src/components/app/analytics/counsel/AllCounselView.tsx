@@ -74,6 +74,9 @@ const CounselFilter: React.FC<CounselFilterProps> = ({
   return (
     <form
       onSubmit={handleSubmit}
+      onMouseLeave={() => {
+        setOpenFilter(false);
+      }}
       className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-white shadow rounded-xl"
     >
       <input

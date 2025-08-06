@@ -49,6 +49,8 @@ export const SearchBox = forwardRef<SearchBoxRef | null, any>(function Search(
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [field_value, setField_value] = useState({ value: "", field: "" });
   const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
+  const [shouldLoadSuggestions, setShouldLoadSuggestions] = useState(true);
+
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const suggestionRefs = useRef<(HTMLLIElement | null)[]>([]);
 
@@ -125,7 +127,8 @@ export const SearchBox = forwardRef<SearchBoxRef | null, any>(function Search(
   // Effect to fetch suggestions when search term changes
   useEffect(() => {
     if (searchTerm) {
-      fetchAutocompleteSuggestions(searchTerm);
+      // should only load auto suggestion if  shouldLoadSuggestions is true
+      shouldLoadSuggestions && fetchAutocompleteSuggestions(searchTerm);
     } else {
       setSuggestionsList([]);
     }
@@ -155,10 +158,8 @@ export const SearchBox = forwardRef<SearchBoxRef | null, any>(function Search(
     }
   };
 
-  const onSearchSubmit = (evt: FormEvent<HTMLFormElement>) => {
-    evt.preventDefault();
-
-    const { currentTarget } = evt;
+  const onSearchSubmit = (evt?: FormEvent<HTMLFormElement>) => {
+    evt?.preventDefault();
 
     if (inputRef.current) {
       router.push({
@@ -170,8 +171,11 @@ export const SearchBox = forwardRef<SearchBoxRef | null, any>(function Search(
       setInputText(undefined);
       //   inputRef.current.value = "";
     }
+    if (evt) {
+      const { currentTarget } = evt;
+      currentTarget.reset();
+    }
 
-    currentTarget.reset();
     setSuggestionsList([]);
     setSelectedIndex(-1);
   };
@@ -237,6 +241,7 @@ export const SearchBox = forwardRef<SearchBoxRef | null, any>(function Search(
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     setInputText(value);
+    setShouldLoadSuggestions(true);
     setSelectedIndex(-1); // Reset selection when typing
   };
 
@@ -281,6 +286,7 @@ export const SearchBox = forwardRef<SearchBoxRef | null, any>(function Search(
           autoFocus
           ref={inputRef}
           id={id}
+          // onBlur={}
           onKeyUp={handleKeyUp}
         />
 
@@ -329,11 +335,13 @@ export const SearchBox = forwardRef<SearchBoxRef | null, any>(function Search(
                       field: suggestion.field,
                       value: suggestion.value,
                     });
+                    setShouldLoadSuggestions(false);
+                    onSearchSubmit();
                     // close the suggestion view
-                    //   if (!e.currentTarget.contains(e.target as Node)) {
-                    //     setSuggestionsList([]);
-                    //     setSelectedIndex(-1);
-                    //   }
+                    // if (!e.currentTarget.contains(e.target as Node)) {
+                    //   setSuggestionsList([]);
+                    //   setSelectedIndex(-1);
+                    // }
                   }}
                   onMouseEnter={() => setSelectedIndex(index)}
                 >

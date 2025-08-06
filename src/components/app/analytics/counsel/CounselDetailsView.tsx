@@ -43,6 +43,7 @@ const CounselDetailsView = () => {
         }
       : skipToken
   );
+  console.log("all counsel details", data);
   // Update the accumulated data when new data is fetched
   useEffect(() => {
     if (data) {
@@ -119,50 +120,52 @@ const CounselDetailsView = () => {
             <div className="py-6">
               <div className="lg:flex gap-[2rem]  relative">
                 <div className="basis-[30.7%]">
-                  <JudgeCounselHeadings
-                    h1HeaderRef={h1Ref}
-                    heading1=""
-                    heading2="Counsel analytics"
-                    style={{
-                      ctnStyle: "",
-                      h1Style: "uppercase hidden",
-                      h2Style: "text-[30px]",
-                    }}
-                  />
-                  <div className="font-paytone mt-[50px] bg-[#F6F7F7] py-[32px] px-[20px] shadow-sm">
-                    <div className="relative rounded-full overflow-clip w-[130px] h-[130px] mx-auto">
-                      <Image
-                        className=""
-                        style={{ objectFit: "cover" }}
-                        fill
-                        src={`/images/${"counsel_analytics_av.jpg"}`}
-                        alt="judge counsel profile"
-                      />
-                    </div>
-                    <h3 className="text-[1.4rem] text-center font-paytone leading-none font-medium text-primary mt-[24px]">
-                      {data.counsel_details.counsel_name}
-                    </h3>
+                  <div className="sticky md:top-[68px]">
+                    <JudgeCounselHeadings
+                      h1HeaderRef={h1Ref}
+                      heading1=""
+                      heading2="Counsel analytics"
+                      style={{
+                        ctnStyle: "",
+                        h1Style: "uppercase hidden",
+                        h2Style: "text-[30px]",
+                      }}
+                    />
+                    <div className="font-paytone mt-[50px] bg-[#F6F7F7] py-[32px] px-[20px] shadow-sm">
+                      <div className="relative rounded-full overflow-clip w-[130px] h-[130px] mx-auto">
+                        <Image
+                          className=""
+                          style={{ objectFit: "cover" }}
+                          fill
+                          src={`/images/${"counsel_analytics_av.jpg"}`}
+                          alt="judge counsel profile"
+                        />
+                      </div>
+                      <h3 className="text-[1.4rem] text-center font-paytone leading-none font-medium text-primary mt-[24px]">
+                        {data.counsel_details.counsel_name}
+                      </h3>
 
-                    <div className="flex gap -5 items-center justify-center mt-[20px] divide-x-2 border-t border-b border-gray-200 p-[16.4px]">
-                      <div className="basis-1/2 text-[#2fa826]">
-                        <h6 className="block text-center ">Win</h6>
-                        <h6 className="text-center text-[.875rem]">
-                          {data.performance_metrics.win_rate}
-                        </h6>
+                      <div className="flex gap -5 items-center justify-center mt-[20px] divide-x-2 border-t border-b border-gray-200 p-[16.4px]">
+                        <div className="basis-1/2 text-[#2fa826]">
+                          <h6 className="block text-center ">Win</h6>
+                          <h6 className="text-center text-[.875rem]">
+                            {data.performance_metrics.win_rate}
+                          </h6>
+                        </div>
+                        <div className="pl- [30px] basis-1/2 text-[#D71E30]">
+                          <h6 className="block text-center">Loss</h6>
+                          <h6 className="text-center text-[.875rem] ">
+                            {data.performance_metrics.win_rate}
+                          </h6>
+                        </div>
                       </div>
-                      <div className="pl- [30px] basis-1/2 text-[#D71E30]">
-                        <h6 className="block text-center">Loss</h6>
-                        <h6 className="text-center text-[.875rem] ">
-                          {data.performance_metrics.win_rate}
-                        </h6>
-                      </div>
+                      <h2
+                        onClick={() => close("profile", "true")}
+                        className="text-[.875rem] cursor-pointer text-primary font-bold flex justify-center mt-[32px] items-center gap-[5px]"
+                      >
+                        View Profile
+                      </h2>
                     </div>
-                    <h2
-                      onClick={() => close("profile", "true")}
-                      className="text-[.875rem] cursor-pointer text-primary font-bold flex justify-center mt-[32px] items-center gap-[5px]"
-                    >
-                      View Profile
-                    </h2>
                   </div>
                 </div>
                 <div className="basis-[66%] mt-[80px]">
@@ -180,14 +183,31 @@ const CounselDetailsView = () => {
                     </div>
                   )}
                   <div className="flex items-center border-b border-solid border-gray-200 pb-3">
-                    <select
+                    {/* <select
                       className="appearance-auto  pr-4 outline-none"
                       name="sortBy"
                       id="Hi_Wendy"
                     >
                       <option value={"Most recent"}>Most recent</option>
                       <option value={"Most popular"}>Most popular</option>
-                    </select>
+                    </select> */}
+
+                    <div className="flex items-center gap-[5px]">
+                      <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
+                        <Image
+                          width={16}
+                          height={16}
+                          src={`/images/icons/${"analytics-02-stroke-rounded.svg"}`}
+                          alt={"analytics-02-stroke-rounded"}
+                        />
+                      </div>
+                      <h3
+                        // onClick={() => UpdateUrlParams("judicial_stats", "true")}
+                        className="text-lexblue text-base font-poppins font-normal cursor-pointer"
+                      >
+                        Counsel statistics
+                      </h3>{" "}
+                    </div>
 
                     <span className="ml-auto text-[#008E00] bg-[#008E00]/10 text-xs px-3 py-1 rounded">{`${
                       data.performance_metrics.total_cases > 1

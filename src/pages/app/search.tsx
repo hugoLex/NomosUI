@@ -780,6 +780,7 @@ const Page: NextPageWithLayout = () => {
                     {allFilters?.length === 0 && (
                       <Fragment>
                         {searchDocuments &&
+                          activeTab_query_type === "sematic_s" &&
                           searchDocuments?.documents?.map((data, idx) => (
                             <SearchResultMeta
                               key={`${data.metadata.document_id}-${idx}`}
@@ -791,9 +792,10 @@ const Page: NextPageWithLayout = () => {
                       </Fragment>
                     )}
 
-                    {allFilters.length > 0 &&
+                    {allFilters?.length > 0 &&
                       filterData &&
-                      filterData.length > 0 && (
+                      activeTab_query_type === "sematic_s" &&
+                      filterData?.length > 0 && (
                         <Fragment>
                           <div>
                             {filterData?.map((data, idx) => (
