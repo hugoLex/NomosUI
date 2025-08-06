@@ -11,7 +11,7 @@ interface DocumentChatProps {
 }
 
 const DocumentChat: React.FC<DocumentChatProps> = ({
-  documentId,
+  documentId = "cca34a12-17a2-464c-a4a6-0f3b3a93e4c6",
   documentTitle,
   onClose,
 }) => {

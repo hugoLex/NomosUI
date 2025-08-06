@@ -111,7 +111,7 @@ export const useChatbot = () => {
             };
 
             // Start SSE connection
-            const response = await fetch('/api/chatbot/chat', {
+            const response = await fetch('https://webapp.lexanalytics.ai/api/chatbot/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -180,7 +180,16 @@ export const useChatbot = () => {
         if (!session) return;
 
         try {
-            await fetch('/api/chatbot/clear', {
+
+            //   const response = await fetch(
+            //     "https://webapp.lexanalytics.ai/api/chatbot/chat",
+            //     {
+            //       method: "POST",
+            //       headers,
+            //       body: JSON.stringify({ query, document_id, session_id }),
+            //     }
+            //   );
+            await fetch('https://webapp.lexanalytics.ai/api/chatbot/clear', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
