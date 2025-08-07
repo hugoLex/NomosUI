@@ -83,7 +83,7 @@ const DocumentChat: React.FC<DocumentChatProps> = ({
               isUser
                 ? "bg-blue-500 text-white ml-auto"
                 : isProgress
-                ? "bg-gray-100 text-gray-700 border-l-4 border-blue-500"
+                ? "bg-gray-100 text-gray-700 "
                 : "bg-gray-100 text-gray-800"
             }
           `}
