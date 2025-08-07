@@ -44,7 +44,7 @@ export const benchAPISlice = injectEndpoints({
     >({
       query: ({ params }) => {
 
-        console.log("The query param from judge's endpoint", params)
+        // console.log("The query param from judge's endpoint", params)
         return `/judges/search?${params}`
       },
       providesTags: ["Analytics", "Judge"],
@@ -62,7 +62,7 @@ export const benchAPISlice = injectEndpoints({
     >({
       query: ({ params }) => {
 
-        console.log("The query params", params)
+        // console.log("The query params", params)
         return `/counsels/list?${params}`
       },
       providesTags: ["Analytics", "Counsel"],
@@ -149,6 +149,15 @@ export const benchAPISlice = injectEndpoints({
         return { data: text };
       },
     }),
+    deleteChatWithDocument: builder.mutation<{ session_id: string }, { session_id: string, document_id: string }>({
+      query: ({ session_id, document_id }) => ({
+        url: `/chatbot/clear`,
+        method: 'POST',
+        body: { session_id, document_id },
+      }),
+      // invalidatesTags: ["Analytics", ],
+    }),
+
 
 
   }),
@@ -160,6 +169,7 @@ export const {
   useGetCounselAnalyticsQuery,
   useGetAllCounselQuery,
   useGetAllJudgeQuery,
+  useDeleteChatWithDocumentMutation
 } = benchAPISlice;
 // GET /api/judges/list                    # Get all judges
 // GET /api/judges/list?page=1&court_id=1&year=2023  # With filters

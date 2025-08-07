@@ -4,6 +4,7 @@ type MenuItemProps = {
   label: string;
   shortcut?: string;
   disabled?: boolean;
+  onClick?: () => void;
 };
 
 import Image from "next/image";
@@ -15,9 +16,11 @@ import Link from "next/link";
 export function DropdownMenuChat({
   classname,
   isOpen,
+  clearChatHandler,
 }: {
   classname?: string;
-  isOpen?: string;
+  isOpen?: boolean | string;
+  clearChatHandler?: () => void;
 }) {
   // const [isOpen, setIsOpen] = useState<boolean>(false);
   // const
@@ -32,9 +35,9 @@ export function DropdownMenuChat({
   return (
     <div className={` ${classname} relative text-right pb- [8px]`}>
       {/* Dropdown Menu */}
-      {isOpen == "true" && (
+      {isOpen == true && (
         <div
-          className={`  absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-[99999]`}
+          className={`  absolute right-[-25px] mt-2 w-56 origin-top-right top-[30px] rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-[99999]`}
         >
           <div className="py-1 relative z-[999999]">
             {/* My Account */}
@@ -46,8 +49,12 @@ export function DropdownMenuChat({
             {/* Group 1 */}
             <div className="space-y-1">
               <MenuItem label="Profile" shortcut="" />
-              <MenuItem label="Billing" shortcut="" />
-              <MenuItem label="Settings" shortcut="" />
+              <MenuItem
+                label="Clear chat"
+                shortcut=""
+                onClick={clearChatHandler}
+              />
+              {/* <MenuItem label="Settings" shortcut="" /> */}
               {/* <MenuItem label="Keyboard shortcuts" shortcut="⌘K" /> */}
             </div>
 
@@ -126,6 +133,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
   label,
   shortcut,
   disabled = false,
+  onClick,
 }) => {
   return (
     <button
@@ -137,6 +145,9 @@ const MenuItem: React.FC<MenuItemProps> = ({
           Cookies.remove("user_id");
           //   api.dispatch(logOut());
           window.location.href = "/auth/login";
+        }
+        if (onClick) {
+          onClick();
         }
       }}
       className={`w-full text-left px-4 py-2 text-sm ${

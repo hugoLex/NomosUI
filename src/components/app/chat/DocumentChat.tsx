@@ -16,7 +16,8 @@ import Link from "next/link";
 import { RiMenu4Line, RiProfileFill } from "react-icons/ri";
 import Image from "next/image";
 import ReactTextareaAutosize from "react-textarea-autosize";
-import { IoMenuOutline } from "react-icons/io5";
+import { IoClose, IoMenuOutline } from "react-icons/io5";
+import { useDeleteChatWithDocumentMutation } from "@app/store/services/analyticsSlice";
 
 // import { useChatbot, ChatMessage } from "../hooks/useChatbot";
 
@@ -33,6 +34,8 @@ const DocumentChat: React.FC<DocumentChatProps> = ({
   onClose,
 }) => {
   const [inputValue, setInputValue] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [deleteChat, { isSuccess, data }] = useDeleteChatWithDocumentMutation();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const {
     sessions,
@@ -45,12 +48,29 @@ const DocumentChat: React.FC<DocumentChatProps> = ({
 
   const session = sessions[documentId];
   const messages = session?.messages || [];
-  // console.log("DocumentChat messages:", session);
+  // console.log("DocumentChat messages: now", session);
   // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
+  async function clearChatHandler() {
+    if (window.confirm("Clear conversation history for this document?")) {
+      const res = await deleteChat({
+        session_id: session?.sessionId,
+        document_id: session?.documentId,
+      }).unwrap();
+      // clearConversation(documentId);
+      setInputValue("");
+      console.log("Chat cleared:", res, "session:", session?.documentId);
+      if (res) {
+        // if (isSuccess) {
+        localStorage.removeItem(session?.documentId);
+        console.log("Chat cleared successfully:", res);
+      } else {
+        console.error("Failed to clear chat:", error);
+      }
+    }
+  }
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputValue.trim() || isStreaming) return;
@@ -70,7 +90,7 @@ const DocumentChat: React.FC<DocumentChatProps> = ({
     const isUser = message.type === "user";
     const isProgress =
       message.content.includes("🔍") || message.content.includes("📖");
-    console.log("DocumentChat messages:", message);
+    // console.log("DocumentChat messages:", message);
     return (
       <div
         key={message.id}
@@ -158,14 +178,19 @@ const DocumentChat: React.FC<DocumentChatProps> = ({
               alt="judge counsel profile"
             />
           </div>
-          <div>
+          <div
+            title={`Document: ${
+              documentTitle || `Document ${documentId.slice(0, 8)}`
+            }`}
+          >
             <Link
-              href={`/analytics/judges`}
-              className="text-[1.1rem] text-powder_blue font-semibold  font-gilda_Display"
+              href={`#`}
+              className="text-[1.1rem] text-powder_blue font-semibold  font-gilda_Display truncate block w-[200px] "
             >
-              Chibuike Ewenike
+              {/* Chibuike Ewenike */}
+              {documentTitle || `Document ${documentId.slice(0, 8)}`}
             </Link>
-            <h3 className="text-xs font-normal text-lex-blue">typing...</h3>
+            {/* <h3 className="text-xs font-normal text-lex-blue">typing...</h3> */}
             {/* <h3 className="text-sm text-lex-blue font-normal">
                     Cases count: {"100"}
                   </h3> */}
@@ -173,18 +198,37 @@ const DocumentChat: React.FC<DocumentChatProps> = ({
         </div>
 
         <div className="relative flex gap-[1.5rem] items-center">
-          <Link href={""}>
+          <Link href={"#"}>
             <ImageIcon />
           </Link>
-          <Link href={""}>
-            <MenuIcon />
-          </Link>
+          {/* <Link href={""}> */}
+          {menuOpen ? (
+            <IoClose
+              size={30}
+              className="cursor-pointer"
+              onClick={() => {
+                setMenuOpen(!menuOpen);
+              }}
+            />
+          ) : (
+            <MenuIcon
+              className="cursor-pointer"
+              onClick={() => {
+                setMenuOpen(!menuOpen);
+              }}
+            />
+          )}
+          {/* </Link> */}
           {/* this is to show or hide the drop down  */}
-          <DropdownMenuChat classname="" isOpen="false" />
+          <DropdownMenuChat
+            classname=""
+            isOpen={menuOpen}
+            clearChatHandler={clearChatHandler}
+          />
         </div>
       </div>
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b bg-gray-50">
+      {/* <div className="flex items-center justify-between p-4 border-b bg-gray-50">
         <div className="flex items-center space-x-2">
           <FileText className="w-5 h-5 text-blue-600" />
           <div>
@@ -215,7 +259,7 @@ const DocumentChat: React.FC<DocumentChatProps> = ({
             </button>
           )}
         </div>
-      </div>
+      </div> */}
 
       {/* Messages */}
       <div className="flex-1 overflow -y-auto p-4 space-y-4">
