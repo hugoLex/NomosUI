@@ -1,5 +1,6 @@
 import React, {
   Fragment,
+  RefObject,
   useContext,
   useEffect,
   useRef,
@@ -28,8 +29,10 @@ import {
 import { skipToken } from "@reduxjs/toolkit/query";
 import useQueryToggler from "@app/hooks/useQueryHandler";
 import { DashboardSkeletonLoader } from "@app/components/shared/DashboardSkeletonLoader";
+import { extractAndWrapWords } from "../judegCounselmark";
 
 type CounselFilterProps = {
+  openFilter: boolean;
   // onFilter: (filters: CounselFilterState) => void;
   filters: CounselFilterState;
   setFilters: React.Dispatch<React.SetStateAction<CounselFilterState>>;
@@ -48,6 +51,7 @@ type CounselFilterState = {
 
 const CounselFilter: React.FC<CounselFilterProps> = ({
   // onFilter,
+  openFilter,
   filters,
   setFilters,
   setOpenFilter,
@@ -71,13 +75,47 @@ const CounselFilter: React.FC<CounselFilterProps> = ({
     setOpenFilter((openFilter) => !openFilter);
   };
 
+  const ref: RefObject<HTMLFormElement> = useRef(null);
+
+  useEffect(() => {
+    // console.log("Counsel filter component mounted");
+
+    if (!openFilter) return; // If filter is not open, do nothing
+
+    // Add a small delay to prevent immediate closure when opening
+    const timeoutId = setTimeout(() => {
+      function handleClickOutside(event: MouseEvent) {
+        // console.log("Clicked outside the component", openFilter);
+
+        if (ref.current && !ref.current.contains(event.target as Node)) {
+          setOpenFilter(false);
+        }
+      }
+
+      document.addEventListener("click", handleClickOutside);
+
+      // Store the cleanup function in a way we can access it
+      return () => {
+        document.removeEventListener("click", handleClickOutside);
+      };
+    }, 100); // Small delay to allow the component to render
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [openFilter, setOpenFilter]);
+
   return (
+    // <div ref={ref}>
     <form
+      ref={ref}
       onSubmit={handleSubmit}
-      onMouseLeave={() => {
-        setOpenFilter(false);
-      }}
-      className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-white shadow rounded-xl"
+      // onMouseLeave={() => {
+      //   setOpenFilter(false);
+      // }}
+      className={` ${
+        openFilter ? null : "hidden"
+      } grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-white shadow rounded-xl`}
     >
       <input
         type="text"
@@ -151,6 +189,7 @@ const CounselFilter: React.FC<CounselFilterProps> = ({
         Apply Filters
       </button>
     </form>
+    // </div>
   );
 };
 
@@ -160,7 +199,7 @@ const AllCounselView = () => {
   const { UpdateUrlParams, searchParams } = useQueryToggler();
   // const [currentPage, setCurrentPage] = useState(1);
   const [openFilter, setOpenFilter] = useState(false);
-  const [allData, setAllData] = useState<[] | CounselResponseT["counsels"]>([]); // Store accumulated data
+  // const [allData, setAllData] = useState<[] | CounselResponseT["counsels"]>([]); // Store accumulated data
   const [filters, setFilters] = useState<CounselFilterState>({
     query: "",
     case_title: "",
@@ -195,13 +234,8 @@ const AllCounselView = () => {
   useEffect(() => {
     setReferrer(router.asPath);
 
-    // if (data) {
-    //   setAllData((prev) => Array.from(new Set([...prev, ...data.counsels]))); // Append new data. This is to show a long list of all requests made.
-    // }
-    // if (data) {
-    //   setAllData([...data.counsels]);
-    // }
-    console.log("counsels fetched from all counsels", data);
+    // console.log("counsels fetched from all counsels", data);
+    // console.log("counsels fetched from all counsels", JSON.stringify(data));
   }, [router.asPath, setReferrer]);
   // }, [data, router.asPath, setReferrer]);
 
@@ -261,6 +295,7 @@ const AllCounselView = () => {
                 {openFilter && (
                   <CounselFilter
                     // onFilter={() => {}}
+                    openFilter={openFilter}
                     filters={filters}
                     setFilters={setFilters}
                     setOpenFilter={setOpenFilter}
@@ -326,7 +361,7 @@ const AllCounselView = () => {
                 </div>
               </div>
               <div className="mb-8 space-y-4">
-                {data?.counsels?.map((counsel, index) => (
+                {data?.results?.map((counsel, index) => (
                   <div
                     key={`${counsel.counsel_id}-${index}-key`}
                     className="flex gap-3"
@@ -349,6 +384,12 @@ const AllCounselView = () => {
                             href={`/analytics/counsels?counselId=${counsel.counsel_id}&counsel=${counsel.counsel_name}`}
                             className="text-[1.1rem] text-powder_blue font-semibold  font-gilda_Display"
                           >
+                            {newQuery != "a" &&
+                            counsel?.match_context?.field == "name"
+                              ? extractAndWrapWords(
+                                  counsel?.match_context?.highlight
+                                )
+                              : counsel?.counsel_canonical_name}
                             {counsel.counsel_name}
                           </Link>
                           <h3 className="text-xs font-poppins font-normal text-lex-blue">

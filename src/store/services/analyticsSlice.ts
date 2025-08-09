@@ -15,14 +15,35 @@ import {
   CounselDetailT,
 } from "@app/types/analytics";
 
-// type for each appearance
-type Appearance = {
-  case_id: number;
-  case_title: string;
-  date: string;
-  court: string;
-  outcome: string;
-};
+export interface Counsel {
+  counsel_id: number;
+  counsel_name: string;
+  counsel_canonical_name: string;
+  counsel_title: string | null;
+  year_called_to_bar: number | null;
+  bio: string | null;
+  law_firms: string[];
+  specializations: string[];
+  total_cases: number;
+  relevance_score: number;
+  match_context: { field: string; highlight: string } | null;
+}
+
+interface FiltersApplied {
+  query: string | null;
+  case_title: string | null;
+  law_firm: string | null;
+  specialization: string | null;
+}
+
+export interface TCounselResponse {
+  page: number;
+  limit: number;
+  total_count: number;
+  total_pages: number;
+  results: Counsel[];
+  filters_applied: FiltersApplied;
+}
 
 // request parameters type
 type RequestParams = {
@@ -56,14 +77,14 @@ export const benchAPISlice = injectEndpoints({
     }),
 
     getAllCounsel: builder.query<
-      CounselResponseT,
+      TCounselResponse,
       { params: string }
     // Omit<GetCounselAppearancesRequest, "counsel_id">
     >({
       query: ({ params }) => {
 
         // console.log("The query params", params)
-        return `/counsels/list?${params}`
+        return `/search/counsels?${params}`
       },
       providesTags: ["Analytics", "Counsel"],
     }),

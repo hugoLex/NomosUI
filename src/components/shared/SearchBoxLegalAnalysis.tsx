@@ -103,7 +103,7 @@ export const SearchBox = forwardRef<SearchBoxRef | null, any>(function Search(
           field: "law_firm" as const,
         })) || []),
       ];
-      console.log("search result", JSON.stringify(suggestions.slice(0, 3)));
+      // console.log("search result", JSON.stringify(suggestions.slice(0, 3)));
       // Remove duplicates and limit to 8 suggestions
       const uniqueSuggestions = suggestions
         .filter(
@@ -158,20 +158,28 @@ export const SearchBox = forwardRef<SearchBoxRef | null, any>(function Search(
     }
   };
 
-  const onSearchSubmit = (evt?: FormEvent<HTMLFormElement>) => {
+  const onSearchSubmit = (
+    evt?: FormEvent<HTMLFormElement>,
+    field?: string,
+    value?: string
+  ) => {
     evt?.preventDefault();
 
     if (inputRef.current) {
       router.push({
-        pathname: "/analytics/counsels",
+        pathname: `/analytics/counsels`,
+        // pathname: `/analytics/counsels?${field_value.field}=${inputRef.current.value}`,
         query: {
+          // [field ? field : ""]: inputRef.current.value,
+          // [field ? field : ""]: value,
           [field_value.field]: inputRef.current.value,
         },
       });
       setInputText(undefined);
       //   inputRef.current.value = "";
     }
-    if (evt) {
+    //  !field prevents error when field is defined
+    if (!field && evt) {
       const { currentTarget } = evt;
       currentTarget.reset();
     }
@@ -336,7 +344,11 @@ export const SearchBox = forwardRef<SearchBoxRef | null, any>(function Search(
                       value: suggestion.value,
                     });
                     setShouldLoadSuggestions(false);
-                    onSearchSubmit();
+                    onSearchSubmit(
+                      e as any,
+                      suggestion.field,
+                      suggestion.value
+                    );
                     // close the suggestion view
                     // if (!e.currentTarget.contains(e.target as Node)) {
                     //   setSuggestionsList([]);
