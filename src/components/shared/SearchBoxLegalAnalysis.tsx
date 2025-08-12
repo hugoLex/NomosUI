@@ -172,7 +172,8 @@ export const SearchBox = forwardRef<SearchBoxRef | null, any>(function Search(
         query: {
           // [field ? field : ""]: inputRef.current.value,
           // [field ? field : ""]: value,
-          [field_value.field]: inputRef.current.value,
+          [field_value.field ? field_value.field : "name"]:
+            inputRef.current.value,
         },
       });
       setInputText(undefined);
@@ -180,8 +181,9 @@ export const SearchBox = forwardRef<SearchBoxRef | null, any>(function Search(
     }
     //  !field prevents error when field is defined
     if (!field && evt) {
+      // if (evt) {
       const { currentTarget } = evt;
-      currentTarget.reset();
+      currentTarget?.reset();
     }
 
     setSuggestionsList([]);

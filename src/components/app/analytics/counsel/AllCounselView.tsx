@@ -220,7 +220,7 @@ const AllCounselView = () => {
         }
       : skipToken
   );
-
+  // console.log("counsels fetched from all counsels", data);
   const counselSearchRef = useRef<SearchBoxRef | null>(null);
   useEffect(() => {
     if (newQuery) {
@@ -344,6 +344,8 @@ const AllCounselView = () => {
                         page: 1,
                         limit: 10,
                       });
+
+                      router.push("/analytics/counsels");
                       setOpenFilter(false);
                     }}
                     className="flex cursor-pointer gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] "
@@ -384,13 +386,15 @@ const AllCounselView = () => {
                             href={`/analytics/counsels?counselId=${counsel.counsel_id}&counsel=${counsel.counsel_name}`}
                             className="text-[1.1rem] text-powder_blue font-semibold  font-gilda_Display"
                           >
-                            {newQuery != "a" &&
-                            counsel?.match_context?.field == "name"
-                              ? extractAndWrapWords(
-                                  counsel?.match_context?.highlight
-                                )
-                              : counsel?.counsel_canonical_name}
-                            {counsel.counsel_name}
+                            {
+                              // newQuery != "a" &&
+                              counsel?.match_context?.field == "name"
+                                ? extractAndWrapWords(
+                                    counsel?.match_context?.highlight
+                                  )
+                                : counsel?.counsel_canonical_name
+                            }
+                            {/* {counsel.counsel_name} */}
                           </Link>
                           <h3 className="text-xs font-poppins font-normal text-lex-blue">
                             {counsel.law_firms}

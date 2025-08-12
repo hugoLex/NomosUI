@@ -248,6 +248,9 @@ export interface CounselResponseT {
 interface CounselDetailsT {
   counsel_id: number;
   counsel_name: string;
+  title: string | null;
+
+  year_called_to_bar: string | null;
   law_firms: string[];
   cases: CounselCaseT[];
 }
@@ -257,13 +260,14 @@ interface CounselCaseT {
   role: string;
   court: string;
   verdict: string;
+  disposition: string;
   case_title: string;
   document_id: string;
   suit_number: string;
   case_summary: string;
   year_decided: number;
   subject_matters: string[];
-  precedents_cited: CounselPrecedentT[];
+  precedents_cited: CounselPrecedentT[] | string[];
 }
 
 // Represents a precedent cited in a case

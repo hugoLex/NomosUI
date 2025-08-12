@@ -24,12 +24,16 @@ import {
   NavbarTitle,
 } from "@app/components/shared/";
 import { AppLayoutContext } from "@app/components/layout";
+import CounselProfileDashboard from "./DomainExpertiseCounsel";
 
 const CounselDetailsView = () => {
   const { referrer } = useContext(AppLayoutContext);
 
-  const { searchParams, close } = useQueryHandler();
+  const { searchParams, close, removeQueryParam, UpdateUrlParams } =
+    useQueryHandler();
   const counselId = searchParams.get("counselId");
+  const right_cover_menu_for_counsel_stats = searchParams.get("counsel_stats");
+
   const profile = searchParams.get("profile");
   const [currentPage, setCurrentPage] = useState(1);
   const [allData, setAllData] = useState<
@@ -43,7 +47,7 @@ const CounselDetailsView = () => {
         }
       : skipToken
   );
-  console.log("all counsel details", data);
+  // console.log("all counsel details", JSON.stringify(data, null, 2));
   // Update the accumulated data when new data is fetched
   useEffect(() => {
     if (data) {
@@ -117,6 +121,54 @@ const CounselDetailsView = () => {
       {!isFetching && !isError && data?.counsel_details && (
         <Fragment>
           <Container>
+            {right_cover_menu_for_counsel_stats && (
+              <div
+                onClick={() => removeQueryParam("counsel_stats")}
+                className={` bg-red- 500 max-md:h idden backdrop-blur-sm bg-white/70 border border-white/30 rounded-xl shadow-lg fixed top-[0px] [20px] right-[25px] h-[100%] [90%] z-[99999] w-[99%]
+                                            `}
+              >
+                <div className="bg-white border-l border-gray-400/15 ml-auto  min-w-[500px] w-[63vw] h-screen shadow-overlay top-0 right-[-30px] fixed  animate-in slide-in-from-right ">
+                  <div className="min-h-[64px] justify-between flex items-center p-3.5 bg-purple- 500 border-b border-b-black\50  ">
+                    <span
+                      className={` text-lexblue text-xx font-gilda_Display capitalize font-bold`}
+                    >
+                      Counsel Statistics
+                    </span>
+
+                    <svg
+                      onClick={() => removeQueryParam("counsel_stats")}
+                      className="ml-auto cursor-pointer"
+                      width="16"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <line
+                        x1="4"
+                        y1="4"
+                        x2="20"
+                        y2="20"
+                        stroke="black"
+                        strokeWidth="2"
+                      />
+                      <line
+                        x1="20"
+                        y1="4"
+                        x2="4"
+                        y2="20"
+                        stroke="black"
+                        strokeWidth="2"
+                      />
+                    </svg>
+                  </div>
+                  <CounselProfileDashboard
+                  // judicialMetrics={data?.judicial_metrics}
+                  // statistics={data?.judge_info?.statistics}
+                  />
+                </div>
+              </div>
+            )}
             <div className="py-6">
               <div className="lg:flex gap-[2rem]  relative">
                 <div className="basis-[30.7%]">
@@ -202,7 +254,7 @@ const CounselDetailsView = () => {
                         />
                       </div>
                       <h3
-                        // onClick={() => UpdateUrlParams("judicial_stats", "true")}
+                        onClick={() => UpdateUrlParams("counsel_stats", "true")}
                         className="text-lexblue text-base font-poppins font-normal cursor-pointer"
                       >
                         Counsel statistics
@@ -257,7 +309,7 @@ const CounselDetailsView = () => {
                           ))}
                         </div>
 
-                        <p className="text-sm ">{item.case_summary}</p>
+                        <p className="text-sm ">{item.disposition}</p>
                         <div className="flex items-center gap-2 flex-wrap mb-4 text-sm">
                           {item.precedents_cited.map((txt, tdx) => (
                             <span
@@ -265,7 +317,11 @@ const CounselDetailsView = () => {
                               className="bg-stone-100 text-dark-2  px-3 py-1 rounded"
                               title="Cited case"
                             >
-                              {txt.citation}
+                              {typeof txt === "string"
+                                ? txt
+                                    .replace(/[{}\"]/g, "")
+                                    .replace("role: null, citation: ", "")
+                                : txt.citation}
                             </span>
                           ))}
                         </div>
