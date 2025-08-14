@@ -16,7 +16,7 @@ import type {
 } from "react";
 import { useRouter } from "next/router";
 import ReactTextareaAutosize from "react-textarea-autosize";
-import { RigthArrowIcon } from "../icons";
+import { RigthArrowIcon } from "../../../icons";
 
 import { baseURL, escapeRegExp } from "@app/utils";
 import { generateId } from "@app/utils/client";
@@ -158,11 +158,7 @@ export const SearchBox = forwardRef<SearchBoxRef | null, any>(function Search(
     }
   };
 
-  const onSearchSubmit = (
-    evt?: FormEvent<HTMLFormElement>,
-    field?: string,
-    value?: string
-  ) => {
+  const onSearchSubmit = (evt: FormEvent<HTMLFormElement> | MouseEvent) => {
     evt?.preventDefault();
 
     if (inputRef.current) {
@@ -180,7 +176,8 @@ export const SearchBox = forwardRef<SearchBoxRef | null, any>(function Search(
       //   inputRef.current.value = "";
     }
     //  !field prevents error when field is defined
-    if (!field && evt) {
+    if (evt.currentTarget instanceof HTMLFormElement) {
+      // if (!field && evt) {
       // if (evt) {
       const { currentTarget } = evt;
       currentTarget?.reset();
@@ -346,11 +343,7 @@ export const SearchBox = forwardRef<SearchBoxRef | null, any>(function Search(
                       value: suggestion.value,
                     });
                     setShouldLoadSuggestions(false);
-                    onSearchSubmit(
-                      e as any,
-                      suggestion.field,
-                      suggestion.value
-                    );
+                    onSearchSubmit(e as any);
                     // close the suggestion view
                     // if (!e.currentTarget.contains(e.target as Node)) {
                     //   setSuggestionsList([]);

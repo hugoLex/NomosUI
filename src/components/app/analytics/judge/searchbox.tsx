@@ -32,7 +32,7 @@ export interface SearchBoxRef {
 
 interface AutocompleteSuggestion {
   value: string;
-  field: "name" | "specialization" | "law_firm";
+  field: "name" | "legal_area" | "stance";
 }
 
 export const JudgeIndexSearchBox = forwardRef<SearchBoxRef | null, any>(
@@ -51,6 +51,8 @@ export const JudgeIndexSearchBox = forwardRef<SearchBoxRef | null, any>(
     const [selectedIndex, setSelectedIndex] = useState(-1);
     const [field_value, setField_value] = useState({ value: "", field: "" });
     const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
+    const [shouldLoadSuggestions, setShouldLoadSuggestions] = useState(true);
+
     const inputRef = useRef<HTMLTextAreaElement | null>(null);
     const suggestionRefs = useRef<(HTMLLIElement | null)[]>([]);
 
@@ -71,39 +73,43 @@ export const JudgeIndexSearchBox = forwardRef<SearchBoxRef | null, any>(
       setIsLoadingSuggestions(true);
       try {
         // Fetch suggestions for different fields
-        const [nameResults, specializationResults, lawFirmResults] =
+        const [nameResults, stanceResults, legalAreasResults] =
           await Promise.all([
-            axios.get(`${baseURL}/search/counsels/autocomplete`, {
+            axios.get(`${baseURL}/judges/search/autocomplete`, {
               params: { query, field: "name", limit: 3 },
             }),
-            axios.get(`${baseURL}/search/counsels/autocomplete`, {
-              params: { query, field: "specialization", limit: 3 },
+            axios.get(`${baseURL}/judges/search/autocomplete`, {
+              params: { query, field: "stance", limit: 3 },
             }),
-            axios.get(`${baseURL}/search/counsels/autocomplete`, {
-              params: { query, field: "law_firm", limit: 3 },
+            axios.get(`${baseURL}/judges/search/autocomplete`, {
+              params: { query, field: "legal_area", limit: 3 },
             }),
           ]);
-        //   console.log(
-        //     "[nameResults, specializationResults, lawFirmResults] ",
-        //     JSON.stringify([nameResults, specializationResults, lawFirmResults])
-        //   );
+        console.log("nameResults", nameResults.data);
+        console.log("stanceResults", stanceResults.data);
+        console.log("legalAreasResults", legalAreasResults.data);
+        // console.log(
+        //   "[nameResults, stanceResults, legalAreasResults] ",
+        //   JSON.stringify([nameResults, stanceResults, legalAreasResults])
+        // );
         const suggestions: AutocompleteSuggestion[] = [
           ...(nameResults.data.suggestions?.map((s: { value: string }) => ({
             value: s.value,
             field: "name" as const,
           })) || []),
-          ...(specializationResults.data.suggestions?.map(
+          ...(stanceResults.data.suggestions?.map((s: { value: string }) => ({
+            value: s.value,
+            field: "stance" as const,
+          })) || []),
+          ...(legalAreasResults.data.suggestions?.map(
             (s: { value: string }) => ({
               value: s.value,
-              field: "specialization" as const,
+              field: "legal_area" as const,
             })
           ) || []),
-          ...(lawFirmResults.data.suggestions?.map((s: { value: string }) => ({
-            value: s.value,
-            field: "law_firm" as const,
-          })) || []),
         ];
-        console.log("search result", JSON.stringify(suggestions.slice(0, 3)));
+        // console.log("search result", suggestions);
+        // console.log("search result", JSON.stringify(suggestions.slice(0, 3)));
         // Remove duplicates and limit to 8 suggestions
         const uniqueSuggestions = suggestions
           .filter(
@@ -125,13 +131,13 @@ export const JudgeIndexSearchBox = forwardRef<SearchBoxRef | null, any>(
     };
 
     // Effect to fetch suggestions when search term changes
-    //   useEffect(() => {
-    //     if (searchTerm) {
-    //       fetchAutocompleteSuggestions(searchTerm);
-    //     } else {
-    //       setSuggestionsList([]);
-    //     }
-    //   }, [searchTerm]);
+    useEffect(() => {
+      if (searchTerm) {
+        fetchAutocompleteSuggestions(searchTerm);
+      } else {
+        setSuggestionsList([]);
+      }
+    }, [searchTerm]);
 
     // Function to handle suggestion selection
     const handleSuggestionSelect = (suggestion: AutocompleteSuggestion) => {
@@ -157,24 +163,35 @@ export const JudgeIndexSearchBox = forwardRef<SearchBoxRef | null, any>(
       }
     };
 
-    const onSearchSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    const onSearchSubmit = (
+      evt: FormEvent<HTMLFormElement> | MouseEvent,
+      field?: string
+    ) => {
       evt.preventDefault();
 
       const { currentTarget } = evt;
-
+      // console.log();
       if (inputRef.current) {
         router.push({
           pathname: "/analytics/judges",
           query: {
-            query: inputRef.current.value,
-            // [field_value.field]: inputRef.current.value,
+            // query: inputRef.current.value,
+            [field ? field : field_value.field ? field_value.field : "query"]:
+              inputRef.current.value,
+            // field_type: field
+            //   ? field
+            //   : field_value.field
+            //   ? field_value.field
+            //   : "query",
           },
         });
         setInputText(undefined);
         //   inputRef.current.value = "";
       }
-
-      currentTarget.reset();
+      //  if (evt && typeof (evt as any).currentTarget === "function") {
+      if (evt.currentTarget instanceof HTMLFormElement) {
+        evt.currentTarget.reset();
+      }
       setSuggestionsList([]);
       setSelectedIndex(-1);
     };
@@ -240,6 +257,7 @@ export const JudgeIndexSearchBox = forwardRef<SearchBoxRef | null, any>(
     const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const value = e.target.value;
       setInputText(value);
+      setShouldLoadSuggestions(true);
       setSelectedIndex(-1); // Reset selection when typing
     };
 
@@ -256,15 +274,15 @@ export const JudgeIndexSearchBox = forwardRef<SearchBoxRef | null, any>(
       switch (field) {
         case "name":
           return "Name";
-        case "specialization":
-          return "Specialization";
-        case "law_firm":
-          return "Law Firm";
+        case "legal_area":
+          return "Legal area";
+        case "stance":
+          return "Judge stance";
         default:
           return field;
       }
     };
-    //   console.log("the field  ", searchTerm);
+    // console.log("the field  ", searchTerm);
     return (
       <div className="relative max-w-full w-full [700px]" id={lookupId}>
         <form
@@ -332,6 +350,9 @@ export const JudgeIndexSearchBox = forwardRef<SearchBoxRef | null, any>(
                         field: suggestion.field,
                         value: suggestion.value,
                       });
+                      setShouldLoadSuggestions(false);
+
+                      onSearchSubmit(e as any, suggestion.field);
                       // close the suggestion view
                       //   if (!e.currentTarget.contains(e.target as Node)) {
                       //     setSuggestionsList([]);

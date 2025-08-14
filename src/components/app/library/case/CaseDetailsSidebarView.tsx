@@ -25,7 +25,7 @@ const contentOutline: ContentOutline[] = [
 ];
 
 const actions = [
-  ["Issues for determination", "tab=issues"],
+  ["Full judgement", "tab=full_judgement"],
   ["Timeline and events", `right_cover_menu=${true}`],
   ["Chat with document", `right_cover_chatbot=${true}`],
 ];

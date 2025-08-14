@@ -65,7 +65,7 @@ export const benchAPISlice = injectEndpoints({
     >({
       query: ({ params }) => {
 
-        // console.log("The query param from judge's endpoint", params)
+        console.log("The query param from judge's endpoisnt", params)
         return `/judges/search?${params}`
       },
       providesTags: ["Analytics", "Judge"],
@@ -76,6 +76,17 @@ export const benchAPISlice = injectEndpoints({
       providesTags: ["Analytics", "Judge"],
     }),
 
+    getAllLegalAreas: builder.query<
+      { user_id: string, legal_areas: string[] }, any
+    // Omit<GetCounselAppearancesRequest, "counsel_id">
+    >({
+      query: () => {
+
+        // console.log("The query params", params)
+        return `/judges/search/legal-areas`
+      },
+      // providesTags: ["Analytics", "Counsel"],
+    }),
     getAllCounsel: builder.query<
       TCounselResponse,
       { params: string }
@@ -190,7 +201,9 @@ export const {
   useGetCounselAnalyticsQuery,
   useGetAllCounselQuery,
   useGetAllJudgeQuery,
-  useDeleteChatWithDocumentMutation
+  useDeleteChatWithDocumentMutation,
+  useGetAllLegalAreasQuery
+
 } = benchAPISlice;
 // GET /api/judges/list                    # Get all judges
 // GET /api/judges/list?page=1&court_id=1&year=2023  # With filters

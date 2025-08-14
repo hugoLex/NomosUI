@@ -9,7 +9,10 @@ import React, {
 import Link from "next/link";
 import Image from "next/image";
 import { GiSplash } from "react-icons/gi";
-import { useGetAllJudgeQuery } from "@app/store/services/analyticsSlice";
+import {
+  useGetAllJudgeQuery,
+  useGetAllLegalAreasQuery,
+} from "@app/store/services/analyticsSlice";
 import {
   ErrorView404,
   LoadingSpinner,
@@ -24,7 +27,7 @@ import { HiMiniPlus } from "react-icons/hi2";
 import { AppLayoutContext } from "@app/components/layout";
 import { useRouter } from "next/router";
 import { Head } from "@app/components/ui";
-import { SearchBoxRef } from "@app/components/shared/SearchBoxLegalAnalysis";
+import { SearchBoxRef } from "@app/components/app/analytics/counsel/SearchBoxLegalAnalysis";
 import { JudgeIndexSearchBox } from "./searchbox";
 import useDebounce from "@app/hooks/useDebounce";
 import { useSearchParams } from "next/navigation";
@@ -34,9 +37,9 @@ import { DashboardSkeletonLoader } from "@app/components/shared/DashboardSkeleto
 import { extractAndWrapWords } from "../judegCounselmark";
 type TJudgeFilterState = {
   query?: string;
-  case_title?: string;
-  law_firm?: string;
-  specialization?: string;
+  // case_title?: string;
+  legal_area?: string;
+  stance?: string;
   page: number;
   limit?: number;
 };
@@ -46,6 +49,10 @@ const AllJudgesView = () => {
   // console.log("state of ref", ref);
   const router = useRouter();
   const newQuery = useSearchParams().get("query");
+  const field_type = useSearchParams().get("field_type");
+  const legal_areaQ = useSearchParams().get("legal_area");
+  const stanceQ = useSearchParams().get("stance");
+
   const { setReferrer } = useContext(AppLayoutContext);
   const [currentPage, setCurrentPage] = useState(1);
   const [inputText, setInputText] = useState<string | null>(null);
@@ -56,15 +63,21 @@ const AllJudgesView = () => {
   const [openFilter, setOpenFilter] = useState(false);
   const [filters, setFilters] = useState<TJudgeFilterState>({
     query: "",
-    case_title: "",
-    law_firm: "",
-    specialization: "",
+    // case_title: "",
+    legal_area: "",
+    stance: "",
     page: 1,
     limit: 10,
   });
-  const compiledQuery = `query=${filters.query}&case_title=${filters.case_title}&law_firm=${filters.law_firm}&specialization=${filters.specialization}&page=${filters.page}&limit=${filters.limit}`;
+  const compiledQuery = Object.entries(filters)
+    .filter(
+      ([key, value]) => value !== null && value !== undefined && value !== ""
+    )
+    .map(([key, value]) => `${key}=${value}`)
+    .join("&");
+  // const compiledQuery = `query=${filters.query}&legal_area=${filters.legal_area}&stance=${filters.stance}&page=${filters.page}&limit=${filters.limit}`;
 
-  const { isError, isFetching, isLoading, data } = useGetAllJudgeQuery(
+  const { isError, isFetching, isLoading, data, error } = useGetAllJudgeQuery(
     // searchTerm
     //   ? {
     //       params: `query=${searchTerm}`,
@@ -74,7 +87,8 @@ const AllJudgesView = () => {
     //     }
     !openFilter ? { params: compiledQuery } : skipToken
   );
-  // console.log("Data from judges", data);
+  console.log("compiled query Data from judges", error, compiledQuery);
+  // console.log("allLegalAreas Data from judges", allLegalAreas);
   // console.log("Data from judges", JSON.stringify(data && data.judges[0]));
   // Update the accumulated data when new data is fetched
   useEffect(() => {
@@ -90,14 +104,26 @@ const AllJudgesView = () => {
 
     // setCurrentPage((prevPage) => prevPage + 1); // Increment page number
   };
+  // useEffect(() => {
+  //   if (field_type && newQuery) {
+  //     console.log("field_type", field_type, "filter value", filters);
+  //     setFilters((prev) => ({
+  //       ...prev,
+  //       [field_type]: newQuery || filters.query,
+  //     }));
+  //   }
+  // }, [field_type]);
+  // }, [newQuery,field_type]);
   useEffect(() => {
-    setFilters((prev) => ({ ...prev, query: newQuery || filters.query }));
-    // setInputText(newQuery);
-    // if (!newQuery) {
-    //   UpdateUrlParams("query", "a");
-    //   // setInputText("");
-    // }
-  }, [newQuery]);
+    const query = searchParams.get("name") || searchParams.get("query") || "";
+    // const query = searchParams.get("query") || "";
+    const legal_area = searchParams.get("legal_area") || "";
+    const stance = searchParams.get("stance") || "";
+    const page = Number(searchParams.get("page") || 1);
+    const limit = Number(searchParams.get("limit") || 10);
+
+    setFilters((prev) => ({ query, legal_area, stance, page, limit }));
+  }, [searchParams]);
 
   if (isLoading) {
     // Early return for loading state
@@ -158,7 +184,7 @@ const AllJudgesView = () => {
                     onClick={() => {
                       setOpenFilter(!openFilter);
                     }}
-                    className="flex gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] "
+                    className="flex cursor-pointer gap-[8px] items-center p-[10px] bg-gray-100 rounded-[5px] "
                   >
                     {/* <svg
                       width="16"
@@ -173,7 +199,7 @@ const AllJudgesView = () => {
                       />
                     </svg> */}
 
-                    <div className="relative  w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
+                    <div className="relative   w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
                       <Image
                         width={16}
                         height={16}
@@ -189,9 +215,9 @@ const AllJudgesView = () => {
                       // setInputText("a");
                       setFilters({
                         query: "",
-                        case_title: "",
-                        law_firm: "",
-                        specialization: "",
+                        // case_title: "",
+                        legal_area: "",
+                        stance: "",
                         page: 1,
                         limit: 10,
                       });
@@ -289,8 +315,8 @@ type JudgeFilterProps = {
 // type TJudgeFilterState = {
 //   query?: string;
 //   case_title?: string;
-//   law_firm?: string;
-//   specialization?: string;
+//   legal_area?: string;
+//   stance?: string;
 //   page?: number;
 //   limit?: number;
 // };
@@ -312,6 +338,7 @@ const JudgeFilter: React.FC<JudgeFilterProps> = ({
     }));
   };
   const { UpdateUrlParams, router } = useQueryToggler();
+  const { data: allLegalAreas } = useGetAllLegalAreasQuery("");
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onFilter(filters);
@@ -319,7 +346,27 @@ const JudgeFilter: React.FC<JudgeFilterProps> = ({
     // UpdateUrlParams("", queryString);
     setOpenFilter((openFilter) => !openFilter);
   };
-
+  const legalareasfetched = allLegalAreas?.legal_areas || [
+    "Administrative Law",
+    "Admiralty Law",
+    "Alternative Dispute Resolution",
+    "Appellate Practice",
+    "Appellate Practice and Procedure",
+    "Association Law",
+    "Banking and Finance Law",
+    "Banking Law",
+    "Civil Procedure",
+    "Commercial Law",
+    "Company Law",
+    "Constitutional Law",
+    "Contract Law",
+    "Criminal Law",
+    "Criminal Law and Procedure",
+    "Customary Law",
+    "Defamation",
+    "Education Law",
+    "Election Law",
+  ];
   return (
     <form
       onSubmit={handleSubmit}
@@ -334,34 +381,59 @@ const JudgeFilter: React.FC<JudgeFilterProps> = ({
         className="border rounded px-3 py-2 w-full"
       />
 
-      <input
+      {/* <input
         type="text"
         name="case_title"
         value={filters.case_title}
         onChange={handleChange}
         placeholder="Filter by case title"
         className="border rounded px-3 py-2 w-full"
-      />
+      /> */}
 
-      <input
+      {/* <input
         type="text"
-        name="law_firm"
-        value={filters.law_firm}
+        name="legal_area"
+        value={filters.legal_area}
         onChange={handleChange}
-        placeholder="Filter by court"
+        placeholder="Filter by area of law"
         className="border rounded px-3 py-2 w-full"
-      />
-
-      <input
-        type="text"
-        name="specialization"
-        value={filters.specialization}
+      /> */}
+      <select
+        name="legal_area"
+        value={filters.legal_area}
         onChange={handleChange}
-        placeholder="Filter by specialization"
         className="border rounded px-3 py-2 w-full"
-      />
+      >
+        <option value="">Filter by area of law</option>
+        {legalareasfetched.map((area) => (
+          <option key={area} value={area}>
+            {area}
+          </option>
+        ))}
+      </select>
 
       <div className="flex items-center gap-2">
+        {/* <input
+          type="text"
+          name="stance"
+          value={filters.stance}
+          onChange={handleChange}
+          placeholder="Filter by stance"
+          className="border rounded px-3 py-2 w-full"
+        /> */}
+        <select
+          name="stance"
+          value={filters.stance}
+          onChange={handleChange}
+          className="border rounded px-3 py-2 w-full"
+        >
+          <option value="">Filter judge&apos;s stance</option>
+          {["DISSENTED", "LEAD", "CONCURRED"].map((stance) => (
+            <option className="capitalize" key={stance} value={stance}>
+              {stance}
+            </option>
+          ))}
+        </select>
         <label htmlFor="page" className="text-sm">
           Page
         </label>

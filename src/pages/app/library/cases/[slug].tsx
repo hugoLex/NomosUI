@@ -27,12 +27,18 @@ import FulljudgementModal from "@app/components/app/library/case/fulljudgementMo
 import { useParams, usePathname } from "next/navigation";
 import { skipToken } from "@reduxjs/toolkit/query";
 import CaseIssuesForDeterminatonComponent from "@app/components/app/library/case/CaseIssuesDeter";
+import SectionFullJudgement from "@app/components/app/library/case/SectionFullJudgement";
 
 const tabItems: TabItem[] = [
   {
     active: true,
     id: "case",
-    label: "Case details",
+    label: "Case overview",
+  },
+  {
+    active: false,
+    id: "full_judgement",
+    label: "Full Judgement",
   },
   {
     active: false,
@@ -66,6 +72,7 @@ const Page: NextPageWithLayout = () => {
   const { UpdateUrlParams, searchParams, pathname } = useQueryHandler();
   const caseTitleName = searchParams.get("title");
   const caseTab = searchParams.get("tab");
+  // const full_judgement = searchParams.get("full_judgement");
   const router = useRouter();
   const { referrer } = useContext(AppLayoutContext);
   const new_case_id_slug = useParams();
@@ -257,6 +264,16 @@ const Page: NextPageWithLayout = () => {
           // id={caseId}
 
           // case_title={caseTitle}
+        />
+      )}
+      {tabId === "full_judgement" && (
+        <SectionFullJudgement
+          innerRef={h1Ref}
+          isTitle={!isH1Visible}
+          // full_judgement={caseDocument?.judgement}
+          caseDocument={caseDocument}
+
+          // setClickedQuote={setClickedQuote}
         />
       )}
     </Fragment>

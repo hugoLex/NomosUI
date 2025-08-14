@@ -149,47 +149,12 @@ const CaseView = ({
                   </span>
                 </div>
 
-                <div>
-                  <h4 className="uppercase block font-poppins text-gray-500 text-sm font-medium mb-1">
-                    Causes of action :
-                  </h4>
-                  {caseDocument?.causes_of_action &&
-                    caseDocument.causes_of_action.length > 0 && (
-                      <div className="flex items-center gap-2 flex-wrap mb-4">
-                        {caseDocument?.causes_of_action?.map(
-                          (cause_of_action) => (
-                            <span
-                              className={`text-[#008E00] bg-[#008E00]/10 px-3 py-1 rounded  text-center text-xs font-normal `}
-                              key={cause_of_action}
-                              title="Cause of action"
-                            >
-                              {cause_of_action}
-                            </span>
-                          )
-                        )}
-                      </div>
-                    )}
-                  {/* <h4 className="font-normal text-base mb-2">
-                    Subject matter:
-                  </h4> */}
-                  {/* {caseDocument.subject_matter &&
-                    caseDocument.subject_matter.length > 0 && (
-                      <div className="flex items-center gap-2 flex-wrap mb-4">
-                        {caseDocument?.subject_matter?.map((subjectMatter) => (
-                          <span
-                            className={` px-2 py-[0.125rem] bg-stone-100 rounded text-center text-teal-900 text-sm font-medium`}
-                            key={subjectMatter}
-                            title="Subject matter"
-                          >
-                            {subjectMatter}
-                          </span>
-                        ))}
-                      </div>
-                    )} */}
-                </div>
-
                 {caseDocument.case_summary && (
-                  <div id="summary" ref={(el) => (sectionRefs.current[0] = el)}>
+                  <div
+                    className="hidden"
+                    id="summary"
+                    ref={(el) => (sectionRefs.current[0] = el)}
+                  >
                     <SummaryComponent
                       toogler={() => setopen(!open)}
                       isCollapsed={open}
@@ -264,13 +229,68 @@ const CaseView = ({
                           </button> */}
                         </div>
                       }
-                      isCollapsible={true}
+                      isCollapsible={false}
                     />
                   </div>
                 )}
+                <div
+                  // style={
+                  //   open
+                  //     ? { maxHeight: "none" }
+                  //     : {
+                  //         overflow: "hidden",
+                  //         display: "-webkit-box",
+                  //         WebkitBoxOrient: "vertical",
+                  //         WebkitLineClamp: 9,
+                  //       }
+                  // }
+                  className={` text-justify relative  
+                            ${
+                              ""
+                              // open ? null : "line-clamp-6"
+                            }
+                           `}
+                >
+                  <h1 className="pt- [12px] mt- [30px] mb-2 font-gilda_Display text-xx text-lexblue font-semibold">
+                    Summary
+                  </h1>
 
-                <hr className="my-8" />
-                {caseDocument?.judgement && (
+                  <h3 className="text-sm text- lexblue font-normal mb-2">
+                    {summarySubHeading("Issues for determination:")}
+
+                    {
+                      (caseDocument?.case_summary as any)
+                        ?.issues_for_determination
+                    }
+                  </h3>
+                  <h3 className="text-sm text- lexblue font-normal mb-2">
+                    {summarySubHeading("Holding and reasoning:")}
+
+                    {(caseDocument?.case_summary as any)?.holding_and_reasoning}
+                  </h3>
+                  <h3 className="text-sm text- lexblue font-normal mb-2">
+                    {summarySubHeading("Originating court and claims:")}
+
+                    {
+                      (caseDocument?.case_summary as any)
+                        ?.originating_court_and_claims
+                    }
+                  </h3>
+                  <h3 className="text-sm text- lexblue font-normal mb-2">
+                    {summarySubHeading("Procedural history:")}
+                    {(caseDocument?.case_summary as any)?.procedural_history}
+                  </h3>
+                  <h3 className="text-sm text- lexblue font-normal mb-2">
+                    {summarySubHeading("Disposition:")}
+
+                    {(caseDocument?.case_summary as any)?.disposition}
+                  </h3>
+                  {/* {!open && (
+                    <div className="w-full absolute bottom-0 h-[52px] bg-[linear-gradient(transparent_0px,rgba(255,255,255,0.9)_52px,#fff_80px)]"></div>
+                  )} */}
+                </div>
+                {/* <hr className="my-8" /> */}
+                {/* {caseDocument?.judgement && (
                   <div
                     id="judgement"
                     ref={(el) => (sectionRefs.current[1] = el)}
@@ -280,11 +300,10 @@ const CaseView = ({
                       <PiGavelThin size={19} className="hidden " />
                       Judgement
                     </h4>
-                    {/* Render the full judgement with highlighted quoted part */}
+                    Render the full judgement with highlighted quoted part
                     <ProcessJudgmentContent content={caseDocument.judgement} />
-                    {/* <Markdown content={caseDocument.judgement} /> */}
                   </div>
-                )}
+                )} */}
                 <hr className="my-8" />
                 <div
                   ref={(el) => (sectionRefs.current[2] = el)}
@@ -303,14 +322,17 @@ const CaseView = ({
                 effective and capable of execution, and is absolute, complete, and
                 certain. */}
 
-                    {caseDocument?.ratio_decidendi?.map((itx, idx) => (
-                      <p key={idx} className="text-[.88rem] my-1">
-                        <LuDot
-                          className={`text-[#245b91] text-[25px] inline-block`}
-                        />
-                        {itx}
-                      </p>
-                    ))}
+                    {caseDocument?.ratio_decidendi?.map((itx, idx) => {
+                      console.log("ratios", caseDocument?.ratio_decidendi);
+                      return (
+                        <p key={idx} className="text-[.88rem] my-1">
+                          <LuDot
+                            className={`text-[#245b91] text-[25px] inline-block`}
+                          />
+                          {itx}
+                        </p>
+                      );
+                    })}
                   </div>
 
                   {/* {caseDetail.ratio_texts.map((itx, idx) => (

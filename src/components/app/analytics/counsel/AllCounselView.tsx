@@ -25,7 +25,7 @@ import { Head, Loader } from "@app/components/ui";
 import {
   SearchBox,
   SearchBoxRef,
-} from "@app/components/shared/SearchBoxLegalAnalysis";
+} from "@app/components/app/analytics/counsel/SearchBoxLegalAnalysis";
 import { skipToken } from "@reduxjs/toolkit/query";
 import useQueryToggler from "@app/hooks/useQueryHandler";
 import { DashboardSkeletonLoader } from "@app/components/shared/DashboardSkeletonLoader";
