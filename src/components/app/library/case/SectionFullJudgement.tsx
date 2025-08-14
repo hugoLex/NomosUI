@@ -1,6 +1,8 @@
 import { Markdown } from "@app/components/shared";
 import { TCaseDocument } from "@app/types";
 import React from "react";
+import { LuDot } from "react-icons/lu";
+
 type SectionFullJudgementProps = {
   full_judgement?: string | null | undefined;
   innerRef?: React.MutableRefObject<any>;
@@ -34,6 +36,23 @@ function SectionFullJudgement({
             >
               {caseDocument.case_title}
             </h1>
+            <div className="inline-flex flex-wrap group items-center mb-4 gap-2 font-medium">
+              <span className="relative text-[0.875rem] text-black/80   py-1 text-sm">
+                {caseDocument.court}
+              </span>
+              <LuDot className={`text-[#245b91] text-[25px]`} />
+              <span className="relative  text-[0.875rem] text-black/80   py-1 text-sm">
+                {caseDocument.date_decided}
+              </span>
+              <LuDot className={`text-[#245b91] text-[25px] `} />
+              <span className="relative  text-[0.875rem] text-black/80  px-2. py-1 text-sm">
+                {caseDocument.suit_number}
+              </span>
+              <LuDot className={`text-[#245b91] text-[25px] `} />
+              <span className="relative text-[0.875rem] text-black/80   py-1 text-sm">
+                {caseDocument.lex_citation}
+              </span>
+            </div>
             <h4 className="uppercase block font-poppins text-gray-500 text-sm font-medium mb-1">
               Causes of action :
             </h4>

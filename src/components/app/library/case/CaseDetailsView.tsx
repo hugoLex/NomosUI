@@ -131,7 +131,7 @@ const CaseView = ({
                   {caseDocument.case_title}
                 </h1>
 
-                <div className="inline-flex flex-wrap group items-center mb-4 gap-2 font-medium">
+                {/* <div className="inline-flex flex-wrap group items-center mb-4 gap-2 font-medium">
                   <span className="relative text-[0.875rem] text-black/80   py-1 text-sm">
                     {caseDocument.court}
                   </span>
@@ -147,7 +147,7 @@ const CaseView = ({
                   <span className="relative text-[0.875rem] text-black/80   py-1 text-sm">
                     {caseDocument.lex_citation}
                   </span>
-                </div>
+                </div> */}
 
                 {caseDocument.case_summary && (
                   <div
