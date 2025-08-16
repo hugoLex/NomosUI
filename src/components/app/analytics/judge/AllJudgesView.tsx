@@ -1,6 +1,7 @@
 import React, {
   Fragment,
   Ref,
+  RefObject,
   useContext,
   useEffect,
   useRef,
@@ -35,6 +36,7 @@ import { skipToken } from "@reduxjs/toolkit/query";
 import useQueryToggler from "@app/hooks/useQueryHandler";
 import { DashboardSkeletonLoader } from "@app/components/shared/DashboardSkeletonLoader";
 import { extractAndWrapWords } from "../judegCounselmark";
+import { DummyAllLegalAreas } from "@app/utils";
 type TJudgeFilterState = {
   query?: string;
   // case_title?: string;
@@ -54,7 +56,7 @@ const AllJudgesView = () => {
   const stanceQ = useSearchParams().get("stance");
 
   const { setReferrer } = useContext(AppLayoutContext);
-  const [currentPage, setCurrentPage] = useState(1);
+
   const [inputText, setInputText] = useState<string | null>(null);
   const [allData, setAllData] = useState<[] | AllJudgesListResponseT["judges"]>(
     []
@@ -171,6 +173,7 @@ const AllJudgesView = () => {
                 />
                 {openFilter && (
                   <JudgeFilter
+                    openFilter={openFilter}
                     onFilter={() => {}}
                     filters={filters}
                     setFilters={setFilters}
@@ -310,6 +313,7 @@ type JudgeFilterProps = {
   setFilters: React.Dispatch<React.SetStateAction<TJudgeFilterState>>;
   setOpenFilter: React.Dispatch<React.SetStateAction<boolean>>;
   queryString: string;
+  openFilter: boolean;
 };
 
 // type TJudgeFilterState = {
@@ -327,6 +331,7 @@ const JudgeFilter: React.FC<JudgeFilterProps> = ({
   setFilters,
   setOpenFilter,
   queryString,
+  openFilter,
 }) => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -346,29 +351,42 @@ const JudgeFilter: React.FC<JudgeFilterProps> = ({
     // UpdateUrlParams("", queryString);
     setOpenFilter((openFilter) => !openFilter);
   };
-  const legalareasfetched = allLegalAreas?.legal_areas || [
-    "Administrative Law",
-    "Admiralty Law",
-    "Alternative Dispute Resolution",
-    "Appellate Practice",
-    "Appellate Practice and Procedure",
-    "Association Law",
-    "Banking and Finance Law",
-    "Banking Law",
-    "Civil Procedure",
-    "Commercial Law",
-    "Company Law",
-    "Constitutional Law",
-    "Contract Law",
-    "Criminal Law",
-    "Criminal Law and Procedure",
-    "Customary Law",
-    "Defamation",
-    "Education Law",
-    "Election Law",
-  ];
+
+  const legalareasfetched = allLegalAreas?.legal_areas || DummyAllLegalAreas;
+
+  const ref: RefObject<HTMLFormElement> = useRef(null);
+
+  useEffect(() => {
+    // console.log("Counsel filter component mounted");
+
+    // if (!openFilter) return; // If filter is not open, do nothing
+
+    // Add a small delay to prevent immediate closure when opening
+    const timeoutId = setTimeout(() => {
+      function handleClickOutside(event: MouseEvent) {
+        // console.log("Clicked outside the component", openFilter);
+
+        if (ref.current && !ref.current.contains(event.target as Node)) {
+          setOpenFilter(false);
+        }
+      }
+
+      document.addEventListener("click", handleClickOutside);
+
+      // Store the cleanup function in a way we can access it
+      return () => {
+        document.removeEventListener("click", handleClickOutside);
+      };
+    }, 100); // Small delay to allow the component to render
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [openFilter, setOpenFilter]);
+
   return (
     <form
+      ref={ref}
       onSubmit={handleSubmit}
       className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-white shadow rounded-xl"
     >

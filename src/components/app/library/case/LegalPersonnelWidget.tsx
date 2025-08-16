@@ -93,7 +93,7 @@ const LegalPersonnelWidget = ({ data }: { data: PersonnalData }) => {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Link
-                          // target="_blank"
+                          target="_blank"
                           // href={`/analytics/judges?judgeId=${judge.id}&judge=${judge.name}`}
                           href={`/analytics/judges?judgeId=${judge.id}&judge=${judge.name}`}
                           className="flex items-center justify-between py-1.5 px-2 text-inherit text-sm text-primary"

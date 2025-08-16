@@ -25,6 +25,7 @@ import {
 } from "@app/components/shared/";
 import { AppLayoutContext } from "@app/components/layout";
 import CounselProfileDashboard from "./DomainExpertiseCounsel";
+import { LuExternalLink } from "react-icons/lu";
 
 const CounselDetailsView = () => {
   const { referrer } = useContext(AppLayoutContext);
@@ -213,10 +214,41 @@ const CounselDetailsView = () => {
                       </div>
                       <h2
                         onClick={() => close("profile", "true")}
-                        className="text-[.875rem] cursor-pointer text-primary font-bold flex justify-center mt-[32px] items-center gap-[5px]"
+                        className="text-[.875rem] leading-normal cursor-pointer text-primary font-bold flex justify-center mt-[32px] items-center gap-[5px]"
                       >
                         View Profile
                       </h2>
+                      <div className="flex items-center justify-center mt-[20px]">
+                        <div
+                          onClick={() =>
+                            UpdateUrlParams("counsel_stats", "true")
+                          }
+                          // target="_blank"
+                          // href={`/library/cases/${caseDocument?.document_id}?documentId=${caseDocument?.document_id}&title=${caseDocument?.case_title}&${param}`}
+                          // href={`/library/cases?caseId=${"caseDocument?.document_id"}&action=${btn}`}
+                          // key={btx}
+                          className="bg-[#EBF2FF] cursor-pointer text-sm text-primary py-2 px-5 rounded gap-2 flex items-center justify-between"
+                        >
+                          <div className="flex items-center gap-[5px]">
+                            <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
+                              <Image
+                                width={16}
+                                height={16}
+                                src={`/images/icons/${"analytics-02-stroke-rounded.svg"}`}
+                                alt={"analytics-02-stroke-rounded"}
+                              />
+                            </div>
+                            <h3 className="text-lexblue text-base font-poppins font-normal cursor-pointer">
+                              Counsel statistics
+                            </h3>{" "}
+                          </div>
+                          <span
+                          // href={`/library/cases/${caseDocument?.document_id}?title=${caseDocument?.case_title}&${param}`}
+                          >
+                            <LuExternalLink className="w-4 h-4 text-primary" />
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -271,10 +271,50 @@ const JudgeDetailsView = () => {
                     <h2
                       onClick={() => close("profile", "true")}
                       // href={`/${""}`}
-                      className="text-[.875rem] cursor-pointer text-primary font-bold flex justify-center mt-[32px] items-center gap-[5px]"
+                      className="text-[.875rem] leading-normal cursor-pointer text-primary font-bold flex justify-center mt-[32px] items-center gap-[5px]"
                     >
                       View Profile
                     </h2>
+                    <div className="mt-[20px] flex gap-5 justify-between items-center border-b border-solid border-gray-200 pb-3 mb-3">
+                      <div className="flex items-center gap-[5px]">
+                        <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
+                          <Image
+                            width={16}
+                            height={16}
+                            src={`/images/icons/${"analytics-02-stroke-rounded.svg"}`}
+                            alt={"analytics-02-stroke-rounded"}
+                          />
+                        </div>
+                        <h3
+                          onClick={() =>
+                            UpdateUrlParams("judicial_stats", "true")
+                          }
+                          className="text-lexblue text-base font-poppins font-normal cursor-pointer"
+                        >
+                          {/* Judge  */}
+                          Statistics
+                        </h3>{" "}
+                      </div>
+                      <div className="flex items-center gap-[5px]">
+                        <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
+                          {/* <Image
+                        width={16}
+                        height={16}
+                        src={`/images/icons/${"analytics-02-stroke-rounded.svg"}`}
+                        alt={"analytics-02-stroke-rounded"}
+                      /> */}
+                          <TrendingUp className="h-4 w-4" />
+                        </div>
+                        <h3
+                          onClick={() =>
+                            UpdateUrlParams("legal_domain", "true")
+                          }
+                          className="text-lexblue text-base font-poppins font-normal cursor-pointer"
+                        >
+                          Domain expertise
+                        </h3>{" "}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -292,39 +332,6 @@ const JudgeDetailsView = () => {
                   </div>
                 )}
                 <div className="flex gap-5 items-center border-b border-solid border-gray-200 pb-3 mb-3">
-                  <div className="flex items-center gap-[5px]">
-                    <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
-                      <Image
-                        width={16}
-                        height={16}
-                        src={`/images/icons/${"analytics-02-stroke-rounded.svg"}`}
-                        alt={"analytics-02-stroke-rounded"}
-                      />
-                    </div>
-                    <h3
-                      onClick={() => UpdateUrlParams("judicial_stats", "true")}
-                      className="text-lexblue text-base font-poppins font-normal cursor-pointer"
-                    >
-                      Judge statistics
-                    </h3>{" "}
-                  </div>
-                  <div className="flex items-center gap-[5px]">
-                    <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
-                      {/* <Image
-                        width={16}
-                        height={16}
-                        src={`/images/icons/${"analytics-02-stroke-rounded.svg"}`}
-                        alt={"analytics-02-stroke-rounded"}
-                      /> */}
-                      <TrendingUp className="h-4 w-4" />
-                    </div>
-                    <h3
-                      onClick={() => UpdateUrlParams("legal_domain", "true")}
-                      className="text-lexblue text-base font-poppins font-normal cursor-pointer"
-                    >
-                      Domain expertise
-                    </h3>{" "}
-                  </div>
                   {/* <select
                     className="appearance-auto  pr-4 outline-none"
                     name="sortBy"

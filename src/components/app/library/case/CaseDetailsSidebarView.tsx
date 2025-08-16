@@ -25,7 +25,7 @@ const contentOutline: ContentOutline[] = [
 ];
 
 const actions = [
-  ["Full judgement", "tab=full_judgement"],
+  ["Judgement", "tab=full_judgement"],
   ["Timeline and events", `right_cover_menu=${true}`],
   ["Chat with document", `right_cover_chatbot=${true}`],
 ];
@@ -150,6 +150,7 @@ const CaseDetailsSidebarView = (props: {
                 <ul className="space-y-2">
                   {actions.map(([btn, param], btx) => (
                     <Link
+                      // target="_blank"
                       href={`/library/cases/${caseDocument?.document_id}?documentId=${caseDocument?.document_id}&title=${caseDocument?.case_title}&${param}`}
                       // href={`/library/cases?caseId=${"caseDocument?.document_id"}&action=${btn}`}
                       key={btx}

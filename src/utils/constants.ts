@@ -48,6 +48,29 @@ export const mappedAlphabets: { [key: number]: string } = {
   15: "p",
 };
 
+
+export const DummyAllLegalAreas = [
+  "Administrative Law",
+  "Admiralty Law",
+  "Alternative Dispute Resolution",
+  "Appellate Practice",
+  "Appellate Practice and Procedure",
+  "Association Law",
+  "Banking and Finance Law",
+  "Banking Law",
+  "Civil Procedure",
+  "Commercial Law",
+  "Company Law",
+  "Constitutional Law",
+  "Contract Law",
+  "Criminal Law",
+  "Criminal Law and Procedure",
+  "Customary Law",
+  "Defamation",
+  "Education Law",
+  "Election Law",
+];
+
 export const dummyCasesResult: CaseResults = {
   search_id: "9d182815-5515-437c-bc85-66de4619fcc7",
   filter_elements: {
