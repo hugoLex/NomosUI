@@ -20,6 +20,7 @@ import { JudgeProfileResponseT } from "@app/types/analytics";
 import JudicialMetricsDashboard from "./Judgestats";
 import LegalDomainDashboard from "./DomainExpertise";
 import { TrendingUp } from "lucide-react";
+import { LuExternalLink } from "react-icons/lu";
 
 type stanceT = "Concurred" | "Dissented";
 
@@ -231,7 +232,7 @@ const JudgeDetailsView = () => {
                       }}
                     />{" "}
                   </Link>
-                  <div className="font-paytone mt-[50px] bg-[#F6F7F7] py-[32px] px-[20px] shadow-sm">
+                  <div className="font-paytone mt-[50px] bg-[#F6F7F7] pt-[32px] pb-[20px] px-[20px] shadow-sm">
                     <div className="relative rounded-full overflow-clip w-[130px] h-[130px] mx-auto">
                       <Image
                         className=""
@@ -275,7 +276,12 @@ const JudgeDetailsView = () => {
                     >
                       View Profile
                     </h2>
-                    <div className="mt-[20px] flex gap-5 justify-between items-center border-b border-solid border-gray-200 pb-3 mb-3">
+                  </div>
+                  <div className="mt-[20px]  gap-5 justify-between items-center border-b border-solid border-gray-200 pb-3 mb-3">
+                    <div
+                      onClick={() => UpdateUrlParams("judicial_stats", "true")}
+                      className="bg-[#EBF2FF] w-full cursor-pointer text-sm text-primary py-2 px-5 rounded gap-2 flex items-center justify-between"
+                    >
                       <div className="flex items-center gap-[5px]">
                         <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
                           <Image
@@ -285,16 +291,18 @@ const JudgeDetailsView = () => {
                             alt={"analytics-02-stroke-rounded"}
                           />
                         </div>
-                        <h3
-                          onClick={() =>
-                            UpdateUrlParams("judicial_stats", "true")
-                          }
-                          className="text-lexblue text-base font-poppins font-normal cursor-pointer"
-                        >
-                          {/* Judge  */}
-                          Statistics
+                        <h3 className="text-lexblue text-base font-poppins font-normal cursor-pointer">
+                          Judge Statistics
                         </h3>{" "}
                       </div>
+                      <span>
+                        <LuExternalLink className="w-4 h-4 text-primary" />
+                      </span>
+                    </div>
+                    <div
+                      onClick={() => UpdateUrlParams("legal_domain", "true")}
+                      className="mt-[5px] bg-[#EBF2FF] w-full cursor-pointer text-sm text-primary py-2 px-5 rounded gap-2 flex items-center justify-between"
+                    >
                       <div className="flex items-center gap-[5px]">
                         <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
                           {/* <Image
@@ -305,15 +313,13 @@ const JudgeDetailsView = () => {
                       /> */}
                           <TrendingUp className="h-4 w-4" />
                         </div>
-                        <h3
-                          onClick={() =>
-                            UpdateUrlParams("legal_domain", "true")
-                          }
-                          className="text-lexblue text-base font-poppins font-normal cursor-pointer"
-                        >
+                        <h3 className="text-lexblue text-base font-poppins font-normal cursor-pointer">
                           Domain expertise
                         </h3>{" "}
-                      </div>
+                      </div>{" "}
+                      <span>
+                        <LuExternalLink className="w-4 h-4 text-primary" />
+                      </span>
                     </div>
                   </div>
                 </div>

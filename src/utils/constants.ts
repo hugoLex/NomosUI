@@ -882,6 +882,7 @@ export const menuList: MenuLink[] = [
     children: [
       { label: "Judge index", path: "/judges" },
       { label: "Counsel index", path: "/counsels" },
+      { label: "Court index", path: "/courts" },
     ],
   },
   {

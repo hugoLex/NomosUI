@@ -393,7 +393,8 @@ const AllCounselView = () => {
                                     counsel?.match_context?.highlight
                                   )
                                 : counsel?.counsel_canonical_name
-                            }
+                            }{" "}
+                            {counsel?.counsel_title}
                             {/* {counsel.counsel_name} */}
                           </Link>
                           <h3 className="text-xs font-poppins font-normal text-lex-blue">

@@ -92,6 +92,7 @@ const CounselDetailsView = () => {
   const loadMore = () => {
     setCurrentPage((prevPage) => prevPage + 1); // Increment page number
   };
+  // console.log("counsel info", data);
   return (
     <>
       <Head title={`Counsel - ${counselName}`} />
@@ -184,7 +185,7 @@ const CounselDetailsView = () => {
                         h2Style: "text-[30px]",
                       }}
                     />
-                    <div className="font-paytone mt-[50px] bg-[#F6F7F7] py-[32px] px-[20px] shadow-sm">
+                    <div className="font-paytone mt-[50px] bg-[#F6F7F7] pt-[32px] pb-[20px] px-[20px] shadow-sm">
                       <div className="relative rounded-full overflow-clip w-[130px] h-[130px] mx-auto">
                         <Image
                           className=""
@@ -208,7 +209,8 @@ const CounselDetailsView = () => {
                         <div className="pl- [30px] basis-1/2 text-[#D71E30]">
                           <h6 className="block text-center">Loss</h6>
                           <h6 className="text-center text-[.875rem] ">
-                            {data.performance_metrics.win_rate}
+                            {100 -
+                              (Number(data.performance_metrics.win_rate) || 0)}
                           </h6>
                         </div>
                       </div>
@@ -218,36 +220,34 @@ const CounselDetailsView = () => {
                       >
                         View Profile
                       </h2>
-                      <div className="flex items-center justify-center mt-[20px]">
-                        <div
-                          onClick={() =>
-                            UpdateUrlParams("counsel_stats", "true")
-                          }
-                          // target="_blank"
-                          // href={`/library/cases/${caseDocument?.document_id}?documentId=${caseDocument?.document_id}&title=${caseDocument?.case_title}&${param}`}
-                          // href={`/library/cases?caseId=${"caseDocument?.document_id"}&action=${btn}`}
-                          // key={btx}
-                          className="bg-[#EBF2FF] cursor-pointer text-sm text-primary py-2 px-5 rounded gap-2 flex items-center justify-between"
-                        >
-                          <div className="flex items-center gap-[5px]">
-                            <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
-                              <Image
-                                width={16}
-                                height={16}
-                                src={`/images/icons/${"analytics-02-stroke-rounded.svg"}`}
-                                alt={"analytics-02-stroke-rounded"}
-                              />
-                            </div>
-                            <h3 className="text-lexblue text-base font-poppins font-normal cursor-pointer">
-                              Counsel statistics
-                            </h3>{" "}
+                    </div>
+                    <div className="flex items-center justify-center mt-[10px]">
+                      <div
+                        onClick={() => UpdateUrlParams("counsel_stats", "true")}
+                        // target="_blank"
+                        // href={`/library/cases/${caseDocument?.document_id}?documentId=${caseDocument?.document_id}&title=${caseDocument?.case_title}&${param}`}
+                        // href={`/library/cases?caseId=${"caseDocument?.document_id"}&action=${btn}`}
+                        // key={btx}
+                        className="bg-[#EBF2FF] w-full cursor-pointer text-sm text-primary py-2 px-5 rounded gap-2 flex items-center justify-between"
+                      >
+                        <div className="flex items-center gap-[5px]">
+                          <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
+                            <Image
+                              width={16}
+                              height={16}
+                              src={`/images/icons/${"analytics-02-stroke-rounded.svg"}`}
+                              alt={"analytics-02-stroke-rounded"}
+                            />
                           </div>
-                          <span
-                          // href={`/library/cases/${caseDocument?.document_id}?title=${caseDocument?.case_title}&${param}`}
-                          >
-                            <LuExternalLink className="w-4 h-4 text-primary" />
-                          </span>
+                          <h3 className="text-lexblue text-base font-poppins font-normal cursor-pointer">
+                            Counsel statistics
+                          </h3>{" "}
                         </div>
+                        <span
+                        // href={`/library/cases/${caseDocument?.document_id}?title=${caseDocument?.case_title}&${param}`}
+                        >
+                          <LuExternalLink className="w-4 h-4 text-primary" />
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -275,23 +275,6 @@ const CounselDetailsView = () => {
                       <option value={"Most recent"}>Most recent</option>
                       <option value={"Most popular"}>Most popular</option>
                     </select> */}
-
-                    <div className="flex items-center gap-[5px]">
-                      <div className="relative w-[16px] h-[16px] flex shrink-0 items-center justify-center size-4 text-powder_blue">
-                        <Image
-                          width={16}
-                          height={16}
-                          src={`/images/icons/${"analytics-02-stroke-rounded.svg"}`}
-                          alt={"analytics-02-stroke-rounded"}
-                        />
-                      </div>
-                      <h3
-                        onClick={() => UpdateUrlParams("counsel_stats", "true")}
-                        className="text-lexblue text-base font-poppins font-normal cursor-pointer"
-                      >
-                        Counsel statistics
-                      </h3>{" "}
-                    </div>
 
                     <span className="ml-auto text-[#008E00] bg-[#008E00]/10 text-xs px-3 py-1 rounded">{`${
                       data.performance_metrics.total_cases > 1

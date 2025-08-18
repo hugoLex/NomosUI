@@ -143,13 +143,39 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
         const textArea = inputRef.current;
         textArea.value = dataField as string;
         textArea.focus();
-
+        // this is trigger the state change and also makes the input text available in inputText state @chibs
+        setInputText(dataField as string);
         (async () => {
           try {
             await axios.post(
               `${baseURL}/query-assist/record-usage/${id}?query=${dataField}`,
               {}
             );
+          } catch (error) {
+            console.log(error);
+          }
+        })();
+
+        setIsSearchSuggestions(false);
+      }
+    };
+    const handleSuggestionSelect = (
+      // e: MouseEvent<HTMLLIElement>,
+      dataField: Suggestion
+      // id: string
+    ) => {
+      if (inputRef.current) {
+        const textArea = inputRef.current;
+        textArea.value = dataField?.text;
+        textArea.focus();
+        // this is trigger the state change and also makes the input text available in inputText state @chibs
+        setInputText(dataField?.text);
+        (async () => {
+          try {
+            // await axios.post(
+            //   `${baseURL}/query-assist/record-usage/${dataField?.id}?query=${dataField?.text}`,
+            //   {}
+            // );
           } catch (error) {
             console.log(error);
           }
@@ -198,10 +224,13 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
 
         case "Enter":
           e.preventDefault();
-          onSearchSubmit(e);
           if (selectedIndex >= 0 && selectedIndex < suggestionsList.length) {
-            // handleSuggestionSelect(suggestions[selectedIndex]);
+            handleSuggestionSelect(
+              suggestionsList[selectedIndex]
+              // selectedIndex.toString()
+            );
           }
+          onSearchSubmit(e);
           break;
 
         case "Escape":
@@ -274,6 +303,7 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
         </div>
       );
     }
+    console.log("search box picked index", selectedIndex);
     return (
       <div className="relative" id={lookupId}>
         <form
@@ -405,12 +435,20 @@ export const SearchBox = forwardRef<HTMLTextAreaElement | null, any>(
                       onClick={(evt) =>
                         insertSuggestionIntiInput(evt, text, sId)
                       }
-                      className="flex justify-between items-center text-sm hover:bg-slate-200/50 hover:rounded-sm p-1"
+                      className={`flex justify-between ${
+                        selectedIndex === sdx
+                          ? "bg-primary/80 text-white"
+                          : null
+                      } items-center text-sm hover:bg-slate-200/50 hover:rounded-sm p-1`}
                     >
                       <span>{text}</span>
-                      {type === "case_title" && (
+                      {sId.startsWith("case") && (
+                        // old logic not from mannie411
+                        // {type === "case_title" && (
                         <Link
-                          href={`/library/cases/${sId}?title=${text}&tab=case`}
+                          href={`/library/cases/${sId.substring(
+                            5
+                          )}?title=${text}&tab=case`}
                           className="px-1 py-0.5 inline-flex items-center bg-[#EBF2FF] text-primary rounded-sm "
                         >
                           view

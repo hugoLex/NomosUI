@@ -89,7 +89,7 @@ const AllJudgesView = () => {
     //     }
     !openFilter ? { params: compiledQuery } : skipToken
   );
-  console.log("compiled query Data from judges", error, compiledQuery);
+  // console.log("compiled query Data from judges", error, compiledQuery);
   // console.log("allLegalAreas Data from judges", allLegalAreas);
   // console.log("Data from judges", JSON.stringify(data && data.judges[0]));
   // Update the accumulated data when new data is fetched
@@ -274,7 +274,8 @@ const AllJudgesView = () => {
                               ? extractAndWrapWords(
                                   judge?.match_context?.highlight
                                 )
-                              : judge?.original_name}
+                              : judge?.original_name}{" "}
+                            {judge?.title}
                             {/* {judge.original_name} */}
                           </Link>
                           <h3 className="text-xs font-normal text-lex-blue">

@@ -38,7 +38,7 @@ const tabItems: TabItem[] = [
   {
     active: false,
     id: "full_judgement",
-    label: "Full Judgement",
+    label: "Judgement",
   },
   {
     active: false,

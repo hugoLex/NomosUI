@@ -129,7 +129,10 @@ export const searchQueryAPI = injectEndpoints({
     }),
 
     searchAssit: builder.query<SearchSuggestion, any>({
-      query: (query) => `/query-assist/suggest?q=${query}&limit=7`,
+      // NEW ENDPOINT 
+      query: (query) => `/query-assist/suggest?query=${query}&limit=5`,
+      // OLD ENDPOINT 
+      // query: (query) => `/query-assist/suggest?q=${query}&limit=7`,
     }),
 
     searchTrending: builder.query<any, any>({

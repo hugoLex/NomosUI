@@ -13,6 +13,13 @@ import {
   AllJudgesListResponseT,
   JudgeProfileResponseT,
   CounselDetailT,
+  TdivisionSpecialization,
+  TJurisdictionalAnalysis,
+  TLegalIssueEvolution,
+  TPrecedentInfluence,
+  TCourtsDirectory,
+  TLegalAreasDirectory,
+  TDecisionPatterns,
 } from "@app/types/analytics";
 
 export interface Counsel {
@@ -190,7 +197,61 @@ export const benchAPISlice = injectEndpoints({
       // invalidatesTags: ["Analytics", ],
     }),
 
+    getDivisionSpecialization: builder.query<
+      TdivisionSpecialization,
+      string
+    >({
+      query: (urlParams) => `/analytics/courts/division-specialization?${urlParams}`,
 
+    }),
+    getJurisdictionalAnalysis: builder.query<
+      TJurisdictionalAnalysis,
+      string
+    >({
+      query: (urlParams) => `/analytics/courts/jurisdictional-analysis?${urlParams}`,
+
+    }),
+    getLegalIssueEvolution: builder.query<
+      TLegalIssueEvolution,
+      string
+    >({
+      query: (urlParams) => {
+        console.log("getLegalIssueEvolution url params", urlParams)
+        return `/analytics/courts/legal-issue-evolution?${urlParams}`
+      },
+
+    }),
+    getDecisionPatterns: builder.query<
+      TDecisionPatterns,
+      string
+    >({
+      query: (urlParams) => {
+        console.log("getDecisionPatterns params", urlParams)
+        return `/analytics/courts/decision-patterns?${urlParams}`
+      },
+
+    }),
+    getPrecedentInfluence: builder.query<
+      TPrecedentInfluence,
+      string
+    >({
+      query: (urlParams) => `/analytics/courts/precedent-influence?${urlParams}`,
+
+    }),
+    getAllCourts: builder.query<
+      TCourtsDirectory,
+      string
+    >({
+      query: () => `/analytics/courts/courts`,
+
+    }),
+    getLegalAreasDirectory: builder.query<
+      TLegalAreasDirectory,
+      string
+    >({
+      query: () => `/analytics/courts/legal-areas`,
+
+    }),
 
   }),
 });
@@ -202,7 +263,15 @@ export const {
   useGetAllCounselQuery,
   useGetAllJudgeQuery,
   useDeleteChatWithDocumentMutation,
-  useGetAllLegalAreasQuery
+  useGetAllLegalAreasQuery,
+  useGetLegalIssueEvolutionQuery,
+  useGetDivisionSpecializationQuery,
+  useGetJurisdictionalAnalysisQuery,
+  useGetDecisionPatternsQuery,
+  useGetPrecedentInfluenceQuery,
+  useGetAllCourtsQuery,
+  useGetLegalAreasDirectoryQuery,
+
 
 } = benchAPISlice;
 // GET /api/judges/list                    # Get all judges
@@ -212,3 +281,5 @@ export const {
 // GET /api/counsels/list                  # Get all counsels
 // GET /api/counsels/list?page=1&court_id=1&year=2023  # With filters
 // GET /api/counsels/detail/{counsel_id}   # Get specific counsel details
+
+

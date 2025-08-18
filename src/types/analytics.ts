@@ -114,6 +114,7 @@ interface JudgeInfoT {
   judge_id: number;
   name: string;
   profile: string;
+  title: string;
   statistics: JudgeStatisticsT;
   cases: Case[];
 }
@@ -290,3 +291,160 @@ export interface CounselDetailT {
   performance_metrics: CounselPerformanceMetricsT;
   page: number;
 }
+
+
+
+
+
+type TCourtDetailsResult = {
+  court_name: string;
+  division_name: string;
+  legal_domain_name: string;
+  case_count: number;
+  pct_of_division_cases: number;
+  pct_of_domain_cases: number;
+  specialization_score: number;
+  appellant_win_percentage: number;
+  decided_cases: number;
+  win_rate_vs_court_avg: number;
+  win_rate_vs_overall_avg: number;
+};
+
+
+
+export type TdivisionSpecialization = {
+  user_id: string;
+  data: {
+    count: number;
+    min_cases_threshold: number;
+    results: TCourtDetailsResult[];
+  };
+};
+
+
+
+
+
+
+
+
+
+
+
+export type TJurisdictionalAnalysis = {
+  user_id: string;
+  data: {
+    total_courts: number;
+    courts_analyzed: number;
+    min_cases_threshold: number;
+    results: {
+      court_name: string;
+      division: string;
+      legal_areas: {
+        legal_area: string;
+        case_count: number;
+        pct_of_court_caseload: number;
+        pct_of_all_domain_cases: number;
+        specialization_index: number;
+        court_rank_in_domain: number;
+      }[];
+    }[];
+  };
+};
+
+
+export type TLegalIssueEvolution = {
+  user_id: string;
+  data: {
+    total_decades: number;
+    filters: {
+      court_id: string | null;
+      start_year: number;
+      end_year: number;
+      legal_area: string;
+    };
+    results: {
+      legal_area: string;
+      decade: number;
+      unique_issues: number;
+      case_count: number;
+      avg_ratios_per_issue: number;
+      trending_terms: {
+        word: string;
+        frequency: number;
+      }[];
+    }[];
+  };
+};
+
+export type TDecisionPatterns = {
+  user_id: string;
+  data: {
+    count: number;
+    filters: {
+      court_id: number | null;
+      start_year: number;
+      end_year: number;
+      legal_area: string | null;
+    };
+    results: {
+      court_name: string;
+      division: string;
+      legal_area: string;
+      total_years: number;
+      total_cases: number;
+      overall_appellant_win_pct: number;
+      win_pct_stddev: number;
+      yearly_trends: {
+        year: number;
+        cases: number;
+        win_pct: number;
+        yoy_change: number;
+      }[];
+    }[];
+  };
+};
+
+export type TPrecedentInfluence = {
+  user_id: string;
+  data: {
+    count: number;
+    min_citations_threshold: number;
+    filters: {
+      court_id: number | null;
+      cited_court_id: number;
+    };
+    results: {
+      citing_court: string;
+      cited_court: string;
+      citing_cases: number;
+      cited_cases: number;
+      total_citations: number;
+      pct_of_all_citations: number;
+      reciprocal_citations: number;
+      citing_court_id: number;
+      cited_court_id: number;
+      treatment_breakdown: {
+        treatment: string;
+        count: number;
+        percentage: number;
+      }[];
+    }[];
+  };
+};
+
+export type TCourtsDirectory = {
+  user_id: string;
+  courts: {
+    id: number;
+    name: string;
+  }[];
+};
+
+export type TLegalAreasDirectory = {
+  user_id: string;
+  legal_areas: {
+    id: number;
+    name: string;
+  }[];
+};
