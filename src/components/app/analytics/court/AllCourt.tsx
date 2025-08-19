@@ -253,7 +253,43 @@ const EmptyState = ({
     </p>
   </div>
 );
-
+const COLORS = [
+  "#567c8a",
+  // "#0088FE",
+  "#0E3165",
+  // "#00C49F",
+  "#FFBB28",
+  "#FF8042",
+  "#8884D8",
+  "#82CA9D",
+];
+const MetricCard = ({
+  title,
+  value,
+  subtitle,
+  color = "blue",
+}: {
+  title: string;
+  value: string | number;
+  subtitle?: string;
+  color: string;
+}) => (
+  <div
+    className="bg-white rounded-lg shadow-md p-6 border-l-4 relative group cursor-pointer"
+    style={{ borderLeftColor: color }}
+  >
+    <h3 className="text-[1.125rem] font-semibold text-lexblue mb- 2">
+      {value}
+    </h3>
+    <div className="text-sm text-powder_blue font-cabin mb-1">{title}</div>
+    {subtitle && (
+      <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-lexblue text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+        {subtitle}
+        <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-red-800"></div>
+      </div>
+    )}
+  </div>
+);
 // Tab content components - Empty States
 const DivisionSpecializationTab = () => {
   // const [range, setRange] = useState<{
@@ -853,15 +889,15 @@ const LegalIssueEvolutionTab = () => {
       <div className="flex justify-between items-start mb-4">
         <div>
           <h4
-            className="text-xl font-semibold"
-            style={{ color: colors.primaryDark }}
+            className="text-xx font-semibold text-powder_blue"
+            // style={{ color: colors.primaryDark }}
           >
             {result.decade}s
           </h4>
           <p className="text-gray-600">{result.legal_area}</p>
         </div>
         <div className="text-right">
-          <div className="text-2xl font-bold text-blue-600">
+          <div className="text-xx font-bold text-lexblue">
             {result.case_count}
           </div>
           <div className="text-sm text-gray-500">Total Cases</div>
@@ -900,33 +936,48 @@ const LegalIssueEvolutionTab = () => {
 
   // Component to render summary statistics
   const SummaryStats = ({ data }: { data: TLegalIssueEvolution["data"] }) => (
-    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg mb-6">
+    <div className=" p-6 pl-0 rounded-lg mb-6">
       <h3
-        className="text-lg font-semibold mb-4"
-        style={{ color: colors.primaryDark }}
+        className="mb-4 text-xx font-medium  font-poppins text-powder_blue"
+        // style={{ color: colors.primaryDark }}
       >
         Analysis Summary
       </h3>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="text-center">
+        {/* <div className="text-center">
           <div className="text-2xl font-bold text-blue-600">
             {data.total_decades}
           </div>
           <div className="text-sm text-gray-600">Decades Analyzed</div>
-        </div>
-        <div className="text-center">
+        </div> */}
+        <MetricCard
+          color={COLORS[0]}
+          title="Decades Analyzed"
+          value={data.total_decades}
+        />
+        {/* <div className="text-center">
           <div className="text-2xl font-bold text-green-600">
             {data.results.reduce((sum, r) => sum + r.case_count, 0)}
           </div>
           <div className="text-sm text-gray-600">Total Cases</div>
-        </div>
-        <div className="text-center">
+        </div> */}
+        <MetricCard
+          color={COLORS[1]}
+          title="Total Cases"
+          value={data.results.reduce((sum, r) => sum + r.case_count, 0)}
+        />
+        {/* <div className="text-center">
           <div className="text-2xl font-bold text-purple-600">
             {data.results.reduce((sum, r) => sum + r.unique_issues, 0)}
           </div>
           <div className="text-sm text-gray-600">Total Issues</div>
-        </div>
-        <div className="text-center">
+        </div> */}
+        <MetricCard
+          color={COLORS[3]}
+          title="Total Issues "
+          value={data.results.reduce((sum, r) => sum + r.unique_issues, 0)}
+        />
+        {/* <div className="text-center">
           <div className="text-2xl font-bold text-orange-600">
             {(
               data.results.reduce((sum, r) => sum + r.avg_ratios_per_issue, 0) /
@@ -934,7 +985,15 @@ const LegalIssueEvolutionTab = () => {
             ).toFixed(1)}
           </div>
           <div className="text-sm text-gray-600">Avg Ratios</div>
-        </div>
+        </div> */}
+        <MetricCard
+          color={COLORS[4]}
+          title="Avg Ratios"
+          value={(
+            data.results.reduce((sum, r) => sum + r.avg_ratios_per_issue, 0) /
+            data.results.length
+          ).toFixed(1)}
+        />
       </div>
 
       <div className="mt-4 p-3 bg-white rounded border">
@@ -947,7 +1006,7 @@ const LegalIssueEvolutionTab = () => {
           {data.filters.legal_area
             ? ` ${data.filters.legal_area}`
             : " All Legal Areas"}{" "}
-          |{data.filters.start_year}-{data.filters.end_year}
+          | {data.filters.start_year}-{data.filters.end_year}
         </div>
       </div>
     </div>
@@ -2097,8 +2156,8 @@ const CourtAnalyticsDashboard = () => {
     { id: "division", label: "Division Specialization" },
     { id: "jurisdictional", label: "Jurisdictional Analysis" },
     { id: "evolution", label: "Legal Issue Evolution" },
-    // { id: "decisions", label: "Decision Patterns" },
     { id: "precedent", label: "Precedent Influence" },
+    { id: "decisions", label: "Decision Patterns" },
   ];
 
   // Render the active tab content
