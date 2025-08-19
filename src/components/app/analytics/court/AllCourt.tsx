@@ -96,15 +96,15 @@ const ExplanatorySection = ({
   title: string;
   description: string;
 }) => (
-  <div className="mb-6 border-l-4" style={{ borderColor: colors.brightCyan }}>
+  <div className="mb-6 border-l-4 border-l-lexblue">
     <div className="pl-4">
       <h3
-        className="text-xx font-bold mb-2"
-        style={{ color: colors.primaryDark }}
+        className="text-xx font-medium mb-2 font-poppins text-powder_blue"
+        // style={{ color: colors.primaryDark }}
       >
         {title}
       </h3>
-      <p className="text-gray-700">{description}</p>
+      <p className="text-lexblue text-sm font-gilda_Display">{description}</p>
     </div>
   </div>
 );
@@ -235,12 +235,7 @@ const Button = ({
 }) => (
   <button
     onClick={onClick}
-    className="px-4 py-2 rounded-md font-medium transition-colors"
-    style={{
-      backgroundColor: primary ? colors.primaryDark : "white",
-      color: primary ? "white" : colors.primaryDark,
-      border: primary ? "none" : `1px solid ${colors.primaryDark}`,
-    }}
+    className="px-4 py-2 rounded-md font-medium transition-colors bg-lexblue text-white border border-lexblue border-solid"
   >
     {label}
   </button>
@@ -295,15 +290,19 @@ const DivisionSpecializationTab = () => {
   // }>({ limit: 20, min_cases: 5 });
   const [minCases, setMinCases] = useState("5");
   const [limit, setLimit] = useState("20");
+  const [shouldGenerateAnalysis, setGenerateAnalysis] = useState(false);
+  const compiledParams = urlFilterAndBuilder({
+    limit: Number(limit),
+    min_cases: Number(minCases),
+  });
   const {
     data: divisionSpecialization,
     error,
     isLoading,
+    isFetching,
+    refetch,
   } = useGetDivisionSpecializationQuery(
-    urlFilterAndBuilder({
-      limit: Number(limit),
-      min_cases: Number(minCases),
-    })
+    shouldGenerateAnalysis ? compiledParams : skipToken
   );
   // console.log("This is data from court", data, error);
   const mockData = {
@@ -329,10 +328,10 @@ const DivisionSpecializationTab = () => {
       ],
     },
   };
-  const data =
-    divisionSpecialization && divisionSpecialization.data.results.length > 0
-      ? divisionSpecialization
-      : mockData;
+  const data = divisionSpecialization;
+  //  && divisionSpecialization.data.results.length > 0
+  //   ? divisionSpecialization
+  //   : mockData;
   const SpecializationDataTable = ({
     results,
   }: {
@@ -453,11 +452,11 @@ const DivisionSpecializationTab = () => {
         title="What This Shows"
         description="This analysis reveals which court divisions specialize in particular legal areas and how this specialization affects case outcomes. Use this to identify divisions with deep expertise in specific legal domains and understand their ruling tendencies."
       />
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="gr id grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-1 bg-white p-6 rounded-lg shadow-sm">
           <h4
-            className="font-medium mb-4"
-            style={{ color: colors.primaryDark }}
+            className="mb-4 text-xx font-medium  font-poppins text-powder_blue"
+            // style={{ color: colors.primaryDark }}
           >
             Controls
           </h4>
@@ -485,12 +484,21 @@ const DivisionSpecializationTab = () => {
             ]}
           />
           <div className="mt-6 flex space-x-3">
-            <Button label="Generate Analysis" onClick={() => {}} />
+            <Button
+              label="Generate Analysis"
+              onClick={() => {
+                if (shouldGenerateAnalysis) {
+                  refetch();
+                } else {
+                  setGenerateAnalysis(true);
+                }
+              }}
+            />
             {/* <Button label="Export" onClick={() => {}} primary={false} /> */}
           </div>
         </div>
-        <div className="md:col-span-2">
-          {isLoading ? (
+        <div className="md:col-span-2 mt-5">
+          {isLoading || isFetching ? (
             <div className="bg-white p-8 rounded-lg shadow-sm text-center">
               <div className="text-gray-500">
                 Loading specialization data...
@@ -518,91 +526,21 @@ const DivisionSpecializationTab = () => {
     </div>
   );
 };
-// const DivisionSpecializationTab = () => {
-//   // const [range, setRange] = useState<{
-//   //   limit: number;
-//   //   min_cases: number;
-//   // }>({ limit: 20, min_cases: 5 });
-//   const [minCases, setMinCases] = useState("5");
-//   const [limit, setLimit] = useState("20");
-//   const { data, error, isLoading } = useGetDivisionSpecializationQuery({
-//     limit: Number(limit),
-//     min_cases: Number(minCases),
-//   });
-//   // console.log("This is data from court", data, error);
-//   return (
-//     <div className="py-4">
-//       <ExplanatorySection
-//         title="What This Shows"
-//         description="This analysis reveals which court divisions specialize in particular legal areas and how this specialization affects case outcomes. Use this to identify divisions with deep expertise in specific legal domains and understand their ruling tendencies."
-//       />
-
-//       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//         <div className="md:col-span-1 bg-white p-6 rounded-lg shadow-sm">
-//           <h4
-//             className="font-medium mb-4"
-//             style={{ color: colors.primaryDark }}
-//           >
-//             Controls
-//           </h4>
-
-//           <Dropdown
-//             label="Minimum Cases"
-//             value={minCases}
-//             onChange={setMinCases}
-//             options={[
-//               { value: "1", label: "1 (Show All)" },
-//               { value: "5", label: "5 (Recommended)" },
-//               { value: "10", label: "10" },
-//               { value: "20", label: "20" },
-//               { value: "50", label: "50" },
-//             ]}
-//           />
-
-//           <Dropdown
-//             label="Results Limit"
-//             value={limit}
-//             onChange={setLimit}
-//             options={[
-//               { value: "10", label: "10" },
-//               { value: "20", label: "20" },
-//               { value: "50", label: "50" },
-//               { value: "100", label: "100" },
-//             ]}
-//           />
-
-//           <div className="mt-6 flex space-x-3">
-//             <Button label="Generate Analysis" onClick={() => {}} />
-//             <Button label="Export" onClick={() => {}} primary={false} />
-//           </div>
-//         </div>
-
-//         <div className="md:col-span-2">
-//           <EmptyState
-//             message="Set your parameters and click 'Generate Analysis' to see which court divisions specialize in particular legal areas."
-//             ctaText="Recommended: Start with default parameters to get an overview."
-//           />
-
-//           <UsageInstructions instructions="Higher specialization scores indicate divisions that handle a significant portion of cases in this legal domain. Compare the appellant win rates to identify which specialized divisions tend to favor appellants vs. respondents. This can inform your litigation strategy when appearing before these divisions." />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
 
 const JurisdictionalAnalysisTab = () => {
   const [minCases, setMinCases] = useState("5");
   const [limit, setLimit] = useState("20");
-  const [range, setRange] = useState<{
-    limit: number;
-    min_cases: number;
-  }>({ limit: 20, min_cases: 5 });
+  const [shouldGenerateAnalysis, setGenerateAnalysis] = useState(false);
+
+  const compiledParams = urlFilterAndBuilder({ limit, min_cases: minCases });
   const {
     data: jurisdictonalAnalysisData,
     error,
     isLoading,
+    isFetching,
+    refetch,
   } = useGetJurisdictionalAnalysisQuery(
-    urlFilterAndBuilder({ limit, min_cases: minCases })
+    shouldGenerateAnalysis ? compiledParams : skipToken
   );
 
   const mockData = {
@@ -639,11 +577,11 @@ const JurisdictionalAnalysisTab = () => {
       ],
     },
   };
-  const data =
-    jurisdictonalAnalysisData &&
-    jurisdictonalAnalysisData?.data?.results?.length > 0
-      ? jurisdictonalAnalysisData
-      : mockData;
+  const data = jurisdictonalAnalysisData;
+  // &&
+  // jurisdictonalAnalysisData?.data?.results?.length > 0
+  //   ? jurisdictonalAnalysisData
+  //   : mockData;
   // Component to render the jurisdictional analysis data
   const JurisdictionalAnalysisResults = ({
     analysisData,
@@ -766,7 +704,7 @@ const JurisdictionalAnalysisTab = () => {
         title="What This Shows"
         description="This analysis identifies which courts specialize in which legal areas, revealing their jurisdictional focus. Use this to understand which courts have the most experience with particular types of cases."
       />
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="gr id grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-1 bg-white p-6 rounded-lg shadow-sm">
           <h4
             className="font-medium mb-4"
@@ -798,11 +736,29 @@ const JurisdictionalAnalysisTab = () => {
             ]}
           />
           <div className="mt-6">
-            <Button label="Generate Analysis" onClick={() => {}} />
+            <Button
+              label="Generate Analysis"
+              onClick={() => {
+                if (shouldGenerateAnalysis) {
+                  refetch();
+                } else {
+                  setGenerateAnalysis(true);
+                }
+              }}
+            />
           </div>
         </div>
-        <div className="md:col-span-2">
-          {data ? (
+        <div className="mt-5 md:col-span-2">
+          {isLoading || isFetching ? (
+            <div className="flex items-center justify-center h-64 bg-white rounded-lg shadow-sm">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <p className="text-gray-500">
+                  Loading Jurisdictional Analysis...
+                </p>
+              </div>
+            </div>
+          ) : data && data?.data?.results?.length > 0 ? (
             <JurisdictionalAnalysisResults analysisData={data} />
           ) : (
             <>
@@ -818,74 +774,6 @@ const JurisdictionalAnalysisTab = () => {
     </div>
   );
 };
-
-// const JurisdictionalAnalysisTab = () => {
-//   const [range, setRange] = useState<{
-//     limit: number;
-//     min_cases: number;
-//   }>({ limit: 20, min_cases: 5 });
-//   const { data, error, isLoading } = useGetJurisdictionalAnalysisQuery(range);
-//   const [minCases, setMinCases] = useState("5");
-//   const [limit, setLimit] = useState("20");
-
-//   return (
-//     <div className="py-4">
-//       <ExplanatorySection
-//         title="What This Shows"
-//         description="This analysis identifies which courts specialize in which legal areas, revealing their jurisdictional focus. Use this to understand which courts have the most experience with particular types of cases."
-//       />
-
-//       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//         <div className="md:col-span-1 bg-white p-6 rounded-lg shadow-sm">
-//           <h4
-//             className="font-medium mb-4"
-//             style={{ color: colors.primaryDark }}
-//           >
-//             Controls
-//           </h4>
-
-//           <Dropdown
-//             label="Minimum Cases"
-//             value={minCases}
-//             onChange={setMinCases}
-//             options={[
-//               { value: "1", label: "1 (Show All)" },
-//               { value: "5", label: "5 (Recommended)" },
-//               { value: "10", label: "10" },
-//               { value: "20", label: "20" },
-//               { value: "50", label: "50" },
-//             ]}
-//           />
-
-//           <Dropdown
-//             label="Results Limit"
-//             value={limit}
-//             onChange={setLimit}
-//             options={[
-//               { value: "10", label: "10" },
-//               { value: "20", label: "20" },
-//               { value: "50", label: "50" },
-//               { value: "100", label: "100" },
-//             ]}
-//           />
-
-//           <div className="mt-6">
-//             <Button label="Generate Analysis" onClick={() => {}} />
-//           </div>
-//         </div>
-
-//         <div className="md:col-span-2">
-//           <EmptyState
-//             message="Generate an analysis to see which courts specialize in which legal areas and their jurisdictional focus."
-//             ctaText="Use this to understand which courts have the most experience with your case type."
-//           />
-
-//           <UsageInstructions instructions="Look for courts with high specialization indices in your case's legal domain, as these courts have significant experience in these matters. The percentage columns show both how important this domain is to the court and how dominant the court is within this domain." />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
 
 const LegalIssueEvolutionTab = () => {
   const [court, setCourt] = useState("");
@@ -1156,7 +1044,7 @@ const LegalIssueEvolutionTab = () => {
         description="This analysis tracks how legal issues and their terminology have evolved over time. Use this to understand historical trends in legal reasoning and identify emerging legal concepts."
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="gr id grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-1 bg-white p-6 rounded-lg shadow-sm">
           <h4
             className="font-medium mb-4"
@@ -1322,403 +1210,6 @@ const LegalIssueEvolutionTab = () => {
     </div>
   );
 };
-// const LegalIssueEvolutionTab = () => {
-//   // const [range, setRange] = useState<{
-//   //   limit: number;
-//   //   min_cases: number;
-//   // }>({ limit: 20, min_cases: 5 });
-//   const [court, setCourt] = useState("");
-//   const [startYear, setStartYear] = useState("1980");
-//   const [endYear, setEndYear] = useState("2025");
-//   const [legalArea, setLegalArea] = useState("");
-//   const [limit, setLimit] = useState("50");
-//   const { data, error, isLoading } = useGetLegalIssueEvolutionQuery({
-//     court,
-//     startYear,
-//     endYear,
-//     legalArea,
-//     limit,
-//   });
-//   // console.log("This is data from court", data, error);
-//   return (
-//     <div className="py-4">
-//       <ExplanatorySection
-//         title="What This Shows"
-//         description="This analysis tracks how legal issues and their terminology have evolved over time. Use this to understand historical trends in legal reasoning and identify emerging legal concepts."
-//       />
-
-//       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//         <div className="md:col-span-1 bg-white p-6 rounded-lg shadow-sm">
-//           <h4
-//             className="font-medium mb-4"
-//             style={{ color: colors.primaryDark }}
-//           >
-//             Controls
-//           </h4>
-
-//           <Dropdown
-//             label="Court (Optional)"
-//             value={court}
-//             onChange={setCourt}
-//             options={[
-//               { value: "", label: "All Courts" },
-//               { value: "1", label: "Supreme Court" },
-//               { value: "2", label: "Court of Appeal" },
-//               { value: "3", label: "High Court" },
-//             ]}
-//           />
-
-//           <div className="grid grid-cols-2 gap-4 mb-4">
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-1">
-//                 Start Year
-//               </label>
-//               <input
-//                 type="number"
-//                 value={startYear}
-//                 onChange={(e) => setStartYear(e.target.value)}
-//                 className="w-full p-2 border border-gray-300 rounded-md"
-//               />
-//             </div>
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-1">
-//                 End Year
-//               </label>
-//               <input
-//                 type="number"
-//                 value={endYear}
-//                 onChange={(e) => setEndYear(e.target.value)}
-//                 className="w-full p-2 border border-gray-300 rounded-md"
-//               />
-//             </div>
-//           </div>
-
-//           <Dropdown
-//             label="Legal Area (Optional)"
-//             value={legalArea}
-//             onChange={setLegalArea}
-//             options={[
-//               { value: "", label: "All Areas" },
-//               { value: "contract", label: "Contract Law" },
-//               { value: "tort", label: "Tort Law" },
-//               { value: "property", label: "Property Law" },
-//             ]}
-//           />
-
-//           <Dropdown
-//             label="Results Limit"
-//             value={limit}
-//             onChange={setLimit}
-//             options={[
-//               { value: "20", label: "20" },
-//               { value: "50", label: "50" },
-//               { value: "100", label: "100" },
-//             ]}
-//           />
-
-//           <div className="mt-6">
-//             <Button label="Generate Analysis" onClick={() => {}} />
-//           </div>
-//         </div>
-
-//         <div className="md:col-span-2">
-//           <EmptyState
-//             message="Select your parameters and generate an analysis to see how legal issues and terminology have evolved over time."
-//             ctaText="Filter by court and legal area or view trends across all courts and domains."
-//           />
-
-//           <div className="mt-6">
-//             <h4
-//               className="font-medium mb-2"
-//               style={{ color: colors.primaryDark }}
-//             >
-//               Trending Terms Preview
-//             </h4>
-//             <div className="flex flex-wrap gap-2 mt-4 opacity-50">
-//               <span className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-500">
-//                 Select parameters above
-//               </span>
-//               <span className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-500">
-//                 Generate analysis
-//               </span>
-//               <span className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-500">
-//                 View trending terms
-//               </span>
-//             </div>
-//           </div>
-
-//           <UsageInstructions instructions="Look for shifts in terminology and issue frequency over time to understand how courts have changed their approach to particular legal questions. The trending terms section reveals key concepts that have gained importance in each era, which can inform how you frame arguments in historical context." />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// const DecisionPatternsTab = () => {
-//   const [court_id, setCourt] = useState("");
-//   const [start_year, setStartYear] = useState("1980");
-//   const [end_year, setEndYear] = useState("2025");
-//   const [legal_area, setLegalArea] = useState("");
-//   const [limit, setLimit] = useState("50");
-//   const {} = useGetDecisionPatternsQuery({
-//     start_year: Number(start_year),
-//     court_id: Number(court_id),
-//     end_year: Number(end_year),
-//     legal_area,
-//     limit: Number(limit),
-//   });
-//   return (
-//     <div className="py-4">
-//       <ExplanatorySection
-//         title="What This Shows"
-//         description="This analysis reveals consistency patterns in court decisions over time and across legal domains. Use this to identify trends in judicial approach and potential shifts in legal interpretation."
-//       />
-
-//       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//         <div className="md:col-span-1 bg-white p-6 rounded-lg shadow-sm">
-//           <h4
-//             className="font-medium mb-4"
-//             style={{ color: colors.primaryDark }}
-//           >
-//             Controls
-//           </h4>
-
-//           <Dropdown
-//             label="Court"
-//             value={court_id}
-//             onChange={setCourt}
-//             options={[
-//               { value: "", label: "All Courts" },
-//               { value: "1", label: "Supreme Court" },
-//               { value: "2", label: "Court of Appeal" },
-//               { value: "3", label: "High Court" },
-//             ]}
-//           />
-
-//           <div className="grid grid-cols-2 gap-4 mb-4">
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-1">
-//                 Start Year
-//               </label>
-//               <input
-//                 type="number"
-//                 value={start_year}
-//                 onChange={(e) => setStartYear(e.target.value)}
-//                 className="w-full p-2 border border-gray-300 rounded-md"
-//               />
-//             </div>
-//             <div>
-//               <label className="block text-sm font-medium text-gray-700 mb-1">
-//                 End Year
-//               </label>
-//               <input
-//                 type="number"
-//                 value={end_year}
-//                 onChange={(e) => setEndYear(e.target.value)}
-//                 className="w-full p-2 border border-gray-300 rounded-md"
-//               />
-//             </div>
-//           </div>
-
-//           <Dropdown
-//             label="Legal Area"
-//             value={legal_area}
-//             onChange={setLegalArea}
-//             options={[
-//               { value: "", label: "All Areas" },
-//               { value: "contract", label: "Contract Law" },
-//               { value: "tort", label: "Tort Law" },
-//               { value: "property", label: "Property Law" },
-//             ]}
-//           />
-
-//           <Dropdown
-//             label="Results Limit"
-//             value={limit}
-//             onChange={setLimit}
-//             options={[
-//               { value: "20", label: "20" },
-//               { value: "50", label: "50" },
-//               { value: "100", label: "100" },
-//             ]}
-//           />
-
-//           <div className="mt-6">
-//             <Button label="Generate Analysis" onClick={() => {}} />
-//           </div>
-//         </div>
-
-//         <div className="md:col-span-2">
-//           <EmptyState
-//             message="Generate an analysis to see patterns in court decisions over time and assess judicial consistency."
-//             ctaText="Select a court and legal area to analyze decision patterns relevant to your case."
-//           />
-
-//           <div className="mt-6">
-//             <h4
-//               className="font-medium mb-2"
-//               style={{ color: colors.primaryDark }}
-//             >
-//               Win Rate Trends Preview
-//             </h4>
-//             <div className="mt-4 p-4 border rounded-md bg-gray-50">
-//               <div className="text-center text-gray-500 py-4">
-//                 <svg
-//                   xmlns="http://www.w3.org/2000/svg"
-//                   className="h-12 w-12 mx-auto mb-2 text-gray-300"
-//                   fill="none"
-//                   viewBox="0 0 24 24"
-//                   stroke="currentColor"
-//                 >
-//                   <path
-//                     strokeLinecap="round"
-//                     strokeLinejoin="round"
-//                     strokeWidth={2}
-//                     d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-//                   />
-//                 </svg>
-//                 <p>Win rate trends will appear here after analysis</p>
-//               </div>
-//             </div>
-//           </div>
-
-//           <UsageInstructions instructions="Review the consistency of win rates over time to assess how predictable a court's decisions are in your legal area. Sudden changes in win rates may indicate shifts in judicial approach or legal doctrine. The standard deviation column shows how consistent the court's decisions have been." />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// const PrecedentInfluenceTab = () => {
-//   const [citingCourt, setCitingCourt] = useState("");
-//   const [citedCourt, setCitedCourt] = useState("");
-//   const [minCitations, setMinCitations] = useState("5");
-//   const [limit, setLimit] = useState("20");
-//   const compiledUrl = urlFilterAndBuilder({
-//     limit: limit,
-//     court_id: citingCourt,
-//     cited_court_id: citedCourt,
-//     min_citations: minCitations,
-//   });
-//   const { data, isError, error, isLoading, isFetching } =
-//     useGetPrecedentInfluenceQuery(compiledUrl);
-
-//   return (
-//     <div className="py-4">
-//       <ExplanatorySection
-//         title="What This Shows"
-//         description="This analysis reveals how courts influence each other through precedent citations. Use this to understand the flow of legal doctrine between courts and identify which courts have the most precedential impact."
-//       />
-
-//       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//         <div className="md:col-span-1 bg-white p-6 rounded-lg shadow-sm">
-//           <h4
-//             className="font-medium mb-4"
-//             style={{ color: colors.primaryDark }}
-//           >
-//             Controls
-//           </h4>
-
-//           <Dropdown
-//             label="Citing Court"
-//             value={citingCourt}
-//             onChange={setCitingCourt}
-//             options={[
-//               { value: "", label: "All Courts" },
-//               { value: "1", label: "Court of Appeal" },
-//               { value: "2", label: "Supreme Court" },
-//               { value: "3", label: "High Court" },
-//             ]}
-//           />
-
-//           <Dropdown
-//             label="Cited Court"
-//             value={citedCourt}
-//             onChange={setCitedCourt}
-//             options={[
-//               { value: "", label: "All Courts" },
-//               { value: "1", label: "Court of Appeal" },
-//               { value: "2", label: "Supreme Court" },
-//               { value: "3", label: "High Court" },
-//             ]}
-//           />
-
-//           <Dropdown
-//             label="Minimum Citations"
-//             value={minCitations}
-//             onChange={setMinCitations}
-//             options={[
-//               { value: "1", label: "1 (Show All)" },
-//               { value: "5", label: "5 (Recommended)" },
-//               { value: "10", label: "10" },
-//               { value: "20", label: "20" },
-//             ]}
-//           />
-
-//           <Dropdown
-//             label="Results Limit"
-//             value={limit}
-//             onChange={setLimit}
-//             options={[
-//               { value: "10", label: "10" },
-//               { value: "20", label: "20" },
-//               { value: "50", label: "50" },
-//             ]}
-//           />
-
-//           <div className="mt-6">
-//             <Button label="Generate Analysis" onClick={() => {}} />
-//           </div>
-//         </div>
-
-//         <div className="md:col-span-2">
-//           {isLoading || isFetching ? (
-//             <DashboardSkeletonLoader />
-//           ) : (
-//             <EmptyState
-//               message="Generate an analysis to see how courts influence each other through precedent citations."
-//               ctaText="Try selecting a specific court pair, like Court of Appeal citing Supreme Court."
-//             />
-//           )}
-
-//           <div className="mt-6">
-//             <h4
-//               className="font-medium mb-2"
-//               style={{ color: colors.primaryDark }}
-//             >
-//               Citation Treatment Breakdown Preview
-//             </h4>
-//             <div className="p-4 border rounded-md bg-gray-50">
-//               <div className="text-center text-gray-500 py-4">
-//                 <svg
-//                   xmlns="http://www.w3.org/2000/svg"
-//                   className="h-12 w-12 mx-auto mb-2 text-gray-300"
-//                   fill="none"
-//                   viewBox="0 0 24 24"
-//                   stroke="currentColor"
-//                 >
-//                   <path
-//                     strokeLinecap="round"
-//                     strokeLinejoin="round"
-//                     strokeWidth={2}
-//                     d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
-//                   />
-//                 </svg>
-//                 <p>
-//                   Citation treatment breakdown will appear here after analysis
-//                 </p>
-//               </div>
-//             </div>
-//           </div>
-
-//           <UsageInstructions instructions="Courts with high citation counts have strong influence over other courts' decisions. Review the treatment breakdown to see how citations are used—'Applied' and 'Followed' treatments indicate strong positive influence, while 'Distinguished' or 'Not Followed' suggest limitations. When preparing arguments, prioritize precedents from courts that strongly influence your target court." />
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// Main dashboard component
 
 const DecisionPatternsTab = () => {
   const [court_id, setCourt] = useState("");
@@ -1726,6 +1217,7 @@ const DecisionPatternsTab = () => {
   const [end_year, setEndYear] = useState("2025");
   const [legal_area, setLegalArea] = useState("");
   const [limit, setLimit] = useState("50");
+  const [shouldGenerateAnalysis, setGenerateAnalysis] = useState(false);
 
   // Mock data for demonstration - replace with actual API call
   const mockData = {
@@ -1802,12 +1294,18 @@ const DecisionPatternsTab = () => {
     limit: Number(limit),
   });
   const compiledParams = useDebounce(searchTerms, 900);
-  const { data: decisionPatternData, isLoading } =
-    useGetDecisionPatternsQuery(compiledParams);
-  const data =
-    decisionPatternData && decisionPatternData?.data?.results?.length > 0
-      ? decisionPatternData
-      : mockData; // Fallback to mock data
+  const {
+    data: decisionPatternData,
+    isLoading,
+    isFetching,
+    refetch,
+  } = useGetDecisionPatternsQuery(
+    shouldGenerateAnalysis ? compiledParams : skipToken
+  );
+  const data = decisionPatternData;
+  // && decisionPatternData?.data?.results?.length > 0
+  //   ? decisionPatternData
+  //   : mockData; // Fallback to mock data
   const DecisionPatternsResults = ({
     data,
   }: {
@@ -2089,7 +1587,7 @@ const DecisionPatternsTab = () => {
         description="This analysis reveals consistency patterns in court decisions over time and across legal domains. Use this to identify trends in judicial approach and potential shifts in legal interpretation."
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="gr id grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-1 bg-white p-6 rounded-lg shadow-sm">
           <h4
             className="font-medium mb-4"
@@ -2152,6 +1650,8 @@ const DecisionPatternsTab = () => {
             value={limit}
             onChange={setLimit}
             options={[
+              { value: "5", label: "5" },
+              { value: "10", label: "10" },
               { value: "20", label: "20" },
               { value: "50", label: "50" },
               { value: "100", label: "100" },
@@ -2159,12 +1659,21 @@ const DecisionPatternsTab = () => {
           />
 
           <div className="mt-6">
-            <Button label="Generate Analysis" onClick={() => {}} />
+            <Button
+              label="Generate Analysis"
+              onClick={() => {
+                if (shouldGenerateAnalysis) {
+                  refetch();
+                } else {
+                  setGenerateAnalysis(true);
+                }
+              }}
+            />
           </div>
         </div>
 
         <div className="md:col-span-2">
-          {isLoading ? (
+          {isLoading || isFetching ? (
             <div className="flex items-center justify-center h-64 bg-white rounded-lg shadow-sm">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
@@ -2186,19 +1695,25 @@ const PrecedentInfluenceTab = () => {
   const [citedCourt, setCitedCourt] = useState("");
   const [minCitations, setMinCitations] = useState("5");
   const [limit, setLimit] = useState("20");
-  const compiledUrl = urlFilterAndBuilder({
+  const [shouldGenerateAnalysis, setGenerateAnalysis] = useState(false);
+
+  const searchTerm = urlFilterAndBuilder({
     limit: limit,
     court_id: citingCourt,
     cited_court_id: citedCourt,
     min_citations: minCitations,
   });
+
   const {
     data: PrecedentInfluencedata,
     isError,
     error,
     isLoading,
     isFetching,
-  } = useGetPrecedentInfluenceQuery(compiledUrl);
+    refetch,
+  } = useGetPrecedentInfluenceQuery(
+    shouldGenerateAnalysis ? searchTerm : skipToken
+  );
   const { data: allCourts } = useGetAllCourtsQuery("");
   // console.log("this is the data for all courts", allCourts);
   // console.log(
@@ -2206,53 +1721,57 @@ const PrecedentInfluenceTab = () => {
   //   PrecedentInfluencedata,
   //   error
   // );
-  const data = {
-    user_id: "user123",
-    data: {
-      count: 12,
-      min_citations_threshold: 5,
-      filters: {
-        court_id: null,
-        cited_court_id: 1,
-      },
-      results: [
-        {
-          citing_court: "Court of Appeal",
-          cited_court: "Supreme Court",
-          citing_cases: 187,
-          cited_cases: 95,
-          total_citations: 312,
-          pct_of_all_citations: 42.8,
-          reciprocal_citations: 22,
-          citing_court_id: 2,
-          cited_court_id: 1,
-          treatment_breakdown: [
-            {
-              treatment: "FOLLOWED",
-              count: 156,
-              percentage: 50.0,
-            },
-            {
-              treatment: "DISTINGUISHED",
-              count: 87,
-              percentage: 27.9,
-            },
-            {
-              treatment: "DISCUSSED",
-              count: 42,
-              percentage: 13.5,
-            },
-            {
-              treatment: "CRITICIZED",
-              count: 27,
-              percentage: 8.6,
-            },
-          ],
-        },
-        // Additional results...
-      ],
-    },
-  };
+  const data = PrecedentInfluencedata;
+
+  //  && PrecedentInfluencedata?.data?.results?.length > 0?
+  //   PrecedentInfluencedata
+  // : {
+  //     user_id: "user123",
+  //     data: {
+  //       count: 12,
+  //       min_citations_threshold: 5,
+  //       filters: {
+  //         court_id: null,
+  //         cited_court_id: 1,
+  //       },
+  //       results: [
+  //         {
+  //           citing_court: "Court of Appeal",
+  //           cited_court: "Supreme Court",
+  //           citing_cases: 187,
+  //           cited_cases: 95,
+  //           total_citations: 312,
+  //           pct_of_all_citations: 42.8,
+  //           reciprocal_citations: 22,
+  //           citing_court_id: 2,
+  //           cited_court_id: 1,
+  //           treatment_breakdown: [
+  //             {
+  //               treatment: "FOLLOWED",
+  //               count: 156,
+  //               percentage: 50.0,
+  //             },
+  //             {
+  //               treatment: "DISTINGUISHED",
+  //               count: 87,
+  //               percentage: 27.9,
+  //             },
+  //             {
+  //               treatment: "DISCUSSED",
+  //               count: 42,
+  //               percentage: 13.5,
+  //             },
+  //             {
+  //               treatment: "CRITICIZED",
+  //               count: 27,
+  //               percentage: 8.6,
+  //             },
+  //           ],
+  //         },
+  //         // Additional results...
+  //       ],
+  //     },
+  //   };
   const renderTreatmentBreakdown = (
     treatmentBreakdown: TPrecedentInfluence["data"]["results"][0]["treatment_breakdown"]
   ) => {
@@ -2403,7 +1922,7 @@ const PrecedentInfluenceTab = () => {
         description="This analysis reveals how courts influence each other through precedent citations. Use this to understand the flow of legal doctrine between courts and identify which courts have the most precedential impact."
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="g rid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-1 bg-white p-6 rounded-lg shadow-sm">
           <h4
             className="font-medium mb-4"
@@ -2411,69 +1930,78 @@ const PrecedentInfluenceTab = () => {
           >
             Controls
           </h4>
+          <div className="grid grid-cols-2 gap-3 gap-x-9">
+            <Dropdown
+              label="Citing Court"
+              value={citingCourt}
+              onChange={setCitingCourt}
+              options={[
+                { value: "", label: "All Courts" },
+                { value: "1", label: "Court of Appeal" },
+                { value: "2", label: "Supreme Court" },
+                { value: "3", label: "High Court" },
+              ]}
+            />
 
-          <Dropdown
-            label="Citing Court"
-            value={citingCourt}
-            onChange={setCitingCourt}
-            options={[
-              { value: "", label: "All Courts" },
-              { value: "1", label: "Court of Appeal" },
-              { value: "2", label: "Supreme Court" },
-              { value: "3", label: "High Court" },
-            ]}
-          />
+            <Dropdown
+              label="Cited Court"
+              value={citedCourt}
+              onChange={setCitedCourt}
+              options={
+                allCourts?.courts && allCourts?.courts?.length > 0
+                  ? allCourts?.courts?.map((court) => ({
+                      value: court?.id?.toString(),
+                      label: court.name,
+                    }))
+                  : [
+                      { value: "1", label: "Court of Appeal" },
+                      { value: "2", label: "Supreme Court" },
+                      { value: "3", label: "High Court" },
+                    ]
+              }
+            />
 
-          <Dropdown
-            label="Cited Court"
-            value={citedCourt}
-            onChange={setCitedCourt}
-            options={
-              allCourts?.courts && allCourts?.courts?.length > 0
-                ? allCourts?.courts?.map((court) => ({
-                    value: court?.id?.toString(),
-                    label: court.name,
-                  }))
-                : [
-                    { value: "1", label: "Court of Appeal" },
-                    { value: "2", label: "Supreme Court" },
-                    { value: "3", label: "High Court" },
-                  ]
-            }
-          />
+            <Dropdown
+              label="Minimum Citations"
+              value={minCitations}
+              onChange={setMinCitations}
+              options={[
+                { value: "1", label: "1 (Show All)" },
+                { value: "5", label: "5 (Recommended)" },
+                { value: "10", label: "10" },
+                { value: "20", label: "20" },
+              ]}
+            />
 
-          <Dropdown
-            label="Minimum Citations"
-            value={minCitations}
-            onChange={setMinCitations}
-            options={[
-              { value: "1", label: "1 (Show All)" },
-              { value: "5", label: "5 (Recommended)" },
-              { value: "10", label: "10" },
-              { value: "20", label: "20" },
-            ]}
-          />
-
-          <Dropdown
-            label="Results Limit"
-            value={limit}
-            onChange={setLimit}
-            options={[
-              { value: "10", label: "10" },
-              { value: "20", label: "20" },
-              { value: "50", label: "50" },
-            ]}
-          />
-
+            <Dropdown
+              label="Results Limit"
+              value={limit}
+              onChange={setLimit}
+              options={[
+                { value: "10", label: "10" },
+                { value: "20", label: "20" },
+                { value: "50", label: "50" },
+              ]}
+            />
+          </div>
           <div className="mt-6">
-            <Button label="Generate Analysis" onClick={() => {}} />
+            <Button
+              label="Generate Analysis"
+              onClick={() => {
+                if (shouldGenerateAnalysis) {
+                  refetch();
+                } else {
+                  setGenerateAnalysis(true);
+                }
+              }}
+            />
           </div>
         </div>
 
         <div className="md:col-span-2">
           {isLoading || isFetching ? (
             <DashboardSkeletonLoader />
-          ) : data?.data?.results?.length ? (
+          ) : data && data?.data?.results?.length > 0 ? (
             <>
               {renderResultsTable()}
 
@@ -2650,17 +2178,17 @@ const CourtAnalyticsDashboard = () => {
 
       {/* <Container className=""> */}
       <div className="flex  py-4 w-full md:max-w-[900px] mx-auto">
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg- gray-50">
           {/* Header */}
           <header
             className="py-4"
-            style={{ backgroundColor: colors.primaryDark }}
+            // style={{ backgroundColor: colors.primaryDark }}
           >
             <div className="container mx-auto px-4">
-              <h1 className="text-xx font-bold text-white font-gilda_Display">
+              <h1 className="text-xx font-bold text-lexblue font-gilda_Display">
                 Court Analytics Dashboard
               </h1>
-              <p className="text-white opacity-80 text-sm mt-1 font-cabin">
+              <p className="text-powder_blue opacity-80 text-sm mt-1 font-cabin">
                 Insight tools for legal professionals
               </p>
             </div>
@@ -2668,7 +2196,7 @@ const CourtAnalyticsDashboard = () => {
 
           {/* Tab Navigation */}
           <div
-            className="bg-white shadow-sm"
+            className="bg-white "
             // style={{ borderBottom: `3px solid ${colors.brightCyan}` }}
           >
             <div className="relative container mx-auto px-4">
@@ -2710,7 +2238,7 @@ const CourtAnalyticsDashboard = () => {
             <div className="container mx-auto px-4">
               <div className="flex justify-between items-center">
                 <div className="text-sm text-gray-500">
-                  Last updated: {new Date().toLocaleString()}
+                  {/* Last updated: {new Date().toLocaleString()} */}
                   {/* Last updated: August 16, 2025 */}
                 </div>
                 <div>
