@@ -96,7 +96,7 @@ const ExplanatorySection = ({
   title: string;
   description: string;
 }) => (
-  <div className="mb-6 border-l-4 border-l-lexblue">
+  <div className="mb-6 ">
     <div className="pl-4">
       <h3
         className="text-xx font-medium mb-2 font-poppins text-powder_blue"
@@ -115,43 +115,15 @@ const UsageInstructions = ({ instructions }: { instructions: string }) => (
     className="mt-6 p-4 rounded-md"
     style={{ backgroundColor: `${colors.primaryDark}10` }}
   >
-    <h4 className="font-bold mb-2" style={{ color: colors.primaryDark }}>
+    <h4
+      className="font-semibold mb-2 font-poppins text-xx text-powder_blue"
+      // style={{ color: colors.primaryDark }}
+    >
       How to Use This Data
     </h4>
-    <p className="text-gray-700">{instructions}</p>
+    <p className="text-sm text-lexblue font-gilda_Display ">{instructions}</p>
   </div>
 );
-
-// Reusable dropdown component
-// const Dropdown = ({
-//   label,
-//   options,
-//   value,
-//   onChange,
-// }: {
-//   label: string;
-//   options: { value: string; label: string }[];
-//   value: string;
-//   onChange: (e: string) => void;
-// }) => (
-//   <div className="mb-4">
-//     <label className="block text-sm font-medium text-gray-700 mb-1">
-//       {label}
-//     </label>
-//     <select
-//       value={value}
-//       onChange={(e) => onChange(e.target.value)}
-//       className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2"
-//       //   style={{ outlineColor: colors.brightCyan }}
-//     >
-//       {options.map((option: { value: string; label: string }) => (
-//         <option key={option.value} value={option.value}>
-//           {option.label}
-//         </option>
-//       ))}
-//     </select>
-//   </div>
-// );
 
 const Dropdown = ({
   label,
@@ -518,9 +490,9 @@ const DivisionSpecializationTab = () => {
                 message="Set your parameters and click 'Generate Analysis' to see which court divisions specialize in particular legal areas."
                 ctaText="Recommended: Start with default parameters to get an overview."
               />
-              <UsageInstructions instructions="Higher specialization scores indicate divisions that handle a significant portion of cases in this legal domain. Compare the appellant win rates to identify which specialized divisions tend to favor appellants vs. respondents. This can inform your litigation strategy when appearing before these divisions." />
             </>
           )}
+          <UsageInstructions instructions="Higher specialization scores indicate divisions that handle a significant portion of cases in this legal domain. Compare the appellant win rates to identify which specialized divisions tend to favor appellants vs. respondents. This can inform your litigation strategy when appearing before these divisions." />
         </div>
       </div>
     </div>
@@ -598,8 +570,8 @@ const JurisdictionalAnalysisTab = () => {
         {/* Summary Statistics */}
         <div className="bg-gray-50 p-4 rounded-lg">
           <h3
-            className="font-semibold text-lg mb-3"
-            style={{ color: colors.primaryDark }}
+            className="text-xx font-medium  font-poppins text-powder_blue mb-3"
+            // style={{ color: colors.primaryDark }}
           >
             Analysis Summary
           </h3>
@@ -626,8 +598,8 @@ const JurisdictionalAnalysisTab = () => {
           >
             <div className="bg-gray-100 px-6 py-3 border-b">
               <h4
-                className="font-semibold"
-                style={{ color: colors.primaryDark }}
+                className=" text-xx font-medium  font-poppins text-powder_blue"
+                // style={{ color: colors.primaryDark }}
               >
                 {court.court_name}
               </h4>
@@ -707,8 +679,8 @@ const JurisdictionalAnalysisTab = () => {
       <div className="gr id grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-1 bg-white p-6 rounded-lg shadow-sm">
           <h4
-            className="font-medium mb-4"
-            style={{ color: colors.primaryDark }}
+            className="mb-4 text-xx font-medium  font-poppins text-powder_blue"
+            // style={{ color: colors.primaryDark }}
           >
             Controls
           </h4>
@@ -766,9 +738,9 @@ const JurisdictionalAnalysisTab = () => {
                 message="Generate an analysis to see which courts specialize in which legal areas and their jurisdictional focus."
                 ctaText="Use this to understand which courts have the most experience with your case type."
               />
-              <UsageInstructions instructions="Look for courts with high specialization indices in your case's legal domain, as these courts have significant experience in these matters. The percentage columns show both how important this domain is to the court and how dominant the court is within this domain." />
             </>
           )}
+          <UsageInstructions instructions="Look for courts with high specialization indices in your case's legal domain, as these courts have significant experience in these matters. The percentage columns show both how important this domain is to the court and how dominant the court is within this domain." />
         </div>
       </div>
     </div>
@@ -1047,8 +1019,8 @@ const LegalIssueEvolutionTab = () => {
       <div className="gr id grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-1 bg-white p-6 rounded-lg shadow-sm">
           <h4
-            className="font-medium mb-4"
-            style={{ color: colors.primaryDark }}
+            className="mb-4 text-xx font-medium  font-poppins text-powder_blue"
+            // style={{ color: colors.primaryDark }}
           >
             Controls
           </h4>
@@ -1157,8 +1129,8 @@ const LegalIssueEvolutionTab = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
                   <h3
-                    className="text-lg font-semibold mb-4"
-                    style={{ color: colors.primaryDark }}
+                    className="mb-4 text-xx font-medium  font-poppins text-powder_blue"
+                    // style={{ color: colors.primaryDark }}
                   >
                     Decade Analysis
                   </h3>
@@ -1184,19 +1156,19 @@ const LegalIssueEvolutionTab = () => {
 
               <div className="mt-6">
                 <h4
-                  className="font-medium mb-2"
-                  style={{ color: colors.primaryDark }}
+                  className="text-xx font-medium  font-poppins text-powder_blue mb-2"
+                  // style={{ color: colors.primaryDark }}
                 >
                   Trending Terms Preview
                 </h4>
                 <div className="flex flex-wrap gap-2 mt-4 opacity-50">
-                  <span className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-500">
+                  <span className="px-3 py-1 rounded-full text-sm bg-gray-200 text-lexblue">
                     Select parameters above
                   </span>
-                  <span className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-500">
+                  <span className="px-3 py-1 rounded-full text-sm bg-gray-200 text-lexblue">
                     Generate analysis
                   </span>
-                  <span className="px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-500">
+                  <span className="px-3 py-1 rounded-full text-sm bg-gray-200 text-lexblue">
                     View trending terms
                   </span>
                 </div>
@@ -1590,8 +1562,8 @@ const DecisionPatternsTab = () => {
       <div className="gr id grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-1 bg-white p-6 rounded-lg shadow-sm">
           <h4
-            className="font-medium mb-4"
-            style={{ color: colors.primaryDark }}
+            className="mb-4 text-xx font-medium  font-poppins text-powder_blue"
+            // style={{ color: colors.primaryDark }}
           >
             Controls
           </h4>
@@ -1925,8 +1897,8 @@ const PrecedentInfluenceTab = () => {
       <div className="g rid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-1 bg-white p-6 rounded-lg shadow-sm">
           <h4
-            className="font-medium mb-4"
-            style={{ color: colors.primaryDark }}
+            className=" mb-4 text-xx font-medium font-poppins text-powder_blue"
+            // style={{ color: colors.primaryDark }}
           >
             Controls
           </h4>
@@ -2125,7 +2097,7 @@ const CourtAnalyticsDashboard = () => {
     { id: "division", label: "Division Specialization" },
     { id: "jurisdictional", label: "Jurisdictional Analysis" },
     { id: "evolution", label: "Legal Issue Evolution" },
-    { id: "decisions", label: "Decision Patterns" },
+    // { id: "decisions", label: "Decision Patterns" },
     { id: "precedent", label: "Precedent Influence" },
   ];
 
