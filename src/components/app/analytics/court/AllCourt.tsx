@@ -802,6 +802,8 @@ const LegalIssueEvolutionTab = () => {
     data: LegalIssueEvolutionData,
     error,
     isLoading,
+    isFetching,
+    refetch,
   } = useGetLegalIssueEvolutionQuery(
     shouldGenerateAnalysis ? searchTerm : skipToken
   );
@@ -990,8 +992,10 @@ const LegalIssueEvolutionTab = () => {
           color={COLORS[4]}
           title="Avg Ratios"
           value={(
-            data.results.reduce((sum, r) => sum + r.avg_ratios_per_issue, 0) /
-            data.results.length
+            data.results.reduce(
+              (sum, r) => sum + Number(r.avg_ratios_per_issue),
+              0
+            ) / data.results.length || 0
           ).toFixed(1)}
         />
       </div>
@@ -1020,8 +1024,8 @@ const LegalIssueEvolutionTab = () => {
   }) => (
     <div className="mb-6">
       <h3
-        className="text-lg font-semibold mb-4"
-        style={{ color: colors.primaryDark }}
+        className="ml-12 text-xx font-medium font-poppins text-powder_blue mb-4"
+        // style={{ color: colors.primaryDark }}
       >
         Evolution Timeline
       </h3>
@@ -1034,7 +1038,7 @@ const LegalIssueEvolutionTab = () => {
               <div className="bg-white p-4 rounded-lg shadow border">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h4 className="font-semibold text-gray-800">
+                    <h4 className="font-semibold text-lexblue text-xx">
                       {result.decade}s
                     </h4>
                     <p className="text-sm text-gray-600">
@@ -1115,7 +1119,10 @@ const LegalIssueEvolutionTab = () => {
               <input
                 type="number"
                 value={endYear}
-                onChange={(e) => setEndYear(e.target.value)}
+                onChange={(e) => {
+                  // setGenerateAnalysis(false);
+                  setEndYear(e.target.value);
+                }}
                 className="w-full p-2 border border-gray-300 rounded-md"
               />
             </div>
@@ -1146,9 +1153,15 @@ const LegalIssueEvolutionTab = () => {
 
           <div className="mt-6">
             <Button
-              label="Generate Analysis"
+              label={
+                isFetching ? "Generating analysis...." : "Generate Analysis"
+              }
               onClick={() => {
-                setGenerateAnalysis(true);
+                if (shouldGenerateAnalysis) {
+                  refetch();
+                } else {
+                  setGenerateAnalysis(true);
+                }
               }}
             />
           </div>
