@@ -20,7 +20,7 @@ const Tabs: FC<TabsProps> = ({ tabs }) => {
           className={`relative font-medium uppercase text-sm font-poppins ${
             tabClicked == id
               ? "after:absolute after:w-full after:-bottom-2.5 after:left-0 after:border-b-2 after:border-[#245b91] text-black/80"
-              : "text-gray-500 hover:text-gray-700 "
+              : "text-gray-500 hover:text-gray-700"
           }`}
           // `pt-2 px- 4 pb-[14px] font-medium flex items-center ${
           //                           activeTab_query_type === "sematic_s"

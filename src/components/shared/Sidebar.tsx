@@ -138,7 +138,7 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
 
               {/* Menu */}
               <div className="flex-1">
-                <div className="flex justify-center my-6 px- 4 max-md:px-5">
+                <div className="bg- red-500 flex justify-center my-6 px-4 max-md:px-5">
                   <div
                     role="button"
                     title="Start new search"
@@ -156,7 +156,11 @@ const Sidebar: FC<SidebarProps> = ({ links, variants = "empty", children }) => {
                   </div>
                 </div>
 
-                <ul className="flex flex-col gap-2 py-3 w-full ">
+                <ul
+                  className={`flex flex-col gap-2 py-3 w-full ${
+                    !isCollapsed && "pl-4"
+                  } `}
+                >
                   {links &&
                     links.map(({ label, children, path }, idx) => (
                       <Fragment key={path}>
