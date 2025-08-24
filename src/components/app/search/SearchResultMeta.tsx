@@ -280,12 +280,12 @@ export const SearchAIMetaResult = ({
                       <HiMinus className="hidden group-open:inline-block cursor-pointer  fill-current opacity-75" />
                     </button>
                   </summary>
-                  <p className="pt-[1rem] text-[0.54506rem] md:text-sm ml-2 ">
-                    <Markdown
-                      content={answer}
-                      className="wrapper text-wrap overflow-x-hidden text-lexblue font-poppins leading-6"
-                    />
-                  </p>
+                  {/* <p className="pt-[1rem] text-[0.54506rem] md:text-sm ml-2 "> */}
+                  <Markdown
+                    content={answer}
+                    className="pt-[1rem] text-[0.54506rem] md:text-sm ml-2  wrapper text-wrap overflow-x-hidden text-lexblue font-poppins leading-6"
+                  />
+                  {/* </p> */}
                 </details>
               )
             )}
@@ -381,12 +381,12 @@ export const SearchResultMeta = (prop: {
   const { occurrences, metadata } = data;
   let _link: string = "what is law";
   let _metadata: any;
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [lastOccurrence, setLastOccurrence] = useState<number>(1);
-  useEffect(() => {
-    // console.log("usestate for llm invalidate tags ran");
-    dispatch(searchQueryUtil.invalidateTags(["LlmSearch"]));
-  }, [query]);
+  // useEffect(() => {
+  //   // console.log("usestate for llm invalidate tags ran");
+  //   dispatch(searchQueryUtil.invalidateTags(["LlmSearch"]));
+  // }, [query]);
   // console.log("Content and contex", metadata);
   // This is the logic for highlighting the full judgement
   const [quoteToHighlight, setQuoteToHighlight] = useState<{
@@ -413,7 +413,7 @@ export const SearchResultMeta = (prop: {
   //     }?title=${metadata.case_title}&tab=case`
   //   );
   // };
-
+  // console.log(occurrences);
   const Occurrences = () =>
     (
       occurrences?.slice(0, lastOccurrence) as {

@@ -135,7 +135,7 @@ const Page: NextPageWithLayout = () => {
           ]);
           // const res = await axios.get(judgementUrl);
 
-          // console.log("from cases/slug", judgementRes, analysisRes);
+          console.log("from cases/slug", analysisUrl, analysisRes);
 
           if (judgementRes) {
             const { content } = matter(judgementRes.data);
@@ -155,6 +155,7 @@ const Page: NextPageWithLayout = () => {
           setCaseDocument({ ...case_data });
         }
       })();
+      // console.log("log data for url analysis", analysisUrl);
     }
 
     return () => {};

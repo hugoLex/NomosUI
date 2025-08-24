@@ -15,12 +15,14 @@ export default function RelatedContent() {
   async function Search() {
     //   async function Search(e: any) {
     // e?.stopPropagation();
+    if (!query) {
+      return;
+    }
     try {
       const res = await similarirtySearch({
         // content: query ?? "",
-        content:
-          query ??
-          "I have also found that the accused person had sexual intercourse with the prosecutrix. The cumulative effect of these findings is that the ingredients of an offence under Section 282 (1) (e) of the Penal Code have been made out by the prosecution.",
+        content: query,
+        // "I have also found that the accused person had sexual intercourse with the prosecutrix. The cumulative effect of these findings is that the ingredients of an offence under Section 282 (1) (e) of the Penal Code have been made out by the prosecution.",
       }).unwrap();
       //   console.log("similarity search", res);
       //   console.log("similarity search", JSON.stringify(res));

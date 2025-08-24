@@ -27,6 +27,7 @@ export const libraryAPISlice = injectEndpoints({
         const paramCourt = year ? `&court=${year}` : "";
         const paramStatus = status ? `&legislation_status=${status}` : "";
         const query = `/legislation/list${paramPage.trim()}${paramCourt.trim()}${paramStatus.trim()}`;
+        // console.log("from legislations", query)
         return query;
       },
     }),

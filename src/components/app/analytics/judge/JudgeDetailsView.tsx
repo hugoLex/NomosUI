@@ -217,9 +217,21 @@ const JudgeDetailsView = () => {
             </div>
           )}
           <div className="py-6">
-            <div className="lg:flex gap-[2rem]  relative">
-              <div className="basis-[30.7%]">
-                <div className="sticky md:top-[68px]">
+            <div
+              // onScroll={(e) => {
+              //   console.log("The parent container was scrolled");
+              //   e.stopPropagation();
+              // }}
+              className="lg:flex gap-[2rem]  relative min- h-[80vh] overflow-hidden"
+            >
+              <div
+                onScroll={(e) => {
+                  console.log("The left side was scrolled");
+                  e.stopPropagation();
+                }}
+                className="basis-[30.7%] pb-[50px]  overflow-y-auto h-full no-scrollbar"
+              >
+                <div className="st icky md:top- [68px]">
                   <Link href={"/analytics/judges"}>
                     <JudgeCounselHeadings
                       h1HeaderRef={h1Ref}
@@ -324,7 +336,13 @@ const JudgeDetailsView = () => {
                   </div>
                 </div>
               </div>
-              <div className="basis-[66%] mt-[80px]">
+              <div
+                onScroll={(e) => {
+                  console.log("the right side was scrolled");
+                  e.stopPropagation();
+                }}
+                className="basis-[66%] pt-[80px] pb-[100px] overflow-y-auto h-full no-scrollbar"
+              >
                 {profile && (
                   <div className="relative  bg-[#F6F7F7] p-[16px] rounded-[6px] mb-[30px]">
                     <IoClose

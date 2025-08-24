@@ -90,7 +90,7 @@ const AllJudgesView = () => {
     !openFilter ? { params: compiledQuery } : skipToken
   );
   // console.log("compiled query Data from judges", error, compiledQuery);
-  // console.log("allLegalAreas Data from judges", allLegalAreas);
+  // console.log("allLegalAreas Data from judges", data);
   // console.log("Data from judges", JSON.stringify(data && data.judges[0]));
   // Update the accumulated data when new data is fetched
   useEffect(() => {

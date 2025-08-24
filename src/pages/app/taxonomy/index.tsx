@@ -44,7 +44,7 @@ const Page: NextPageWithLayout = () => {
 
     return () => {};
   }, [data]);
-
+  console.log("taxonomy list", data);
   if (isLoading) {
     // Early return for loading state
     return (

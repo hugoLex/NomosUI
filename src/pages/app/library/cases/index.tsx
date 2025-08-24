@@ -40,6 +40,7 @@ const Page: NextPageWithLayout = () => {
   const { data, isError, isFetching, isLoading } = useGetCasesQuery({
     page,
   });
+  // console.log("sases list page", data);
 
   const [cases, setCases] = useState<Case[]>([]);
   const [isPageError, setIsPageError] = useState<boolean>(false);
